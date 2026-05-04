@@ -64,6 +64,34 @@
             opacity: 0.08; pointer-events: none; z-index: -1;
         }
 
+        /* --- MOBILE APP HEADER (Hidden on PC/Tablet) --- */
+        #mobile-header {
+            display: none;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            padding: 15px 20px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: var(--ui-border-width) solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 50;
+        }
+        
+        #mobile-header h2 { margin: 0; font-size: 1.25em; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; letter-spacing: 1px; }
+        
+        .hamburger-btn { 
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+            color: white; font-size: 20px; cursor: pointer; border-radius: 8px; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+
+        #sidebar-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); z-index: 1500; backdrop-filter: blur(3px);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        #sidebar-overlay.active { display: block; opacity: 1; }
+
         /* --- INTEGRATED LAYOUT CSS --- */
 
         /* Sidebar & Logo Elements */
@@ -75,7 +103,8 @@
             flex-direction: column;
             padding: 20px;
             border-right: var(--ui-border-width) solid rgba(255, 255, 255, 0.15);
-            z-index: 10;
+            z-index: 2000;
+            overflow-y: auto;
         }
 
         .front-screen-logo {
@@ -247,12 +276,12 @@
         .ui-modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 3000;
         }
 
         .ui-modal-overlay.active {
@@ -265,12 +294,16 @@
             box-shadow: var(--apple-glass-shadow);
             border: var(--ui-border-width) solid rgba(255, 255, 255, 0.3);
             width: 450px; 
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
             border-radius: 24px;
             padding: 30px;
             position: relative;
+            box-sizing: border-box;
         }
 
-        /* --- SETTINGS MODAL (FIXED SCROLL & DIMENSIONS) --- */
+        /* --- SETTINGS MODAL --- */
         #settings-hub {
             display: flex;
             width: 950px; 
@@ -347,6 +380,7 @@
             overflow-x: hidden; 
             width: 100%;
             scroll-behavior: smooth;
+            box-sizing: border-box;
         }
 
         .settings-view {
@@ -602,8 +636,8 @@
         }
         .chat-message.owner { background: rgba(255, 255, 255, 0.15); align-self: flex-start; border-bottom-left-radius: 4px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1);}
         .chat-message.user { background: var(--accent-pink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .chat-input-area { display: flex; gap: 10px; }
-        .chat-input-area .input-field { margin-bottom: 0; flex: 1; }
+        .chat-input-area { display: flex; gap: 10px; flex-wrap: wrap;}
+        .chat-input-area .input-field { margin-bottom: 0; flex: 1; min-width: 200px;}
         .send-message-btn {
             background: var(--accent-pink);
             color: white;
@@ -614,6 +648,7 @@
             cursor: pointer;
             transition: 0.3s;
             box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            height: 48px;
         }
         .send-message-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6); }
 
@@ -629,6 +664,7 @@
             font-size: 20px;
             cursor: pointer;
             transition: 0.3s;
+            z-index: 100;
         }
         .close-btn:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
         
@@ -639,6 +675,7 @@
             padding-bottom: 15px;
             margin-bottom: 20px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            padding-right: 40px; /* Prevent close button overlap */
         }
 
         @keyframes fadeIn {
@@ -658,6 +695,7 @@
             font-size: 14px;
             color-scheme: dark; 
             transition: 0.3s;
+            box-sizing: border-box;
         }
         .input-field:focus { outline: none; border-color: var(--accent-pink); background: rgba(0,0,0,0.4); box-shadow: 0 0 15px rgba(255, 105, 180, 0.3); }
         
@@ -742,10 +780,104 @@
             backdrop-filter: blur(5px);
         }
         .cancel-btn:hover { background: rgba(255, 77, 77, 0.4); color: white; }
+
+        /* =========================================================
+           📱 RESPONSIVE MEDIA QUERIES (TABLET & MOBILE) 
+           ========================================================= */
+
+        /* 💻 Tablets and Smaller PCs */
+        @media (max-width: 1024px) {
+            :root { --side-full: 240px; }
+            #main-content { padding: 30px; }
+            .carousel-item { font-size: 24px; }
+            #settings-hub { width: 90vw; }
+            .guide-grid { grid-template-columns: 1fr; }
+        }
+
+        /* 📱 Mobile Phones */
+        @media (max-width: 768px) {
+            body { 
+                display: flex; 
+                flex-direction: column; 
+                grid-template-columns: none; 
+            }
+            
+            /* Enable Mobile Top Navigation Header */
+            #mobile-header { display: flex; flex-shrink: 0; }
+            
+            /* Hide Desktop Headers inside Main Content to prevent duplication */
+            .shop-header, .shop-divider { display: none; }
+            
+            #main-content { 
+                flex: 1; 
+                padding: 15px; 
+                overflow-y: auto; 
+                height: auto;
+            }
+
+            /* Convert Sidebar to Slide-Over Hamburger Menu */
+            #sidebar {
+                position: fixed; 
+                top: 0; 
+                left: 0; 
+                bottom: 0; 
+                width: 280px;
+                transform: translateX(-100%); 
+                transition: transform 0.4s var(--apple-spring);
+                z-index: 2000;
+                border-right: 1px solid rgba(255,255,255,0.2);
+            }
+            #sidebar.open { transform: translateX(0); }
+
+            /* Featured Component Scaling */
+            .featured-container { padding: 15px; }
+            .featured-container img { height: 200px; margin-bottom: 10px;}
+            .featured-text { font-size: 14px; line-height: 1.4; }
+
+            /* Settings Modal Layout Overhaul for Mobile */
+            #settings-hub { 
+                flex-direction: column; 
+                height: 90vh; 
+            }
+            .settings-sidebar { 
+                width: 100%; 
+                border-right: none; 
+                border-bottom: 1px solid rgba(255,255,255,0.1); 
+                padding: 15px; 
+                flex-direction: row; 
+                overflow-x: auto; 
+                min-width: auto; 
+                flex-shrink: 0;
+            }
+            .settings-sidebar h3 { display: none; } /* Hide heavy title in mobile horizontal bar */
+            .settings-tab-btn { white-space: nowrap; }
+            .settings-content { padding: 20px; overflow-x: hidden; }
+            
+            .os-card { padding: 15px; }
+            .os-btn-row { flex-direction: column; }
+            
+            /* Details Modal / Wizard Adjustments */
+            #details-hub { padding: 20px; }
+            .toppings-panel { grid-template-columns: 1fr; padding: 15px; }
+            .menu-grid { grid-template-columns: 1fr; } /* Single column cards on phone */
+            
+            /* Theme Selectors grid wrap */
+            .theme-preview-box { grid-column: span 2 !important; height: 60px !important; }
+        }
     </style>
 </head>
 <body>
     <div class="glass-noise" id="bg-shimmer"></div>
+
+    <!-- 📱 MOBILE APP HEADER -->
+    <div id="mobile-header">
+        <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+        <h2>LA PRINCESSA</h2>
+        <div style="width: 40px;"></div> <!-- Spacer to keep text perfectly centered -->
+    </div>
+    
+    <!-- 📱 OVERLAY FOR MOBILE SIDEBAR -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div id="sidebar">
         <div class="front-screen-logo">
@@ -1047,7 +1179,7 @@
         </div>
     </div>
 
-    <div class="ui-modal-overlay" id="guide-overlay" style="z-index: 1200;">
+    <div class="ui-modal-overlay" id="guide-overlay" style="z-index: 3200;">
         <div id="guide-hub" style="width: 400px;">
             <button class="close-btn" onclick="closeGuide()">×</button>
             <h2 class="modal-title" id="guide-title" style="font-size: 20px; border-bottom: none; padding-bottom: 0;"></h2>
@@ -1056,7 +1188,7 @@
         </div>
     </div>
 
-    <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 1100;">
+    <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 3100;">
         <div id="credentials-hub" style="width: 350px;">
             <button class="close-btn" onclick="closeChangeCredentials()">×</button>
             <h2 class="modal-title" style="font-size: 22px;">Update Credentials</h2>
@@ -1137,8 +1269,13 @@
     </div>
 
     <script>
-        // --- PERSONALIZATION FUNCTIONALITY ---
+        // --- RESPONSIVE MOBILE SIDEBAR TOGGLE ---
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        }
 
+        // --- PERSONALIZATION FUNCTIONALITY ---
         function applyTheme(backgroundSetting, accentColor, bgSize = 'cover') {
             document.body.style.background = backgroundSetting;
             document.body.style.backgroundSize = bgSize;
@@ -1158,7 +1295,6 @@
             }
         }
 
-        // Bounded Font Size update to prevent layout breakage
         function updateFontSize(val) {
             document.documentElement.style.setProperty('--base-font-size', val + 'px');
             document.getElementById('font-size-label').innerText = 'GLOBAL FONT SIZE: ' + val + 'PX';
@@ -1202,6 +1338,12 @@
                 section.classList.remove('active');
             });
             document.getElementById(viewName + '-view').classList.add('active');
+            
+            // Auto-close sidebar on mobile/tablet after clicking a navigation link
+            if(window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebar-overlay').classList.remove('active');
+            }
         }
 
         function filterProducts() {
@@ -1217,7 +1359,13 @@
         function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
         function openMessaging() { document.getElementById('messaging-overlay').classList.add('active'); }
         function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
-        function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
+        function openSettings() { 
+            document.getElementById('settings-overlay').classList.add('active'); 
+            if(window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebar-overlay').classList.remove('active');
+            }
+        }
         function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
 
         function switchSettingsNav(navId) {
@@ -1227,7 +1375,6 @@
             document.querySelectorAll('.settings-view').forEach(view => view.classList.remove('active'));
             document.getElementById('view-' + navId).classList.add('active');
             
-            // Auto scroll to top of pane smoothly
             document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'});
         }
 
