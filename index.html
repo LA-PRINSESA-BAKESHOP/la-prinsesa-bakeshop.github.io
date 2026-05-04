@@ -8,28 +8,53 @@
         :root {
             /* INTEGRATED: Pink repeating cupcake/cake pattern (Donut removed) */
             --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ff9eb5'/%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
-            --glass-bg: rgba(40, 20, 30, 0.45); /* Infinity OS style dark-pink tinted glass */
-            --header-bg: rgba(40, 20, 30, 0.30); 
-            --glass-blur: blur(35px) saturate(250%); /* Heavy refraction */
-            --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.3), inset 0 0 0 1px rgba(255,255,255,0.1);
+            
+            /* FIXED TINT & GLASSMORPHISM: Less dark tint, more transparency, and stronger blur */
+            --glass-bg: rgba(20, 15, 25, 0.20); 
+            --header-bg: rgba(20, 15, 25, 0.15); 
+            --glass-blur: blur(45px) saturate(180%); 
+            
+            --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
             --base-font-size: 16px;
             --side-full: 285px; 
             --side-slim: 85px;
             --safe-bottom: env(safe-area-inset-bottom);
             --apple-spring: cubic-bezier(0.25, 1, 0.5, 1);
-            --elastic-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
             --liquid-ease: cubic-bezier(0.23, 1, 0.32, 1);
             --dynamic-text-color: #ffffff;
             --text-opacity: 1;
-            --ui-border-width: 1px; /* Thicker for Infinity OS glass look */
-            --accent-pink: #ff69b4; /* Vibrant default pink */
+            --ui-border-width: 1px; 
+            --accent-pink: #ff69b4; 
             --os-green: #2ecc71;
+        }
+
+        /* --- FIXED: Shimmer Effect on Interactive Elements --- */
+        /* Adds a subtle animated shine when hovering over cards, buttons, etc. */
+        body.shimmer-enabled .menu-card:hover::after,
+        body.shimmer-enabled .promo-card:hover::after,
+        body.shimmer-enabled .os-card:hover::after,
+        body.shimmer-enabled .sidebar-btn:hover::after,
+        body.shimmer-enabled .submit-btn:hover::after,
+        body.shimmer-enabled .bnav-item:hover::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmerSlide 1.5s infinite;
+            z-index: 10;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        @keyframes shimmerSlide {
+            100% { left: 100%; }
         }
 
         body.borders-enabled #sidebar,
         body.borders-enabled #main-content .menu-card,
         body.borders-enabled .sidebar-btn,
         body.borders-enabled .os-card,
+        body.borders-enabled .promo-card,
         body.borders-enabled #settings-hub,
         body.borders-enabled #details-hub,
         body.borders-enabled #messaging-hub,
@@ -42,16 +67,16 @@
             box-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
 
-        * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent; box-sizing: border-box; }
+        * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.4) transparent; box-sizing: border-box; }
         *::-webkit-scrollbar { width: 6px; height: 6px; display: block; }
         *::-webkit-scrollbar-track { background: transparent; }
-        *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 10px; }
+        *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 10px; }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; display: grid; height: 100vh; width: 100vw;
             background: var(--bg-main);
-            background-color: #ffb6c1; /* Fallback pink */
+            background-color: #ffb6c1; 
             background-repeat: repeat; background-position: top left; background-attachment: fixed; background-size: 250px;
             overflow: hidden; transition: background 0.4s ease, color 0.3s ease;
             color: var(--dynamic-text-color); font-size: var(--base-font-size);
@@ -60,8 +85,10 @@
 
         .glass-noise {
             position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');
+            background-image: 
+                url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');
             opacity: 0.08; pointer-events: none; z-index: -1;
+            mix-blend-mode: overlay;
         }
 
         /* --- MOBILE APP HEADER (Hidden on PC/Tablet) --- */
@@ -83,6 +110,7 @@
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
             color: white; font-size: 20px; cursor: pointer; border-radius: 8px; width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+            position: relative; overflow: hidden; /* For shimmer */
         }
 
         #sidebar-overlay {
@@ -134,6 +162,7 @@
             font-size: var(--base-font-size);
             transition: all 0.3s ease;
             margin-bottom: 10px;
+            position: relative; overflow: hidden; /* For shimmer */
         }
 
         .sidebar-btn:hover {
@@ -145,8 +174,8 @@
         /* Main Content Menu */
         #main-content {
             padding: 40px;
+            /* FIXED OVERSIZING: Remove overflow hidden that caused scroll issues and constrained content */
             overflow-y: auto;
-            overflow-x: hidden;
             position: relative;
             scroll-behavior: smooth;
         }
@@ -181,38 +210,36 @@
             display: block;
         }
 
-        /* Fixed Static Feature Picture (Replaced Carousel) */
-        .featured-container {
-            width: 100%;
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
+        /* --- FIXED: HOME PROMO CARDS (McDonald's Style / Less oversized) --- */
+        .promo-container {
+            width: 100%; max-width: 800px; margin: 0 auto; /* Added max-width to fix "oversized panel" on PC/Tablet */
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .promo-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: var(--glass-blur);
             border: var(--ui-border-width) solid rgba(255, 255, 255, 0.2);
-            box-shadow: var(--apple-glass-shadow);
-            padding: 20px;
-            text-align: center;
-            box-sizing: border-box;
+            border-radius: 20px; overflow: hidden; 
+            box-shadow: var(--apple-glass-shadow); transition: transform 0.3s ease;
+            position: relative; overflow: hidden; /* For shimmer */
+        }
+        .promo-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.15); }
+        
+        .promo-image {
+            width: 100%; height: 250px; /* Reduced from 350px so it's not oversized on desktop */
+            object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .promo-details { padding: 20px; }
+        .promo-details h3 { margin: 0 0 8px 0; font-size: 20px; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .promo-details p { margin: 0 0 15px 0; font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+        
+        .promo-action {
+            display: inline-block; padding: 10px 20px; background: var(--accent-pink);
+            color: white; font-weight: bold; border-radius: 10px; font-size: 14px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); border: none;
+            position: relative; overflow: hidden; /* For shimmer */
         }
 
-        .featured-container img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .featured-text {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.95);
-            margin: 0;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
 
         /* Search Bar (Menu View) */
         .search-container {
@@ -228,9 +255,10 @@
             box-shadow: var(--apple-glass-shadow);
         }
 
+        /* --- FIXED: MENU CARDS (McDonald's Reward Style - Vertical layout, photo on top, cleaner box) --- */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Slightly smaller columns */
             gap: 20px;
         }
 
@@ -245,6 +273,8 @@
             transition: transform 0.4s var(--apple-spring), border-color 0.3s ease, background 0.3s ease;
             cursor: pointer;
             position: relative;
+            display: flex; flex-direction: column; align-items: center; /* Ensures content stacks nicely */
+            position: relative; overflow: hidden; /* For shimmer */
         }
 
         .menu-card:hover {
@@ -253,30 +283,36 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
-        /* Image Preview Box */
+        /* McDonald's style circular/contained image preview */
         .menu-image-preview {
-            width: 100%;
-            height: 140px;
+            width: 140px; /* Specific width */
+            height: 140px; /* Match width for square/circle */
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
+            border-radius: 50%; /* Circle like McD rewards */
             border: 1px dashed rgba(255, 255, 255, 0.3);
-            margin-bottom: 15px;
+            margin: 0 auto 15px auto;
             display: flex;
             align-items: center;
             justify-content: center;
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.8em;
             backdrop-filter: blur(5px);
+            object-fit: cover; /* If real images are added */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        .menu-card h3 { margin: 10px 0; font-size: 1.25em; pointer-events: none; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .menu-card p { color: var(--accent-pink); font-size: 1.1em; font-weight: bold; margin: 0; pointer-events: none; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .menu-card h3 { margin: 10px 0; font-size: 1.1em; pointer-events: none; text-shadow: 0 2px 5px rgba(0,0,0,0.5); line-height: 1.3;}
+        .menu-card p { 
+            background: rgba(0,0,0,0.2); color: var(--accent-pink); font-size: 1em; font-weight: bold; margin: 10px 0 0 0; pointer-events: none; text-shadow: 0 2px 5px rgba(0,0,0,0.5); 
+            padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); /* Pill shape for price like McD points */
+        }
+
 
         /* General Modal Styles */
         .ui-modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
@@ -303,11 +339,11 @@
             box-sizing: border-box;
         }
 
-        /* --- SETTINGS MODAL --- */
+        /* --- FIXED SQUARE SETTINGS MODAL (X-INFINITY OS STYLE) --- */
         #settings-hub {
             display: flex;
-            width: 950px; 
-            height: 600px; 
+            width: 780px;  /* Squarer dimension */
+            height: 620px; /* Squarer dimension */
             max-width: 95vw;
             max-height: 90vh;
             background: var(--glass-bg); 
@@ -315,19 +351,23 @@
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: var(--apple-glass-shadow);
-            overflow: hidden;
+            /* FIXED: Overflow hidden breaks when resizing. Keep it hidden to maintain border-radius, but manage inner scrolling carefully. */
+            overflow: hidden; 
             position: relative;
         }
 
         .settings-sidebar {
-            width: 250px;
-            min-width: 250px; 
-            background: rgba(0, 0, 0, 0.15);
+            width: 230px;
+            min-width: 230px; 
+            background: rgba(255, 255, 255, 0.05); /* Light reflection instead of dark tint */
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
             gap: 8px; 
+            flex-shrink: 0;
+            /* Allow sidebar to scroll if needed on smaller vertical screens */
+            overflow-y: auto;
         }
 
         .settings-sidebar h3 {
@@ -346,7 +386,7 @@
         /* Fixed Tab Styles */
         .settings-tab-btn {
             background: transparent;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             border: 1px solid transparent;
             text-align: left;
             padding: 12px 15px;
@@ -371,11 +411,11 @@
 
         .settings-content {
             flex: 1;
-            padding: 40px 50px 60px 50px; 
+            padding: 40px; 
             position: relative;
             display: flex;
             flex-direction: column;
-            align-items: flex-start; 
+            align-items: center; 
             overflow-y: auto;
             overflow-x: hidden; 
             width: 100%;
@@ -383,29 +423,32 @@
             box-sizing: border-box;
         }
 
+        /* FIXED: View container sizing and alignment */
         .settings-view {
             display: none;
             width: 100%;
+            max-width: 500px; 
             flex-direction: column;
-            align-items: flex-start; 
+            align-items: center; /* Center everything inside */
             animation: fadeIn 0.4s var(--liquid-ease);
+            margin: 0 auto; 
         }
         .settings-view.active {
             display: flex;
         }
 
-        /* Cleaned up OS Cards to fit flow */
+        /* Light Glass OS Cards */
         .os-card {
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.05); /* Light glass tint */
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 4px 15px rgba(0,0,0,0.1);
             border-radius: 16px;
             padding: 25px;
             width: 100%;
-            max-width: 600px; 
             margin-bottom: 20px;
             box-sizing: border-box;
+            position: relative; overflow: hidden; /* For shimmer */
         }
 
         .os-card-title {
@@ -419,9 +462,8 @@
         }
 
         .active-session-card {
-            border-color: rgba(46, 204, 113, 0.5);
+            border-color: rgba(46, 204, 113, 0.4);
             background: rgba(46, 204, 113, 0.05);
-            box-shadow: inset 0 0 30px rgba(46, 204, 113, 0.1);
         }
 
         .active-session-card .os-card-title {
@@ -429,7 +471,7 @@
         }
 
         .settings-close-btn {
-            position: fixed; 
+            position: absolute; 
             top: 20px; right: 20px;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
@@ -487,7 +529,7 @@
         }
 
         .os-btn-danger {
-            background: rgba(255, 77, 77, 0.2);
+            background: rgba(255, 77, 77, 0.15);
             color: #ffcccc;
             border: 1px solid rgba(255, 77, 77, 0.4);
             width: 100%;
@@ -500,12 +542,13 @@
             display: inline-block;
             width: 44px;
             height: 24px;
+            flex-shrink: 0;
         }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
             background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
         }
         .slider:before {
             position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2px;
@@ -537,11 +580,13 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
 
-        /* Hover effect for Theme Previews */
+        /* Clean Visual Preview Boxes */
         .theme-preview-box {
             border: 2px solid rgba(255,255,255,0.2);
             transition: transform 0.3s var(--apple-spring), border-color 0.3s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            cursor: pointer;
         }
         .theme-preview-box:hover {
             transform: scale(1.05);
@@ -551,13 +596,12 @@
         /* Guides Specific Styles */
         .guide-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr; /* Stacked for square modal */
             gap: 15px;
             width: 100%;
-            max-width: 100%; 
         }
         .guide-card {
-            background: rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 16px;
@@ -618,7 +662,7 @@
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 166px;
+            border-radius: 16px;
             padding: 15px;
             overflow-y: auto;
             margin-bottom: 15px;
@@ -649,6 +693,7 @@
             transition: 0.3s;
             box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
             height: 48px;
+            position: relative; overflow: hidden; /* For shimmer */
         }
         .send-message-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6); }
 
@@ -675,7 +720,8 @@
             padding-bottom: 15px;
             margin-bottom: 20px;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            padding-right: 40px; /* Prevent close button overlap */
+            padding-right: 40px; 
+            width: 100%;
         }
 
         @keyframes fadeIn {
@@ -687,9 +733,9 @@
             width: 100%;
             padding: 15px;
             margin-bottom: 15px;
-            background: rgba(0,0,0,0.25);
+            background: rgba(255,255,255,0.08); /* Lighter Glass Input */
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 12px;
             color: white;
             font-size: 14px;
@@ -697,7 +743,7 @@
             transition: 0.3s;
             box-sizing: border-box;
         }
-        .input-field:focus { outline: none; border-color: var(--accent-pink); background: rgba(0,0,0,0.4); box-shadow: 0 0 15px rgba(255, 105, 180, 0.3); }
+        .input-field:focus { outline: none; border-color: var(--accent-pink); background: rgba(255,255,255,0.15); box-shadow: 0 0 15px rgba(255, 105, 180, 0.3); }
         
         .submit-btn {
             width: 100%;
@@ -711,6 +757,7 @@
             cursor: pointer;
             transition: 0.3s;
             box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            position: relative; overflow: hidden; /* For shimmer */
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6); }
         
@@ -751,7 +798,7 @@
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 166px;
+            border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
             display: grid;
@@ -800,7 +847,6 @@
         @media (max-width: 1024px) {
             :root { --side-full: 240px; }
             #main-content { padding: 30px; }
-            .carousel-item { font-size: 24px; }
             #settings-hub { width: 90vw; }
             .guide-grid { grid-template-columns: 1fr; }
         }
@@ -813,71 +859,43 @@
                 grid-template-columns: none; 
             }
             
-            /* Enable Mobile Top Navigation Header */
             #mobile-header { display: flex; flex-shrink: 0; }
-            
-            /* Hide Desktop Headers inside Main Content to prevent duplication */
-            .shop-header, .shop-divider { display: none; }
+            .shop-header, .shop-divider, .desktop-carousel-container { display: none !important; }
             
             #main-content { 
-                flex: 1; 
-                padding: 15px; 
-                overflow-y: auto; 
-                height: auto;
+                flex: 1; padding: 15px 15px 90px 15px; 
+                overflow-y: auto; height: calc(100vh - 60px);
             }
 
-            /* Convert Sidebar to Slide-Over Hamburger Menu */
             #sidebar {
-                position: fixed; 
-                top: 0; 
-                left: 0; 
-                bottom: 0; 
-                width: 280px;
-                transform: translateX(-100%); 
+                position: fixed; top: 0; left: 0; bottom: 0; 
+                width: 280px; transform: translateX(-100%); 
                 transition: transform 0.4s var(--apple-spring);
-                z-index: 2000;
-                border-right: 1px solid rgba(255,255,255,0.2);
+                z-index: 2000; border-right: 1px solid rgba(255,255,255,0.2);
             }
             #sidebar.open { transform: translateX(0); }
 
-            /* Featured Component Scaling */
-            .featured-container { padding: 15px; }
-            .featured-container img { height: 200px; margin-bottom: 10px;}
-            .featured-text { font-size: 14px; line-height: 1.4; }
-
             /* Settings Modal Layout Overhaul for Mobile */
-            #settings-hub { 
-                flex-direction: column; 
-                height: 90vh; 
-            }
+            #settings-hub { flex-direction: column; height: 90vh; }
             .settings-sidebar { 
-                width: 100%; 
-                border-right: none; 
-                border-bottom: 1px solid rgba(255,255,255,0.1); 
-                padding: 15px; 
-                flex-direction: row; 
-                overflow-x: auto; 
-                min-width: auto; 
-                flex-shrink: 0;
+                width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); 
+                padding: 15px; flex-direction: row; overflow-x: auto; min-width: auto; flex-shrink: 0;
             }
-            .settings-sidebar h3 { display: none; } /* Hide heavy title in mobile horizontal bar */
+            .settings-sidebar h3 { display: none; } 
             .settings-tab-btn { white-space: nowrap; }
             .settings-content { padding: 20px; overflow-x: hidden; }
             
             .os-card { padding: 15px; }
             .os-btn-row { flex-direction: column; }
-            
-            /* Details Modal / Wizard Adjustments */
             #details-hub { padding: 20px; }
             .toppings-panel { grid-template-columns: 1fr; padding: 15px; }
-            .menu-grid { grid-template-columns: 1fr; } /* Single column cards on phone */
+            .menu-grid { grid-template-columns: 1fr; } 
             
-            /* Theme Selectors grid wrap */
             .theme-preview-box { grid-column: span 2 !important; height: 60px !important; }
         }
     </style>
 </head>
-<body>
+<body class="shimmer-enabled"> <!-- Enabled Shimmer Hover by default -->
     <div class="glass-noise" id="bg-shimmer"></div>
 
     <!-- 📱 MOBILE APP HEADER -->
@@ -887,7 +905,6 @@
         <div style="width: 40px;"></div> <!-- Spacer to keep text perfectly centered -->
     </div>
     
-    <!-- 📱 OVERLAY FOR MOBILE SIDEBAR -->
     <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div id="sidebar">
@@ -909,49 +926,60 @@
                         <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/>
                     </filter>
                 </defs>
-
                 <path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Q200,150 20,120 Z" fill="url(#goldGradient)" filter="url(#shadow)" />
                 <ellipse cx="200" cy="70" rx="15" ry="10" fill="#8B0000" stroke="#FFD700" stroke-width="2" />
                 <ellipse cx="120" cy="105" rx="8" ry="5" fill="#8B0000" />
                 <ellipse cx="280" cy="105" rx="8" ry="5" fill="#8B0000" />
                 <ellipse cx="60" cy="115" rx="6" ry="4" fill="#8B0000" />
                 <ellipse cx="340" cy="115" rx="6" ry="4" fill="#8B0000" />
-
                 <path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" />
                 <path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" />
-                
                 <path d="M20,120 Q200,80 380,120 L380,170 Q200,130 20,170 Z" fill="url(#pinkRibbon)" stroke="#FFC0CB" stroke-width="4" filter="url(#shadow)" />
                 <text x="200" y="145" font-family="Impact, sans-serif" font-size="48" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINCESSA</text>
-                
                 <text x="80" y="210" font-family="Impact, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF" stroke="#000000" stroke-width="1.5" text-anchor="middle" filter="url(#shadow)">Since</text>
                 <text x="320" y="210" font-family="Impact, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF" stroke="#000000" stroke-width="1.5" text-anchor="middle" filter="url(#shadow)">2016</text>
-
                 <circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FFD700" stroke-width="6" filter="url(#shadow)" />
                 <circle cx="200" cy="190" r="38" fill="none" stroke="#FF1493" stroke-width="3" stroke-dasharray="4,2" />
-                
                 <path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
                 <path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/>
                 <path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/>
             </svg>
         </div>
         
-        <button class="sidebar-btn" onclick="switchMainView('home')">🏠 Home</button>
-        <button class="sidebar-btn" onclick="switchMainView('menu')">📜 Menu</button>
-        <button class="sidebar-btn" onclick="switchMainView('orders')">📦 Orders</button>
+        <button class="sidebar-btn active" id="desk-nav-home" onclick="switchMainView('home')">🏠 Home</button>
+        <button class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu')">📜 Menu</button>
+        <button class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')">📦 Orders</button>
         <button class="sidebar-btn" onclick="openMessaging()">💬 Message Owner</button>
         <button class="sidebar-btn" onclick="openAbout()">ℹ️ About Us</button>
         <button class="sidebar-btn" onclick="openSettings()">⚙️ Settings & Auth</button>
     </div>
 
+    <!-- MAIN CONTENT VIEW -->
     <div id="main-content">
         <div class="shop-header">LA PRINCESSA BAKESHOP</div>
         <hr class="shop-divider">
         
         <div id="home-view" class="view-section active">
-            <!-- REPLACED: Carousel is now a beautiful static featured image with text -->
-            <div class="featured-container">
-                <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop" alt="Featured Strawberry Cupcakes">
-                <p class="featured-text">📸 Featured: Strawberry Princess &bull; Special Promo: 20% Off Weekend &bull; Order Now!</p>
+            
+            <!-- 💻 DESKTOP/TABLET: PROMO FEED (McDonalds Style - Replaces Overstretched Carousel) -->
+            <div class="promo-container">
+                <div class="promo-card">
+                    <img class="promo-image" src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop" alt="Strawberry Princess Promo">
+                    <div class="promo-details">
+                        <h3>Treat Yourself, Princess! 🍓</h3>
+                        <p>End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.</p>
+                        <button class="promo-action" onclick="switchMainView('menu')">Order Now →</button>
+                    </div>
+                </div>
+
+                <div class="promo-card">
+                    <img class="promo-image" src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop" alt="Red Velvet Royal Promo">
+                    <div class="promo-details">
+                        <h3>A Royal Plot Twist! 👑</h3>
+                        <p>Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist—grab your favorite slice today.</p>
+                        <button class="promo-action" onclick="switchMainView('menu')">View Menu →</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -960,24 +988,25 @@
                 <input type="text" id="product-search" class="input-field" placeholder="🔍 Search for products..." onkeyup="filterProducts()">
             </div>
             
+            <!-- FIXED: McDonalds Reward Style Menu layout -->
             <div class="menu-grid" id="product-grid">
                 <div class="menu-card" onclick="openDetails('Red Velvet Royal', '₱120.00')">
-                    <div class="menu-image-preview">📷 Image Preview</div>
+                    <div class="menu-image-preview">📷 Preview</div>
                     <h3>Red Velvet Royal</h3>
                     <p>₱120.00</p>
                 </div>
                 <div class="menu-card" onclick="openDetails('Dark Chocolate Crown', '₱140.00')">
-                    <div class="menu-image-preview">📷 Image Preview</div>
+                    <div class="menu-image-preview">📷 Preview</div>
                     <h3>Dark Chocolate Crown</h3>
                     <p>₱140.00</p>
                 </div>
                 <div class="menu-card" onclick="openDetails('Strawberry Princess', '₱110.00')">
-                    <div class="menu-image-preview">📷 Image Preview</div>
+                    <div class="menu-image-preview">📷 Preview</div>
                     <h3>Strawberry Princess</h3>
                     <p>₱110.00</p>
                 </div>
                 <div class="menu-card" onclick="openDetails('Classic Vanilla Bean', '₱90.00')">
-                    <div class="menu-image-preview">📷 Image Preview</div>
+                    <div class="menu-image-preview">📷 Preview</div>
                     <h3>Classic Vanilla Bean</h3>
                     <p>₱90.00</p>
                 </div>
@@ -986,23 +1015,40 @@
 
         <div id="orders-view" class="view-section">
             <h2 style="margin-top: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Your Order History</h2>
-            <p style="color: rgba(255,255,255,0.9); margin-bottom: 25px; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Click on any past order below to retrieve its QR Receipt.</p>
-            
+            <p style="color: rgba(255,255,255,0.9); margin-bottom: 25px;">Click on any past order below to retrieve its QR Receipt.</p>
             <div class="menu-grid" id="orders-grid">
-                <p style="color: rgba(255,255,255,0.8); text-shadow: 0 1px 3px rgba(0,0,0,0.5);">No orders placed yet.</p>
+                <p style="color: rgba(255,255,255,0.8);">No orders placed yet.</p>
             </div>
         </div>
     </div>
 
+    <!-- 📱 MOBILE BOTTOM NAVIGATION -->
+    <div id="bottom-nav">
+        <div class="bnav-item active" id="mob-nav-home" onclick="switchMainView('home')">
+            <span>🏠</span>Home
+        </div>
+        <div class="bnav-item" id="mob-nav-menu" onclick="switchMainView('menu')">
+            <span>📜</span>Menu
+        </div>
+        <div class="bnav-item" id="mob-nav-orders" onclick="switchMainView('orders')">
+            <span>📦</span>Orders
+        </div>
+        <div class="bnav-item" onclick="openMessaging()">
+            <span>💬</span>Chat
+        </div>
+        <div class="bnav-item" onclick="openSettings()">
+            <span>⚙️</span>More
+        </div>
+    </div>
+
+    <!-- Modals (Chat, About, Settings, Receipt) -->
     <div class="ui-modal-overlay" id="messaging-overlay">
         <div id="messaging-hub">
             <button class="close-btn" onclick="closeMessaging()">×</button>
             <h2 class="modal-title">Message Owner</h2>
-            
             <div class="chat-history" id="chat-history">
                 <div class="chat-message owner">Hello! Welcome to La Princessa Bakeshop. How can we help you today?</div>
             </div>
-
             <div class="chat-input-area">
                 <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
                 <button class="send-message-btn" onclick="sendChatMessage()">Send</button>
@@ -1014,105 +1060,89 @@
         <div id="about-hub">
             <button class="close-btn" onclick="closeAbout()">×</button>
             <h2 class="modal-title">About Us</h2>
-            
-            <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">
+            <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px;">
                 Welcome to La Princessa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.
             </p>
-
-            <h3 style="color: var(--accent-pink); font-size: 18px; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Get In Touch</h3>
+            <h3 style="color: var(--accent-pink); font-size: 18px; margin: 0;">Get In Touch</h3>
             <div class="contact-card">
-                <div class="contact-item">
-                    <strong>📍 Address:</strong> <span>Caloocan, Metro Manila, Philippines</span>
-                </div>
-                <div class="contact-item">
-                    <strong>📞 Phone:</strong> <span>+63 912 345 6789</span>
-                </div>
-                <div class="contact-item">
-                    <strong>✉️ Email:</strong> <span>hello@laprincessabakeshop.ph</span>
-                </div>
+                <div class="contact-item"><strong>📍</strong> <span>Caloocan, Metro Manila, Philippines</span></div>
+                <div class="contact-item"><strong>📞</strong> <span>+63 912 345 6789</span></div>
+                <div class="contact-item"><strong>✉️</strong> <span>hello@laprincessabakeshop.ph</span></div>
             </div>
         </div>
     </div>
 
+    <!-- REFINED SETTINGS MODAL (X-INFINITY STYLE - SQUARER AND LIGHTER GLASS) -->
     <div class="ui-modal-overlay" id="settings-overlay">
         <div id="settings-hub">
             <div class="settings-sidebar">
-                <h3>LA PRINCESSA BAKESHOP</h3>
+                <h3>X-INFINITY OS</h3>
                 <button id="nav-accounts" class="settings-tab-btn active" onclick="switchSettingsNav('accounts')">Accounts & Control</button>
                 <button id="nav-personalization" class="settings-tab-btn" onclick="switchSettingsNav('personalization')">Personalization</button>
                 <button id="nav-guides" class="settings-tab-btn" onclick="switchSettingsNav('guides')">Guides</button>
             </div>
 
             <div class="settings-content">
-                <button class="settings-close-btn" onclick="closeSettings()">✕</button>
+                <button class="settings-close-btn" onclick="closeSettings()">×</button>
                 
                 <div id="view-accounts" class="settings-view active">
-                    <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 24px; font-weight: bold; width: 100%; text-align: left; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">User Authentication</h2>
+                    <h2 class="modal-title">User Authentication</h2>
 
-                    <div id="logged-in-view" style="display: none; width: 100%; flex-direction: column; align-items: flex-start;">
-                        <div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;">
+                    <div id="logged-in-view" style="display: none; width: 100%; flex-direction: column;">
+                        <div class="os-card active-session-card" style="text-align: center;">
                             <h4 class="os-card-title">ACTIVE SESSION</h4>
                             <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="display: none;">
                             <h2 id="profile-fullname" style="margin: 10px 0; font-size: 24px;"></h2>
                             <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 15px; margin-bottom: 25px;"></p>
                             
                             <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">Change Username / Password</button>
+                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">Change Password</button>
                                 <button class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button>
                             </div>
                         </div>
-
-                        <div class="os-card" style="margin: 0 auto;">
+                        <div class="os-card" style="padding: 20px;">
                             <h4 class="os-card-title">FIND USER</h4>
-                            <input type="text" class="input-field" placeholder="Search by name or # UID..." style="margin: 0; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
+                            <input type="text" class="input-field" placeholder="Search by name or UID..." style="margin: 0;">
                         </div>
                     </div>
 
                     <div id="logged-out-view" style="width: 100%; display: flex; flex-direction: column;">
-                        
-                        <div class="os-card" style="max-width: 100%; padding: 30px;">
+                        <div class="os-card" style="padding: 20px;">
                             <div class="auth-nav">
                                 <button id="btn-auth-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
                                 <button id="btn-auth-create" class="auth-tab" onclick="switchAuthTab('create')">Register Account</button>
                             </div>
 
                             <div id="auth-pane-login" class="auth-pane active">
-                                <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Username</label>
-                                <input type="text" id="login-username" class="input-field" placeholder="Enter your username" minlength="3">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Username</label>
+                                <input type="text" id="login-username" class="input-field" placeholder="Enter your username">
                                 
-                                <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Password</label>
-                                <input type="password" id="login-password" class="input-field" placeholder="Enter your password" minlength="3">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Password</label>
+                                <input type="password" id="login-password" class="input-field" placeholder="Enter your password">
                                 
                                 <button class="submit-btn" style="margin-top: 15px;" onclick="validateLogin()">Secure Login</button>
                             </div>
 
                             <div id="auth-pane-create" class="auth-pane">
-                                <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Full Name</label>
-                                <input type="text" id="create-fullname" class="input-field" placeholder="E.g. Juan Dela Cruz">
-                                
-                                <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Profile Photo (Optional)</label>
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Full Name</label>
+                                <input type="text" id="create-fullname" class="input-field" placeholder="Juan Dela Cruz">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Profile Photo (Optional)</label>
                                 <input type="file" id="create-photo" class="input-field" accept="image/*" style="padding: 10px;">
-                                
-                                <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Choose Username</label>
-                                <input type="text" id="create-username" class="input-field" placeholder="Minimum 3 characters" minlength="3">
-                                
-                                <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Create Password</label>
-                                <input type="password" id="create-password" class="input-field" placeholder="Minimum 3 characters" minlength="3">
-                                
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Choose Username</label>
+                                <input type="text" id="create-username" class="input-field" placeholder="Min 3 chars">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Create Password</label>
+                                <input type="password" id="create-password" class="input-field" placeholder="Min 3 chars">
                                 <button class="submit-btn" style="margin-top: 15px;" onclick="validateCreate()">Register Account</button>
                             </div>
                         </div>
-                        
-                        <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.5; margin-top: 15px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
-                            🕵️ <strong>Anonymous Mode Active</strong><br>
-                            You are currently not logged in. All orders and history exist only in temporary RAM and will be permanently deleted upon refresh. Log in to enable Auto-Save.
+                        <p style="text-align: center; color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 10px;">
+                            🕵️ <strong>Anonymous Mode Active</strong><br>Data saves to RAM only.
                         </p>
                     </div>
                 </div>
 
                 <div id="view-personalization" class="settings-view">
-                    <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 24px; font-weight: bold; width: 100%; text-align: left; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Interface Personalization</h2>
-                    
+                    <h2 class="modal-title">Interface Personalization</h2>
                     <div class="os-card">
                         <h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4>
                         <div class="os-btn-row">
@@ -1121,11 +1151,12 @@
                             <button class="os-btn os-btn-secondary">Cycle Presets</button>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div id="preview-pink-pattern" onclick="applyTheme('default', '#ff69b4')" class="theme-preview-box" style="height: 80px; background: var(--bg-main); background-size: 80px; border-radius: 12px; cursor: pointer; display: flex; align-items:center; justify-content:center; font-weight:bold; color:white; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">Pink Pattern (Default)</div>
-                            <div id="preview-blue-pattern" onclick="applyTheme('blue-gradient', '#8fd3f4')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; border-radius: 12px; cursor: pointer;"></div>
-                            <div id="preview-peach-pattern" onclick="applyTheme('peach-gradient', '#ff85a2')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; border-radius: 12px; cursor: pointer;"></div>
-                            <div id="preview-mint-pattern" onclick="applyTheme('mint-gradient', '#84fab0')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; border-radius: 12px; cursor: pointer;"></div>
-                            <div onclick="applyTheme('solid-black', '#ff85a2')" class="theme-preview-box" style="height: 50px; background: #000; grid-column: span 2; border-radius: 12px; cursor: pointer; display: flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; color:rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2);">Reset to Solid Black</div>
+                            <!-- FIXED: Removed Text Content completely for clean preview -->
+                            <div onclick="applyTheme('default', '#ff69b4')" class="theme-preview-box" style="background: var(--bg-main); background-size: 80px; height: 80px;"></div>
+                            <div onclick="applyTheme('blue-gradient', '#8fd3f4')" class="theme-preview-box" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 80px;"></div>
+                            <div onclick="applyTheme('peach-gradient', '#ff85a2')" class="theme-preview-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 80px;"></div>
+                            <div onclick="applyTheme('mint-gradient', '#84fab0')" class="theme-preview-box" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 80px;"></div>
+                            <div onclick="applyTheme('solid-black', '#ff85a2')" class="theme-preview-box" style="background: #000; grid-column: span 2; display: flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; color:white; border: 1px solid rgba(255,255,255,0.2); height: 50px;">Reset to Solid Black</div>
                         </div>
                     </div>
 
@@ -1140,51 +1171,27 @@
                     </div>
 
                     <div class="os-card">
-                        <h4 class="os-card-title" id="font-size-label" style="margin-bottom: 20px;">GLOBAL FONT SIZE: 16PX</h4>
+                        <h4 class="os-card-title" id="font-size-label">GLOBAL FONT SIZE: 16PX</h4>
                         <input type="range" id="font-size-slider" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)">
-                    </div>
-
-                    <div class="os-card">
-                        <h4 class="os-card-title" id="luminance-label" style="margin-bottom: 20px;">TEXT LUMINANCE: 100%</h4>
-                        <input type="range" id="luminance-slider" min="40" max="100" value="100" class="range-slider" oninput="updateLuminance(this.value)">
                     </div>
 
                     <div class="os-card">
                         <h4 class="os-card-title">SYSTEM-WIDE UI STYLE</h4>
                         <div class="os-btn-row" style="margin: 0;">
-                            <button id="btn-ui-glass" class="os-btn os-btn-secondary active-ui-btn" onclick="setUIStyle('glass')">Liquid Glass (Infinity OS)</button>
+                            <button id="btn-ui-glass" class="os-btn os-btn-secondary active-ui-btn" onclick="setUIStyle('glass')">Liquid Glass</button>
                             <button id="btn-ui-solid" class="os-btn os-btn-secondary" onclick="setUIStyle('solid')">Opaque Solid</button>
                         </div>
                     </div>
                 </div>
 
                 <div id="view-guides" class="settings-view">
-                    <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 24px; font-weight: bold; width: 100%; text-align: left; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">System Guides</h2>
-                    
+                    <h2 class="modal-title">System Guides</h2>
                     <div class="guide-grid">
                         <div class="guide-card" onclick="openGuide('Liquid Navigation', 'Your system is powered by a real-time WebGL engine. Move your mouse across the screen to interact with the fluid refractive background layer underneath the glass UI.')">
-                            <h4>Liquid Navigation</h4>
-                            <p>Your system is powered by a re...</p>
-                        </div>
-                        <div class="guide-card" onclick="openGuide('Advanced Controls', 'In the Personalization tab, adjust your interface preferences including font sizes, contrast borders, and dynamic background shimmer effects.')">
-                            <h4>Advanced Controls</h4>
-                            <p>In the Personalization tab, a...</p>
+                            <h4>Liquid Navigation</h4><p>Your system is powered by...</p>
                         </div>
                         <div class="guide-card" onclick="openGuide('Local Authentication', 'When anonymous, your data is local. Log in using your secure username and password to sync your order history and account preferences to the cloud.')">
-                            <h4>Local Authentication</h4>
-                            <p>When anonymous, your dat...</p>
-                        </div>
-                        <div class="guide-card" onclick="openGuide('Order System', 'Click on any product to open the Order Wizard. You can select custom dates, times, and toppings before generating a secure QR receipt.')">
-                            <h4>Order System</h4>
-                            <p>Click on any product to ope...</p>
-                        </div>
-                        <div class="guide-card" onclick="openGuide('Ranking Privileges', 'Administrators have Account ID #1 and can see all secure system components. Regular customers are given unique IDs upon registration.')">
-                            <h4>Ranking Privileges</h4>
-                            <p>Administrators can set Mod...</p>
-                        </div>
-                        <div class="guide-card" onclick="openGuide('Anonymous Mode', 'When logged out, your background session relies entirely on local RAM. Refreshing the page will clear your pending orders and cart.')">
-                            <h4>Anonymous Mode</h4>
-                            <p>When logged out, your back...</p>
+                            <h4>Local Authentication</h4><p>When anonymous, your dat...</p>
                         </div>
                     </div>
                 </div>
@@ -1192,72 +1199,63 @@
         </div>
     </div>
 
+    <!-- Support Overlays -->
     <div class="ui-modal-overlay" id="guide-overlay" style="z-index: 3200;">
-        <div id="guide-hub" style="width: 400px;">
+        <div id="guide-hub">
             <button class="close-btn" onclick="closeGuide()">×</button>
-            <h2 class="modal-title" id="guide-title" style="font-size: 20px; border-bottom: none; padding-bottom: 0;"></h2>
-            <div style="background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); line-height: 1.6; font-size: 15px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.5);" id="guide-desc">
-            </div>
+            <h2 class="modal-title" id="guide-title" style="border:none; padding-bottom:0;"></h2>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); line-height: 1.6;" id="guide-desc"></div>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 3100;">
-        <div id="credentials-hub" style="width: 350px;">
+        <div id="credentials-hub">
             <button class="close-btn" onclick="closeChangeCredentials()">×</button>
-            <h2 class="modal-title" style="font-size: 22px;">Update Credentials</h2>
-            
-            <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">New Username (Leave blank to keep current):</label>
+            <h2 class="modal-title">Update Credentials</h2>
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Username:</label>
             <input type="text" id="update-username" class="input-field" placeholder="Enter new username">
-            
-            <label style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 5px; display: block; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">New Password (Leave blank to keep current):</label>
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Password:</label>
             <input type="password" id="update-password" class="input-field" placeholder="Enter new password">
-            
-            <button class="os-btn os-btn-primary" style="width: 100%; margin-top: 15px;" onclick="saveCredentials()">Save Changes</button>
+            <button class="os-btn os-btn-primary" style="margin-top: 15px;" onclick="saveCredentials()">Save Changes</button>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="details-overlay">
         <div id="details-hub">
             <button class="close-btn" onclick="closeDetails()">×</button>
-            <h2 class="modal-title" id="details-title" style="font-size: 24px;">Item Details</h2>
-            <p id="details-price" style="color: var(--accent-pink); font-size: 20px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></p>
+            <h2 class="modal-title" id="details-title">Item Details</h2>
+            <p id="details-price" style="color: var(--accent-pink); font-size: 20px; font-weight: bold; margin-bottom: 20px;"></p>
             
             <div id="wizard-step-1" class="wizard-step active">
-                <label style="color: white; font-size: 14px; margin-bottom: 5px; display: block; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Select Pickup/Delivery Date (Day/Month/Year):</label>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
                 <input type="date" id="order-date" class="input-field">
-                
-                <label style="color: white; font-size: 14px; margin-bottom: 5px; display: block; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Select Time (AM/PM):</label>
+                <label style="font-size: 14px; margin-bottom: 5px; display: block;">Select Time:</label>
                 <input type="time" id="order-time" class="input-field">
-                
                 <button class="submit-btn" onclick="nextWizardStep(2)">Next: Choose Toppings</button>
             </div>
 
             <div id="wizard-step-2" class="wizard-step">
-                <label style="color: white; font-size: 16px; margin-bottom: 10px; display: block; font-weight: bold; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Customize Your Order:</label>
+                <label style="font-size: 16px; margin-bottom: 10px; display: block; font-weight: bold;">Customize Your Order:</label>
                 <div class="toppings-panel">
                     <label class="topping-item"><input type="checkbox" class="topping-check" value="Extra Sprinkles"> Extra Sprinkles</label>
                     <label class="topping-item"><input type="checkbox" class="topping-check" value="Choco Drizzle"> Choco Drizzle</label>
                     <label class="topping-item"><input type="checkbox" class="topping-check" value="Strawberry Syrup"> Strawberry Syrup</label>
                     <label class="topping-item"><input type="checkbox" class="topping-check" value="Edible Pearls"> Edible Pearls</label>
-                    <label class="topping-item"><input type="checkbox" class="topping-check" value="Gold Flakes"> Gold Flakes</label>
-                    <label class="topping-item"><input type="checkbox" class="topping-check" value="Extra Cream"> Extra Cream</label>
                 </div>
-                
                 <div style="display: flex; gap: 10px;">
-                    <button class="sidebar-btn" style="flex: 1; text-align: center; margin: 0;" onclick="nextWizardStep(1)">Back</button>
-                    <button class="submit-btn" style="flex: 2;" onclick="nextWizardStep(3)">Next: Review Order</button>
+                    <button class="os-btn os-btn-secondary" onclick="nextWizardStep(1)">Back</button>
+                    <button class="submit-btn" style="flex: 2;" onclick="nextWizardStep(3)">Next: Review</button>
                 </div>
             </div>
 
             <div id="wizard-step-3" class="wizard-step">
-                <p style="text-align: center; font-size: 18px; margin-bottom: 25px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Ready to complete your order?</p>
+                <p style="text-align: center; font-size: 18px; margin-bottom: 25px;">Ready to complete order?</p>
                 <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <button class="submit-btn" onclick="processOrder('buy')">🛍️ Buy Now (Place Order)</button>
-                    <button class="sidebar-btn" style="text-align: center; margin: 0; background: rgba(255,255,255,0.2);" onclick="processOrder('cart')">🛒 Add to Checkout</button>
-                    <button class="sidebar-btn" style="text-align: center; margin: 0; margin-top: 10px; color: #ddd; border-color: transparent; background: transparent;" onclick="nextWizardStep(2)">Go Back</button>
+                    <button class="submit-btn" onclick="processOrder('buy')">🛍️ Buy Now</button>
+                    <button class="os-btn os-btn-secondary" onclick="processOrder('cart')">🛒 Add to Cart</button>
+                    <button class="os-btn os-btn-secondary" style="border-color: transparent;" onclick="nextWizardStep(2)">Go Back</button>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -1265,38 +1263,36 @@
         <div id="receipt-hub" style="text-align: center;">
             <button class="close-btn" onclick="closeReceipt()">×</button>
             <h2 class="modal-title">Order Info</h2>
-            
-            <div id="receipt-warning" class="warning-box">
-                <strong>⚠️ WARNING:</strong> Do not refresh this page! If you accidentally refresh, you can retrieve this QR from the "Orders" tab in the sidebar.
-            </div>
-
+            <div id="receipt-warning" class="warning-box"><strong>⚠️ WARNING:</strong> Do not refresh! Retrieve QR in Orders tab.</div>
             <div class="qr-container">
                 <img id="receipt-qr" src="" alt="QR Code Receipt" width="150" height="150">
             </div>
-            
-            <h3 id="receipt-id" style="margin: 5px 0; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></h3>
-            <h4 id="receipt-item" style="margin: 5px 0; color: var(--accent-pink); font-size: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></h4>
-            <p id="receipt-toppings" style="margin: 5px 0; font-size: 14px; color: #ffeb3b; font-style: italic; text-shadow: 0 1px 3px rgba(0,0,0,0.8);"></p>
-            <p id="receipt-datetime" style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); text-shadow: 0 1px 3px rgba(0,0,0,0.5);"></p>
+            <h3 id="receipt-id" style="margin: 5px 0;"></h3>
+            <h4 id="receipt-item" style="margin: 5px 0; color: var(--accent-pink); font-size: 20px;"></h4>
+            <p id="receipt-toppings" style="margin: 5px 0; font-size: 14px; color: #ffeb3b; font-style: italic;"></p>
+            <p id="receipt-datetime" style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9);"></p>
         </div>
     </div>
 
     <script>
-        // --- RESPONSIVE MOBILE SIDEBAR TOGGLE ---
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('sidebar-overlay').classList.toggle('active');
+        // --- NAVIGATION SYNC LOGIC ---
+        function updateNavState(viewName) {
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+            const deskBtn = document.getElementById('desk-nav-' + viewName);
+            if(deskBtn) deskBtn.classList.add('active');
+
+            document.querySelectorAll('.bnav-item').forEach(btn => btn.classList.remove('active'));
+            const mobBtn = document.getElementById('mob-nav-' + viewName);
+            if(mobBtn) mobBtn.classList.add('active');
         }
 
-        // --- PERSONALIZATION FUNCTIONALITY ---
-        
-        // Define theme presets and their patterned background settings
+        // --- PERSONALIZATION ---
         const themePresets = {
-            'default': { bg: 'var(--bg-main)', size: '250px' },
+            'default': { bg: 'var(--bg-main)', size: '250px', blend: 'normal' },
             'blue-gradient': { bg: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
             'peach-gradient': { bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
             'mint-gradient': { bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
-            'solid-black': { bg: '#000', size: 'cover' }
+            'solid-black': { bg: '#000', size: 'cover', blend: 'normal' }
         };
 
         function applyTheme(themeKey, accentColor) {
@@ -1306,84 +1302,64 @@
             document.body.style.background = preset.bg;
             document.body.style.backgroundSize = preset.size;
             document.body.style.backgroundAttachment = "fixed";
-            if (preset.blend) {
-                document.body.style.backgroundBlendMode = preset.blend;
-            } else {
-                document.body.style.backgroundBlendMode = 'normal';
-            }
+            document.body.style.backgroundBlendMode = preset.blend || 'normal';
             document.documentElement.style.setProperty('--accent-pink', accentColor);
             
-            savePersonalization(); // Save after change
+            savePersonalization(); 
         }
 
+        // FIXED UPLOAD: Fully overrides the repeating background pattern with the user's uploaded photo.
         function handleBgUpload(input) {
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Update theme for uploaded image
-                    const uploadedBg = `url('${e.target.result}'), var(--bg-main)`;
-                    themePresets['uploaded'] = { bg: uploadedBg, size: 'cover, 80px', blend: 'overlay' };
-                    applyTheme('uploaded', '#ff69b4'); // E.g., default pink accent for now
+                    const uploadedBg = `url('${e.target.result}')`; 
+                    themePresets['uploaded'] = { bg: uploadedBg, size: 'cover', blend: 'normal' };
+                    applyTheme('uploaded', '#ff69b4');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function toggleShimmer(el) {
-            document.getElementById('bg-shimmer').style.display = el.checked ? 'block' : 'none';
-            savePersonalization(); // Save after change
-        }
-
-        function toggleBorders(el) {
+        function toggleShimmer(el) { 
             if(el.checked) {
-                document.body.classList.add('borders-enabled');
+                document.getElementById('bg-shimmer').style.display = 'block'; 
+                document.body.classList.add('shimmer-enabled');
             } else {
-                document.body.classList.remove('borders-enabled');
+                document.getElementById('bg-shimmer').style.display = 'none'; 
+                document.body.classList.remove('shimmer-enabled');
             }
-            savePersonalization(); // Save after change
+            savePersonalization(); 
         }
 
-        function updateFontSize(val) {
-            document.documentElement.style.setProperty('--base-font-size', val + 'px');
-            document.getElementById('font-size-label').innerText = 'GLOBAL FONT SIZE: ' + val + 'PX';
-            savePersonalization(); // Save after change
-        }
-
-        function updateLuminance(val) {
-            document.documentElement.style.setProperty('--text-opacity', val / 100);
-            document.body.style.color = `rgba(255, 255, 255, ${val/100})`;
-            document.getElementById('luminance-label').innerText = 'TEXT LUMINANCE: ' + val + '%';
-            savePersonalization(); // Save after change
-        }
+        function toggleBorders(el) { el.checked ? document.body.classList.add('borders-enabled') : document.body.classList.remove('borders-enabled'); savePersonalization(); }
+        function updateFontSize(val) { document.documentElement.style.setProperty('--base-font-size', val + 'px'); document.getElementById('font-size-label').innerText = 'GLOBAL FONT SIZE: ' + val + 'PX'; savePersonalization(); }
+        function updateLuminance(val) { document.documentElement.style.setProperty('--text-opacity', val / 100); document.body.style.color = `rgba(255, 255, 255, ${val/100})`; savePersonalization(); }
 
         function setUIStyle(style) {
             const btnGlass = document.getElementById('btn-ui-glass');
             const btnSolid = document.getElementById('btn-ui-solid');
-
             if(style === 'glass') {
-                document.documentElement.style.setProperty('--glass-bg', 'rgba(40, 20, 30, 0.45)');
-                document.documentElement.style.setProperty('--glass-blur', 'blur(35px) saturate(250%)');
-                btnGlass.className = "os-btn os-btn-secondary active-ui-btn";
-                btnSolid.className = "os-btn os-btn-secondary";
+                document.documentElement.style.setProperty('--glass-bg', 'rgba(20, 15, 25, 0.20)');
+                document.documentElement.style.setProperty('--glass-blur', 'blur(45px) saturate(180%)');
+                btnGlass.className = "os-btn os-btn-secondary active-ui-btn"; btnSolid.className = "os-btn os-btn-secondary";
             } else {
                 document.documentElement.style.setProperty('--glass-bg', 'rgba(15, 15, 18, 0.98)');
                 document.documentElement.style.setProperty('--glass-blur', 'none');
-                btnSolid.className = "os-btn os-btn-secondary active-ui-btn";
-                btnGlass.className = "os-btn os-btn-secondary";
+                btnSolid.className = "os-btn os-btn-secondary active-ui-btn"; btnGlass.className = "os-btn os-btn-secondary";
             }
-            savePersonalization(); // Save after change
+            savePersonalization();
         }
-        
-        // --- DATA PERSISTENCE & PERSONALIZATION ---
 
+        // --- DATA PERSISTENCE & PERSONALIZATION ---
         const personalSettingsKey = 'la_princessa_personalization';
 
         function savePersonalization() {
-            if (!currentUser) return; // Only save for logged-in users
+            if (!currentUser) return; 
             
             const settings = {
-                themeKey: getCurrentThemeKey(), // Helper to find current theme
+                themeKey: getCurrentThemeKey(), 
                 shimmer: document.getElementById('shimmer-toggle').checked,
                 borders: document.getElementById('borders-toggle').checked,
                 fontSize: document.getElementById('font-size-slider').value,
@@ -1394,36 +1370,31 @@
         }
         
         function loadPersonalization() {
-            if (!currentUser) return; // Only load for logged-in users
+            if (!currentUser) return; 
 
             const settingsStr = localStorage.getItem(`${personalSettingsKey}_${currentUser.uid}`);
             if (settingsStr) {
                 const settings = JSON.parse(settingsStr);
                 
-                // Theme
                 if (settings.themeKey) {
-                    const accent = getAccentColorForTheme(settings.themeKey); // Helper to get correct accent
+                    const accent = getAccentColorForTheme(settings.themeKey);
                     applyTheme(settings.themeKey, accent); 
                 }
                 
-                // Toggles
                 document.getElementById('shimmer-toggle').checked = settings.shimmer;
-                toggleShimmer(document.getElementById('shimmer-toggle')); // Trigger effect
+                toggleShimmer(document.getElementById('shimmer-toggle')); 
                 
                 document.getElementById('borders-toggle').checked = settings.borders;
-                toggleBorders(document.getElementById('borders-toggle')); // Trigger effect
+                toggleBorders(document.getElementById('borders-toggle')); 
                 
-                // Sliders
                 document.getElementById('font-size-slider').value = settings.fontSize;
-                updateFontSize(settings.fontSize); // Trigger effect
+                updateFontSize(settings.fontSize); 
                 
                 document.getElementById('luminance-slider').value = settings.luminance;
-                updateLuminance(settings.luminance); // Trigger effect
+                updateLuminance(settings.luminance); 
                 
-                // UI Style
-                setUIStyle(settings.uiStyle); // Trigger effect
+                setUIStyle(settings.uiStyle); 
             } else {
-                // Set defaults if no settings found
                 resetPersonalizationToDefaults();
             }
         }
@@ -1441,44 +1412,86 @@
             setUIStyle('glass');
         }
         
-        // Helper to get accent color for a theme key
         function getAccentColorForTheme(themeKey) {
             const themeToAccent = {
-                'default': '#ff69b4',
-                'blue-gradient': '#8fd3f4',
-                'peach-gradient': '#ff85a2',
-                'mint-gradient': '#84fab0',
-                'solid-black': '#ff85a2',
-                'uploaded': '#ff69b4' // Or whatever default accent for upload
+                'default': '#ff69b4', 'blue-gradient': '#8fd3f4',
+                'peach-gradient': '#ff85a2', 'mint-gradient': '#84fab0',
+                'solid-black': '#ff85a2', 'uploaded': '#ff69b4' 
             };
             return themeToAccent[themeKey] || '#ff69b4';
         }
         
-        // Helper to determine the current theme key based on body background
         function getCurrentThemeKey() {
             const currentBg = document.body.style.background;
             for (const key in themePresets) {
-                if (currentBg === themePresets[key].bg) {
-                    return key;
-                }
+                if (currentBg === themePresets[key].bg) return key;
             }
-            return 'default'; // Fallback
+            return 'default'; 
         }
-        
-        // --- EXISTING SYSTEM FUNCTIONALITY ---
 
+        // --- SYSTEM CORE LOGIC ---
+        let currentUser = null;
+        let nextUid = 2; 
         let orderHistory = [];
         let currentItemToOrder = "";
         let currentPriceToOrder = "";
 
-        // Function to switch main view (PC/Tablet and mobile hamburger)
+        const usersDataKey = 'la_princessa_users';
+        const sessionUserKey = 'la_princessa_session_user';
+        const uidCounterKey = 'la_princessa_uid_counter';
+        const orderHistoryKey = 'la_princessa_order_history';
+
+        function saveSession() { if (currentUser) sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser)); }
+        function clearSession() { sessionStorage.removeItem(sessionUserKey); }
+        function getSessionUser() { const userStr = sessionStorage.getItem(sessionUserKey); return userStr ? JSON.parse(userStr) : null; }
+
+        function saveUser(user) {
+            let users = getUsers();
+            const existingIndex = users.findIndex(u => u.username === user.username);
+            if (existingIndex > -1) users[existingIndex] = user; 
+            else users.push(user);
+            localStorage.setItem(usersDataKey, JSON.stringify(users));
+        }
+
+        function getUsers() { const usersStr = localStorage.getItem(usersDataKey); return usersStr ? JSON.parse(usersStr) : []; }
+        function isUsernameTaken(username) { const users = getUsers(); return users.some(u => u.username === username); }
+        function setCurrentUid(uid) { localStorage.setItem(uidCounterKey, uid); }
+        function getCurrentUid() { const uid = localStorage.getItem(uidCounterKey); return uid ? parseInt(uid) : 2; }
+        
+        function saveOrder(order) {
+            orderHistory.push(order);
+            localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
+        }
+        
+        function getOrderHistory(uid) { const historyStr = localStorage.getItem(`${orderHistoryKey}_${uid}`); return historyStr ? JSON.parse(historyStr) : []; }
+
+        function initializeSession() {
+            const savedUser = getSessionUser();
+            if (savedUser) {
+                currentUser = savedUser;
+                nextUid = getCurrentUid();
+                loadPersonalization(); 
+                orderHistory = getOrderHistory(currentUser.uid); 
+                displayProfilePhoto(currentUser.photo); 
+                switchMainView('home'); 
+                switchSettingsNav('accounts'); 
+                updateOrdersView(); 
+            } else {
+                currentUser = null;
+                nextUid = getCurrentUid();
+                resetPersonalizationToDefaults(); 
+                switchMainView('home');
+                switchSettingsNav('accounts');
+            }
+            updateSettingsUI(); 
+        }
+
+        window.onload = initializeSession; 
+
         function switchMainView(viewName) {
-            document.querySelectorAll('.view-section').forEach(section => {
-                section.classList.remove('active');
-            });
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             document.getElementById(viewName + '-view').classList.add('active');
-            
-            // Auto-close sidebar on mobile/tablet after clicking a navigation link
+            updateNavState(viewName);
             if(window.innerWidth <= 768) {
                 document.getElementById('sidebar').classList.remove('open');
                 document.getElementById('sidebar-overlay').classList.remove('active');
@@ -1487,10 +1500,8 @@
 
         function filterProducts() {
             const query = document.getElementById('product-search').value.toLowerCase();
-            const products = document.querySelectorAll('#product-grid .menu-card');
-            products.forEach(product => {
-                const title = product.querySelector('h3').innerText.toLowerCase();
-                product.style.display = title.includes(query) ? "block" : "none";
+            document.querySelectorAll('#product-grid .menu-card').forEach(product => {
+                product.style.display = product.querySelector('h3').innerText.toLowerCase().includes(query) ? "block" : "none";
             });
         }
 
@@ -1508,167 +1519,96 @@
         function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
 
         function switchSettingsNav(navId) {
-            document.querySelectorAll('.settings-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('nav-' + navId).classList.add('active');
-
-            document.querySelectorAll('.settings-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active'));
             document.getElementById('view-' + navId).classList.add('active');
-            
             document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        function openGuide(title, description) {
-            document.getElementById('guide-title').innerText = title;
-            document.getElementById('guide-desc').innerText = description;
-            document.getElementById('guide-overlay').classList.add('active');
-        }
-        function closeGuide() {
-            document.getElementById('guide-overlay').classList.remove('active');
-        }
+        function openGuide(title, desc) { document.getElementById('guide-title').innerText = title; document.getElementById('guide-desc').innerText = desc; document.getElementById('guide-overlay').classList.add('active'); }
+        function closeGuide() { document.getElementById('guide-overlay').classList.remove('active'); }
 
-        function openChangeCredentials() {
-            document.getElementById('update-username').value = currentUser.username || "";
-            document.getElementById('update-password').value = currentUser.password || "";
-            document.getElementById('credentials-overlay').classList.add('active');
-        }
-        function closeChangeCredentials() {
-            document.getElementById('credentials-overlay').classList.remove('active');
-        }
+        function openChangeCredentials() { document.getElementById('update-username').value = currentUser.username || ""; document.getElementById('update-password').value = currentUser.password || ""; document.getElementById('credentials-overlay').classList.add('active'); }
+        function closeChangeCredentials() { document.getElementById('credentials-overlay').classList.remove('active'); }
 
         function saveCredentials() {
-            const newUsername = document.getElementById('update-username').value;
-            const newPassword = document.getElementById('update-password').value;
-
-            if (newUsername.length > 0 && newUsername.length < 3) {
-                alert("Username must be at least 3 characters.");
-                return;
-            }
-            if (newPassword.length > 0 && newPassword.length < 3) {
-                alert("Password must be at least 3 characters.");
-                return;
-            }
-
-            if (newUsername) currentUser.username = newUsername;
-            if (newPassword) currentUser.password = newPassword;
-
-            saveUser(currentUser); // Save to local storage
-            alert("Credentials successfully updated!");
-            closeChangeCredentials();
+            const user = document.getElementById('update-username').value;
+            const pass = document.getElementById('update-password').value;
+            if (user && user.length < 3) return alert("Username min 3 chars.");
+            if (pass && pass.length < 3) return alert("Password min 3 chars.");
+            if (user) currentUser.username = user;
+            if (pass) currentUser.password = pass;
+            saveUser(currentUser); 
+            alert("Updated!"); closeChangeCredentials();
         }
 
         function sendChatMessage() {
-            const inputField = document.getElementById('chat-text-input');
-            const messageText = inputField.value.trim();
-            if (messageText !== "") {
-                const chatHistory = document.getElementById('chat-history');
-                const userMsg = document.createElement('div');
-                userMsg.className = 'chat-message user';
-                userMsg.innerText = messageText;
-                chatHistory.appendChild(userMsg);
-                inputField.value = "";
-                chatHistory.scrollTop = chatHistory.scrollHeight;
+            const input = document.getElementById('chat-text-input');
+            const msg = input.value.trim();
+            if (msg) {
+                const hist = document.getElementById('chat-history');
+                const d = document.createElement('div'); d.className = 'chat-message user'; d.innerText = msg; hist.appendChild(d);
+                input.value = ""; hist.scrollTop = hist.scrollHeight;
                 setTimeout(() => {
-                    const ownerMsg = document.createElement('div');
-                    ownerMsg.className = 'chat-message owner';
-                    ownerMsg.innerText = "Thanks for reaching out! We will get back to you shortly.";
-                    chatHistory.appendChild(ownerMsg);
-                    chatHistory.scrollTop = chatHistory.scrollHeight;
+                    const r = document.createElement('div'); r.className = 'chat-message owner'; r.innerText = "Thanks! We'll reply soon."; hist.appendChild(r); hist.scrollTop = hist.scrollHeight;
                 }, 1500);
             }
         }
-        function handleKeyPress(event) { if (event.key === 'Enter') sendChatMessage(); }
+        function handleKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
 
         function switchAuthTab(tabId) {
-            document.querySelectorAll('.auth-pane').forEach(pane => pane.classList.remove('active'));
+            document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active'));
             document.getElementById('auth-pane-' + tabId).classList.add('active');
-
-            document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('btn-auth-' + tabId).classList.add('active');
         }
 
-        // Handle profile photo upload during creation
         function handleProfilePhoto(callback) {
             const input = document.getElementById('create-photo');
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    callback(e.target.result); // Base64 photo string
-                };
+                reader.onload = function(e) { callback(e.target.result); };
                 reader.readAsDataURL(file);
             } else {
-                callback(null); // No photo uploaded
+                callback(null); 
             }
         }
 
-        // Correct photo display on profile card
         function displayProfilePhoto(photoData) {
             const photoDisplay = document.getElementById('profile-photo-display');
             if (photoData) {
-                photoDisplay.src = photoData;
-                photoDisplay.style.display = 'block';
+                photoDisplay.src = photoData; photoDisplay.style.display = 'block';
             } else {
                 photoDisplay.style.display = 'none';
             }
         }
 
-        function validateCreate() {
-            const fullname = document.getElementById('create-fullname').value || "New Customer";
-            const user = document.getElementById('create-username').value;
-            const pass = document.getElementById('create-password').value;
-            
-            if (user.length < 3 || pass.length < 3) {
-                alert("Both Username and Password must be at least 3 characters long to create an account.");
-                return;
-            } 
-            
-            if (isUsernameTaken(user)) {
-                alert("This username is already taken. Please choose another.");
-                return;
+        function updateSettingsUI() {
+            if (currentUser) {
+                document.getElementById('logged-out-view').style.display = 'none';
+                document.getElementById('logged-in-view').style.display = 'flex'; 
+                document.getElementById('profile-fullname').innerText = currentUser.fullname;
+                document.getElementById('profile-details').innerHTML = `Rank: ${currentUser.role} | UID: <span style="color: var(--os-green);">#${currentUser.uid}</span>`;
+            } else {
+                document.getElementById('logged-in-view').style.display = 'none';
+                document.getElementById('logged-out-view').style.display = 'flex';
             }
-            
-            handleProfilePhoto(function(photoData) {
-                currentUser = {
-                    fullname: fullname,
-                    username: user,
-                    password: pass,
-                    uid: nextUid++, 
-                    role: "Customer",
-                    photo: photoData // Photo is functional
-                };
-
-                saveUser(currentUser); // Save to local storage
-                setCurrentUid(nextUid); // Save uid counter
-                
-                alert("Account created and logged in successfully!");
-                updateSettingsUI();
-            });
         }
-        
+
         function validateLogin() {
             const userInput = document.getElementById('login-username').value;
             const passInput = document.getElementById('login-password').value;
             
-            if (userInput.length < 3 || passInput.length < 3) {
-                alert("Both Username and Password must be at least 3 characters long.");
-                return;
-            } 
-
-            // Hardcoded Admin
+            if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
+            
             if (userInput === "LAPRINCESSA" && passInput === "1020304050") {
-                currentUser = {
-                    fullname: "LA PRINCESSA BAKESHOP",
-                    username: userInput,
-                    password: passInput,
-                    uid: 1,
-                    role: "Administrator",
-                    photo: null // Or have admin photo if you wish
-                };
+                currentUser = { fullname: "LA PRINCESSA BAKESHOP", username: userInput, password: passInput, uid: 1, role: "Administrator", photo: null };
                 loginSuccess();
                 return;
             } 
 
-            // Find user in stored users
             const users = getUsers();
             const foundUser = users.find(u => u.username === userInput && u.password === passInput);
             
@@ -1679,195 +1619,76 @@
                 alert("Invalid Username or Password.");
             }
         }
+
+        function validateCreate() {
+            const fullname = document.getElementById('create-fullname').value || "New Customer";
+            const user = document.getElementById('create-username').value;
+            const pass = document.getElementById('create-password').value;
+            
+            if (user.length < 3 || pass.length < 3) return alert("Min 3 chars.");
+            if (isUsernameTaken(user)) return alert("Username already taken.");
+            
+            handleProfilePhoto(function(photoData) {
+                currentUser = { fullname: fullname, username: user, password: pass, uid: nextUid++, role: "Customer", photo: photoData };
+                saveUser(currentUser); 
+                setCurrentUid(nextUid); 
+                loginSuccess();
+            });
+        }
         
         function loginSuccess() {
-            saveSession(); // Persist session across refresh
+            saveSession(); 
             alert("Logged in successfully!");
-            updateSettingsUI();
+            location.reload(); 
         }
 
         function logout() {
             currentUser = null;
-            clearSession(); // Clear session state for anonymous mode on refresh
-            resetPersonalizationToDefaults(); // Reset to defaults for guest mode
+            clearSession(); 
+            resetPersonalizationToDefaults(); 
             
-            document.getElementById('login-username').value = "";
-            document.getElementById('login-password').value = "";
-            document.getElementById('create-username').value = "";
-            document.getElementById('create-password').value = "";
-            document.getElementById('create-fullname').value = "";
-            document.getElementById('create-photo').value = "";
+            document.querySelectorAll('.input-field[type="text"], .input-field[type="password"]').forEach(i => i.value = "");
             
             updateSettingsUI();
             switchAuthTab('login');
         }
         
-        // --- USER & SESSION DATA HANDLING (Fixing photo upload and refresh behavior) ---
-        
-        let currentUser = null;
-        let nextUid = 2; // Default starting customer UID
-
-        // Local Storage Keys
-        const usersDataKey = 'la_princessa_users';
-        const sessionUserKey = 'la_princessa_session_user';
-        const uidCounterKey = 'la_princessa_uid_counter';
-        const orderHistoryKey = 'la_princessa_order_history';
-
-        function saveSession() {
-            if (currentUser) {
-                sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser));
-            }
-        }
-        
-        function clearSession() {
-            sessionStorage.removeItem(sessionUserKey);
-        }
-        
-        function getSessionUser() {
-            const userStr = sessionStorage.getItem(sessionUserKey);
-            return userStr ? JSON.parse(userStr) : null;
-        }
-
-        function saveUser(user) {
-            let users = getUsers();
-            // Check if user already exists
-            const existingIndex = users.findIndex(u => u.username === user.username);
-            if (existingIndex > -1) {
-                users[existingIndex] = user; // Update
-            } else {
-                users.push(user); // Add new
-            }
-            localStorage.setItem(usersDataKey, JSON.stringify(users));
-        }
-
-        function getUsers() {
-            const usersStr = localStorage.getItem(usersDataKey);
-            return usersStr ? JSON.parse(usersStr) : [];
-        }
-        
-        function isUsernameTaken(username) {
-            const users = getUsers();
-            return users.some(u => u.username === username);
-        }
-        
-        function setCurrentUid(uid) {
-            localStorage.setItem(uidCounterKey, uid);
-        }
-        
-        function getCurrentUid() {
-            const uid = localStorage.getItem(uidCounterKey);
-            return uid ? parseInt(uid) : 2; // Start from 2 if not set
-        }
-        
-        function saveOrder(order) {
-            orderHistory.push(order);
-            localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
-        }
-        
-        function getOrderHistory(uid) {
-            const historyStr = localStorage.getItem(`${orderHistoryKey}_${uid}`);
-            return historyStr ? JSON.parse(historyStr) : [];
-        }
-
-        // Initialize session on page load
-        function initializeSession() {
-            const savedUser = getSessionUser();
-            if (savedUser) {
-                currentUser = savedUser;
-                nextUid = getCurrentUid();
-                loadPersonalization(); // Load settings if logged in
-                orderHistory = getOrderHistory(currentUser.uid); // Load history if logged in
-                displayProfilePhoto(currentUser.photo); // Display photo if user has one
-                // Ensure initial view is correct
-                switchMainView('home'); 
-                switchSettingsNav('accounts'); // Initial tab in settings
-                updateOrdersView(); // History card list
-            } else {
-                currentUser = null;
-                nextUid = getCurrentUid();
-                resetPersonalizationToDefaults(); // defaults for guest mode
-                
-                switchMainView('home');
-                switchSettingsNav('accounts');
-            }
-            updateSettingsUI(); // accounts pane
-        }
-
-        window.onload = initializeSession; // Load session data and settings
-
-        // --- ORDER & RECEIPT WIZARD FUNCTIONALITY ---
-        
-        function openDetails(itemName, price) {
-            currentItemToOrder = itemName;
-            currentPriceToOrder = price;
-            
-            document.getElementById('details-title').innerText = itemName;
-            document.getElementById('details-price').innerText = price;
-            
-            // Current local time as default for pickers
+        function openDetails(item, price) {
+            currentItemToOrder = item; currentPriceToOrder = price;
+            document.getElementById('details-title').innerText = item; document.getElementById('details-price').innerText = price;
             const now = new Date();
-            const localDate = now.toISOString().split('T')[0];
-            const localTime = now.toTimeString().substring(0, 5); // HH:MM
-            document.getElementById('order-date').value = localDate;
-            document.getElementById('order-time').value = localTime;
-            
-            document.querySelectorAll('.topping-check').forEach(chk => chk.checked = false);
-            nextWizardStep(1);
-            
-            document.getElementById('details-overlay').classList.add('active');
+            document.getElementById('order-date').value = now.toISOString().split('T')[0];
+            document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
+            document.querySelectorAll('.topping-check').forEach(c => c.checked = false);
+            nextWizardStep(1); document.getElementById('details-overlay').classList.add('active');
+        }
+        function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
+
+        function nextWizardStep(step) {
+            if (step === 2 && (!document.getElementById('order-date').value || !document.getElementById('order-time').value)) return alert("Select Date and Time.");
+            document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`wizard-step-${step}`).classList.add('active');
         }
 
-        function closeDetails() {
-            document.getElementById('details-overlay').classList.remove('active');
-        }
-
-        function nextWizardStep(stepNum) {
-            if (stepNum === 2) {
-                const orderDate = document.getElementById('order-date').value;
-                const orderTime = document.getElementById('order-time').value;
-                if (!orderDate || !orderTime) {
-                    alert("Please select both a valid Date and Time before proceeding.");
-                    return;
-                }
-            }
-            
-            document.querySelectorAll('.wizard-step').forEach(step => step.classList.remove('active'));
-            document.getElementById(`wizard-step-${stepNum}`).classList.add('active');
-        }
-
-        function processOrder(actionType) {
-            const orderDate = document.getElementById('order-date').value;
-            const orderTime = document.getElementById('order-time').value;
-            const selectedToppings = Array.from(document.querySelectorAll('.topping-check:checked')).map(cb => cb.value);
-            const orderId = 'ORD-' + Math.floor(Math.random() * 1000000);
-            
-            const newOrder = {
-                id: orderId,
-                item: currentItemToOrder,
-                price: currentPriceToOrder,
-                date: orderDate,
-                time: orderTime,
-                toppings: selectedToppings,
-                status: "Pending",
-                type: actionType 
+        function processOrder(type) {
+            const order = {
+                id: 'ORD-' + Math.floor(Math.random() * 1000000), item: currentItemToOrder, price: currentPriceToOrder,
+                date: document.getElementById('order-date').value, time: document.getElementById('order-time').value,
+                toppings: Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value), status: "Pending", type: type 
             };
             
             if (currentUser) {
-                saveOrder(newOrder); // Save persistently
-                saveSession(); // also persist order change in current session user object if needed
+                saveOrder(order); 
+                saveSession(); 
             } else {
-                orderHistory.push(newOrder); // anonymous ram-only order history
+                orderHistory.push(order); 
             }
             
             updateOrdersView();
-            simulatePreparation(newOrder.id);
+            simulatePreparation(order.id);
             closeDetails();
 
-            if(actionType === 'buy') {
-                showReceipt(newOrder);
-            } else {
-                alert("Successfully added to checkout cart!");
-            }
+            type === 'buy' ? showReceipt(order) : alert("Added to cart!");
         }
 
         function simulatePreparation(orderId) {
@@ -1876,7 +1697,6 @@
                 if(order && order.status === "Pending") {
                     order.status = "Prepared";
                     if (currentUser) {
-                        // Resave the updated state persistently
                         localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
                     }
                     updateOrdersView();
@@ -1885,76 +1705,37 @@
         }
 
         function updateOrdersView() {
-            const grid = document.getElementById('orders-grid');
-            grid.innerHTML = ''; 
-            
-            if (orderHistory.length === 0) {
-                grid.innerHTML = '<p style="color: rgba(255,255,255,0.8); text-shadow: 0 1px 3px rgba(0,0,0,0.5);">No orders placed yet.</p>';
-                return;
-            }
-
-            orderHistory.forEach(order => {
-                const card = document.createElement('div');
-                card.className = 'menu-card';
-                card.onclick = () => showReceipt(order); 
-                
-                let tops = order.toppings.length > 0 ? `<br><small style="color: #ffeb3b;">+ ${order.toppings.join(', ')}</small>` : '';
-                let cancelBtnHtml = '';
-                if(order.status === 'Pending') {
-                    cancelBtnHtml = `<button class="cancel-btn" onclick="cancelOrder(event, '${order.id}')">Cancel Order</button>`;
-                }
-
-                card.innerHTML = `
-                    <div class="status-badge status-${order.status}">${order.status}</div>
-                    <h3 style="text-shadow: 0 2px 5px rgba(0,0,0,0.5);">${order.item}</h3>
-                    <p style="text-shadow: 0 2px 5px rgba(0,0,0,0.5);">${order.price}</p>
-                    ${tops}
-                    <div style="font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 10px; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">
-                        ${order.date} | ${order.time}
-                    </div>
-                    <div style="font-size: 12px; margin-top: 5px; color: var(--accent-pink); text-shadow: 0 1px 2px rgba(0,0,0,0.8);">Click to view QR</div>
-                    ${cancelBtnHtml}
-                `;
-                grid.appendChild(card);
+            const grid = document.getElementById('orders-grid'); grid.innerHTML = ''; 
+            if (!orderHistory.length) return grid.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No orders yet.</p>';
+            orderHistory.forEach(o => {
+                const c = document.createElement('div'); c.className = 'menu-card'; c.onclick = () => showReceipt(o); 
+                c.innerHTML = `<div class="status-badge status-${o.status}">${o.status}</div><h3>${o.item}</h3><p>${o.price}</p>` + 
+                              (o.toppings.length ? `<br><small style="color: #ffeb3b;">+ ${o.toppings.join(', ')}</small>` : '') +
+                              `<div style="font-size: 14px; margin-top: 10px;">${o.date} | ${o.time}</div>` +
+                              (o.status === 'Pending' ? `<button class="cancel-btn" onclick="cancelOrder(event, '${o.id}')">Cancel</button>` : '');
+                grid.appendChild(c);
             });
         }
 
-        function cancelOrder(event, orderId) {
-            event.stopPropagation(); 
-            const order = orderHistory.find(o => o.id === orderId);
-            if(order && order.status === 'Pending') {
-                const confirmed = confirm("Are you sure you want to cancel this order?");
-                if(confirmed) {
-                    order.status = "Canceled";
-                    if (currentUser) {
-                        // Resave the updated state persistently
-                        localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
-                    }
-                    updateOrdersView();
-                    alert("Order has been successfully canceled.");
-                }
-            } else {
-                alert("Cannot cancel: Order is either already prepared or already canceled.");
+        function cancelOrder(e, id) {
+            e.stopPropagation(); const o = orderHistory.find(x => x.id === id);
+            if(o && o.status === 'Pending' && confirm("Cancel order?")) { 
+                o.status = "Canceled"; 
+                if (currentUser) localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
+                updateOrdersView(); 
             }
         }
 
-        function showReceipt(order) {
-            document.getElementById('receipt-id').innerText = "Order ID: " + order.id;
-            
-            let titleText = (order.status === 'Canceled') ? "Order Canceled!" : "Order Confirmed!";
-            document.querySelector('#receipt-hub .modal-title').innerText = titleText;
-            document.getElementById('receipt-item').innerText = order.item + " - " + order.price;
-            document.getElementById('receipt-toppings').innerText = order.toppings.length > 0 ? "Toppings: " + order.toppings.join(', ') : "";
-
-            const formattedTime = new Date(`1970-01-01T${order.time}:00`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            document.getElementById('receipt-datetime').innerText = `Pickup scheduled for ${order.date} at ${formattedTime}`;
-            document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(order.id)}`;
+        function showReceipt(o) {
+            document.getElementById('receipt-id').innerText = "Order ID: " + o.id;
+            document.querySelector('#receipt-hub .modal-title').innerText = (o.status === 'Canceled') ? "Canceled!" : "Confirmed!";
+            document.getElementById('receipt-item').innerText = o.item + " - " + o.price;
+            document.getElementById('receipt-toppings').innerText = o.toppings.length ? "Toppings: " + o.toppings.join(', ') : "";
+            document.getElementById('receipt-datetime').innerText = `Pickup: ${o.date} at ${new Date(`1970-01-01T${o.time}:00`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+            document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(o.id)}`;
             document.getElementById('receipt-overlay').classList.add('active');
         }
-
-        function closeReceipt() {
-            document.getElementById('receipt-overlay').classList.remove('active');
-        }
+        function closeReceipt() { document.getElementById('receipt-overlay').classList.remove('active'); }
     </script>
 </body>
 </html>
