@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LA PRINCESSA BAKESHOP</title>
+    <title>LA PRINCESSA BAKESHOP - Fixed</title>
     <style>
         :root {
             /* INTEGRATED: Pink repeating cupcake/cake pattern (Donut removed) */
@@ -618,7 +618,7 @@
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 16px;
+            border-radius: 166px;
             padding: 15px;
             overflow-y: auto;
             margin-bottom: 15px;
@@ -751,7 +751,7 @@
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 16px;
+            border-radius: 166px;
             padding: 20px;
             margin-bottom: 20px;
             display: grid;
@@ -780,6 +780,17 @@
             backdrop-filter: blur(5px);
         }
         .cancel-btn:hover { background: rgba(255, 77, 77, 0.4); color: white; }
+
+        /* Profile photo in card */
+        .card-profile-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin: 0 auto 15px auto;
+        }
 
         /* =========================================================
            📱 RESPONSIVE MEDIA QUERIES (TABLET & MOBILE) 
@@ -1010,13 +1021,13 @@
 
             <h3 style="color: var(--accent-pink); font-size: 18px; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Get In Touch</h3>
             <div class="contact-card">
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <div class="contact-item">
                     <strong>📍 Address:</strong> <span>Caloocan, Metro Manila, Philippines</span>
                 </div>
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <div class="contact-item">
                     <strong>📞 Phone:</strong> <span>+63 912 345 6789</span>
                 </div>
-                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <div class="contact-item">
                     <strong>✉️ Email:</strong> <span>hello@laprincessabakeshop.ph</span>
                 </div>
             </div>
@@ -1041,6 +1052,7 @@
                     <div id="logged-in-view" style="display: none; width: 100%; flex-direction: column; align-items: flex-start;">
                         <div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;">
                             <h4 class="os-card-title">ACTIVE SESSION</h4>
+                            <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="display: none;">
                             <h2 id="profile-fullname" style="margin: 10px 0; font-size: 24px;"></h2>
                             <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 15px; margin-bottom: 25px;"></p>
                             
@@ -1104,36 +1116,37 @@
                     <div class="os-card">
                         <h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4>
                         <div class="os-btn-row">
-                            <button class="os-btn os-btn-secondary">Upload Media</button>
+                            <button class="os-btn os-btn-secondary" onclick="document.getElementById('bg-upload').click()">Upload Media</button>
+                            <input type="file" id="bg-upload" accept="image/*" style="display: none;" onchange="handleBgUpload(this)">
                             <button class="os-btn os-btn-secondary">Cycle Presets</button>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div onclick="applyTheme('url(\'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'160\' height=\'160\' fill=\'%23ff9eb5\'/%3E%3Ctext x=\'30\' y=\'60\' font-size=\'40\'%3E🧁%3C/text%3E%3Ctext x=\'110\' y=\'140\' font-size=\'40\'%3E🍰%3C/text%3E%3Ctext x=\'110\' y=\'50\' font-size=\'25\'%3E🍰%3C/text%3E%3Ctext x=\'30\' y=\'130\' font-size=\'25\'%3E🎂%3C/text%3E%3C/svg%3E\')', '#ff69b4', '250px')" class="theme-preview-box" style="height: 80px; background: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'160\' height=\'160\' fill=\'%23ff9eb5\'/%3E%3Ctext x=\'30\' y=\'60\' font-size=\'40\'%3E🧁%3C/text%3E%3Ctext x=\'110\' y=\'140\' font-size=\'40\'%3E🍰%3C/text%3E%3Ctext x=\'110\' y=\'50\' font-size=\'25\'%3E🍰%3C/text%3E%3Ctext x=\'30\' y=\'130\' font-size=\'25\'%3E🎂%3C/text%3E%3C/svg%3E'); background-size: 80px; border-radius: 12px; cursor: pointer; display: flex; align-items:center; justify-content:center; font-weight:bold; color:white; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">Pink Pattern (Default)</div>
-                            <div onclick="applyTheme('linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)', '#8fd3f4', 'cover')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 12px; cursor: pointer;"></div>
-                            <div onclick="applyTheme('linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', '#ff85a2', 'cover')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); border-radius: 12px; cursor: pointer;"></div>
-                            <div onclick="applyTheme('linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)', '#84fab0', 'cover')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); border-radius: 12px; cursor: pointer;"></div>
-                            <div onclick="applyTheme('#000000', '#ff85a2', 'cover')" class="theme-preview-box" style="height: 50px; background: #000; grid-column: span 2; border-radius: 12px; cursor: pointer; display: flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; color:rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2);">Reset to Solid Black</div>
+                            <div id="preview-pink-pattern" onclick="applyTheme('default', '#ff69b4')" class="theme-preview-box" style="height: 80px; background: var(--bg-main); background-size: 80px; border-radius: 12px; cursor: pointer; display: flex; align-items:center; justify-content:center; font-weight:bold; color:white; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">Pink Pattern (Default)</div>
+                            <div id="preview-blue-pattern" onclick="applyTheme('blue-gradient', '#8fd3f4')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; border-radius: 12px; cursor: pointer;"></div>
+                            <div id="preview-peach-pattern" onclick="applyTheme('peach-gradient', '#ff85a2')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; border-radius: 12px; cursor: pointer;"></div>
+                            <div id="preview-mint-pattern" onclick="applyTheme('mint-gradient', '#84fab0')" class="theme-preview-box" style="height: 80px; background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; border-radius: 12px; cursor: pointer;"></div>
+                            <div onclick="applyTheme('solid-black', '#ff85a2')" class="theme-preview-box" style="height: 50px; background: #000; grid-column: span 2; border-radius: 12px; cursor: pointer; display: flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; color:rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2);">Reset to Solid Black</div>
                         </div>
                     </div>
 
                     <div class="os-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 25px;">
                         <h4 class="os-card-title" style="margin: 0;">DYNAMIC SHIMMER</h4>
-                        <label class="toggle-switch"><input type="checkbox" checked onchange="toggleShimmer(this)"><span class="slider"></span></label>
+                        <label class="toggle-switch"><input type="checkbox" id="shimmer-toggle" checked onchange="toggleShimmer(this)"><span class="slider"></span></label>
                     </div>
 
                     <div class="os-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 25px;">
                         <h4 class="os-card-title" style="margin: 0;">HIGH CONTRAST BORDERS</h4>
-                        <label class="toggle-switch"><input type="checkbox" onchange="toggleBorders(this)"><span class="slider"></span></label>
+                        <label class="toggle-switch"><input type="checkbox" id="borders-toggle" onchange="toggleBorders(this)"><span class="slider"></span></label>
                     </div>
 
                     <div class="os-card">
                         <h4 class="os-card-title" id="font-size-label" style="margin-bottom: 20px;">GLOBAL FONT SIZE: 16PX</h4>
-                        <input type="range" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)">
+                        <input type="range" id="font-size-slider" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)">
                     </div>
 
                     <div class="os-card">
                         <h4 class="os-card-title" id="luminance-label" style="margin-bottom: 20px;">TEXT LUMINANCE: 100%</h4>
-                        <input type="range" min="40" max="100" value="100" class="range-slider" oninput="updateLuminance(this.value)">
+                        <input type="range" id="luminance-slider" min="40" max="100" value="100" class="range-slider" oninput="updateLuminance(this.value)">
                     </div>
 
                     <div class="os-card">
@@ -1276,15 +1289,50 @@
         }
 
         // --- PERSONALIZATION FUNCTIONALITY ---
-        function applyTheme(backgroundSetting, accentColor, bgSize = 'cover') {
-            document.body.style.background = backgroundSetting;
-            document.body.style.backgroundSize = bgSize;
+        
+        // Define theme presets and their patterned background settings
+        const themePresets = {
+            'default': { bg: 'var(--bg-main)', size: '250px' },
+            'blue-gradient': { bg: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
+            'peach-gradient': { bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
+            'mint-gradient': { bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
+            'solid-black': { bg: '#000', size: 'cover' }
+        };
+
+        function applyTheme(themeKey, accentColor) {
+            const preset = themePresets[themeKey];
+            if (!preset) return;
+
+            document.body.style.background = preset.bg;
+            document.body.style.backgroundSize = preset.size;
             document.body.style.backgroundAttachment = "fixed";
+            if (preset.blend) {
+                document.body.style.backgroundBlendMode = preset.blend;
+            } else {
+                document.body.style.backgroundBlendMode = 'normal';
+            }
             document.documentElement.style.setProperty('--accent-pink', accentColor);
+            
+            savePersonalization(); // Save after change
+        }
+
+        function handleBgUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Update theme for uploaded image
+                    const uploadedBg = `url('${e.target.result}'), var(--bg-main)`;
+                    themePresets['uploaded'] = { bg: uploadedBg, size: 'cover, 80px', blend: 'overlay' };
+                    applyTheme('uploaded', '#ff69b4'); // E.g., default pink accent for now
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function toggleShimmer(el) {
             document.getElementById('bg-shimmer').style.display = el.checked ? 'block' : 'none';
+            savePersonalization(); // Save after change
         }
 
         function toggleBorders(el) {
@@ -1293,17 +1341,20 @@
             } else {
                 document.body.classList.remove('borders-enabled');
             }
+            savePersonalization(); // Save after change
         }
 
         function updateFontSize(val) {
             document.documentElement.style.setProperty('--base-font-size', val + 'px');
             document.getElementById('font-size-label').innerText = 'GLOBAL FONT SIZE: ' + val + 'PX';
+            savePersonalization(); // Save after change
         }
 
         function updateLuminance(val) {
             document.documentElement.style.setProperty('--text-opacity', val / 100);
             document.body.style.color = `rgba(255, 255, 255, ${val/100})`;
             document.getElementById('luminance-label').innerText = 'TEXT LUMINANCE: ' + val + '%';
+            savePersonalization(); // Save after change
         }
 
         function setUIStyle(style) {
@@ -1321,18 +1372,106 @@
                 btnSolid.className = "os-btn os-btn-secondary active-ui-btn";
                 btnGlass.className = "os-btn os-btn-secondary";
             }
+            savePersonalization(); // Save after change
         }
+        
+        // --- DATA PERSISTENCE & PERSONALIZATION ---
 
+        const personalSettingsKey = 'la_princessa_personalization';
 
+        function savePersonalization() {
+            if (!currentUser) return; // Only save for logged-in users
+            
+            const settings = {
+                themeKey: getCurrentThemeKey(), // Helper to find current theme
+                shimmer: document.getElementById('shimmer-toggle').checked,
+                borders: document.getElementById('borders-toggle').checked,
+                fontSize: document.getElementById('font-size-slider').value,
+                luminance: document.getElementById('luminance-slider').value,
+                uiStyle: document.getElementById('btn-ui-glass').classList.contains('active-ui-btn') ? 'glass' : 'solid'
+            };
+            localStorage.setItem(`${personalSettingsKey}_${currentUser.uid}`, JSON.stringify(settings));
+        }
+        
+        function loadPersonalization() {
+            if (!currentUser) return; // Only load for logged-in users
+
+            const settingsStr = localStorage.getItem(`${personalSettingsKey}_${currentUser.uid}`);
+            if (settingsStr) {
+                const settings = JSON.parse(settingsStr);
+                
+                // Theme
+                if (settings.themeKey) {
+                    const accent = getAccentColorForTheme(settings.themeKey); // Helper to get correct accent
+                    applyTheme(settings.themeKey, accent); 
+                }
+                
+                // Toggles
+                document.getElementById('shimmer-toggle').checked = settings.shimmer;
+                toggleShimmer(document.getElementById('shimmer-toggle')); // Trigger effect
+                
+                document.getElementById('borders-toggle').checked = settings.borders;
+                toggleBorders(document.getElementById('borders-toggle')); // Trigger effect
+                
+                // Sliders
+                document.getElementById('font-size-slider').value = settings.fontSize;
+                updateFontSize(settings.fontSize); // Trigger effect
+                
+                document.getElementById('luminance-slider').value = settings.luminance;
+                updateLuminance(settings.luminance); // Trigger effect
+                
+                // UI Style
+                setUIStyle(settings.uiStyle); // Trigger effect
+            } else {
+                // Set defaults if no settings found
+                resetPersonalizationToDefaults();
+            }
+        }
+        
+        function resetPersonalizationToDefaults() {
+            applyTheme('default', '#ff69b4');
+            document.getElementById('shimmer-toggle').checked = true;
+            toggleShimmer(document.getElementById('shimmer-toggle'));
+            document.getElementById('borders-toggle').checked = false;
+            toggleBorders(document.getElementById('borders-toggle'));
+            document.getElementById('font-size-slider').value = 16;
+            updateFontSize(16);
+            document.getElementById('luminance-slider').value = 100;
+            updateLuminance(100);
+            setUIStyle('glass');
+        }
+        
+        // Helper to get accent color for a theme key
+        function getAccentColorForTheme(themeKey) {
+            const themeToAccent = {
+                'default': '#ff69b4',
+                'blue-gradient': '#8fd3f4',
+                'peach-gradient': '#ff85a2',
+                'mint-gradient': '#84fab0',
+                'solid-black': '#ff85a2',
+                'uploaded': '#ff69b4' // Or whatever default accent for upload
+            };
+            return themeToAccent[themeKey] || '#ff69b4';
+        }
+        
+        // Helper to determine the current theme key based on body background
+        function getCurrentThemeKey() {
+            const currentBg = document.body.style.background;
+            for (const key in themePresets) {
+                if (currentBg === themePresets[key].bg) {
+                    return key;
+                }
+            }
+            return 'default'; // Fallback
+        }
+        
         // --- EXISTING SYSTEM FUNCTIONALITY ---
-
-        let currentUser = null;
-        let nextUid = 2; 
 
         let orderHistory = [];
         let currentItemToOrder = "";
         let currentPriceToOrder = "";
 
+        // Function to switch main view (PC/Tablet and mobile hamburger)
         function switchMainView(viewName) {
             document.querySelectorAll('.view-section').forEach(section => {
                 section.classList.remove('active');
@@ -1412,6 +1551,7 @@
             if (newUsername) currentUser.username = newUsername;
             if (newPassword) currentUser.password = newPassword;
 
+            saveUser(currentUser); // Save to local storage
             alert("Credentials successfully updated!");
             closeChangeCredentials();
         }
@@ -1446,51 +1586,30 @@
             document.getElementById('btn-auth-' + tabId).classList.add('active');
         }
 
-        function updateSettingsUI() {
-            const loggedOutView = document.getElementById('logged-out-view');
-            const loggedInView = document.getElementById('logged-in-view');
-
-            if (currentUser) {
-                loggedOutView.style.display = 'none';
-                loggedInView.style.display = 'flex'; 
-                
-                document.getElementById('profile-fullname').innerText = currentUser.fullname;
-                document.getElementById('profile-details').innerHTML = `Rank: ${currentUser.role} | UID: <span style="color: var(--os-green);">#${currentUser.uid}</span>`;
+        // Handle profile photo upload during creation
+        function handleProfilePhoto(callback) {
+            const input = document.getElementById('create-photo');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    callback(e.target.result); // Base64 photo string
+                };
+                reader.readAsDataURL(file);
             } else {
-                loggedInView.style.display = 'none';
-                loggedOutView.style.display = 'flex';
+                callback(null); // No photo uploaded
             }
         }
 
-        function validateLogin() {
-            const user = document.getElementById('login-username').value;
-            const pass = document.getElementById('login-password').value;
-            
-            if (user.length < 3 || pass.length < 3) {
-                alert("Both Username and Password must be at least 3 characters long.");
-                return;
-            } 
-
-            if (user === "LAPRINCESSA" && pass === "1020304050") {
-                currentUser = {
-                    fullname: "LA PRINCESSA BAKESHOP",
-                    username: user,
-                    password: pass,
-                    uid: 1,
-                    role: "Administrator"
-                };
+        // Correct photo display on profile card
+        function displayProfilePhoto(photoData) {
+            const photoDisplay = document.getElementById('profile-photo-display');
+            if (photoData) {
+                photoDisplay.src = photoData;
+                photoDisplay.style.display = 'block';
             } else {
-                currentUser = {
-                    fullname: user, 
-                    username: user,
-                    password: pass,
-                    uid: nextUid++, 
-                    role: "Customer"
-                };
+                photoDisplay.style.display = 'none';
             }
-            
-            alert("Logged in successfully!");
-            updateSettingsUI();
         }
 
         function validateCreate() {
@@ -1503,32 +1622,180 @@
                 return;
             } 
             
-            currentUser = {
-                fullname: fullname,
-                username: user,
-                password: pass,
-                uid: nextUid++, 
-                role: "Customer"
-            };
+            if (isUsernameTaken(user)) {
+                alert("This username is already taken. Please choose another.");
+                return;
+            }
+            
+            handleProfilePhoto(function(photoData) {
+                currentUser = {
+                    fullname: fullname,
+                    username: user,
+                    password: pass,
+                    uid: nextUid++, 
+                    role: "Customer",
+                    photo: photoData // Photo is functional
+                };
 
-            alert("Account created and logged in successfully!");
+                saveUser(currentUser); // Save to local storage
+                setCurrentUid(nextUid); // Save uid counter
+                
+                alert("Account created and logged in successfully!");
+                updateSettingsUI();
+            });
+        }
+        
+        function validateLogin() {
+            const userInput = document.getElementById('login-username').value;
+            const passInput = document.getElementById('login-password').value;
+            
+            if (userInput.length < 3 || passInput.length < 3) {
+                alert("Both Username and Password must be at least 3 characters long.");
+                return;
+            } 
+
+            // Hardcoded Admin
+            if (userInput === "LAPRINCESSA" && passInput === "1020304050") {
+                currentUser = {
+                    fullname: "LA PRINCESSA BAKESHOP",
+                    username: userInput,
+                    password: passInput,
+                    uid: 1,
+                    role: "Administrator",
+                    photo: null // Or have admin photo if you wish
+                };
+                loginSuccess();
+                return;
+            } 
+
+            // Find user in stored users
+            const users = getUsers();
+            const foundUser = users.find(u => u.username === userInput && u.password === passInput);
+            
+            if (foundUser) {
+                currentUser = foundUser;
+                loginSuccess();
+            } else {
+                alert("Invalid Username or Password.");
+            }
+        }
+        
+        function loginSuccess() {
+            saveSession(); // Persist session across refresh
+            alert("Logged in successfully!");
             updateSettingsUI();
         }
 
         function logout() {
             currentUser = null;
+            clearSession(); // Clear session state for anonymous mode on refresh
+            resetPersonalizationToDefaults(); // Reset to defaults for guest mode
+            
             document.getElementById('login-username').value = "";
             document.getElementById('login-password').value = "";
             document.getElementById('create-username').value = "";
             document.getElementById('create-password').value = "";
             document.getElementById('create-fullname').value = "";
             document.getElementById('create-photo').value = "";
-            updateSettingsUI();
             
+            updateSettingsUI();
             switchAuthTab('login');
         }
+        
+        // --- USER & SESSION DATA HANDLING (Fixing photo upload and refresh behavior) ---
+        
+        let currentUser = null;
+        let nextUid = 2; // Default starting customer UID
 
-        updateSettingsUI();
+        // Local Storage Keys
+        const usersDataKey = 'la_princessa_users';
+        const sessionUserKey = 'la_princessa_session_user';
+        const uidCounterKey = 'la_princessa_uid_counter';
+        const orderHistoryKey = 'la_princessa_order_history';
+
+        function saveSession() {
+            if (currentUser) {
+                sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser));
+            }
+        }
+        
+        function clearSession() {
+            sessionStorage.removeItem(sessionUserKey);
+        }
+        
+        function getSessionUser() {
+            const userStr = sessionStorage.getItem(sessionUserKey);
+            return userStr ? JSON.parse(userStr) : null;
+        }
+
+        function saveUser(user) {
+            let users = getUsers();
+            // Check if user already exists
+            const existingIndex = users.findIndex(u => u.username === user.username);
+            if (existingIndex > -1) {
+                users[existingIndex] = user; // Update
+            } else {
+                users.push(user); // Add new
+            }
+            localStorage.setItem(usersDataKey, JSON.stringify(users));
+        }
+
+        function getUsers() {
+            const usersStr = localStorage.getItem(usersDataKey);
+            return usersStr ? JSON.parse(usersStr) : [];
+        }
+        
+        function isUsernameTaken(username) {
+            const users = getUsers();
+            return users.some(u => u.username === username);
+        }
+        
+        function setCurrentUid(uid) {
+            localStorage.setItem(uidCounterKey, uid);
+        }
+        
+        function getCurrentUid() {
+            const uid = localStorage.getItem(uidCounterKey);
+            return uid ? parseInt(uid) : 2; // Start from 2 if not set
+        }
+        
+        function saveOrder(order) {
+            orderHistory.push(order);
+            localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
+        }
+        
+        function getOrderHistory(uid) {
+            const historyStr = localStorage.getItem(`${orderHistoryKey}_${uid}`);
+            return historyStr ? JSON.parse(historyStr) : [];
+        }
+
+        // Initialize session on page load
+        function initializeSession() {
+            const savedUser = getSessionUser();
+            if (savedUser) {
+                currentUser = savedUser;
+                nextUid = getCurrentUid();
+                loadPersonalization(); // Load settings if logged in
+                orderHistory = getOrderHistory(currentUser.uid); // Load history if logged in
+                displayProfilePhoto(currentUser.photo); // Display photo if user has one
+                // Ensure initial view is correct
+                switchMainView('home'); 
+                switchSettingsNav('accounts'); // Initial tab in settings
+                updateOrdersView(); // History card list
+            } else {
+                currentUser = null;
+                nextUid = getCurrentUid();
+                resetPersonalizationToDefaults(); // defaults for guest mode
+                
+                switchMainView('home');
+                switchSettingsNav('accounts');
+            }
+            updateSettingsUI(); // accounts pane
+        }
+
+        window.onload = initializeSession; // Load session data and settings
+
+        // --- ORDER & RECEIPT WIZARD FUNCTIONALITY ---
         
         function openDetails(itemName, price) {
             currentItemToOrder = itemName;
@@ -1537,8 +1804,13 @@
             document.getElementById('details-title').innerText = itemName;
             document.getElementById('details-price').innerText = price;
             
-            document.getElementById('order-date').value = "";
-            document.getElementById('order-time').value = "";
+            // Current local time as default for pickers
+            const now = new Date();
+            const localDate = now.toISOString().split('T')[0];
+            const localTime = now.toTimeString().substring(0, 5); // HH:MM
+            document.getElementById('order-date').value = localDate;
+            document.getElementById('order-time').value = localTime;
+            
             document.querySelectorAll('.topping-check').forEach(chk => chk.checked = false);
             nextWizardStep(1);
             
@@ -1579,8 +1851,14 @@
                 status: "Pending",
                 type: actionType 
             };
-
-            orderHistory.push(newOrder);
+            
+            if (currentUser) {
+                saveOrder(newOrder); // Save persistently
+                saveSession(); // also persist order change in current session user object if needed
+            } else {
+                orderHistory.push(newOrder); // anonymous ram-only order history
+            }
+            
             updateOrdersView();
             simulatePreparation(newOrder.id);
             closeDetails();
@@ -1597,6 +1875,10 @@
                 const order = orderHistory.find(o => o.id === orderId);
                 if(order && order.status === "Pending") {
                     order.status = "Prepared";
+                    if (currentUser) {
+                        // Resave the updated state persistently
+                        localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
+                    }
                     updateOrdersView();
                 }
             }, 20000); 
@@ -1644,6 +1926,10 @@
                 const confirmed = confirm("Are you sure you want to cancel this order?");
                 if(confirmed) {
                     order.status = "Canceled";
+                    if (currentUser) {
+                        // Resave the updated state persistently
+                        localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
+                    }
                     updateOrdersView();
                     alert("Order has been successfully canceled.");
                 }
