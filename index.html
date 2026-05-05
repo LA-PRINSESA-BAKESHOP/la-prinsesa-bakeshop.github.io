@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LA PRINCESSA BAKESHOP</title>
+    <title>LA PRINSESA BAKESHOP</title>
     <style>
         :root {
             /* INTEGRATED: Pink repeating cupcake/cake pattern */
             --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ff9eb5'/%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
             
-            /* X-INFINITY GLASSMORPHISM: Cleaner, frosted, less tinted */
-            --glass-bg: rgba(25, 15, 20, 0.35); 
-            --header-bg: rgba(25, 15, 20, 0.25); 
-            --glass-blur: blur(50px) saturate(220%); 
+            /* FIXED: Removed general glassmorphism (dirty gray) and replaced with a darker pinkish tone matching wallpaper algorithm */
+            --glass-bg: rgba(209, 107, 134, 0.95); 
+            --header-bg: rgba(209, 107, 134, 0.95); 
+            --glass-blur: none; 
             
             --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
             --base-font-size: 16px;
@@ -48,6 +48,12 @@
             z-index: -2;
         }
 
+        /* FIXED: Prevent empty divs from occupying grid layout slots on Desktop mode */
+        .wallpaper-layer, .wallpaper-pattern {
+            position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -3; pointer-events: none; display: none;
+        }
+
         /* Pure Static Noise */
         .glass-noise {
             position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
@@ -65,40 +71,51 @@
         }
 
         @media (orientation: portrait), (max-width: 768px) {
-            /* FIXED: Use 100dvh to prevent UI from hiding behind the browser bar */
-            body { display: flex; flex-direction: column; height: 100dvh; } 
+            /* FIXED: Clean column flex prevents body scrolling and guarantees bottom nav sticks without UI sinking */
+            body { display: flex; flex-direction: column; overflow: hidden; height: 100dvh; }
             #sidebar { display: none; } /* Hide PC sidebar */
+            
+            /* Main content fits strictly between header and nav */
+            #main-content { 
+                flex: 1; padding: 20px; height: auto; 
+                overflow-y: auto; overflow-x: hidden;
+            }
+
             #bottom-nav { 
                 display: flex; flex-direction: row; justify-content: space-around; align-items: center; 
-                flex-shrink: 0; width: 100%; height: 80px; 
-                background: rgba(20, 10, 15, 0.95); backdrop-filter: blur(25px); border-top: 1px solid rgba(255, 255, 255, 0.15);
+                flex-shrink: 0; position: relative; width: 100%; height: 80px; 
+                background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15);
                 padding-bottom: env(safe-area-inset-bottom); z-index: 2000;
             }
             .bnav-item { flex: 1; text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; }
             .bnav-item span { font-size: 22px; display: block; margin-bottom: 4px; }
             .bnav-item.active { color: var(--accent-pink); text-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
             
-            /* FIXED: Padding-bottom ensures last elements clear the bottom nav */
-            #main-content { padding: 20px; padding-bottom: 100px; flex: 1; overflow-y: auto; }
-            
             .shop-header-container { text-align: center; }
             .shop-badge { font-size: 1.5em !important; padding: 10px 20px !important; }
             .desktop-carousel-container { display: none !important; }
             .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 500px; margin: 0 auto; }
             
-            /* FIXED: Force 2-column layout to fit 4 items nicely */
             .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .menu-card { padding: 15px; }
             .menu-card h3 { font-size: 1.1em; }
             .menu-price-pill { font-size: 12px; padding: 4px 12px; }
             .menu-image-preview { height: 100px; font-size: 2em; margin-bottom: 10px; }
 
-            /* Responsive Settings UI */
-            #settings-hub { flex-direction: column !important; height: 85vh !important; width: 95vw !important; }
-            .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto; padding: 15px !important; min-width: 0 !important; }
+            /* FIXED: Settings Modal Square & Small on Mobile */
+            #settings-hub { 
+                flex-direction: column !important; 
+                height: 500px !important; 
+                max-height: 80vh !important; 
+                width: 90vw !important; 
+                max-width: 400px !important;
+                margin: auto;
+            }
+            .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto; padding: 15px !important; min-width: 0 !important; flex-shrink: 0; }
             .settings-sidebar h3 { display: none; }
             .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; }
-            .settings-content { padding: 20px !important; overflow-x: hidden; }
+            .settings-content { padding: 20px !important; overflow-x: hidden; flex: 1; }
+            .theme-preview-box { grid-column: span 2 !important; }
         }
 
         /* --- PC SIDEBAR STYLES --- */
@@ -116,6 +133,7 @@
         /* --- MAIN CONTENT AREA --- */
         #main-content {
             flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth;
+            padding: 30px; /* FIXED: Added padding for desktop base, overridden by mobile media query natively */
         }
         
         .shop-header-container { margin-bottom: 25px; }
@@ -149,7 +167,7 @@
         }
 
         .promo-card {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15);
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15);
             border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease;
         }
         .promo-card:hover { background: rgba(255, 255, 255, 0.1); }
@@ -180,13 +198,13 @@
         .menu-card:hover { border-color: var(--accent-pink); }
         
         .menu-image-preview {
-            width: 100%; height: 140px; border-radius: 16px; background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            width: 100%; height: 140px; border-radius: 16px; background: rgba(0,0,0,0.2);
             border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink);
             margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center;
-            color: rgba(255, 255, 255, 0.6); font-size: 3em; backdrop-filter: blur(5px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1;
+            color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1;
         }
         .menu-price-pill {
-            background: rgba(0,0,0,0.45); backdrop-filter: blur(10px); color: white; padding: 6px 18px; border-radius: 20px;
+            background: rgba(0,0,0,0.6); color: white; padding: 6px 18px; border-radius: 20px;
             font-size: 14px; font-weight: 800; z-index: 2; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 15px;
             display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
@@ -226,7 +244,9 @@
         #settings-hub {
             display: flex; flex-direction: row; 
             width: 950px; height: 600px; 
-            max-width: 95vw; background: rgba(25, 15, 20, 0.45); backdrop-filter: blur(60px) saturate(220%);
+            max-width: 95vw; 
+            background: rgba(0, 0, 0, 0.25) !important; /* FIXED: Strictly keep glass enabled for Settings Default */
+            backdrop-filter: blur(25px) saturate(150%) !important; /* FIXED: Strictly keep glass enabled for Settings Default */
             border-radius: 24px; box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2);
             overflow: hidden; position: relative; box-sizing: border-box;
         }
@@ -235,7 +255,10 @@
             width: 260px; min-width: 260px; background: rgba(255, 255, 255, 0.03); border-right: 1px solid rgba(255, 255, 255, 0.08);
             padding: 30px 20px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; overflow-y: auto;
         }
-        .settings-sidebar h3 { color: #fff; font-size: 15px; letter-spacing: 1.5px; margin: 0 0 30px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800;}
+        
+        /* FIXED: Added Logo to Settings Sidebar Header */
+        .settings-sidebar h3 { color: #fff; font-size: 14px; letter-spacing: 1px; margin: 0 0 30px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; display: flex; align-items: center;}
+        
         .settings-tab-btn { background: transparent; color: rgba(255, 255, 255, 0.8); border: 1px solid transparent; text-align: left; padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 14px; transition: all 0.2s ease; }
         .settings-tab-btn.active { border-color: rgba(255, 255, 255, 0.3); color: #fff; font-weight: bold; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
         .settings-tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #fff; }
@@ -249,7 +272,7 @@
         .settings-view.active { display: flex; }
 
         .os-card {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border-radius: 16px; padding: 25px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 25px; border: 1px solid rgba(255,255,255,0.1);
             width: 100%; max-width: 600px; margin-bottom: 20px; box-sizing: border-box; text-align: left; height: auto;
         }
         .os-card-title { font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.8); text-transform: uppercase; margin: 0 0 15px 0; font-weight: 700; width: 100%;}
@@ -263,6 +286,7 @@
             margin-top: 15px; padding-bottom: 10px; width: 100%; line-height: 1.5; display: block; clear: both;
         }
 
+        /* FIXED: Perfect Circular Close Buttons that never shrink */
         .close-btn, .settings-close-btn { 
             position: absolute; top: 15px; right: 15px; 
             width: 34px !important; height: 34px !important; flex-shrink: 0 !important;
@@ -307,8 +331,6 @@
         .submit-btn { width: 100%; background: var(--accent-pink); color: white; border: 1px solid transparent; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); }
         .submit-btn:hover { background: #ff7eba; }
 
-        .modal-title { margin-top: 0; font-size: 24px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 15px; margin-bottom: 20px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); width: 100%; text-align: left; padding-right: 40px;}
-
         .card-profile-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0 auto 15px auto; }
         .status-badge { display: inline-block; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 5px; backdrop-filter: blur(5px); }
         .status-Pending { background: rgba(255, 165, 0, 0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.5); }
@@ -346,6 +368,7 @@
 <body>
     <div class="wallpaper-layer" id="main-wallpaper"></div>
     <div class="wallpaper-pattern"></div>
+    <div class="glass-noise" id="bg-shimmer"></div>
 
     <div id="sidebar">
         <div class="front-screen-logo">
@@ -375,7 +398,7 @@
                 <path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" />
                 <path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" />
                 <path d="M20,120 Q200,80 380,120 L380,170 Q200,130 20,170 Z" fill="url(#pinkRibbon)" stroke="#FFC0CB" stroke-width="4" filter="url(#shadow)" />
-                <text x="200" y="145" font-family="Impact, sans-serif" font-size="44" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINCESSA</text>
+                <text x="200" y="145" font-family="Impact, sans-serif" font-size="44" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINSESA</text>
                 <text x="80" y="210" font-family="Impact, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF" stroke="#000000" stroke-width="1.5" text-anchor="middle" filter="url(#shadow)">Since</text>
                 <text x="320" y="210" font-family="Impact, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF" stroke="#000000" stroke-width="1.5" text-anchor="middle" filter="url(#shadow)">2016</text>
                 <circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FFD700" stroke-width="6" filter="url(#shadow)" />
@@ -396,7 +419,7 @@
 
     <div id="main-content">
         <div class="shop-header-container">
-            <div class="shop-badge">👑 LA PRINCESSA BAKESHOP</div>
+            <div class="shop-badge">👑 LA PRINSESA BAKESHOP</div>
         </div>
         <hr class="shop-divider">
         
@@ -499,7 +522,7 @@
             <button class="close-btn" onclick="closeMessaging()">×</button>
             <h2 class="modal-title">Message Owner</h2>
             <div class="chat-history" id="chat-history">
-                <div class="chat-message owner">Hello! Welcome to La Princessa Bakeshop. How can we help you today?</div>
+                <div class="chat-message owner">Hello! Welcome to La Prinsesa Bakeshop. How can we help you today?</div>
             </div>
             <div style="display:flex;gap:10px;">
                 <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event)">
@@ -513,29 +536,28 @@
             <button class="close-btn" onclick="closeAbout()">×</button>
             <h2 class="modal-title">About Us</h2>
             <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px;">
-                Welcome to La Princessa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.
+                Welcome to La Prinsesa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.
             </p>
             <h3 style="color: var(--accent-pink); font-size: 18px; margin: 0;">Get In Touch</h3>
             <div class="contact-card">
-                <div class="contact-item"><strong>📍</strong> <span>Caloocan, Metro Manila, Philippines</span></div>
-                <div class="contact-item"><strong>📞</strong> <span>+63 912 345 6789</span></div>
-                <div class="contact-item"><strong>✉️</strong> <span>laprinsesadecupcake@gmail.com</span></div>
+                <div class="contact-item"><strong>📍 Address:</strong> <span>Caloocan, Metro Manila, Philippines</span></div>
+                <div class="contact-item"><strong>📞 Phone:</strong> <span>+63 912 345 6789</span></div>
+                <div class="contact-item"><strong>✉️ Email:</strong> <span>laprinsesadecupcake@gmail.com</span></div>
             </div>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="settings-overlay">
         <div id="settings-hub">
+            <button class="settings-close-btn" onclick="closeSettings()">×</button>
             <div class="settings-sidebar">
-                <h3>X-INFINITY OS</h3>
+                <h3><span style="font-size: 18px; margin-right: 5px;">🧁</span> LA PRINSESA OS</h3>
                 <button id="nav-accounts" class="settings-tab-btn active" onclick="switchSettingsNav('accounts')">Accounts & Control</button>
                 <button id="nav-personalization" class="settings-tab-btn" onclick="switchSettingsNav('personalization')">Personalization</button>
                 <button id="nav-guides" class="settings-tab-btn" onclick="switchSettingsNav('guides')">Guides</button>
             </div>
 
             <div class="settings-content">
-                <button class="settings-close-btn" onclick="closeSettings()">×</button>
-                
                 <div id="view-accounts" class="settings-view active">
                     <h2 class="modal-title" style="width:100%;">User Authentication</h2>
 
@@ -655,11 +677,14 @@
     <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 3100;">
         <div id="credentials-hub">
             <button class="close-btn" onclick="closeChangeCredentials()">×</button>
-            <h2 class="modal-title">Update Credentials</h2>
-            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Username:</label>
+            <h2 class="modal-title" style="font-size: 22px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">Update Credentials</h2>
+            
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Username (Leave blank to keep current):</label>
             <input type="text" id="update-username" class="input-field" placeholder="Enter new username">
-            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Password:</label>
+            
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Password (Leave blank to keep current):</label>
             <input type="password" id="update-password" class="input-field" placeholder="Enter new password">
+            
             <button class="submit-btn" style="margin-top: 15px;" onclick="saveCredentials()">Save Changes</button>
         </div>
     </div>
@@ -762,6 +787,20 @@
             document.body.style.backgroundBlendMode = preset.blend || 'normal';
             document.documentElement.style.setProperty('--accent-pink', accentColor);
             
+            // FIXED: Dynamically map the UI Panel color to match the theme following the algorithm
+            const themeToPanelBg = { 
+                'default': 'rgba(209, 107, 134, 0.95)', // Darker pinkish
+                'blue-gradient': 'rgba(42, 82, 152, 0.95)', // Darker blue
+                'peach-gradient': 'rgba(219, 115, 142, 0.95)', // Darker peach
+                'mint-gradient': 'rgba(90, 180, 140, 0.95)', // Darker mint
+                'solid-black': 'rgba(20, 20, 20, 0.95)',
+                'uploaded': 'rgba(209, 107, 134, 0.95)'
+            };
+            
+            if (document.getElementById('btn-ui-glass') && document.getElementById('btn-ui-glass').classList.contains('active-ui-btn')) {
+                document.documentElement.style.setProperty('--glass-bg', themeToPanelBg[themeKey] || 'rgba(209, 107, 134, 0.95)');
+            }
+            
             savePersonalization(); 
         }
 
@@ -790,8 +829,17 @@
             const btnGlass = document.getElementById('btn-ui-glass');
             const btnSolid = document.getElementById('btn-ui-solid');
             if(style === 'glass') {
-                document.documentElement.style.setProperty('--glass-bg', 'rgba(25, 15, 20, 0.35)');
-                document.documentElement.style.setProperty('--glass-blur', 'blur(50px) saturate(220%)');
+                const currentTheme = getCurrentThemeKey();
+                const themeToPanelBg = { 
+                    'default': 'rgba(209, 107, 134, 0.95)', 
+                    'blue-gradient': 'rgba(42, 82, 152, 0.95)', 
+                    'peach-gradient': 'rgba(219, 115, 142, 0.95)', 
+                    'mint-gradient': 'rgba(90, 180, 140, 0.95)', 
+                    'solid-black': 'rgba(20, 20, 20, 0.95)',
+                    'uploaded': 'rgba(209, 107, 134, 0.95)'
+                };
+                document.documentElement.style.setProperty('--glass-bg', themeToPanelBg[currentTheme] || 'rgba(209, 107, 134, 0.95)');
+                document.documentElement.style.setProperty('--glass-blur', 'none');
                 btnGlass.className = "os-btn os-btn-secondary active-ui-btn"; btnSolid.className = "os-btn os-btn-secondary";
             } else {
                 document.documentElement.style.setProperty('--glass-bg', 'rgba(15, 15, 18, 0.98)');
@@ -802,7 +850,7 @@
         }
 
         // --- DATA PERSISTENCE & PERSONALIZATION ---
-        const personalSettingsKey = 'la_princessa_personalization';
+        const personalSettingsKey = 'la_prinsesa_personalization';
 
         function savePersonalization() {
             if (!currentUser) return; 
@@ -859,10 +907,10 @@
         let currentItemToOrder = "";
         let currentPriceToOrder = "";
 
-        const usersDataKey = 'la_princessa_users';
-        const sessionUserKey = 'la_princessa_session_user';
-        const uidCounterKey = 'la_princessa_uid_counter';
-        const orderHistoryKey = 'la_princessa_order_history';
+        const usersDataKey = 'la_prinsesa_users';
+        const sessionUserKey = 'la_prinsesa_session_user';
+        const uidCounterKey = 'la_prinsesa_uid_counter';
+        const orderHistoryKey = 'la_prinsesa_order_history';
 
         function saveSession() { if (currentUser) sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser)); }
         function clearSession() { sessionStorage.removeItem(sessionUserKey); }
@@ -992,8 +1040,8 @@
             
             if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
             
-            // FIXED: ADMIN CREDENTIALS
-            if (userInput === "LAPRINCESSA" && passInput === "1020304050") {
+            // ADMIN CREDENTIALS
+            if (userInput === "LAPRINSESA" && passInput === "1020304050") {
                 currentUser = { fullname: "ROWENA ANGELES", username: userInput, password: passInput, uid: 1, role: "Administrator", photo: null };
                 loginSuccess(); return;
             } 
