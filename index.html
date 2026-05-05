@@ -908,7 +908,7 @@
             
             const { error } = await _db.from('users').insert([newUser]);
             if (error) {
-                return alert("Supabase RLS Error: Your database is blocking this action.\n\nHOW TO FIX IN SUPABASE:\n1. Go to Supabase Dashboard\n2. Open 'users' table\n3. Click 'RLS' (top right)\n4. Click 'Disable RLS' (since you are using a custom users table).");
+                return alert("Error creating account: " + error.message);
             }
             
             currentUser = newUser;
@@ -992,8 +992,7 @@
                 if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
                 const { error } = await _db.from('orders').insert([orderObj]);
                 if (error) {
-                    alert("Supabase RLS Error: Your database is blocking this action.\n\nHOW TO FIX IN SUPABASE:\n1. Go to Supabase Dashboard\n2. Open 'orders' table\n3. Click 'RLS' (top right)\n4. Click 'Disable RLS' (since you are using a custom users table).");
-                    return;
+                    return alert("Error sending order: " + error.message);
                 }
                 
                 closeDetails(); switchMainView('orders');
@@ -1062,8 +1061,7 @@
 
             const { error } = await _db.from('orders').insert([dbOrder]);
             if (error) {
-                alert("Supabase RLS Error: Your database is blocking this action.\n\nHOW TO FIX IN SUPABASE:\n1. Go to Supabase Dashboard\n2. Open 'orders' table\n3. Click 'RLS' (top right)\n4. Click 'Disable RLS' (since you are using a custom users table).");
-                return;
+                return alert("Checkout error: " + error.message);
             }
 
             removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders');
@@ -1138,7 +1136,7 @@
             const { error } = await _db.from('messages').insert([chatObj]);
             if(error) {
                 console.error("Chat error:", error);
-                alert("Supabase RLS Error: Your database is blocking this action.\n\nHOW TO FIX IN SUPABASE:\n1. Go to Supabase Dashboard\n2. Open 'messages' table\n3. Click 'RLS' (top right)\n4. Click 'Disable RLS' (since you are using a custom users table).");
+                alert("Error sending message: " + error.message);
             }
             if(input && !error) input.value = "";
         }
