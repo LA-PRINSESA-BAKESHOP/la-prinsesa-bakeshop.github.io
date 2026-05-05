@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LA PRINSESA BAKESHOP</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         :root {
             --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ff9eb5'/%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
@@ -111,7 +114,8 @@
             }
             .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; }
             .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; }
-            .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important; }
+            .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
+            .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
 
             #settings-hub, #messaging-hub, #admin-user-hub, #admin-edit-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
             #receipt-hub { max-height: 90vh !important; width: 95vw !important; border-radius: 16px !important; padding: 20px !important;}
@@ -153,11 +157,12 @@
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; width: 100%; }
         .menu-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
         .menu-card:hover { border-color: var(--accent-pink); }
-        .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; }
+        .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; overflow: hidden;}
+        .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
         
-        .admin-edit-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
-        .admin-edit-btn:hover { background: var(--accent-pink); }
-        .admin-add-card { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 3em; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; border-radius: 20px;}
+        .admin-edit-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; z-index: 10; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.5); font-size: 16px; transition: 0.2s;}
+        .admin-edit-btn:hover { background: var(--accent-pink); transform: scale(1.1); }
+        .admin-add-card { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 4em; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; border-radius: 20px;}
         .admin-add-card:hover { background: rgba(255,255,255,0.2); color: white; }
 
         .menu-price-pill { background: rgba(0,0,0,0.6); color: white; padding: 6px 18px; border-radius: 20px; font-size: 14px; font-weight: 800; z-index: 2; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -184,10 +189,12 @@
         .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 
         .order-img-thumb { width: 45px; height: 45px; border-radius: 10px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5em; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; overflow:hidden;}
+        .order-img-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .qr-thumb { width: 45px; height: 45px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
 
         .admin-order-card { display: flex; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
         .admin-order-img { font-size: 2em; background: rgba(255,255,255,0.1); border-radius: 12px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; overflow:hidden; }
+        .admin-order-img img { width: 100%; height: 100%; object-fit: cover; }
         .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .admin-user-row:hover { border-color: var(--accent-pink); }
 
@@ -223,13 +230,12 @@
         .active-session-card .os-card-title { color: var(--os-green); text-align: center;}
 
         .auth-wrapper { display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; }
-        .anonymous-text-block { text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 15px; padding-bottom: 10px; width: 100%; line-height: 1.5; display: block; clear: both; }
 
         .close-btn, .settings-close-btn { position: absolute; top: 15px; right: 15px; width: 30px !important; height: 30px !important; flex-shrink: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,0.2) !important; border: 1px solid rgba(255,255,255,0.4) !important; color: white !important; font-size: 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer; padding: 0 !important; margin: 0 !important; box-sizing: border-box !important; line-height: 1 !important; z-index: 9999; }
         .close-btn:hover, .settings-close-btn:hover { background: rgba(255,255,255,0.4) !important; }
 
         .os-btn-row { display: flex; gap: 10px; margin-bottom: 15px; width: 100%; flex-wrap: wrap; }
-        .os-btn { flex: 1; padding: 10px 15px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; text-align: center; min-width: 100px; }
+        .os-btn { flex: 1; padding: 10px 15px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; text-align: center; min-width: 100px; display: inline-block; }
         .os-btn-primary { background: rgba(255,255,255,0.9); color: black; box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
         .os-btn-primary:hover { background: #ffffff; }
         .os-btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.15); }
@@ -274,9 +280,10 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .chat-history { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; max-height: 250px;}
-        .chat-message { padding: 10px 15px; border-radius: 15px; max-width: 85%; font-size: 13px; line-height: 1.4; }
+        .chat-message { padding: 10px 15px; border-radius: 15px; max-width: 85%; font-size: 13px; line-height: 1.4; word-wrap: break-word; }
         .chat-message.owner { background: rgba(255, 255, 255, 0.15); align-self: flex-start; border-bottom-left-radius: 4px; }
         .chat-message.user { background: var(--accent-pink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; }
         
         .contact-card { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); line-height: 2; margin-top: 15px; font-size: 14px;}
         .contact-item { display: flex; align-items: flex-start; gap: 10px; }
@@ -461,9 +468,12 @@
             <button class="close-btn" onclick="closeMessaging()">×</button>
             <h2 class="modal-title">Message Owner</h2>
             <div class="chat-history" id="chat-history"></div>
-            <div style="display:flex;gap:10px;">
+            <div style="display:flex;gap:10px; flex-direction: column;">
                 <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'user')">
-                <button class="submit-btn" style="width: auto; padding: 0 20px;" onclick="sendChatMessage('user')">Send</button>
+                <label class="os-btn os-btn-secondary" style="margin-bottom:0; text-align:center;">📷 Send Photo
+                    <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'user')">
+                </label>
+                <button class="submit-btn" style="width: 100%;" onclick="sendChatMessage('user')">Send</button>
             </div>
         </div>
     </div>
@@ -479,9 +489,12 @@
 
             <h3 style="margin:0 0 10px 0; color:var(--accent-pink);">Direct Message</h3>
             <div class="chat-history" id="admin-chat-history"></div>
-            <div style="display:flex;gap:10px;">
+            <div style="display:flex;gap:10px; flex-direction: column;">
                 <input type="text" id="admin-chat-text-input" class="input-field" placeholder="Type message to user..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'owner')">
-                <button class="submit-btn" style="width: auto; padding: 0 20px;" onclick="sendChatMessage('owner')">Send</button>
+                <label class="os-btn os-btn-secondary" style="margin-bottom:0; text-align:center;">📷 Send Photo
+                    <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')">
+                </label>
+                <button class="submit-btn" style="width: 100%;" onclick="sendChatMessage('owner')">Send</button>
             </div>
         </div>
     </div>
@@ -771,221 +784,492 @@
     </div>
 
     <script>
-        let currentSlide = 0;
-        const totalSlides = 2;
-        function moveSlider() {
-            const track = document.getElementById('desktop-carousel-track');
-            if(track) {
-                currentSlide++;
-                if (currentSlide >= totalSlides) { currentSlide = 0; }
-                track.style.transform = `translateX(-${currentSlide * 50}%)`;
-            }
-        }
-        setInterval(moveSlider, 4500);
+        // ==========================================
+        // 1. SUPABASE CONNECTION & INIT
+        // ==========================================
+        const { createClient } = supabase;
+        const supabaseUrl = 'https://aetufsoytqddgwajqoap.supabase.co';
+        const supabaseKey = 'sb_publishable_3Wlkbw5X162n_OgAKnU7FQ_0ZN68m-c';
+        const _db = createClient(supabaseUrl, supabaseKey);
 
-        function updateNavState(viewName) {
-            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
-            const deskBtn = document.getElementById('desk-nav-' + viewName);
-            if(deskBtn) deskBtn.classList.add('active');
-
-            document.querySelectorAll('.bnav-item').forEach(btn => btn.classList.remove('active'));
-            const mobBtn = document.getElementById('mob-nav-' + viewName);
-            if(mobBtn) mobBtn.classList.add('active');
-        }
-
-        const themePresets = {
-            'default': { bg: 'var(--bg-main)', size: '250px', blend: 'normal' },
-            'blue-gradient': { bg: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
-            'peach-gradient': { bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
-            'mint-gradient': { bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
-            'solid-black': { bg: '#000', size: 'cover', blend: 'normal' }
-        };
-
-        const themeKeys = Object.keys(themePresets);
-        function randomizeBackground() {
-            const randomKey = themeKeys[Math.floor(Math.random() * themeKeys.length)];
-            applyTheme(randomKey, getAccentColorForTheme(randomKey));
-        }
-
-        function applyTheme(themeKey, accentColor) {
-            const preset = themePresets[themeKey];
-            if (!preset) return;
-            document.body.style.background = preset.bg;
-            document.body.style.backgroundSize = preset.size;
-            document.body.style.backgroundAttachment = "fixed";
-            document.body.style.backgroundBlendMode = preset.blend || 'normal';
-            document.documentElement.style.setProperty('--accent-pink', accentColor);
-            
-            const themeToPanelBg = { 
-                'default': 'rgba(209, 107, 134, 0.95)', 
-                'blue-gradient': 'rgba(42, 82, 152, 0.95)', 
-                'peach-gradient': 'rgba(219, 115, 142, 0.95)', 
-                'mint-gradient': 'rgba(90, 180, 140, 0.95)', 
-                'solid-black': 'rgba(20, 20, 20, 0.95)',
-                'uploaded': 'rgba(209, 107, 134, 0.95)'
-            };
-            
-            if (document.getElementById('btn-ui-glass') && document.getElementById('btn-ui-glass').classList.contains('active-ui-btn')) {
-                document.documentElement.style.setProperty('--glass-bg', themeToPanelBg[themeKey] || 'rgba(209, 107, 134, 0.95)');
-            }
-            savePersonalization(); 
-        }
-
-        function toggleBorders(el) { el.checked ? document.body.classList.add('borders-enabled') : document.body.classList.remove('borders-enabled'); savePersonalization(); }
-        function updateFontSize(val) { document.documentElement.style.setProperty('--base-font-size', val + 'px'); document.getElementById('font-size-label').innerText = 'GLOBAL FONT SIZE: ' + val + 'PX'; savePersonalization(); }
-
-        function setUIStyle(style) {
-            const btnGlass = document.getElementById('btn-ui-glass');
-            const btnSolid = document.getElementById('btn-ui-solid');
-            if(style === 'glass') {
-                const currentTheme = getCurrentThemeKey();
-                const themeToPanelBg = { 
-                    'default': 'rgba(209, 107, 134, 0.95)', 'blue-gradient': 'rgba(42, 82, 152, 0.95)', 
-                    'peach-gradient': 'rgba(219, 115, 142, 0.95)', 'mint-gradient': 'rgba(90, 180, 140, 0.95)', 
-                    'solid-black': 'rgba(20, 20, 20, 0.95)', 'uploaded': 'rgba(209, 107, 134, 0.95)'
-                };
-                document.documentElement.style.setProperty('--glass-bg', themeToPanelBg[currentTheme] || 'rgba(209, 107, 134, 0.95)');
-                document.documentElement.style.setProperty('--glass-blur', 'none');
-                btnGlass.className = "os-btn os-btn-secondary active-ui-btn"; btnSolid.className = "os-btn os-btn-secondary";
-            } else {
-                document.documentElement.style.setProperty('--glass-bg', 'rgba(15, 15, 18, 0.98)');
-                document.documentElement.style.setProperty('--glass-blur', 'none');
-                btnSolid.className = "os-btn os-btn-secondary active-ui-btn"; btnGlass.className = "os-btn os-btn-secondary";
-            }
-            savePersonalization();
-        }
-
-        const personalSettingsKey = 'la_prinsesa_personalization';
-
-        function savePersonalization() {
-            if (!currentUser) return; 
-            const settings = { themeKey: getCurrentThemeKey(), borders: document.getElementById('borders-toggle').checked, fontSize: document.getElementById('font-size-slider').value, uiStyle: document.getElementById('btn-ui-glass').classList.contains('active-ui-btn') ? 'glass' : 'solid' };
-            localStorage.setItem(`${personalSettingsKey}_${currentUser.uid}`, JSON.stringify(settings));
-        }
-        
-        function loadPersonalization() {
-            if (!currentUser) return; 
-            const settingsStr = localStorage.getItem(`${personalSettingsKey}_${currentUser.uid}`);
-            if (settingsStr) {
-                const settings = JSON.parse(settingsStr);
-                if (settings.themeKey) applyTheme(settings.themeKey, getAccentColorForTheme(settings.themeKey)); 
-                document.getElementById('borders-toggle').checked = settings.borders; toggleBorders(document.getElementById('borders-toggle')); 
-                document.getElementById('font-size-slider').value = settings.fontSize; updateFontSize(settings.fontSize); 
-                setUIStyle(settings.uiStyle); 
-            } else { resetPersonalizationToDefaults(); }
-        }
-        
-        function resetPersonalizationToDefaults() { applyTheme('default', '#ff69b4'); document.getElementById('borders-toggle').checked = false; toggleBorders(document.getElementById('borders-toggle')); document.getElementById('font-size-slider').value = 16; updateFontSize(16); setUIStyle('glass'); }
-        function getAccentColorForTheme(themeKey) { const themeToAccent = { 'default': '#ff69b4', 'blue-gradient': '#8fd3f4', 'peach-gradient': '#ff85a2', 'mint-gradient': '#84fab0', 'solid-black': '#ff85a2', 'uploaded': '#ff69b4' }; return themeToAccent[themeKey] || '#ff69b4'; }
-        function getCurrentThemeKey() { const currentBg = document.body.style.background; for (const key in themePresets) { if (currentBg === themePresets[key].bg) return key; } return 'default'; }
-
-        // --- SYSTEM CORE LOGIC ---
         let currentUser = null;
-        let nextUid = 2; 
-        let orderHistory = [];
         let cartItems = [];
         let currentItemToOrder = "";
         let currentPriceToOrder = "";
+        let currentImgToOrder = "";
         let currentAdminViewingUid = null;
-        let checkoutCartIndex = -1; 
-        let lastGlobalOrderState = ""; 
-        let menuItems = [];
-        let homePromos = [];
-
-        const usersDataKey = 'la_prinsesa_users';
-        const sessionUserKey = 'la_prinsesa_session_user';
-        const uidCounterKey = 'la_prinsesa_uid_counter';
-        const orderHistoryKey = 'la_prinsesa_order_history';
-        const cartItemsKey = 'la_prinsesa_cart';
-        const chatHistoryKey = 'la_prinsesa_chat_';
-        const menuItemsKey = 'la_prinsesa_menu';
-        const homePromosKey = 'la_prinsesa_home';
-
-        // Default Data
-        const defaultMenu = [
+        
+        // Basic Static Fallback Data
+        let menuItems = [
             { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: '🧁' },
             { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: '🍫' },
             { id: 3, name: 'Strawberry Princess', price: '₱110.00', img: '🍓' },
             { id: 4, name: 'Classic Vanilla Bean', price: '₱90.00', img: '🍦' }
         ];
-
-        const defaultPromos = [
+        let homePromos = [
             { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' },
-            { id: 2, title: 'A Royal Plot Twist! 👑', desc: "Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist—grab your favorite slice today.", img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' }
+            { id: 2, title: 'A Royal Plot Twist! 👑', desc: "Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist.", img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' }
         ];
-
-        function loadAppData() {
-            let m = localStorage.getItem(menuItemsKey);
-            menuItems = m ? JSON.parse(m) : defaultMenu;
-            let p = localStorage.getItem(homePromosKey);
-            homePromos = p ? JSON.parse(p) : defaultPromos;
-        }
-
-        function saveMenu() { localStorage.setItem(menuItemsKey, JSON.stringify(menuItems)); renderMenu(); }
-        function savePromos() { localStorage.setItem(homePromosKey, JSON.stringify(homePromos)); renderHomePromos(); }
-
-        function saveSession() { if (currentUser) sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser)); }
-        function clearSession() { sessionStorage.removeItem(sessionUserKey); }
-        function getSessionUser() { const userStr = sessionStorage.getItem(sessionUserKey); return userStr ? JSON.parse(userStr) : null; }
-
-        function saveUser(user) { let users = getUsers(); const existingIndex = users.findIndex(u => u.username === user.username); if (existingIndex > -1) users[existingIndex] = user; else users.push(user); localStorage.setItem(usersDataKey, JSON.stringify(users)); }
-        function getUsers() { const usersStr = localStorage.getItem(usersDataKey); return usersStr ? JSON.parse(usersStr) : []; }
-        function isUsernameTaken(username) { const users = getUsers(); return users.some(u => u.username === username); }
-        function setCurrentUid(uid) { localStorage.setItem(uidCounterKey, uid); }
-        function getCurrentUid() { const uid = localStorage.getItem(uidCounterKey); return uid ? parseInt(uid) : 2; }
-        
-        function getOrderHistory(uid) { const historyStr = localStorage.getItem(`${orderHistoryKey}_${uid}`); return historyStr ? JSON.parse(historyStr) : []; }
-
-        function saveCart(cart) { cartItems = cart; localStorage.setItem(`${cartItemsKey}_${currentUser.uid}`, JSON.stringify(cartItems)); }
-        function getCartItems(uid) { const cartStr = localStorage.getItem(`${cartItemsKey}_${uid}`); return cartStr ? JSON.parse(cartStr) : []; }
-
-        function getMessages(uid) { const msgs = localStorage.getItem(chatHistoryKey + uid); return msgs ? JSON.parse(msgs) : []; }
-        function saveMessages(uid, msgs) { localStorage.setItem(chatHistoryKey + uid, JSON.stringify(msgs)); }
-
-        function initializeSession() {
-            loadAppData();
-            const savedUser = getSessionUser();
-            if (savedUser) {
-                currentUser = savedUser; nextUid = getCurrentUid(); loadPersonalization(); 
-                orderHistory = getOrderHistory(currentUser.uid); 
-                cartItems = getCartItems(currentUser.uid);
-                displayProfilePhoto(currentUser.photo); 
-                switchMainView('home'); switchSettingsNav('accounts'); 
-                updateOrdersView(); updateCartView();
-            } else {
-                currentUser = null; nextUid = getCurrentUid(); resetPersonalizationToDefaults(); 
-                switchMainView('home'); switchSettingsNav('accounts');
-            }
-            updateSettingsUI(); 
-            renderMenu();
-            renderHomePromos();
-            pollSystemData();
-            setInterval(pollSystemData, 3000);
-        }
 
         window.onload = initializeSession; 
 
-        // Dynamic Render Functions
+        async function initializeSession() {
+            // Retrieve User Session
+            const savedUser = sessionStorage.getItem('la_prinsesa_session_user');
+            if (savedUser) { 
+                currentUser = JSON.parse(savedUser); 
+                const c = localStorage.getItem('la_prinsesa_cart_' + currentUser.uid);
+                if (c) cartItems = JSON.parse(c);
+            }
+            
+            loadPersonalization();
+            renderMenu();
+            renderHomePromos();
+            updateSettingsUI(); 
+            switchMainView('home'); 
+            updateCartView();
+            
+            await refreshData();
+            setupRealtimeSubscriptions();
+        }
+
+        function setupRealtimeSubscriptions() {
+            _db.channel('public:orders')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
+                    refreshData();
+                }).subscribe();
+
+            _db.channel('public:messages')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
+                    refreshData();
+                    if (document.getElementById('messaging-overlay').classList.contains('active')) renderUserChat();
+                    if (document.getElementById('admin-user-overlay').classList.contains('active') && currentAdminViewingUid) renderAdminUserModal(currentAdminViewingUid);
+                }).subscribe();
+        }
+
+        async function refreshData() {
+            if (!currentUser) return; 
+            if (currentUser.role === 'Administrator') {
+                await renderAdminOrders();
+                if (currentAdminViewingUid && document.getElementById('admin-user-overlay').classList.contains('active')) {
+                    await renderAdminUserModal(currentAdminViewingUid);
+                }
+            } else {
+                await updateOrdersView();
+                await updateUserBadges();
+            }
+        }
+
+        // ==========================================
+        // 2. AUTHENTICATION (Supabase 'users' Table)
+        // ==========================================
+        async function validateLogin() {
+            const userInput = document.getElementById('login-username').value.trim();
+            const passInput = document.getElementById('login-password').value.trim();
+            if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
+            
+            if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") {
+                currentUser = { fullname: "ROWENA ANGELES", username: userInput, password: passInput, uid: "ADMIN-1", role: "Administrator" };
+                finishLogin(); return;
+            } 
+
+            const { data, error } = await _db.from('users').select('*').eq('username', userInput).eq('password', passInput).single();
+            if (data) { currentUser = data; finishLogin(); } 
+            else { alert("Invalid Username or Password."); }
+        }
+
+        async function validateCreate() {
+            const fullname = document.getElementById('create-fullname').value || "New Customer";
+            const user = document.getElementById('create-username').value.trim();
+            const pass = document.getElementById('create-password').value.trim();
+            
+            if (user.length < 3 || pass.length < 3) return alert("Min 3 chars required.");
+            
+            const { data: existing } = await _db.from('users').select('*').eq('username', user);
+            if (existing && existing.length > 0) return alert("Username already taken.");
+            
+            const newUid = "USR-" + Date.now();
+            const newUser = { uid: newUid, fullname: fullname, username: user, password: pass, role: "Customer", photo_url: "" };
+            
+            const { error } = await _db.from('users').insert([newUser]);
+            if (error) return alert("Error creating account: " + error.message);
+            
+            currentUser = newUser;
+            finishLogin();
+        }
+        
+        function finishLogin() {
+            sessionStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
+            alert("Logged in successfully!"); location.reload();
+        }
+
+        function logout() { sessionStorage.removeItem('la_prinsesa_session_user'); location.reload(); }
+
+        // ==========================================
+        // 3. ORDERS SYSTEM (Supabase 'orders' Table)
+        // ==========================================
+        function getEmojiForItem(itemName) {
+            const found = menuItems.find(m => m.name === itemName);
+            return found ? found.img : '🧁';
+        }
+
+        function openDetails(item, price, img) {
+            currentItemToOrder = item; currentPriceToOrder = price; currentImgToOrder = img || '🧁';
+            document.getElementById('details-title').innerText = item; document.getElementById('details-price').innerText = price;
+            const now = new Date(); document.getElementById('order-date').value = now.toISOString().split('T')[0]; document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
+            document.querySelectorAll('.topping-check').forEach(c => c.checked = false);
+            nextWizardStep(1); document.getElementById('details-overlay').classList.add('active');
+        }
+
+        function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
+        function nextWizardStep(step) { document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active')); document.getElementById(`wizard-step-${step}`).classList.add('active'); }
+
+        async function processOrder(type) {
+            const orderObj = {
+                order_id: 'ORD-' + Date.now(),
+                user_uid: currentUser ? currentUser.uid : "GUEST",
+                item_name: currentItemToOrder,
+                price: currentPriceToOrder,
+                pickup_date: document.getElementById('order-date').value,
+                pickup_time: document.getElementById('order-time').value,
+                toppings: JSON.stringify(Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value)),
+                status: "Pending",
+                image_url: currentImgToOrder
+            };
+
+            if (type === 'buy') {
+                if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
+                const { error } = await _db.from('orders').insert([orderObj]);
+                if (error) return alert("Error sending order: " + error.message);
+                
+                closeDetails(); switchMainView('orders');
+                showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: JSON.parse(orderObj.toppings) }); 
+                await refreshData();
+            } else {
+                cartItems.push({
+                    id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, 
+                    date: orderObj.pickup_date, time: orderObj.pickup_time, 
+                    toppings: JSON.parse(orderObj.toppings), img: orderObj.image_url
+                });
+                if (currentUser) localStorage.setItem('la_prinsesa_cart_' + currentUser.uid, JSON.stringify(cartItems));
+                updateCartView(); closeDetails(); alert("Added to cart!");
+            }
+        }
+
+        function updateCartView() {
+            const list = document.getElementById('cart-list'); list.innerHTML = ''; 
+            if (!cartItems.length) { list.innerHTML = '<p>Your cart is empty.</p>'; document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => b.style.display = 'none'); return; }
+            
+            document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => { b.innerText = cartItems.length; b.style.display = 'flex'; });
+            cartItems.forEach((cItem, index) => {
+                const thumbHTML = (cItem.img && cItem.img.startsWith('http')) ? `<img src="${cItem.img}">` : (cItem.img || '🧁');
+                const p = document.createElement('div'); p.className = 'cart-panel';
+                p.innerHTML = `
+                    <div class="order-img-thumb">${thumbHTML}</div>
+                    <div class="order-info" style="margin-left: 15px;">
+                        <h3>${cItem.item}</h3><p>${cItem.price}</p><small>${cItem.date} | ${cItem.time}</small>
+                        ${cItem.toppings.length ? `<small style="color: #ffeb3b; display:block;">+ ${cItem.toppings.join(', ')}</small>` : ''}
+                    </div>
+                    <div class="order-actions">
+                        <button class="os-btn-primary" style="padding: 6px 12px; font-size: 13px;" onclick="openCartCheckout(${index})">Checkout</button>
+                        <button class="cancel-btn" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                `;
+                list.appendChild(p);
+            });
+        }
+
+        function removeFromCart(index) { cartItems.splice(index, 1); if(currentUser) localStorage.setItem('la_prinsesa_cart_' + currentUser.uid, JSON.stringify(cartItems)); updateCartView(); }
+
+        function openCartCheckout(index) {
+            checkoutCartIndex = index; const cItem = cartItems[index];
+            const thumbHTML = (cItem.img && cItem.img.startsWith('http')) ? `<img src="${cItem.img}">` : (cItem.img || '🧁');
+            document.getElementById('cart-co-name').innerText = cItem.item; document.getElementById('cart-co-price').innerText = cItem.price;
+            document.getElementById('cart-co-img').innerHTML = thumbHTML;
+            document.getElementById('cart-co-toppings').innerText = cItem.toppings.length ? `Toppings: ${cItem.toppings.join(', ')}` : "No extra toppings";
+            document.getElementById('cart-co-date').value = cItem.date; document.getElementById('cart-co-time').value = cItem.time;
+            document.getElementById('cart-checkout-overlay').classList.add('active');
+        }
+
+        function closeCartCheckout() { document.getElementById('cart-checkout-overlay').classList.remove('active'); checkoutCartIndex = -1; }
+
+        async function checkoutCartItem() {
+            if(checkoutCartIndex < 0) return;
+            const cItem = cartItems[checkoutCartIndex];
+            const dDate = document.getElementById('cart-co-date').value;
+            const dTime = document.getElementById('cart-co-time').value;
+            if(!dDate || !dTime) return alert("Select valid Date and Time.");
+
+            const dbOrder = {
+                order_id: 'ORD-' + Date.now(), user_uid: currentUser ? currentUser.uid : "GUEST",
+                item_name: cItem.item, price: cItem.price, pickup_date: dDate, pickup_time: dTime,
+                toppings: JSON.stringify(cItem.toppings), status: "Pending", image_url: cItem.img || '🧁'
+            };
+
+            const { error } = await _db.from('orders').insert([dbOrder]);
+            if (error) return alert("Checkout error: " + error.message);
+
+            removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders');
+            showReceipt({ id: dbOrder.order_id, item: dbOrder.item_name, price: dbOrder.price, date: dbOrder.pickup_date, time: dbOrder.pickup_time, toppings: cItem.toppings });
+            await refreshData();
+        }
+
+        async function updateOrdersView() {
+            if (!currentUser || currentUser.role === 'Administrator') return;
+            
+            const list = document.getElementById('orders-list'); list.innerHTML = '';
+            const { data: orders } = await _db.from('orders').select('*').eq('user_uid', currentUser.uid).order('order_id', { ascending: false });
+            
+            if (!orders || orders.length === 0) { list.innerHTML = '<p>No orders yet.</p>'; return; }
+
+            orders.forEach(o => {
+                const isImg = o.image_url && (o.image_url.startsWith('http') || o.image_url.startsWith('data:'));
+                const thumbHTML = isImg ? `<img src="${o.image_url}">` : (o.image_url || '🧁');
+                let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
+                
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.order_id)}`;
+                const canCancel = (o.status === 'Pending') ? true : false;
+
+                const p = document.createElement('div'); p.className = 'order-panel'; 
+                p.onclick = () => showReceipt({ id: o.order_id, item: o.item_name, price: o.price, date: o.pickup_date, time: o.pickup_time, toppings: tops });
+                
+                p.innerHTML = `
+                    <div class="order-img-thumb">${thumbHTML}</div>
+                    <div class="order-info" style="margin-left: 15px;">
+                        <h3>${o.item_name}</h3><p>${o.price}</p><small>${o.pickup_date} | ${o.pickup_time}</small>
+                        ${tops.length ? `<small style="color: #ffeb3b; display:block; margin-top:5px;">+ ${tops.join(', ')}</small>` : ''}
+                    </div>
+                    <img src="${qrUrl}" class="qr-thumb" alt="QR" />
+                    <div class="order-actions" style="margin-left:15px;">
+                        <span class="status-badge status-${o.status}">${o.status}</span>
+                        <button class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}')">Cancel</button>
+                    </div>
+                `;
+                list.appendChild(p);
+            });
+        }
+
+        async function cancelOrder(e, id) {
+            e.stopPropagation();
+            if (!confirm("Cancel this order?")) return;
+            const { error } = await _db.from('orders').update({ status: 'Canceled' }).eq('order_id', id);
+            if (!error) await refreshData();
+        }
+
+        // ==========================================
+        // 4. CHAT SYSTEM (Supabase 'messages' Table)
+        // ==========================================
+        async function sendChatMessage(senderType, imgBase64 = null) {
+            let inputId = senderType === 'user' ? 'chat-text-input' : 'admin-chat-text-input';
+            const input = document.getElementById(inputId); 
+            const msg = input ? input.value.trim() : "";
+            
+            if (!msg && !imgBase64) return;
+
+            let targetUid = senderType === 'user' ? currentUser.uid : currentAdminViewingUid;
+            
+            const chatObj = {
+                message_id: 'MSG-' + Date.now(),
+                user_uid: targetUid,
+                sender: senderType,
+                text_content: msg,
+                is_read: false,
+                message_type: imgBase64 ? 'image' : 'text',
+                image_url: imgBase64 || ''
+            };
+
+            const { error } = await _db.from('messages').insert([chatObj]);
+            if(error) console.error("Chat error:", error);
+            if(input) input.value = "";
+        }
+
+        function handleImageChatUpload(input, senderType) {
+            const file = input.files[0];
+            if (file) {
+                const r = new FileReader();
+                r.onload = function(e) { sendChatMessage(senderType, e.target.result); };
+                r.readAsDataURL(file);
+            }
+        }
+
+        async function renderUserChat() {
+            if (!currentUser) return;
+            const hist = document.getElementById('chat-history');
+            
+            // Mark owner's messages to this user as read
+            await _db.from('messages').update({ is_read: true }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
+            
+            const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', currentUser.uid).order('created_at', { ascending: true });
+            
+            hist.innerHTML = '<div class="chat-message owner">Hello! Welcome to La Prinsesa. How can we help you?</div>';
+            if (msgs) {
+                msgs.forEach(m => {
+                    const d = document.createElement('div'); d.className = `chat-message ${m.sender}`;
+                    if (m.message_type === 'image') { d.innerHTML = `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}`; }
+                    else { d.innerText = m.text_content; }
+                    hist.appendChild(d);
+                });
+            }
+            hist.scrollTop = hist.scrollHeight;
+            updateUserBadges();
+        }
+
+        async function updateUserBadges() {
+            if (!currentUser) return;
+            const { data, count } = await _db.from('messages').select('message_id', { count: 'exact' }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
+            const unread = count || 0;
+            document.querySelectorAll('#desk-badge-chat, #mob-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
+        }
+
+        // ==========================================
+        // 5. ADMIN CONTROLS (Supabase logic)
+        // ==========================================
+        async function renderAdminOrders() {
+            const list = document.getElementById('admin-orders-list'); list.innerHTML = '';
+            
+            const { data: users } = await _db.from('users').select('*');
+            const { data: allOrders } = await _db.from('orders').select('*');
+            const { data: allMsgs } = await _db.from('messages').select('*');
+            
+            let hasRecords = false;
+
+            if (users) {
+                users.forEach(u => {
+                    if(u.role === 'Administrator') return;
+                    
+                    const userOrders = allOrders ? allOrders.filter(o => o.user_uid === u.uid) : [];
+                    const userMsgs = allMsgs ? allMsgs.filter(m => m.user_uid === u.uid) : [];
+                    
+                    if(userOrders.length > 0 || userMsgs.length > 0) {
+                        hasRecords = true;
+                        const pendingCount = userOrders.filter(o => o.status === 'Pending').length;
+                        const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.is_read).length;
+
+                        const row = document.createElement('div'); row.className = 'admin-user-row';
+                        row.onclick = () => openAdminUserModal(u.uid, u.fullname);
+                        row.innerHTML = `
+                            <div style="display:flex; flex-direction:column;">
+                                <h3 style="margin:0 0 5px 0;">${u.fullname}</h3>
+                                <small style="color:rgba(255,255,255,0.6);">@${u.username}</small>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                                ${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}
+                                ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
+                                ${(unreadCount === 0 && pendingCount === 0) ? `<span style="font-size:12px; color:rgba(255,255,255,0.4);">No pending tasks</span>` : ''}
+                            </div>
+                        `;
+                        list.appendChild(row);
+                    }
+                });
+            }
+            
+            // Handle Guest Orders
+            const guestOrders = allOrders ? allOrders.filter(o => o.user_uid === "GUEST") : [];
+            if(guestOrders.length > 0) {
+                hasRecords = true;
+                const pendingCount = guestOrders.filter(o => o.status === 'Pending').length;
+                const row = document.createElement('div'); row.className = 'admin-user-row';
+                row.onclick = () => openAdminUserModal("GUEST", "Guest Customer");
+                row.innerHTML = `
+                    <div style="display:flex; flex-direction:column;">
+                        <h3 style="margin:0 0 5px 0;">Guest Customer</h3>
+                        <small style="color:rgba(255,255,255,0.6);">Unregistered</small>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                        ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
+                    </div>
+                `;
+                list.appendChild(row);
+            }
+
+            if(!hasRecords) list.innerHTML = '<p>No customer records yet.</p>';
+            
+            // Admin Global Badges
+            let totalUnread = allMsgs ? allMsgs.filter(m => m.sender === 'user' && !m.is_read).length : 0;
+            let totalPending = allOrders ? allOrders.filter(o => o.status === 'Pending').length : 0;
+            const count = totalUnread + totalPending;
+            document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => { b.innerText = count; b.style.display = count > 0 ? 'flex' : 'none'; });
+        }
+
+        async function openAdminUserModal(uid, fullname) {
+            currentAdminViewingUid = uid;
+            document.getElementById('admin-user-title').innerText = `Managing: ${fullname}`;
+            document.getElementById('admin-user-overlay').classList.add('active');
+            await renderAdminUserModal(uid);
+        }
+
+        function closeAdminUserModal() { document.getElementById('admin-user-overlay').classList.remove('active'); currentAdminViewingUid = null; refreshData(); }
+
+        async function renderAdminUserModal(uid) {
+            const ordersDiv = document.getElementById('admin-user-orders'); ordersDiv.innerHTML = '';
+            const hist = document.getElementById('admin-chat-history'); hist.innerHTML = '';
+            
+            // Render Orders
+            const { data: userOrders } = await _db.from('orders').select('*').eq('user_uid', uid).order('order_id', { ascending: false });
+            
+            if(!userOrders || userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
+            else {
+                userOrders.forEach(o => {
+                    const isImg = o.image_url && (o.image_url.startsWith('http') || o.image_url.startsWith('data:'));
+                    const thumbHTML = isImg ? `<img src="${o.image_url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : (o.image_url || '🧁');
+                    let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
+
+                    ordersDiv.innerHTML += `
+                        <div class="admin-order-card">
+                           <div class="admin-order-img">${thumbHTML}</div>
+                           <div style="flex:1;">
+                               <h4 style="margin:0 0 5px 0;">${o.item_name} <span class="status-badge status-${o.status}" style="float:right;">${o.status}</span></h4>
+                               <p style="margin:0 0 5px 0; color: var(--accent-pink);"><b>${o.price}</b></p>
+                               <p style="margin:0 0 5px 0; font-size:12px; color:rgba(255,255,255,0.8);">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
+                               <p style="margin:0; font-size:11px; color:rgba(255,255,255,0.5);">ID: ${o.order_id}</p>
+                               ${o.status === 'Pending' ? `
+                               <div style="display:flex; gap:10px; margin-top:10px;">
+                                   <button class="cancel-btn" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button>
+                                   <button class="os-btn-primary" style="padding: 5px 15px; font-size: 13px;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept Order</button>
+                               </div>` : ''}
+                           </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Render Chat
+            await _db.from('messages').update({ is_read: true }).eq('user_uid', uid).eq('sender', 'user').eq('is_read', false);
+            const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', uid).order('created_at', { ascending: true });
+            
+            if (msgs) {
+                msgs.forEach(m => {
+                    const d = document.createElement('div'); d.className = `chat-message ${m.sender}`;
+                    if (m.message_type === 'image') { d.innerHTML = `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}`; }
+                    else { d.innerText = m.text_content; }
+                    hist.appendChild(d);
+                });
+            }
+            hist.scrollTop = hist.scrollHeight;
+        }
+
+        async function adminUpdateOrder(orderId, newStatus) {
+            await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId);
+            await renderAdminUserModal(currentAdminViewingUid); 
+        }
+
+        // ==========================================
+        // 6. UI UTILS AND RENDERING
+        // ==========================================
         function renderMenu() {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = '';
+            const grid = document.getElementById('product-grid'); grid.innerHTML = '';
             const isAdmin = currentUser && currentUser.role === 'Administrator';
 
             if (isAdmin) {
-                const addBtn = document.createElement('div');
-                addBtn.className = 'menu-card admin-add-card';
-                addBtn.onclick = () => openAdminEdit('menu', 'new');
-                addBtn.innerHTML = '+';
-                grid.appendChild(addBtn);
+                const addBtn = document.createElement('div'); addBtn.className = 'menu-card admin-add-card';
+                addBtn.onclick = () => openAdminEdit('menu', 'new'); addBtn.innerHTML = '+'; grid.appendChild(addBtn);
             }
 
-            menuItems.forEach((m, idx) => {
-                const isImage = m.img.startsWith('http') || m.img.startsWith('data:');
-                const imgHTML = isImage ? `<img src="${m.img}" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">` : m.img;
-
-                const card = document.createElement('div');
-                card.className = 'menu-card';
+            menuItems.forEach((m) => {
+                const isImg = m.img.startsWith('http') || m.img.startsWith('data:');
+                const imgHTML = isImg ? `<img src="${m.img}">` : m.img;
                 
+                const card = document.createElement('div'); card.className = 'menu-card';
                 let editBtnHTML = isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️</button>` : '';
 
                 card.innerHTML = `
@@ -1000,25 +1284,17 @@
         }
 
         function renderHomePromos() {
-            const feed = document.getElementById('mobile-promo-feed');
-            feed.innerHTML = '';
+            const feed = document.getElementById('mobile-promo-feed'); feed.innerHTML = '';
             const isAdmin = currentUser && currentUser.role === 'Administrator';
-
-            if (isAdmin) {
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
-            } else {
-                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-            }
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'inline-block' : 'none');
 
             homePromos.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'promo-card';
+                const card = document.createElement('div'); card.className = 'promo-card';
                 card.innerHTML = `
                     ${isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️</button>` : ''}
-                    <img class="promo-image" src="${p.img}" alt="Promo">
+                    <img class="promo-image" src="${p.img}">
                     <div class="promo-details">
-                        <h3>${p.title}</h3>
-                        <p>${p.desc}</p>
+                        <h3>${p.title}</h3><p>${p.desc}</p>
                         <button class="promo-action" onclick="switchMainView('menu')">View Menu →</button>
                     </div>
                 `;
@@ -1026,74 +1302,36 @@
             });
         }
 
-        // Edit Modals
-        function openAdminEdit(type, id) {
-            document.getElementById('admin-edit-type').value = type;
-            document.getElementById('admin-edit-id').value = id;
-
-            if (type === 'menu') {
-                if (id === 'new') {
-                    document.getElementById('admin-edit-title').innerText = "Add Menu Item";
-                    document.getElementById('admin-edit-name').value = "";
-                    document.getElementById('admin-edit-desc').value = "₱0.00";
-                    document.getElementById('admin-edit-img').value = "🧁";
-                } else {
-                    const item = menuItems.find(m => m.id == id);
-                    document.getElementById('admin-edit-title').innerText = "Edit Menu Item";
-                    document.getElementById('admin-edit-name').value = item.name;
-                    document.getElementById('admin-edit-desc').value = item.price;
-                    document.getElementById('admin-edit-img').value = item.img;
-                }
-            } else if (type === 'home') {
-                if (id === 'new') {
-                    document.getElementById('admin-edit-title').innerText = "Add Promo";
-                    document.getElementById('admin-edit-name').value = "";
-                    document.getElementById('admin-edit-desc').value = "";
-                    document.getElementById('admin-edit-img').value = "";
-                } else {
-                    const promo = homePromos.find(p => p.id == id);
-                    document.getElementById('admin-edit-title').innerText = "Edit Promo";
-                    document.getElementById('admin-edit-name').value = promo.title;
-                    document.getElementById('admin-edit-desc').value = promo.desc;
-                    document.getElementById('admin-edit-img').value = promo.img;
-                }
-            }
-            document.getElementById('admin-edit-overlay').classList.add('active');
-        }
-
-        function closeAdminEdit() { document.getElementById('admin-edit-overlay').classList.remove('active'); }
-
-        function saveAdminEdit() {
-            const type = document.getElementById('admin-edit-type').value;
-            const id = document.getElementById('admin-edit-id').value;
-            const name = document.getElementById('admin-edit-name').value;
-            const desc = document.getElementById('admin-edit-desc').value;
-            const img = document.getElementById('admin-edit-img').value;
-
-            if (type === 'menu') {
-                if (id === 'new') {
-                    menuItems.push({ id: Date.now(), name: name, price: desc, img: img });
-                } else {
-                    const idx = menuItems.findIndex(m => m.id == id);
-                    if(idx > -1) { menuItems[idx].name = name; menuItems[idx].price = desc; menuItems[idx].img = img; }
-                }
-                saveMenu();
-            } else if (type === 'home') {
-                if (id === 'new') {
-                    homePromos.push({ id: Date.now(), title: name, desc: desc, img: img });
-                } else {
-                    const idx = homePromos.findIndex(p => p.id == id);
-                    if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; }
-                }
-                savePromos();
-            }
-            closeAdminEdit();
-        }
-
         function switchMainView(viewName) {
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             document.getElementById(viewName + '-view').classList.add('active');
             updateNavState(viewName);
+        }
+
+        function updateSettingsUI() {
+            if (currentUser) {
+                document.getElementById('logged-out-view').style.display = 'none';
+                document.getElementById('logged-in-view').style.display = 'flex'; 
+                document.getElementById('profile-fullname').innerText = currentUser.fullname;
+                document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span>`;
+                
+                if (currentUser.role === 'Administrator') {
+                    document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
+                    document.getElementById('orders-view-title').innerText = "Store Operations";
+                    document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
+                    document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
+                    document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
+                } else {
+                    document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
+                    document.getElementById('orders-view-title').innerText = "Your Order History";
+                    document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
+                    document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
+                }
+            } else {
+                document.getElementById('logged-in-view').style.display = 'none';
+                document.getElementById('logged-out-view').style.display = 'flex';
+                document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
+            }
         }
 
         function filterProducts() {
@@ -1104,539 +1342,69 @@
             });
         }
 
-        function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
-        function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
-        function openMessaging() { 
-            if (!currentUser) return alert("Please log in to message owner.");
-            document.getElementById('messaging-overlay').classList.add('active'); 
-            renderUserChat();
-        }
-        function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
-        function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
-        function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
-
-        function switchSettingsNav(navId) {
-            document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('nav-' + navId).classList.add('active');
-            document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-' + navId).classList.add('active');
-            document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function openGuide(title, desc) { document.getElementById('guide-title').innerText = title; document.getElementById('guide-desc').innerText = desc; document.getElementById('guide-overlay').classList.add('active'); }
-        function closeGuide() { document.getElementById('guide-overlay').classList.remove('active'); }
-
-        function openChangeCredentials() { document.getElementById('update-username').value = currentUser.username || ""; document.getElementById('update-password').value = currentUser.password || ""; document.getElementById('credentials-overlay').classList.add('active'); }
-        function closeChangeCredentials() { document.getElementById('credentials-overlay').classList.remove('active'); }
-
-        function saveCredentials() {
-            const user = document.getElementById('update-username').value;
-            const pass = document.getElementById('update-password').value;
-            if (user && user.length < 3) return alert("Username min 3 chars.");
-            if (pass && pass.length < 3) return alert("Password min 3 chars.");
-            if (user) currentUser.username = user;
-            if (pass) currentUser.password = pass;
-            saveUser(currentUser); alert("Updated!"); closeChangeCredentials();
-        }
-
-        function sendChatMessage(senderType) {
-            let inputId = senderType === 'user' ? 'chat-text-input' : 'admin-chat-text-input';
-            const input = document.getElementById(inputId); 
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            let targetUid = senderType === 'user' ? currentUser.uid : currentAdminViewingUid;
-            let msgs = getMessages(targetUid);
-            msgs.push({ sender: senderType, text: msg, read: false, time: new Date().toLocaleTimeString() });
-            saveMessages(targetUid, msgs);
-
-            input.value = "";
-            if (senderType === 'user') renderUserChat();
-            else renderAdminUserModal(currentAdminViewingUid);
-        }
-        function handleKeyPress(e, senderType) { if (e.key === 'Enter') sendChatMessage(senderType); }
-
-        function renderUserChat() {
-            if (!currentUser) return;
-            const hist = document.getElementById('chat-history');
-            let msgs = getMessages(currentUser.uid);
-            msgs.forEach(m => { if(m.sender === 'owner') m.read = true; });
-            saveMessages(currentUser.uid, msgs);
-
-            hist.innerHTML = '<div class="chat-message owner">Hello! Welcome to La Prinsesa Bakeshop. How can we help you today?</div>';
-            msgs.forEach(m => {
-                const d = document.createElement('div');
-                d.className = `chat-message ${m.sender}`;
-                d.innerText = m.text;
-                hist.appendChild(d);
-            });
-            hist.scrollTop = hist.scrollHeight;
-            updateUserBadges();
-        }
-
-        function switchAuthTab(tabId) {
-            document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active'));
-            document.getElementById('auth-pane-' + tabId).classList.add('active');
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('btn-auth-' + tabId).classList.add('active');
-        }
-
-        function handleProfilePhoto(callback) {
-            const input = document.getElementById('create-photo'); const file = input.files[0];
-            if (file) { const reader = new FileReader(); reader.onload = function(e) { callback(e.target.result); }; reader.readAsDataURL(file); } else { callback(null); }
-        }
-
-        function displayProfilePhoto(photoData) {
-            const photoDisplay = document.getElementById('profile-photo-display');
-            if (photoData) { photoDisplay.src = photoData; photoDisplay.style.display = 'block'; } else { photoDisplay.style.display = 'none'; }
-        }
-
-        function updateSettingsUI() {
-            if (currentUser) {
-                document.getElementById('logged-out-view').style.display = 'none';
-                document.getElementById('logged-in-view').style.display = 'flex'; 
-                document.getElementById('profile-fullname').innerText = currentUser.fullname;
-                document.getElementById('profile-details').innerHTML = `Rank: ${currentUser.role} | UID: <span style="color: var(--os-green);">#${currentUser.uid}</span>`;
-                
-                if (currentUser.role === 'Administrator') {
-                    document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
-                    document.getElementById('orders-view-title').innerText = "Store Operations";
-                    document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
-                    document.getElementById('desk-nav-orders').querySelector('.text').innerText = "Customer Orders";
-                    document.getElementById('mob-nav-orders').querySelector('.nav-text').innerText = "Customer Orders";
-                } else {
-                    document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
-                    document.getElementById('orders-view-title').innerText = "Your Order History";
-                    document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
-                    document.getElementById('desk-nav-orders').querySelector('.text').innerText = "Orders";
-                    document.getElementById('mob-nav-orders').querySelector('.nav-text').innerText = "Orders";
-                }
-            } else {
-                document.getElementById('logged-in-view').style.display = 'none';
-                document.getElementById('logged-out-view').style.display = 'flex';
-                document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
-                document.getElementById('desk-nav-orders').querySelector('.text').innerText = "Orders";
-                document.getElementById('mob-nav-orders').querySelector('.nav-text').innerText = "Orders";
+        // Editor functions
+        function openAdminEdit(type, id) {
+            document.getElementById('admin-edit-type').value = type; document.getElementById('admin-edit-id').value = id;
+            if (type === 'menu') {
+                if (id === 'new') { document.getElementById('admin-edit-title').innerText = "Add Menu Item"; document.getElementById('admin-edit-name').value = ""; document.getElementById('admin-edit-desc').value = "₱0.00"; document.getElementById('admin-edit-img').value = "🧁"; } 
+                else { const item = menuItems.find(m => m.id == id); document.getElementById('admin-edit-title').innerText = "Edit Menu Item"; document.getElementById('admin-edit-name').value = item.name; document.getElementById('admin-edit-desc').value = item.price; document.getElementById('admin-edit-img').value = item.img; }
+            } else if (type === 'home') {
+                if (id === 'new') { document.getElementById('admin-edit-title').innerText = "Add Promo"; document.getElementById('admin-edit-name').value = ""; document.getElementById('admin-edit-desc').value = ""; document.getElementById('admin-edit-img').value = ""; } 
+                else { const promo = homePromos.find(p => p.id == id); document.getElementById('admin-edit-title').innerText = "Edit Promo"; document.getElementById('admin-edit-name').value = promo.title; document.getElementById('admin-edit-desc').value = promo.desc; document.getElementById('admin-edit-img').value = promo.img; }
             }
+            document.getElementById('admin-edit-overlay').classList.add('active');
         }
-
-        function validateLogin() {
-            const userInput = document.getElementById('login-username').value;
-            const passInput = document.getElementById('login-password').value;
-            
-            if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
-            
-            if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") {
-                currentUser = { fullname: "ROWENA ANGELES", username: userInput, password: passInput, uid: 1, role: "Administrator", photo: null };
-                loginSuccess(); return;
-            } 
-
-            const users = getUsers();
-            const foundUser = users.find(u => u.username === userInput && u.password === passInput);
-            if (foundUser) { currentUser = foundUser; loginSuccess(); } else { alert("Invalid Username or Password."); }
-        }
-
-        function validateCreate() {
-            const fullname = document.getElementById('create-fullname').value || "New Customer";
-            const user = document.getElementById('create-username').value;
-            const pass = document.getElementById('create-password').value;
-            
-            if (user.length < 3 || pass.length < 3) return alert("Min 3 chars.");
-            if (isUsernameTaken(user)) return alert("Username already taken.");
-            
-            handleProfilePhoto(function(photoData) {
-                currentUser = { fullname: fullname, username: user, password: pass, uid: nextUid++, role: "Customer", photo: photoData };
-                saveUser(currentUser); setCurrentUid(nextUid); loginSuccess();
-            });
-        }
-        
-        function loginSuccess() { saveSession(); alert("Logged in successfully!"); location.reload(); }
-        function logout() { currentUser = null; clearSession(); resetPersonalizationToDefaults(); document.querySelectorAll('.input-field[type="text"], .input-field[type="password"]').forEach(i => i.value = ""); updateSettingsUI(); switchAuthTab('login'); }
-        
-        function openDetails(item, price, img) {
-            currentItemToOrder = item; currentPriceToOrder = price;
-            document.getElementById('details-title').innerText = item; document.getElementById('details-price').innerText = price;
-            const now = new Date(); document.getElementById('order-date').value = now.toISOString().split('T')[0]; document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
-            document.querySelectorAll('.topping-check').forEach(c => c.checked = false);
-            nextWizardStep(1); document.getElementById('details-overlay').classList.add('active');
-        }
-        function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
-
-        function nextWizardStep(step) {
-            if (step === 2 && (!document.getElementById('order-date').value || !document.getElementById('order-time').value)) return alert("Select Date and Time.");
-            document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`wizard-step-${step}`).classList.add('active');
-        }
-
-        function getEmojiForItem(itemName) {
-            const found = menuItems.find(m => m.name === itemName);
-            return found ? found.img : '🧁';
-        }
-
-        function processOrder(type) {
-            const imgContent = getEmojiForItem(currentItemToOrder);
-            const targetUid = currentUser ? currentUser.uid : 0;
-            const order = {
-                id: 'ORD-' + Math.floor(Math.random() * 1000000), item: currentItemToOrder, price: currentPriceToOrder, img: imgContent,
-                date: document.getElementById('order-date').value, time: document.getElementById('order-time').value,
-                toppings: Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value), status: "Pending", type: type 
-            };
-
-            if (type === 'buy') {
-                if(!confirm("Warning: Buying directly skips the cart and sends the order immediately. Proceed?")) return;
-                
-                let hist = getOrderHistory(targetUid);
-                hist.push(order);
-                localStorage.setItem(`${orderHistoryKey}_${targetUid}`, JSON.stringify(hist));
-                
-                if (!currentUser || targetUid === currentUser.uid) { orderHistory = hist; }
-                
-                updateOrdersView(); closeDetails(); switchMainView('orders');
-                showReceipt(order); 
-            } else {
-                if (currentUser) { cartItems.push(order); saveCart(cartItems); } else { cartItems.push(order); }
-                updateCartView(); closeDetails(); alert("Added to cart!");
+        function closeAdminEdit() { document.getElementById('admin-edit-overlay').classList.remove('active'); }
+        function saveAdminEdit() {
+            const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value;
+            const name = document.getElementById('admin-edit-name').value; const desc = document.getElementById('admin-edit-desc').value; const img = document.getElementById('admin-edit-img').value;
+            if (type === 'menu') {
+                if (id === 'new') menuItems.push({ id: Date.now(), name: name, price: desc, img: img });
+                else { const idx = menuItems.findIndex(m => m.id == id); if(idx > -1) { menuItems[idx].name = name; menuItems[idx].price = desc; menuItems[idx].img = img; } }
+                renderMenu();
+            } else if (type === 'home') {
+                if (id === 'new') homePromos.push({ id: Date.now(), title: name, desc: desc, img: img });
+                else { const idx = homePromos.findIndex(p => p.id == id); if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; } }
+                renderHomePromos();
             }
+            closeAdminEdit();
         }
 
-        function updateCartView() {
-            const list = document.getElementById('cart-list'); list.innerHTML = ''; 
-            if (!cartItems.length) {
-                list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">Your cart is empty.</p>';
-                document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => b.style.display = 'none');
-                return;
-            }
-            
-            document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => { b.innerText = cartItems.length; b.style.display = 'flex'; });
-
-            cartItems.forEach((cItem, index) => {
-                const isImg = cItem.img && (cItem.img.startsWith('http') || cItem.img.startsWith('data:'));
-                const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : (cItem.img || '🧁');
-                
-                const p = document.createElement('div'); p.className = 'cart-panel';
-                p.innerHTML = `
-                    <div class="order-img-thumb">${thumbHTML}</div>
-                    <div class="order-info" style="margin-left: 15px;">
-                        <h3 style="margin-bottom: 2px;">${cItem.item}</h3>
-                        <p style="font-size:13px;">${cItem.price}</p>
-                        <small>Pickup: ${cItem.date} | ${cItem.time}</small>
-                        ${cItem.toppings.length ? `<small style="color: #ffeb3b;">+ ${cItem.toppings.join(', ')}</small>` : ''}
-                    </div>
-                    <div class="order-actions">
-                        <button class="os-btn-primary" style="padding: 8px 12px; font-size: 13px; margin-bottom:5px;" onclick="openCartCheckout(${index})">Checkout</button>
-                        <button class="cancel-btn" onclick="removeFromCart(${index})">Remove</button>
-                    </div>
-                `;
-                list.appendChild(p);
-            });
-        }
-
-        function removeFromCart(index) {
-            cartItems.splice(index, 1);
-            if(currentUser) saveCart(cartItems);
-            updateCartView();
-        }
-
-        function openCartCheckout(index) {
-            checkoutCartIndex = index;
-            const cItem = cartItems[index];
-            const isImg = cItem.img && (cItem.img.startsWith('http') || cItem.img.startsWith('data:'));
-            const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : (cItem.img || '🧁');
-
-            document.getElementById('cart-co-name').innerText = cItem.item;
-            document.getElementById('cart-co-price').innerText = cItem.price;
-            document.getElementById('cart-co-img').innerHTML = thumbHTML;
-            document.getElementById('cart-co-toppings').innerText = cItem.toppings.length ? `Toppings: ${cItem.toppings.join(', ')}` : "No extra toppings";
-            document.getElementById('cart-co-date').value = cItem.date;
-            document.getElementById('cart-co-time').value = cItem.time;
-            
-            document.getElementById('cart-checkout-overlay').classList.add('active');
-        }
-
-        function closeCartCheckout() { document.getElementById('cart-checkout-overlay').classList.remove('active'); checkoutCartIndex = -1; }
-
-        function checkoutCartItem() {
-            if(checkoutCartIndex < 0) return;
-            const cItem = cartItems[checkoutCartIndex];
-            
-            cItem.date = document.getElementById('cart-co-date').value;
-            cItem.time = document.getElementById('cart-co-time').value;
-            
-            if(!cItem.date || !cItem.time) return alert("Select valid Date and Time.");
-
-            cItem.status = "Pending";
-            
-            const targetUid = currentUser ? currentUser.uid : 0;
-            let hist = getOrderHistory(targetUid);
-            hist.push(cItem);
-            localStorage.setItem(`${orderHistoryKey}_${targetUid}`, JSON.stringify(hist));
-            
-            if (!currentUser || targetUid === currentUser.uid) { orderHistory = hist; }
-            
-            removeFromCart(checkoutCartIndex); 
-            closeCartCheckout();
-            updateOrdersView();
-            switchMainView('orders');
-            showReceipt(cItem);
-        }
-
-        function updateOrdersView() {
-            if (currentUser && currentUser.role === 'Administrator') {
-                document.getElementById('orders-list').style.display = 'none';
-                document.getElementById('admin-orders-list').style.display = 'flex';
-                renderAdminOrders();
-            } else {
-                document.getElementById('orders-list').style.display = 'flex';
-                document.getElementById('admin-orders-list').style.display = 'none';
-                const list = document.getElementById('orders-list'); list.innerHTML = ''; 
-                if (!orderHistory.length) return list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No orders yet.</p>';
-                
-                orderHistory.slice().reverse().forEach(o => {
-                    const isImg = o.img && (o.img.startsWith('http') || o.img.startsWith('data:'));
-                    const thumbHTML = isImg ? `<img src="${o.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : (o.img || '🧁');
-                    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.id)}`;
-                    
-                    const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt(o); 
-                    
-                    const canCancel = (o.status === 'Pending') ? true : false;
-
-                    p.innerHTML = `
-                        <div class="order-img-thumb">${thumbHTML}</div>
-                        <div class="order-info" style="margin-left: 15px;">
-                            <h3>${o.item}</h3><p>${o.price}</p><small>${o.date} | ${o.time}</small>
-                            ${o.toppings.length ? `<small style="color: #ffeb3b; display:block; margin-top:5px;">+ ${o.toppings.join(', ')}</small>` : ''}
-                        </div>
-                        <img src="${qrUrl}" class="qr-thumb" alt="QR" />
-                        <div class="order-actions" style="margin-left:15px;">
-                            <span class="status-badge status-${o.status}">${o.status}</span>
-                            <button class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.id}')">Cancel</button>
-                        </div>
-                    `;
-                    list.appendChild(p);
-                });
-            }
-        }
-
-        // --- ADMIN SPECIFIC VIEWS ---
-        function renderAdminOrders() {
-            const list = document.getElementById('admin-orders-list'); list.innerHTML = '';
-            const users = getUsers();
-            let hasRecords = false;
-
-            const allUsersToCheck = [...users, { uid: 0, fullname: "Guest Customer", username: "anonymous", role: "Guest" }];
-
-            allUsersToCheck.forEach(u => {
-                if(u.role === 'Administrator') return;
-                const userOrders = getOrderHistory(u.uid);
-                const userMsgs = getMessages(u.uid);
-                
-                if(userOrders.length > 0 || userMsgs.length > 0) {
-                    hasRecords = true;
-                    const pendingCount = userOrders.filter(o => o.status === 'Pending').length;
-                    const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.read).length;
-
-                    const row = document.createElement('div');
-                    row.className = 'admin-user-row';
-                    row.onclick = () => openAdminUserModal(u.uid);
-                    row.innerHTML = `
-                        <div style="display:flex; flex-direction:column;">
-                            <h3 style="margin:0 0 5px 0;">${u.fullname}</h3>
-                            <small style="color:rgba(255,255,255,0.6);">UID: #${u.uid} | Username: @${u.username}</small>
-                        </div>
-                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-                            ${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}
-                            ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
-                            ${(unreadCount === 0 && pendingCount === 0) ? `<span style="font-size:12px; color:rgba(255,255,255,0.4);">No pending tasks</span>` : ''}
-                        </div>
-                    `;
-                    list.appendChild(row);
-                }
-            });
-            if(!hasRecords) list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No customer records yet.</p>';
-            updateAdminBadges();
-        }
-
-        function openAdminUserModal(uid) {
-            currentAdminViewingUid = uid;
-            document.getElementById('admin-user-overlay').classList.add('active');
-            renderAdminUserModal(uid);
-        }
-        function closeAdminUserModal() {
-            document.getElementById('admin-user-overlay').classList.remove('active');
-            currentAdminViewingUid = null;
-            renderAdminOrders();
-        }
-
-        function renderAdminUserModal(uid) {
-            const users = getUsers();
-            const allUsersToCheck = [...users, { uid: 0, fullname: "Guest Customer", username: "anonymous", role: "Guest" }];
-            const u = allUsersToCheck.find(x => x.uid === uid);
-            if(!u) return;
-
-            document.getElementById('admin-user-title').innerText = `Managing: ${u.fullname} (#${u.uid})`;
-            
-            const userOrders = getOrderHistory(uid);
-            const ordersDiv = document.getElementById('admin-user-orders');
-            ordersDiv.innerHTML = '';
-            if(userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
-            
-            userOrders.slice().reverse().forEach(o => {
-                const isImg = o.img && (o.img.startsWith('http') || o.img.startsWith('data:'));
-                const thumbHTML = isImg ? `<img src="${o.img}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : (o.img || '🧁');
-
-                ordersDiv.innerHTML += `
-                    <div class="admin-order-card">
-                       <div class="admin-order-img">${thumbHTML}</div>
-                       <div style="flex:1;">
-                           <h4 style="margin:0 0 5px 0;">${o.item} <span class="status-badge status-${o.status}" style="float:right; transform: scale(0.8); transform-origin: right;">${o.status}</span></h4>
-                           <p style="margin:0 0 5px 0; color: var(--accent-pink);"><b>${o.price}</b></p>
-                           <p style="margin:0 0 5px 0; font-size:12px; color:rgba(255,255,255,0.8);">${o.date} | ${o.time} ${o.toppings.length ? `| +${o.toppings.join(', ')}` : ''}</p>
-                           <p style="margin:0; font-size:11px; color:rgba(255,255,255,0.5);">ID: ${o.id}</p>
-                           ${o.status === 'Pending' ? `
-                           <div style="display:flex; gap:10px; margin-top:10px;">
-                               <button class="cancel-btn" onclick="adminUpdateOrder(${uid}, '${o.id}', 'Canceled')">Reject / Cancel</button>
-                               <button class="os-btn-primary" style="padding: 5px 15px; font-size: 13px;" onclick="adminUpdateOrder(${uid}, '${o.id}', 'Prepared')">Accept Order</button>
-                           </div>` : ''}
-                       </div>
-                    </div>
-                `;
-            });
-
-            let msgs = getMessages(uid);
-            msgs.forEach(m => { if(m.sender === 'user') m.read = true; }); 
-            saveMessages(uid, msgs);
-
-            const hist = document.getElementById('admin-chat-history');
-            hist.innerHTML = '';
-            msgs.forEach(m => {
-                const d = document.createElement('div');
-                d.className = `chat-message ${m.sender}`;
-                d.innerText = m.text;
-                hist.appendChild(d);
-            });
-            hist.scrollTop = hist.scrollHeight;
-            updateAdminBadges();
-        }
-
-        function adminUpdateOrder(uid, orderId, newStatus) {
-            let userOrders = getOrderHistory(uid);
-            let o = userOrders.find(x => x.id === orderId);
-            if(o) { 
-                o.status = newStatus; 
-                localStorage.setItem(`${orderHistoryKey}_${uid}`, JSON.stringify(userOrders)); 
-            }
-            renderAdminUserModal(uid);
-        }
-
-        function pollSystemData() {
-            if (!currentUser) {
-                if (document.getElementById('orders-list').offsetParent !== null) {
-                    const latest = getOrderHistory(0);
-                    if(JSON.stringify(latest) !== JSON.stringify(orderHistory)) {
-                        orderHistory = latest;
-                        updateOrdersView();
-                    }
-                }
-                return;
-            }
-
-            if (currentUser.role === 'Administrator') {
-                updateAdminBadges();
-                const users = getUsers();
-                const allUsersToCheck = [...users, { uid: 0 }];
-                
-                const currentOrderState = JSON.stringify(allUsersToCheck.map(u => getOrderHistory(u.uid)));
-                if (lastGlobalOrderState !== currentOrderState) {
-                    lastGlobalOrderState = currentOrderState;
-                    if (document.getElementById('admin-orders-list').offsetParent !== null && !document.getElementById('admin-user-overlay').classList.contains('active')) {
-                        renderAdminOrders();
-                    }
-                }
-                
-                if (currentAdminViewingUid !== null && document.getElementById('admin-user-overlay').classList.contains('active')) {
-                    renderAdminUserModal(currentAdminViewingUid);
-                }
-            } else {
-                updateUserBadges();
-                if (document.getElementById('messaging-overlay').classList.contains('active')) {
-                    renderUserChat();
-                }
-                if (document.getElementById('orders-list').offsetParent !== null) {
-                    const latest = getOrderHistory(currentUser.uid);
-                    if(JSON.stringify(latest) !== JSON.stringify(orderHistory)) {
-                        orderHistory = latest;
-                        updateOrdersView();
-                    }
-                }
-            }
-        }
-
-        function updateAdminBadges() {
-            const users = getUsers();
-            let totalUnreadMsgs = 0; let totalPendingOrders = 0;
-            
-            const allUsersToCheck = [...users, { uid: 0, role: 'Guest' }];
-
-            allUsersToCheck.forEach(u => {
-                if(u.role === 'Administrator') return;
-                totalUnreadMsgs += getMessages(u.uid).filter(m => m.sender === 'user' && !m.read).length;
-                totalPendingOrders += getOrderHistory(u.uid).filter(o => o.status === 'Pending').length;
-            });
-            const count = totalUnreadMsgs + totalPendingOrders;
-            document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => { b.innerText = count; b.style.display = count > 0 ? 'flex' : 'none'; });
-        }
-
-        function updateUserBadges() {
-            let unread = getMessages(currentUser.uid).filter(m => m.sender === 'owner' && !m.read).length;
-            document.querySelectorAll('#desk-badge-chat, #mob-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
-        }
-
-        function cancelOrder(e, id) {
-            e.stopPropagation(); const o = orderHistory.find(x => x.id === id);
-            if(o && o.status === 'Prepared') {
-                if(!confirm("Owner has already processed this order. Cancel anyway?")) return;
-            } else if (!confirm("Cancel this order?")) { return; }
-
-            if(o) {
-                o.status = "Canceled"; 
-                const targetUid = currentUser ? currentUser.uid : 0;
-                localStorage.setItem(`${orderHistoryKey}_${targetUid}`, JSON.stringify(orderHistory));
-                updateOrdersView(); 
-            }
-        }
-
+        // Receipt Handlers
         function showReceipt(o) {
             document.getElementById('receipt-id-print').innerText = o.id;
-            document.getElementById('receipt-datetime-print').innerText = `${o.date} ${new Date(`1970-01-01T${o.time}:00`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+            document.getElementById('receipt-datetime-print').innerText = `${o.date} ${o.time}`;
             document.getElementById('receipt-item-print').innerText = o.item;
             document.getElementById('receipt-price-print').innerText = o.price;
             document.getElementById('receipt-total-print').innerText = o.price;
             document.getElementById('receipt-toppings-print').innerText = o.toppings.length ? `+ ${o.toppings.join(', ')}` : "";
-            
-            const webRedirectLink = `https://laprinsesa-os.app/scan?uid=${currentUser ? currentUser.uid : 0}&oid=${o.id}`;
+            const webRedirectLink = `https://laprinsesa-os.app/scan?uid=${currentUser ? currentUser.uid : 'GUEST'}&oid=${o.id}`;
             document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(webRedirectLink)}`;
-            
             document.getElementById('receipt-overlay').classList.add('active');
         }
         function closeReceipt() { document.getElementById('receipt-overlay').classList.remove('active'); }
-
         function downloadReceipt() {
             const rId = document.getElementById('receipt-id-print').innerText;
             const rItem = document.getElementById('receipt-item-print').innerText;
             const rDate = document.getElementById('receipt-datetime-print').innerText;
             const rTot = document.getElementById('receipt-total-print').innerText;
             const receiptContent = `LA PRINSESA BAKESHOP\n\nDate: ${rDate}\nRef#: ${rId}\n-----------------------\nItem: ${rItem}\nTotal: ${rTot}\n-----------------------\nThank you!`;
-            
-            const blob = new Blob([receiptContent], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('hidden', '');
-            a.setAttribute('href', url);
-            a.setAttribute('download', `Receipt_${rId}.txt`);
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            const blob = new Blob([receiptContent], { type: 'text/plain' }); const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', `Receipt_${rId}.txt`);
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
+
+        // Toggles
+        function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
+        function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
+        function openMessaging() { document.getElementById('messaging-overlay').classList.add('active'); renderUserChat(); }
+        function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
+        function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
+        function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
+        function switchSettingsNav(navId) { document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('nav-' + navId).classList.add('active'); document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active')); document.getElementById('view-' + navId).classList.add('active'); document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'}); }
+        function openGuide(title, desc) { alert(title + '\n\n' + desc); }
+        function switchAuthTab(tabId) { document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active')); document.getElementById('auth-pane-' + tabId).classList.add('active'); document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active')); document.getElementById('btn-auth-' + tabId).classList.add('active'); }
+
     </script>
 </body>
 </html>
