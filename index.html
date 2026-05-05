@@ -6,7 +6,6 @@
     <title>LA PRINSESA BAKESHOP</title>
     <style>
         :root {
-            /* INTEGRATED: Pink repeating cupcake/cake pattern */
             --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ff9eb5'/%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
             --glass-bg: rgba(209, 107, 134, 0.95); 
             --header-bg: rgba(209, 107, 134, 0.95); 
@@ -21,14 +20,12 @@
             --os-green: #2ecc71;
         }
 
-        /* --- ZERO-SHIFT HIGH CONTRAST BORDERS --- */
         body.borders-enabled #sidebar, body.borders-enabled .menu-card, body.borders-enabled .sidebar-btn,
         body.borders-enabled .os-card, body.borders-enabled .promo-card, body.borders-enabled #settings-hub,
         body.borders-enabled #details-hub, body.borders-enabled .order-panel, body.borders-enabled .ui-modal-overlay > div, body.borders-enabled .shop-header-container, body.borders-enabled .orders-header-card, body.borders-enabled #admin-user-hub, body.borders-enabled .cart-panel {
             box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255,255,255,0.4) !important;
         }
 
-        /* --- GLOBAL RESET & SCROLLBAR --- */
         * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.4) transparent; box-sizing: border-box; }
         *::-webkit-scrollbar { width: 6px; height: 6px; display: block; }
         *::-webkit-scrollbar-track { background: transparent; }
@@ -42,11 +39,6 @@
             overflow: hidden; transition: background 0.4s ease, color 0.3s ease;
             color: var(--dynamic-text-color); font-size: var(--base-font-size);
             z-index: -2;
-        }
-
-        .wallpaper-layer, .wallpaper-pattern {
-            position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -3; pointer-events: none; display: none;
         }
 
         .glass-noise {
@@ -63,16 +55,17 @@
             .desktop-carousel-container { display: flex; }
             .mobile-promo-feed { display: none; }
             
+            /* FIXED: Smaller top spacing to remove huge void */
             .shop-header-logo { display: none; }
-            .shop-header-container { margin-bottom: 25px; display: block; text-align: left; }
+            .shop-header-container { margin-bottom: 15px; display: block; text-align: left; }
             .shop-header-title { 
-                display: inline-block; font-size: 2em; font-weight: 800; 
+                display: inline-block; font-size: 1.5em; font-weight: 800; 
                 background: linear-gradient(135deg, rgba(255,105,180,0.6), rgba(255,20,147,0.3));
-                padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.4);
-                box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+                padding: 10px 20px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
                 color: #fff; letter-spacing: 1px; margin: 0;
             }
-            .shop-divider { border: none; height: 2px; background: rgba(255, 255, 255, 0.5); margin-bottom: 30px; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: block; }
+            .shop-divider { border: none; height: 1px; background: rgba(255, 255, 255, 0.3); margin-bottom: 20px; width: 100%; display: block; }
         }
 
         /* --- RESPONSIVE LAYOUT (TABLET & MOBILE) --- */
@@ -81,43 +74,43 @@
             #sidebar { display: none; } 
             
             #main-content { 
-                flex: 1; padding: 15px; height: auto; 
+                flex: 1; padding: 10px; height: auto; 
                 overflow-y: auto; overflow-x: hidden;
             }
 
             #bottom-nav { 
                 display: flex; flex-direction: row; justify-content: space-around; align-items: center; 
-                flex-shrink: 0; position: relative; width: 100%; height: 80px; 
+                flex-shrink: 0; position: relative; width: 100%; height: 70px; 
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15);
                 padding-bottom: env(safe-area-inset-bottom); z-index: 2000;
             }
             .bnav-item { flex: 1; text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative;}
-            .bnav-item span { font-size: 22px; display: block; margin-bottom: 4px; }
+            .bnav-item span { font-size: 20px; display: block; margin-bottom: 2px; }
             .bnav-item.active { color: var(--accent-pink); text-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
             
             .shop-header-container {
-                display: flex; align-items: center; justify-content: center; gap: 12px;
+                display: flex; align-items: center; justify-content: center; gap: 10px;
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-                border-radius: 20px; padding: 12px 15px; margin-bottom: 20px;
+                border-radius: 15px; padding: 8px 12px; margin-bottom: 15px;
                 border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow);
             }
-            .shop-header-logo { width: 45px; flex-shrink: 0; }
+            .shop-header-logo { width: 35px; flex-shrink: 0; }
             .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-            .shop-header-title { font-size: 1.15rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; }
+            .shop-header-title { font-size: 1rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; }
             .shop-divider { display: none; }
 
             .desktop-carousel-container { display: none !important; }
             .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 500px; margin: 0 auto; }
             
-            .menu-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+            .menu-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .menu-card { 
-                padding: 12px 8px !important; border-radius: 12px !important; background: rgba(255, 255, 255, 0.95) !important; 
+                padding: 10px 6px !important; border-radius: 12px !important; background: rgba(255, 255, 255, 0.95) !important; 
                 color: #333 !important; border: 1px solid rgba(0,0,0,0.05) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
                 display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important;
             }
-            .menu-card h3 { font-size: 0.9em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; }
-            .menu-price-pill { font-size: 11px !important; padding: 4px 10px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; }
-            .menu-image-preview { height: 80px !important; font-size: 3em !important; margin-bottom: 8px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important; }
+            .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; }
+            .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; }
+            .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important; }
 
             #settings-hub, #messaging-hub, #admin-user-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
             #receipt-hub { max-height: 90vh !important; width: 95vw !important; border-radius: 16px !important; padding: 20px !important;}
@@ -132,13 +125,13 @@
         }
 
         /* --- PC SIDEBAR STYLES --- */
-        .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
-        .front-screen-logo svg { width: 100%; height: auto; max-width: 250px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+        .front-screen-logo { width: 100%; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
+        .front-screen-logo svg { width: 100%; height: auto; max-width: 200px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
         
         .sidebar-btn {
             position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); color: white; padding: 12px 15px; border-radius: 12px; 
-            cursor: pointer; text-align: left; font-size: 16px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 10px;
+            cursor: pointer; text-align: left; font-size: 15px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 8px;
         }
         .sidebar-btn:hover { background: rgba(255, 255, 255, 0.15); }
         .sidebar-btn.active { background: rgba(255, 255, 255, 0.2); font-weight: bold; border-color: rgba(255, 255, 255, 0.3); }
@@ -148,86 +141,96 @@
         .order-badge { background: #ff9500; }
 
         /* --- MAIN CONTENT AREA --- */
-        #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth; padding: 30px; }
+        /* FIXED: Minimal top padding for #main-content */
+        #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth; padding: 15px 30px; }
+        @media (max-width: 1024px) { #main-content { padding: 15px 10px; } }
+
         .view-section { display: none; animation: fadeIn 0.4s var(--liquid-ease); width: 100%; }
         .view-section.active { display: block; }
 
-        /* --- MENU SYSTEM --- */
-        .search-container { margin-bottom: 25px; }
-        #product-search { font-size: 16px; padding: 15px 20px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: var(--apple-glass-shadow); width: 100%; border-radius: 12px; color: white; transition: 0.3s; }
+        .search-container { margin-bottom: 20px; }
+        #product-search { font-size: 15px; padding: 12px 20px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: var(--apple-glass-shadow); width: 100%; border-radius: 12px; color: white; transition: 0.3s; }
         #product-search::placeholder { color: rgba(255,255,255,0.6); }
 
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; width: 100%; }
-        .menu-card { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; width: 100%; }
+        .menu-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
         .menu-card:hover { border-color: var(--accent-pink); }
-        .menu-image-preview { width: 100%; height: 140px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; }
+        .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; }
+        
+        .admin-edit-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; display: none; }
+        .admin-add-card { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 3em; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; border-radius: 20px;}
+        .admin-add-card:hover { background: rgba(255,255,255,0.2); color: white; }
+
         .menu-price-pill { background: rgba(0,0,0,0.6); color: white; padding: 6px 18px; border-radius: 20px; font-size: 14px; font-weight: 800; z-index: 2; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .menu-price-pill::before { content: '🔒'; font-size: 12px; opacity: 0.7;}
-        .menu-item-title { margin: 0; font-size: 1.15em; font-weight: 800; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); line-height: 1.4; }
+        .menu-item-title { margin: 0; font-size: 1.1em; font-weight: 800; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); line-height: 1.4; }
 
-        /* --- CART & ORDERS PANELS --- */
-        .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 800px; }
+        /* Home Promos */
+        .promo-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; }
+        .promo-image { width: 100%; height: 160px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .promo-details { padding: 15px; }
+        .promo-details h3 { margin: 0 0 8px 0; font-size: 16px; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .promo-details p { margin: 0 0 15px 0; font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+        .promo-action { display: inline-block; padding: 8px 15px; background: var(--accent-pink); color: white; font-weight: bold; border-radius: 10px; font-size: 13px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); }
+
+        .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 800px; }
         
-        .order-panel, .cart-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
+        .order-panel, .cart-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .order-panel:hover, .cart-panel:hover { border-color: var(--accent-pink); }
         .order-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; flex: 1;}
-        .order-info h3 { margin: 0 0 5px 0; font-size: 18px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px;}
-        .order-info p { margin: 0 0 5px 0; color: var(--accent-pink); font-weight: bold; }
-        .order-info small { color: rgba(255,255,255,0.6); font-size: 13px; }
-        .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .order-info h3 { margin: 0 0 5px 0; font-size: 16px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px;}
+        .order-info p { margin: 0 0 5px 0; color: var(--accent-pink); font-weight: bold; font-size: 14px;}
+        .order-info small { color: rgba(255,255,255,0.6); font-size: 12px; }
+        .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 
-        .order-img-thumb { width: 50px; height: 50px; border-radius: 10px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.8em; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
-        .qr-thumb { width: 50px; height: 50px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
+        .order-img-thumb { width: 45px; height: 45px; border-radius: 10px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5em; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+        .qr-thumb { width: 45px; height: 45px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
 
-        /* Admin Specific order card */
         .admin-order-card { display: flex; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-        .admin-order-img { font-size: 2.5em; background: rgba(255,255,255,0.1); border-radius: 12px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
-        .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
+        .admin-order-img { font-size: 2em; background: rgba(255,255,255,0.1); border-radius: 12px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+        .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .admin-user-row:hover { border-color: var(--accent-pink); }
 
-        /* General Modal Styles */
-        .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px; box-sizing: border-box; }
+        .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; box-sizing: border-box; }
         .ui-modal-overlay.active { display: flex; }
-        #details-hub, #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-user-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 30px; position: relative; box-sizing: border-box; }
+        #details-hub, #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-user-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
 
-        /* Digital Receipt Print Styles */
-        .digital-receipt-wrapper { background: #fff; color: #000; padding: 25px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 20px; border-top: 10px solid var(--accent-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+        .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--accent-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
         .digital-receipt-wrapper * { text-shadow: none !important; }
-        .receipt-header-logo { width: 50px; height: 50px; margin: 0 auto 10px auto; display: flex; justify-content: center; align-items: center; background: #fff; border-radius: 50%; border: 2px solid var(--accent-pink); }
-        .receipt-header-logo svg { width: 35px; }
-        .receipt-title { font-size: 16px; font-weight: bold; margin: 0 0 15px 0; color: #ff1493; }
-        .receipt-divider { border-top: 1px dashed #ccc; margin: 15px 0; }
-        .receipt-detail-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; text-align: left;}
-        .receipt-qr-box { margin: 20px auto 10px auto; width: 120px; height: 120px; background: #f9f9f9; padding: 10px; border: 1px solid #eee; }
+        .receipt-header-logo { width: 45px; height: 45px; margin: 0 auto 10px auto; display: flex; justify-content: center; align-items: center; background: #fff; border-radius: 50%; border: 2px solid var(--accent-pink); }
+        .receipt-header-logo svg { width: 30px; }
+        .receipt-title { font-size: 15px; font-weight: bold; margin: 0 0 10px 0; color: #ff1493; }
+        .receipt-divider { border-top: 1px dashed #ccc; margin: 10px 0; }
+        .receipt-detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; text-align: left;}
+        .receipt-qr-box { margin: 15px auto 10px auto; width: 100px; height: 100px; background: #f9f9f9; padding: 8px; border: 1px solid #eee; }
         
         .receipt-action-row { display: flex; gap: 10px; justify-content: center; }
 
-        /* Settings Hub */
         .mobile-settings-header { display: none; } 
-        #settings-hub { display: flex; flex-direction: row; width: 950px; height: 600px; max-width: 95vw; background: rgba(0, 0, 0, 0.25) !important; backdrop-filter: blur(25px) saturate(150%) !important; border-radius: 24px; box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); overflow: visible; position: relative; box-sizing: border-box; }
-        .settings-sidebar { width: 260px; min-width: 260px; background: rgba(255, 255, 255, 0.03); border-right: 1px solid rgba(255, 255, 255, 0.08); padding: 30px 20px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; overflow-y: auto; }
-        .settings-sidebar h3 { color: #fff; font-size: 14px; letter-spacing: 1px; margin: 0 0 30px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; display: flex; align-items: center;}
-        .settings-tab-btn { background: transparent; color: rgba(255, 255, 255, 0.8); border: 1px solid transparent; text-align: left; padding: 12px 15px; border-radius: 12px; cursor: pointer; font-size: 14px; transition: all 0.2s ease; }
+        #settings-hub { display: flex; flex-direction: row; width: 900px; height: 550px; max-width: 95vw; background: rgba(0, 0, 0, 0.25) !important; backdrop-filter: blur(25px) saturate(150%) !important; border-radius: 24px; box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); overflow: visible; position: relative; box-sizing: border-box; }
+        .settings-sidebar { width: 240px; min-width: 240px; background: rgba(255, 255, 255, 0.03); border-right: 1px solid rgba(255, 255, 255, 0.08); padding: 25px 15px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; overflow-y: auto; }
+        .settings-sidebar h3 { color: #fff; font-size: 13px; letter-spacing: 1px; margin: 0 0 25px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; display: flex; align-items: center;}
+        .settings-tab-btn { background: transparent; color: rgba(255, 255, 255, 0.8); border: 1px solid transparent; text-align: left; padding: 10px 12px; border-radius: 12px; cursor: pointer; font-size: 13px; transition: all 0.2s ease; }
         .settings-tab-btn.active { border-color: rgba(255, 255, 255, 0.3); color: #fff; font-weight: bold; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
         .settings-tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #fff; }
-        .settings-content { flex: 1; padding: 40px 50px 60px 50px; position: relative; display: flex; flex-direction: column; align-items: flex-start; overflow-y: auto; overflow-x: hidden; width: 100%; scroll-behavior: smooth; box-sizing: border-box; text-align: left; }
+        .settings-content { flex: 1; padding: 30px 40px 40px 40px; position: relative; display: flex; flex-direction: column; align-items: flex-start; overflow-y: auto; overflow-x: hidden; width: 100%; scroll-behavior: smooth; box-sizing: border-box; text-align: left; }
         .settings-view { display: none; width: 100%; flex-direction: column; align-items: flex-start; animation: fadeIn 0.4s var(--liquid-ease); }
         .settings-view.active { display: flex; }
 
-        .os-card { background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 600px; margin-bottom: 20px; box-sizing: border-box; text-align: left; height: auto; }
-        .os-card-title { font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.8); text-transform: uppercase; margin: 0 0 15px 0; font-weight: 700; width: 100%;}
+        .os-card { background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 600px; margin-bottom: 20px; box-sizing: border-box; text-align: left; height: auto; }
+        .os-card-title { font-size: 11px; letter-spacing: 1px; color: rgba(255,255,255,0.8); text-transform: uppercase; margin: 0 0 15px 0; font-weight: 700; width: 100%;}
         .active-session-card { border-color: rgba(46, 204, 113, 0.4); background: rgba(46, 204, 113, 0.05); text-align: center; margin: 0 auto 20px auto; }
         .active-session-card .os-card-title { color: var(--os-green); text-align: center;}
 
         .auth-wrapper { display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; }
-        .anonymous-text-block { text-align: center; color: rgba(255,255,255,0.6); font-size: 12px; margin-top: 15px; padding-bottom: 10px; width: 100%; line-height: 1.5; display: block; clear: both; }
+        .anonymous-text-block { text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 15px; padding-bottom: 10px; width: 100%; line-height: 1.5; display: block; clear: both; }
 
-        .close-btn, .settings-close-btn { position: absolute; top: 15px; right: 15px; width: 34px !important; height: 34px !important; flex-shrink: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,0.2) !important; border: 1px solid rgba(255,255,255,0.4) !important; color: white !important; font-size: 18px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer; padding: 0 !important; margin: 0 !important; box-sizing: border-box !important; line-height: 1 !important; z-index: 9999; }
+        .close-btn, .settings-close-btn { position: absolute; top: 15px; right: 15px; width: 30px !important; height: 30px !important; flex-shrink: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,0.2) !important; border: 1px solid rgba(255,255,255,0.4) !important; color: white !important; font-size: 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer; padding: 0 !important; margin: 0 !important; box-sizing: border-box !important; line-height: 1 !important; z-index: 9999; }
         .close-btn:hover, .settings-close-btn:hover { background: rgba(255,255,255,0.4) !important; }
 
-        .os-btn-row { display: flex; gap: 12px; margin-bottom: 20px; width: 100%; flex-wrap: wrap; }
-        .os-btn { flex: 1; padding: 12px 15px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; text-align: center; min-width: 100px; }
+        .os-btn-row { display: flex; gap: 10px; margin-bottom: 15px; width: 100%; flex-wrap: wrap; }
+        .os-btn { flex: 1; padding: 10px 15px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; text-align: center; min-width: 100px; }
         .os-btn-primary { background: rgba(255,255,255,0.9); color: black; box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
         .os-btn-primary:hover { background: #ffffff; }
         .os-btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.15); }
@@ -236,12 +239,12 @@
         .os-btn-danger { background: rgba(255, 77, 77, 0.15); color: #ffcccc; border: 1px solid rgba(255, 77, 77, 0.3); width: 100%; }
         .os-btn-danger:hover { background: rgba(255, 77, 77, 0.4); color: white; }
 
-        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0;}
+        .toggle-switch { position: relative; display: inline-block; width: 40px; height: 22px; flex-shrink: 0;}
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 24px; border: 1px solid rgba(255,255,255,0.15); }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         input:checked + .slider { background-color: var(--os-green); border-color: var(--os-green); }
-        input:checked + .slider:before { transform: translateX(20px); }
+        input:checked + .slider:before { transform: translateX(18px); }
 
         .range-slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); outline: none; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); }
         .range-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
@@ -249,48 +252,42 @@
         .theme-preview-box { border: 2px solid rgba(255,255,255,0.2); transition: transform 0.3s var(--apple-spring), border-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 12px; cursor: pointer; }
         .theme-preview-box:hover { border-color: rgba(255,255,255,1); }
 
-        .auth-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 25px; }
-        .auth-tab { flex: 1; text-align: center; padding: 15px 5px; font-size: 15px; font-weight: bold; color: rgba(255,255,255,0.6); background: transparent; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
+        .auth-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; }
+        .auth-tab { flex: 1; text-align: center; padding: 12px 5px; font-size: 14px; font-weight: bold; color: rgba(255,255,255,0.6); background: transparent; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
         .auth-tab.active { color: white; border-bottom: 3px solid var(--accent-pink); text-shadow: 0 0 10px var(--accent-pink); }
         .auth-pane { display: none; width: 100%; animation: fadeIn 0.3s ease; text-align: left; }
         .auth-pane.active { display: block; }
 
-        .input-field { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: white; font-size: 14px; transition: 0.3s; box-sizing: border-box; }
+        .input-field { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: white; font-size: 13px; transition: 0.3s; box-sizing: border-box; }
         .input-field:focus { outline: none; border-color: var(--accent-pink); background: rgba(255,255,255,0.15); box-shadow: 0 0 15px rgba(255, 105, 180, 0.3); }
-        .submit-btn { width: 100%; background: var(--accent-pink); color: white; border: 1px solid transparent; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); }
+        .submit-btn { width: 100%; background: var(--accent-pink); color: white; border: 1px solid transparent; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); }
         .submit-btn:hover { background: #ff7eba; }
 
-        .card-profile-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0 auto 15px auto; }
-        .status-badge { display: inline-block; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 5px; backdrop-filter: blur(5px); }
+        .card-profile-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0 auto 15px auto; }
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; margin-bottom: 5px; backdrop-filter: blur(5px); }
         .status-Pending { background: rgba(255, 165, 0, 0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.5); }
         .status-Prepared { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46,204,113,0.5); }
         .status-Canceled { background: rgba(255, 69, 0, 0.2); color: #ff6b6b; border: 1px solid rgba(255,107,107,0.5); }
-        .cancel-btn { background: rgba(255, 77, 77, 0.1); color: #ffcccc; border: 1px solid rgba(255,77,77,0.5); padding: 8px 15px; border-radius: 10px; font-size: 13px; font-weight:bold; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px); }
+        .cancel-btn { background: rgba(255, 77, 77, 0.1); color: #ffcccc; border: 1px solid rgba(255,77,77,0.5); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight:bold; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px); }
         .cancel-btn:hover { background: rgba(255, 77, 77, 0.4); color: white; }
         .cancel-btn.disabled { opacity: 0.5; pointer-events: none; cursor: not-allowed; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
-        .guide-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s ease; }
-        .guide-card:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
-        .guide-card h4 { margin: 0 0 8px 0; font-size: 16px; color: white; }
-        .guide-card p { margin: 0; font-size: 13px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .chat-history { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; min-height: 200px; max-height: 250px;}
-        .chat-message { padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 14px; line-height: 1.4; }
+        .chat-history { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; max-height: 250px;}
+        .chat-message { padding: 10px 15px; border-radius: 15px; max-width: 85%; font-size: 13px; line-height: 1.4; }
         .chat-message.owner { background: rgba(255, 255, 255, 0.15); align-self: flex-start; border-bottom-left-radius: 4px; }
         .chat-message.user { background: var(--accent-pink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
         
-        .contact-card { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); line-height: 2; margin-top: 15px; }
+        .contact-card { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); line-height: 2; margin-top: 15px; font-size: 14px;}
         .contact-item { display: flex; align-items: flex-start; gap: 10px; }
-        .warning-box { background: rgba(255, 60, 60, 0.15); border: 1px solid #ff4d4d; color: #ffcccc; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; line-height: 1.4; }
+        .warning-box { background: rgba(255, 60, 60, 0.15); border: 1px solid #ff4d4d; color: #ffcccc; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; line-height: 1.4; }
 
         .wizard-step { display: none; animation: fadeIn 0.3s ease; }
         .wizard-step.active { display: block; }
-        .toppings-panel { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .topping-item { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px; color: #fff; }
-        .topping-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-pink); }
+        .toppings-panel { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .topping-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #fff; }
+        .topping-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent-pink); }
     </style>
 </head>
 <body>
@@ -362,24 +359,15 @@
             <div class="shop-header-logo">
                 <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="goldGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#FFF7AA" /><stop offset="20%" stop-color="#FFD700" /><stop offset="80%" stop-color="#DAA520" /><stop offset="100%" stop-color="#B8860B" />
-                        </linearGradient>
-                        <linearGradient id="pinkRibbon2" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#FF85A2" /><stop offset="50%" stop-color="#FF1493" /><stop offset="100%" stop-color="#C71585" />
-                        </linearGradient>
-                        <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%">
-                            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/>
-                        </filter>
+                        <linearGradient id="goldGradient2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFF7AA" /><stop offset="20%" stop-color="#FFD700" /><stop offset="80%" stop-color="#DAA520" /><stop offset="100%" stop-color="#B8860B" /></linearGradient>
+                        <linearGradient id="pinkRibbon2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FF85A2" /><stop offset="50%" stop-color="#FF1493" /><stop offset="100%" stop-color="#C71585" /></linearGradient>
+                        <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter>
                     </defs>
                     <path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Q200,150 20,120 Z" fill="url(#goldGradient2)" filter="url(#shadow2)" />
                     <ellipse cx="200" cy="70" rx="15" ry="10" fill="#8B0000" stroke="#FFD700" stroke-width="2" />
-                    <ellipse cx="120" cy="105" rx="8" ry="5" fill="#8B0000" />
-                    <ellipse cx="280" cy="105" rx="8" ry="5" fill="#8B0000" />
-                    <ellipse cx="60" cy="115" rx="6" ry="4" fill="#8B0000" />
-                    <ellipse cx="340" cy="115" rx="6" ry="4" fill="#8B0000" />
-                    <path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" />
-                    <path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" />
+                    <ellipse cx="120" cy="105" rx="8" ry="5" fill="#8B0000" /><ellipse cx="280" cy="105" rx="8" ry="5" fill="#8B0000" />
+                    <ellipse cx="60" cy="115" rx="6" ry="4" fill="#8B0000" /><ellipse cx="340" cy="115" rx="6" ry="4" fill="#8B0000" />
+                    <path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" /><path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" />
                     <path d="M20,120 Q200,80 380,120 L380,170 Q200,130 20,170 Z" fill="url(#pinkRibbon2)" stroke="#FFC0CB" stroke-width="4" filter="url(#shadow2)" />
                     <text x="200" y="145" font-family="Impact, sans-serif" font-size="44" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINSESA</text>
                     <circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FFD700" stroke-width="6" filter="url(#shadow2)" />
@@ -394,6 +382,8 @@
         <hr class="shop-divider">
         
         <div id="home-view" class="view-section active">
+            <button class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px;" onclick="openAdminEdit('home')">✏️ Edit Promos</button>
+
             <div class="desktop-carousel-container">
                 <div class="desktop-carousel-viewport">
                     <div class="desktop-carousel-track" id="desktop-carousel-track">
@@ -409,25 +399,8 @@
                 </div>
             </div>
 
-            <div class="mobile-promo-feed">
-                <div class="promo-card">
-                    <img class="promo-image" src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop" alt="Strawberry Princess Promo">
-                    <div class="promo-details">
-                        <h3>Treat Yourself, Princess! 🍓</h3>
-                        <p>End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.</p>
-                        <button class="promo-action" onclick="switchMainView('menu')">Order Now →</button>
-                    </div>
+            <div class="mobile-promo-feed" id="mobile-promo-feed">
                 </div>
-
-                <div class="promo-card">
-                    <img class="promo-image" src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop" alt="Red Velvet Royal Promo">
-                    <div class="promo-details">
-                        <h3>A Royal Plot Twist! 👑</h3>
-                        <p>Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist—grab your favorite slice today.</p>
-                        <button class="promo-action" onclick="switchMainView('menu')">View Menu →</button>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div id="menu-view" class="view-section">
@@ -436,27 +409,7 @@
             </div>
             
             <div class="menu-grid" id="product-grid">
-                <div class="menu-card" onclick="openDetails('Red Velvet Royal', '₱120.00')">
-                    <div class="menu-image-preview">🧁</div>
-                    <div class="menu-price-pill">₱120.00</div>
-                    <h3 class="menu-item-title">Red Velvet Royal</h3>
                 </div>
-                <div class="menu-card" onclick="openDetails('Dark Chocolate Crown', '₱140.00')">
-                    <div class="menu-image-preview">🍫</div>
-                    <div class="menu-price-pill">₱140.00</div>
-                    <h3 class="menu-item-title">Dark Chocolate Crown</h3>
-                </div>
-                <div class="menu-card" onclick="openDetails('Strawberry Princess', '₱110.00')">
-                    <div class="menu-image-preview">🍓</div>
-                    <div class="menu-price-pill">₱110.00</div>
-                    <h3 class="menu-item-title">Strawberry Princess</h3>
-                </div>
-                <div class="menu-card" onclick="openDetails('Classic Vanilla Bean', '₱90.00')">
-                    <div class="menu-image-preview">🍦</div>
-                    <div class="menu-price-pill">₱90.00</div>
-                    <h3 class="menu-item-title">Classic Vanilla Bean</h3>
-                </div>
-            </div>
         </div>
 
         <div id="cart-view" class="view-section user-only-nav">
@@ -540,7 +493,7 @@
             <button class="close-btn" onclick="closeCartCheckout()">×</button>
             <h2 class="modal-title" id="cart-co-title">Checkout Item</h2>
             <div style="display: flex; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; align-items: center;">
-                <div class="order-img-thumb" id="cart-co-img" style="width: 80px; height: 80px; font-size: 3em;"></div>
+                <div class="order-img-thumb" id="cart-co-img" style="width: 70px; height: 70px; font-size: 2.5em;"></div>
                 <div>
                     <h3 id="cart-co-name" style="margin: 0 0 5px 0;"></h3>
                     <p id="cart-co-price" style="color: var(--accent-pink); font-weight: bold; margin: 0 0 5px 0;"></p>
@@ -548,9 +501,9 @@
                 </div>
             </div>
             
-            <label style="font-size: 14px; margin-bottom: 5px; display: block;">Change Pickup/Delivery Date:</label>
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">Change Pickup/Delivery Date:</label>
             <input type="date" id="cart-co-date" class="input-field">
-            <label style="font-size: 14px; margin-bottom: 5px; display: block;">Change Time:</label>
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">Change Time:</label>
             <input type="time" id="cart-co-time" class="input-field">
             
             <div class="warning-box"><strong>⚠️ Warning:</strong> Clicking Buy Now will finalize this order and send it to the kitchen. Proceed?</div>
@@ -562,15 +515,37 @@
         </div>
     </div>
 
+    <div class="ui-modal-overlay" id="admin-edit-overlay">
+        <div id="admin-edit-hub">
+            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
+            <button class="close-btn" onclick="closeAdminEdit()">×</button>
+            <h2 class="modal-title" id="admin-edit-title">Edit Item</h2>
+            
+            <input type="hidden" id="admin-edit-id">
+            <input type="hidden" id="admin-edit-type">
+
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">Name / Title:</label>
+            <input type="text" id="admin-edit-name" class="input-field">
+            
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">Price / Description:</label>
+            <input type="text" id="admin-edit-desc" class="input-field">
+            
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">Emoji / Image URL:</label>
+            <input type="text" id="admin-edit-img" class="input-field">
+
+            <button class="submit-btn" style="margin-top: 15px;" onclick="saveAdminEdit()">Save Changes</button>
+        </div>
+    </div>
+
     <div class="ui-modal-overlay" id="about-overlay">
         <div id="about-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeAbout()">×</button>
             <h2 class="modal-title">About Us</h2>
-            <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px;">
+            <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px; font-size: 14px;">
                 Welcome to La Prinsesa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.
             </p>
-            <h3 style="color: var(--accent-pink); font-size: 18px; margin: 0;">Get In Touch</h3>
+            <h3 style="color: var(--accent-pink); font-size: 16px; margin: 0;">Get In Touch</h3>
             <div class="contact-card">
                 <div class="contact-item"><strong>📍 Address:</strong> <span>Caloocan, Metro Manila, Philippines</span></div>
                 <div class="contact-item"><strong>📞 Phone:</strong> <span>+63 912 345 6789</span></div>
@@ -598,8 +573,8 @@
                         <div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;">
                             <h4 class="os-card-title">ACTIVE SESSION</h4>
                             <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="display: none;">
-                            <h2 id="profile-fullname" style="margin: 10px 0; font-size: 24px;"></h2>
-                            <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 15px; margin-bottom: 25px;"></p>
+                            <h2 id="profile-fullname" style="margin: 10px 0; font-size: 20px;"></h2>
+                            <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 25px;"></p>
                             
                             <div style="display: flex; flex-direction: column; gap: 10px;">
                                 <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">Change Password</button>
@@ -609,7 +584,7 @@
                     </div>
 
                     <div id="logged-out-view" class="auth-wrapper">
-                        <div class="os-card" style="padding: 30px; margin-bottom: 0;">
+                        <div class="os-card" style="padding: 25px; margin-bottom: 0;">
                             <div class="auth-nav">
                                 <button id="btn-auth-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
                                 <button id="btn-auth-create" class="auth-tab" onclick="switchAuthTab('create')">Register Account</button>
@@ -648,26 +623,24 @@
                     <div class="os-card">
                         <h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4>
                         <div class="os-btn-row">
-                            <button class="os-btn os-btn-secondary" onclick="document.getElementById('bg-upload').click()">Upload Media</button>
-                            <input type="file" id="bg-upload" accept="image/*" style="display: none;" onchange="handleBgUpload(this)">
-                            <button class="os-btn os-btn-secondary">Cycle Presets</button>
+                            <button class="os-btn os-btn-secondary" onclick="randomizeBackground()">Randomize Background</button>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div onclick="applyTheme('default', '#ff69b4')" class="theme-preview-box" style="background: var(--bg-main); background-size: 80px; height: 60px;"></div>
-                            <div onclick="applyTheme('blue-gradient', '#8fd3f4')" class="theme-preview-box" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 60px;"></div>
-                            <div onclick="applyTheme('peach-gradient', '#ff85a2')" class="theme-preview-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 60px;"></div>
-                            <div onclick="applyTheme('mint-gradient', '#84fab0')" class="theme-preview-box" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 60px;"></div>
-                            <div onclick="applyTheme('solid-black', '#ff85a2')" class="theme-preview-box" style="background: #000; grid-column: span 2; display: flex; align-items:center; justify-content:center; font-size:13px; font-weight:bold; color:white; border: 1px solid rgba(255,255,255,0.2); height: 45px;">Reset to Solid Black</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div onclick="applyTheme('default', '#ff69b4')" class="theme-preview-box" style="background: var(--bg-main); background-size: 80px; height: 50px;"></div>
+                            <div onclick="applyTheme('blue-gradient', '#8fd3f4')" class="theme-preview-box" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 50px;"></div>
+                            <div onclick="applyTheme('peach-gradient', '#ff85a2')" class="theme-preview-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 50px;"></div>
+                            <div onclick="applyTheme('mint-gradient', '#84fab0')" class="theme-preview-box" style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 50px;"></div>
+                            <div onclick="applyTheme('solid-black', '#ff85a2')" class="theme-preview-box" style="background: #000; grid-column: span 2; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; color:white; border: 1px solid rgba(255,255,255,0.2); height: 40px;">Reset to Solid Black</div>
                         </div>
                     </div>
 
-                    <div class="os-card" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 25px;">
+                    <div class="os-card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
                         <h4 class="os-card-title" style="margin: 0;">HIGH CONTRAST BORDERS</h4>
                         <label class="toggle-switch"><input type="checkbox" id="borders-toggle" onchange="toggleBorders(this)"><span class="slider"></span></label>
                     </div>
 
                     <div class="os-card">
-                        <h4 class="os-card-title" id="font-size-label" style="margin-bottom: 20px;">GLOBAL FONT SIZE: 16PX</h4>
+                        <h4 class="os-card-title" id="font-size-label" style="margin-bottom: 15px;">GLOBAL FONT SIZE: 16PX</h4>
                         <input type="range" id="font-size-slider" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)">
                     </div>
 
@@ -695,21 +668,13 @@
         </div>
     </div>
 
-    <div class="ui-modal-overlay" id="guide-overlay" style="z-index: 3200;">
-        <div id="guide-hub">
-            <button class="close-btn" onclick="closeGuide()">×</button>
-            <h2 class="modal-title" id="guide-title" style="border:none; padding-bottom:0;"></h2>
-            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); line-height: 1.6;" id="guide-desc"></div>
-        </div>
-    </div>
-
     <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 3100;">
         <div id="credentials-hub">
             <button class="close-btn" onclick="closeChangeCredentials()">×</button>
-            <h2 class="modal-title" style="font-size: 22px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">Update Credentials</h2>
-            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Username (Leave blank to keep current):</label>
+            <h2 class="modal-title" style="font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">Update Credentials</h2>
+            <label style="font-size: 12px; margin-bottom: 5px; display: block;">New Username (Leave blank to keep current):</label>
             <input type="text" id="update-username" class="input-field" placeholder="Enter new username">
-            <label style="font-size: 13px; margin-bottom: 5px; display: block;">New Password (Leave blank to keep current):</label>
+            <label style="font-size: 12px; margin-bottom: 5px; display: block;">New Password (Leave blank to keep current):</label>
             <input type="password" id="update-password" class="input-field" placeholder="Enter new password">
             <button class="submit-btn" style="margin-top: 15px;" onclick="saveCredentials()">Save Changes</button>
         </div>
@@ -720,18 +685,18 @@
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeDetails()">×</button>
             <h2 class="modal-title" id="details-title">Item Details</h2>
-            <p id="details-price" style="color: var(--accent-pink); font-size: 20px; font-weight: bold; margin-bottom: 20px;"></p>
+            <p id="details-price" style="color: var(--accent-pink); font-size: 18px; font-weight: bold; margin-bottom: 20px;"></p>
             
             <div id="wizard-step-1" class="wizard-step active">
-                <label style="font-size: 14px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
+                <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
                 <input type="date" id="order-date" class="input-field">
-                <label style="font-size: 14px; margin-bottom: 5px; display: block;">Select Time:</label>
+                <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Time:</label>
                 <input type="time" id="order-time" class="input-field">
                 <button class="submit-btn" onclick="nextWizardStep(2)">Next: Choose Toppings</button>
             </div>
 
             <div id="wizard-step-2" class="wizard-step">
-                <label style="font-size: 16px; margin-bottom: 10px; display: block; font-weight: bold;">Customize Your Order:</label>
+                <label style="font-size: 15px; margin-bottom: 10px; display: block; font-weight: bold;">Customize Your Order:</label>
                 <div class="toppings-panel">
                     <label class="topping-item"><input type="checkbox" class="topping-check" value="Extra Sprinkles"> Extra Sprinkles</label>
                     <label class="topping-item"><input type="checkbox" class="topping-check" value="Choco Drizzle"> Choco Drizzle</label>
@@ -746,8 +711,8 @@
 
             <div id="wizard-step-3" class="wizard-step">
                 <div class="warning-box"><strong>⚠️ Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.</div>
-                <p style="text-align: center; font-size: 18px; margin-bottom: 25px;">Ready to complete order?</p>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
+                <p style="text-align: center; font-size: 16px; margin-bottom: 20px;">Ready to complete order?</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="submit-btn" onclick="processOrder('buy')">🛍️ Buy Now</button>
                     <button class="os-btn os-btn-secondary" onclick="processOrder('cart')">🛒 Add to Cart</button>
                     <button class="os-btn os-btn-secondary" style="border-color: transparent;" onclick="nextWizardStep(2)">Go Back</button>
@@ -773,7 +738,7 @@
                     </svg>
                 </div>
                 <div class="receipt-title">LA PRINSESA BAKESHOP</div>
-                <div style="font-size: 11px; margin-bottom: 10px;">Caloocan, Metro Manila<br>TIN: 000-123-456-000</div>
+                <div style="font-size: 10px; margin-bottom: 10px;">Caloocan, Metro Manila<br>TIN: 000-123-456-000</div>
                 <div class="receipt-divider"></div>
                 
                 <div class="receipt-detail-row"><span>Date:</span> <span id="receipt-datetime-print"></span></div>
@@ -781,22 +746,22 @@
                 <div class="receipt-detail-row"><span>Cashier:</span> <span>SYSTEM</span></div>
                 
                 <div class="receipt-divider"></div>
-                <div class="receipt-detail-row" style="font-weight: bold; font-size: 14px;">
+                <div class="receipt-detail-row" style="font-weight: bold; font-size: 13px;">
                     <span id="receipt-item-print"></span> <span id="receipt-price-print"></span>
                 </div>
-                <div id="receipt-toppings-print" style="text-align: left; font-size: 12px; margin-left: 10px; color: #555;"></div>
+                <div id="receipt-toppings-print" style="text-align: left; font-size: 11px; margin-left: 10px; color: #555;"></div>
                 
                 <div class="receipt-divider"></div>
-                <div class="receipt-detail-row" style="font-size: 16px; font-weight: bold;">
+                <div class="receipt-detail-row" style="font-size: 14px; font-weight: bold;">
                     <span>TOTAL</span> <span id="receipt-total-print"></span>
                 </div>
                 <div class="receipt-divider"></div>
 
-                <div style="font-size: 10px; margin-bottom: 10px;">Scan this QR code upon pickup.</div>
+                <div style="font-size: 9px; margin-bottom: 10px;">Scan this QR code upon pickup.</div>
                 <div class="receipt-qr-box">
                     <img id="receipt-qr" src="" alt="QR Code" width="100%" height="100%">
                 </div>
-                <div style="font-size: 9px; margin-top: 10px;">VALID FOR 5 YEARS FROM DATE OF ISSUE.</div>
+                <div style="font-size: 8px; margin-top: 10px;">VALID FOR 5 YEARS FROM DATE OF ISSUE.</div>
             </div>
 
             <div class="receipt-action-row">
@@ -819,13 +784,6 @@
         }
         setInterval(moveSlider, 4500);
 
-        const itemEmojis = {
-            'Red Velvet Royal': '🧁',
-            'Dark Chocolate Crown': '🍫',
-            'Strawberry Princess': '🍓',
-            'Classic Vanilla Bean': '🍦'
-        };
-
         function updateNavState(viewName) {
             document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
             const deskBtn = document.getElementById('desk-nav-' + viewName);
@@ -843,6 +801,12 @@
             'mint-gradient': { bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%), var(--bg-main)', size: 'cover, 80px', blend: 'overlay' },
             'solid-black': { bg: '#000', size: 'cover', blend: 'normal' }
         };
+
+        const themeKeys = Object.keys(themePresets);
+        function randomizeBackground() {
+            const randomKey = themeKeys[Math.floor(Math.random() * themeKeys.length)];
+            applyTheme(randomKey, getAccentColorForTheme(randomKey));
+        }
 
         function applyTheme(themeKey, accentColor) {
             const preset = themePresets[themeKey];
@@ -866,19 +830,6 @@
                 document.documentElement.style.setProperty('--glass-bg', themeToPanelBg[themeKey] || 'rgba(209, 107, 134, 0.95)');
             }
             savePersonalization(); 
-        }
-
-        function handleBgUpload(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const uploadedBg = `url('${e.target.result}')`; 
-                    themePresets['uploaded'] = { bg: uploadedBg, size: 'cover', blend: 'normal' };
-                    applyTheme('uploaded', '#ff69b4');
-                };
-                reader.readAsDataURL(file);
-            }
         }
 
         function toggleBorders(el) { el.checked ? document.body.classList.add('borders-enabled') : document.body.classList.remove('borders-enabled'); savePersonalization(); }
@@ -937,7 +888,10 @@
         let currentItemToOrder = "";
         let currentPriceToOrder = "";
         let currentAdminViewingUid = null;
-        let checkoutCartIndex = -1; // To track which cart item is checking out
+        let checkoutCartIndex = -1; 
+        let lastGlobalOrderState = ""; 
+        let menuItems = [];
+        let homePromos = [];
 
         const usersDataKey = 'la_prinsesa_users';
         const sessionUserKey = 'la_prinsesa_session_user';
@@ -945,6 +899,31 @@
         const orderHistoryKey = 'la_prinsesa_order_history';
         const cartItemsKey = 'la_prinsesa_cart';
         const chatHistoryKey = 'la_prinsesa_chat_';
+        const menuItemsKey = 'la_prinsesa_menu';
+        const homePromosKey = 'la_prinsesa_home';
+
+        // Default Data
+        const defaultMenu = [
+            { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: '🧁' },
+            { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: '🍫' },
+            { id: 3, name: 'Strawberry Princess', price: '₱110.00', img: '🍓' },
+            { id: 4, name: 'Classic Vanilla Bean', price: '₱90.00', img: '🍦' }
+        ];
+
+        const defaultPromos = [
+            { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' },
+            { id: 2, title: 'A Royal Plot Twist! 👑', desc: "Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist—grab your favorite slice today.", img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' }
+        ];
+
+        function loadAppData() {
+            let m = localStorage.getItem(menuItemsKey);
+            menuItems = m ? JSON.parse(m) : defaultMenu;
+            let p = localStorage.getItem(homePromosKey);
+            homePromos = p ? JSON.parse(p) : defaultPromos;
+        }
+
+        function saveMenu() { localStorage.setItem(menuItemsKey, JSON.stringify(menuItems)); renderMenu(); }
+        function savePromos() { localStorage.setItem(homePromosKey, JSON.stringify(homePromos)); renderHomePromos(); }
 
         function saveSession() { if (currentUser) sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser)); }
         function clearSession() { sessionStorage.removeItem(sessionUserKey); }
@@ -966,6 +945,7 @@
         function saveMessages(uid, msgs) { localStorage.setItem(chatHistoryKey + uid, JSON.stringify(msgs)); }
 
         function initializeSession() {
+            loadAppData();
             const savedUser = getSessionUser();
             if (savedUser) {
                 currentUser = savedUser; nextUid = getCurrentUid(); loadPersonalization(); 
@@ -979,11 +959,134 @@
                 switchMainView('home'); switchSettingsNav('accounts');
             }
             updateSettingsUI(); 
+            renderMenu();
+            renderHomePromos();
             pollSystemData();
             setInterval(pollSystemData, 3000);
         }
 
         window.onload = initializeSession; 
+
+        // Dynamic Render Functions
+        function renderMenu() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            const isAdmin = currentUser && currentUser.role === 'Administrator';
+
+            if (isAdmin) {
+                const addBtn = document.createElement('div');
+                addBtn.className = 'menu-card admin-add-card';
+                addBtn.onclick = () => openAdminEdit('menu', 'new');
+                addBtn.innerHTML = '+';
+                grid.appendChild(addBtn);
+            }
+
+            menuItems.forEach((m, idx) => {
+                const isImage = m.img.startsWith('http') || m.img.startsWith('data:');
+                const imgHTML = isImage ? `<img src="${m.img}" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">` : m.img;
+
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                
+                let editBtnHTML = isAdmin ? `<button class="admin-edit-btn" style="display:block;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️</button>` : '';
+
+                card.innerHTML = `
+                    ${editBtnHTML}
+                    <div class="menu-image-preview">${imgHTML}</div>
+                    <div class="menu-price-pill">${m.price}</div>
+                    <h3 class="menu-item-title">${m.name}</h3>
+                `;
+                card.onclick = () => openDetails(m.name, m.price, m.img);
+                grid.appendChild(card);
+            });
+        }
+
+        function renderHomePromos() {
+            const feed = document.getElementById('mobile-promo-feed');
+            feed.innerHTML = '';
+            const isAdmin = currentUser && currentUser.role === 'Administrator';
+
+            if (isAdmin) {
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+            } else {
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+            }
+
+            homePromos.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'promo-card';
+                card.innerHTML = `
+                    ${isAdmin ? `<button class="admin-edit-btn" style="display:block;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️</button>` : ''}
+                    <img class="promo-image" src="${p.img}" alt="Promo">
+                    <div class="promo-details">
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                        <button class="promo-action" onclick="switchMainView('menu')">View Menu →</button>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+        }
+
+        // Edit Modals
+        function openAdminEdit(type, id) {
+            document.getElementById('admin-edit-type').value = type;
+            document.getElementById('admin-edit-id').value = id;
+
+            if (type === 'menu') {
+                if (id === 'new') {
+                    document.getElementById('admin-edit-title').innerText = "Add Menu Item";
+                    document.getElementById('admin-edit-name').value = "";
+                    document.getElementById('admin-edit-desc').value = "₱0.00";
+                    document.getElementById('admin-edit-img').value = "🧁";
+                } else {
+                    const item = menuItems.find(m => m.id == id);
+                    document.getElementById('admin-edit-title').innerText = "Edit Menu Item";
+                    document.getElementById('admin-edit-name').value = item.name;
+                    document.getElementById('admin-edit-desc').value = item.price;
+                    document.getElementById('admin-edit-img').value = item.img;
+                }
+            } else if (type === 'home') {
+                if (id === 'new') {
+                    document.getElementById('admin-edit-title').innerText = "Add Promo";
+                    document.getElementById('admin-edit-name').value = "";
+                    document.getElementById('admin-edit-desc').value = "";
+                    document.getElementById('admin-edit-img').value = "";
+                } else {
+                    const promo = homePromos.find(p => p.id == id);
+                    document.getElementById('admin-edit-title').innerText = "Edit Promo";
+                    document.getElementById('admin-edit-name').value = promo.title;
+                    document.getElementById('admin-edit-desc').value = promo.desc;
+                    document.getElementById('admin-edit-img').value = promo.img;
+                }
+            }
+            document.getElementById('admin-edit-overlay').classList.add('active');
+        }
+
+        function closeAdminEdit() { document.getElementById('admin-edit-overlay').classList.remove('active'); }
+
+        function saveAdminEdit() {
+            const type = document.getElementById('admin-edit-type').value;
+            const id = document.getElementById('admin-edit-id').value;
+            const name = document.getElementById('admin-edit-name').value;
+            const desc = document.getElementById('admin-edit-desc').value;
+            const img = document.getElementById('admin-edit-img').value;
+
+            if (type === 'menu') {
+                if (id === 'new') {
+                    menuItems.push({ id: Date.now(), name: name, price: desc, img: img });
+                } else {
+                    const idx = menuItems.findIndex(m => m.id == id);
+                    if(idx > -1) { menuItems[idx].name = name; menuItems[idx].price = desc; menuItems[idx].img = img; }
+                }
+                saveMenu();
+            } else if (type === 'home') {
+                const idx = homePromos.findIndex(p => p.id == id);
+                if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; }
+                savePromos();
+            }
+            closeAdminEdit();
+        }
 
         function switchMainView(viewName) {
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
@@ -994,6 +1097,7 @@
         function filterProducts() {
             const query = document.getElementById('product-search').value.toLowerCase();
             document.querySelectorAll('#product-grid .menu-card').forEach(product => {
+                if(product.classList.contains('admin-add-card')) return;
                 product.style.display = product.querySelector('h3').innerText.toLowerCase().includes(query) ? "flex" : "none";
             });
         }
@@ -1141,7 +1245,7 @@
         function loginSuccess() { saveSession(); alert("Logged in successfully!"); location.reload(); }
         function logout() { currentUser = null; clearSession(); resetPersonalizationToDefaults(); document.querySelectorAll('.input-field[type="text"], .input-field[type="password"]').forEach(i => i.value = ""); updateSettingsUI(); switchAuthTab('login'); }
         
-        function openDetails(item, price) {
+        function openDetails(item, price, img) {
             currentItemToOrder = item; currentPriceToOrder = price;
             document.getElementById('details-title').innerText = item; document.getElementById('details-price').innerText = price;
             const now = new Date(); document.getElementById('order-date').value = now.toISOString().split('T')[0]; document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
@@ -1156,9 +1260,15 @@
             document.getElementById(`wizard-step-${step}`).classList.add('active');
         }
 
+        function getEmojiForItem(itemName) {
+            const found = menuItems.find(m => m.name === itemName);
+            return found ? found.img : '🧁';
+        }
+
         function processOrder(type) {
+            const imgContent = getEmojiForItem(currentItemToOrder);
             const order = {
-                id: 'ORD-' + Math.floor(Math.random() * 1000000), item: currentItemToOrder, price: currentPriceToOrder,
+                id: 'ORD-' + Math.floor(Math.random() * 1000000), item: currentItemToOrder, price: currentPriceToOrder, img: imgContent,
                 date: document.getElementById('order-date').value, time: document.getElementById('order-time').value,
                 toppings: Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value), status: "Pending", type: type 
             };
@@ -1173,7 +1283,6 @@
             }
         }
 
-        // --- CART LOGIC ---
         function updateCartView() {
             const list = document.getElementById('cart-list'); list.innerHTML = ''; 
             if (!cartItems.length) {
@@ -1185,10 +1294,12 @@
             document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => { b.innerText = cartItems.length; b.style.display = 'flex'; });
 
             cartItems.forEach((cItem, index) => {
-                const imgEmoji = itemEmojis[cItem.item] || '🧁';
+                const isImg = cItem.img.startsWith('http') || cItem.img.startsWith('data:');
+                const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : cItem.img;
+                
                 const p = document.createElement('div'); p.className = 'cart-panel';
                 p.innerHTML = `
-                    <div class="order-img-thumb">${imgEmoji}</div>
+                    <div class="order-img-thumb">${thumbHTML}</div>
                     <div class="order-info" style="margin-left: 15px;">
                         <h3 style="margin-bottom: 2px;">${cItem.item}</h3>
                         <p style="font-size:13px;">${cItem.price}</p>
@@ -1213,9 +1324,12 @@
         function openCartCheckout(index) {
             checkoutCartIndex = index;
             const cItem = cartItems[index];
+            const isImg = cItem.img.startsWith('http') || cItem.img.startsWith('data:');
+            const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : cItem.img;
+
             document.getElementById('cart-co-name').innerText = cItem.item;
             document.getElementById('cart-co-price').innerText = cItem.price;
-            document.getElementById('cart-co-img').innerText = itemEmojis[cItem.item] || '🧁';
+            document.getElementById('cart-co-img').innerHTML = thumbHTML;
             document.getElementById('cart-co-toppings').innerText = cItem.toppings.length ? `Toppings: ${cItem.toppings.join(', ')}` : "No extra toppings";
             document.getElementById('cart-co-date').value = cItem.date;
             document.getElementById('cart-co-time').value = cItem.time;
@@ -1234,11 +1348,10 @@
             
             if(!cItem.date || !cItem.time) return alert("Select valid Date and Time.");
 
-            // Finalize as Order
             cItem.status = "Pending";
             if (currentUser) { saveOrder(cItem); } else { orderHistory.push(cItem); }
             
-            removeFromCart(checkoutCartIndex); // Removes from cart and saves
+            removeFromCart(checkoutCartIndex); 
             closeCartCheckout();
             updateOrdersView();
             switchMainView('orders');
@@ -1257,16 +1370,16 @@
                 if (!orderHistory.length) return list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No orders yet.</p>';
                 
                 orderHistory.slice().reverse().forEach(o => {
-                    const imgEmoji = itemEmojis[o.item] || '🧁';
+                    const isImg = o.img && (o.img.startsWith('http') || o.img.startsWith('data:'));
+                    const thumbHTML = isImg ? `<img src="${o.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : (o.img || '🧁');
                     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.id)}`;
                     
                     const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt(o); 
                     
-                    // Owner accepting disables cancel button
                     const canCancel = (o.status === 'Pending') ? true : false;
 
                     p.innerHTML = `
-                        <div class="order-img-thumb">${imgEmoji}</div>
+                        <div class="order-img-thumb">${thumbHTML}</div>
                         <div class="order-info" style="margin-left: 15px;">
                             <h3>${o.item}</h3><p>${o.price}</p><small>${o.date} | ${o.time}</small>
                             ${o.toppings.length ? `<small style="color: #ffeb3b; display:block; margin-top:5px;">+ ${o.toppings.join(', ')}</small>` : ''}
@@ -1289,7 +1402,7 @@
             let hasRecords = false;
 
             users.forEach(u => {
-                if(u.role === 'Administrator') return; // skip self
+                if(u.role === 'Administrator') return;
                 const userOrders = getOrderHistory(u.uid);
                 const userMsgs = getMessages(u.uid);
                 
@@ -1343,10 +1456,12 @@
             if(userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
             
             userOrders.slice().reverse().forEach(o => {
-                const imgEmoji = itemEmojis[o.item] || '🧁';
+                const isImg = o.img && (o.img.startsWith('http') || o.img.startsWith('data:'));
+                const thumbHTML = isImg ? `<img src="${o.img}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : (o.img || '🧁');
+
                 ordersDiv.innerHTML += `
                     <div class="admin-order-card">
-                       <div class="admin-order-img">${imgEmoji}</div>
+                       <div class="admin-order-img">${thumbHTML}</div>
                        <div style="flex:1;">
                            <h4 style="margin:0 0 5px 0;">${o.item} <span class="status-badge status-${o.status}" style="float:right; transform: scale(0.8); transform-origin: right;">${o.status}</span></h4>
                            <p style="margin:0 0 5px 0; color: var(--accent-pink);"><b>${o.price}</b></p>
@@ -1392,6 +1507,15 @@
             if (!currentUser) return;
             if (currentUser.role === 'Administrator') {
                 updateAdminBadges();
+                
+                const currentOrderState = JSON.stringify(getUsers().map(u => getOrderHistory(u.uid)));
+                if (lastGlobalOrderState !== currentOrderState) {
+                    lastGlobalOrderState = currentOrderState;
+                    if (document.getElementById('admin-orders-list').offsetParent !== null && !document.getElementById('admin-user-overlay').classList.contains('active')) {
+                        renderAdminOrders();
+                    }
+                }
+                
                 if (currentAdminViewingUid && document.getElementById('admin-user-overlay').classList.contains('active')) {
                     renderAdminUserModal(currentAdminViewingUid);
                 }
@@ -1429,7 +1553,6 @@
 
         function cancelOrder(e, id) {
             e.stopPropagation(); const o = orderHistory.find(x => x.id === id);
-            // Added check: If owner accepted it, warning prompts
             if(o && o.status === 'Prepared') {
                 if(!confirm("Owner has already processed this order. Cancel anyway?")) return;
             } else if (!confirm("Cancel this order?")) { return; }
@@ -1441,9 +1564,7 @@
             }
         }
 
-        // Digital Receipt Functions
         function showReceipt(o) {
-            // Update Printable area
             document.getElementById('receipt-id-print').innerText = o.id;
             document.getElementById('receipt-datetime-print').innerText = `${o.date} ${new Date(`1970-01-01T${o.time}:00`).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
             document.getElementById('receipt-item-print').innerText = o.item;
@@ -1451,7 +1572,6 @@
             document.getElementById('receipt-total-print').innerText = o.price;
             document.getElementById('receipt-toppings-print').innerText = o.toppings.length ? `+ ${o.toppings.join(', ')}` : "";
             
-            // Build QR that maps back to Admin scanning tool (simulated redirect logic)
             const webRedirectLink = `https://laprinsesa-os.app/scan?uid=${currentUser ? currentUser.uid : 0}&oid=${o.id}`;
             document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(webRedirectLink)}`;
             
@@ -1460,7 +1580,6 @@
         function closeReceipt() { document.getElementById('receipt-overlay').classList.remove('active'); }
 
         function downloadReceipt() {
-            // Simple blob download for demo, standard implementation using data URL from QR or creating a simple txt
             const rId = document.getElementById('receipt-id-print').innerText;
             const rItem = document.getElementById('receipt-item-print').innerText;
             const rDate = document.getElementById('receipt-datetime-print').innerText;
