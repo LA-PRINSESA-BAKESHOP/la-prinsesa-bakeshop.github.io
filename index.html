@@ -546,6 +546,7 @@
             <input type="text" id="admin-edit-img" class="input-field" placeholder="e.g. 🧁 or https://...">
 
             <button class="submit-btn" style="margin-top: 15px;" onclick="saveAdminEdit()">Save Changes</button>
+            <button class="os-btn os-btn-danger" style="margin-top: 10px; width: 100%;" id="admin-delete-btn" onclick="deleteAdminEdit()">Delete Item</button>
         </div>
     </div>
 
@@ -799,14 +800,18 @@
         let currentImgToOrder = "";
         let currentAdminViewingUid = null;
         
-        // Basic Static Fallback Data
-        let menuItems = [
+        let menuItems = JSON.parse(localStorage.getItem('la_prinsesa_menu')) || [
             { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: '🧁' },
             { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: '🍫' },
             { id: 3, name: 'Strawberry Princess', price: '₱110.00', img: '🍓' },
-            { id: 4, name: 'Classic Vanilla Bean', price: '₱90.00', img: '🍦' }
+            { id: 4, name: 'Classic Vanilla Bean', price: '₱90.00', img: '🍦' },
+            { id: 5, name: 'Prinsesa Signature Cake', price: '₱550.00', img: '🎂' },
+            { id: 6, name: 'Mango Royale Cupcake', price: '₱115.00', img: '🥭' },
+            { id: 7, name: 'Ube Crown Pastry', price: '₱95.00', img: '🍠' },
+            { id: 8, name: 'Golden Caramel Slice', price: '₱130.00', img: '🍰' }
         ];
-        let homePromos = [
+
+        let homePromos = JSON.parse(localStorage.getItem('la_prinsesa_promos')) || [
             { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' },
             { id: 2, title: 'A Royal Plot Twist! 👑', desc: "Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist.", img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' }
         ];
@@ -814,15 +819,14 @@
         window.onload = initializeSession; 
 
         async function initializeSession() {
-            // Retrieve User Session
-            const savedUser = sessionStorage.getItem('la_prinsesa_session_user');
+            // FIX: Changed from sessionStorage to localStorage for permanent login!
+            const savedUser = localStorage.getItem('la_prinsesa_session_user');
             if (savedUser) { 
                 currentUser = JSON.parse(savedUser); 
                 const c = localStorage.getItem('la_prinsesa_cart_' + currentUser.uid);
                 if (c) cartItems = JSON.parse(c);
             }
             
-            loadPersonalization();
             renderMenu();
             renderHomePromos();
             updateSettingsUI(); 
@@ -869,7 +873,15 @@
             if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
             
             if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") {
-                currentUser = { fullname: "ROWENA ANGELES", username: userInput, password: passInput, uid: "ADMIN-1", role: "Administrator" };
+                // FIX: Ensure Admin is safely created in the Supabase Table so it is not a "Ghost" account
+                const { data: existingAdmin } = await _db.from('users').select('*').eq('username', 'LAPRINSESA').single();
+                if (!existingAdmin) {
+                    const adminObj = { uid: "ADMIN-1", fullname: "ROWENA ANGELES", username: "LAPRINSESA", password: "LAPRINSESA", role: "Administrator", photo_url: "" };
+                    await _db.from('users').insert([adminObj]);
+                    currentUser = adminObj;
+                } else {
+                    currentUser = existingAdmin;
+                }
                 finishLogin(); return;
             } 
 
@@ -899,11 +911,45 @@
         }
         
         function finishLogin() {
-            sessionStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
+            // FIX: Saving to localStorage so closing the tab won't log you out!
+            localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
             alert("Logged in successfully!"); location.reload();
         }
 
-        function logout() { sessionStorage.removeItem('la_prinsesa_session_user'); location.reload(); }
+        function logout() { 
+            localStorage.removeItem('la_prinsesa_session_user'); 
+            location.reload(); 
+        }
+
+        // ==========================================
+        // UPDATE CREDENTIALS LOGIC
+        // ==========================================
+        function openChangeCredentials() { document.getElementById('credentials-overlay').classList.add('active'); }
+        function closeChangeCredentials() { document.getElementById('credentials-overlay').classList.remove('active'); }
+
+        async function saveCredentials() {
+            if (!currentUser) return;
+            const newUsername = document.getElementById('update-username').value.trim();
+            const newPassword = document.getElementById('update-password').value.trim();
+            
+            let updates = {};
+            if (newUsername.length >= 3) updates.username = newUsername;
+            if (newPassword.length >= 3) updates.password = newPassword;
+            
+            if (Object.keys(updates).length === 0) return alert("Please enter a valid new username or password (min 3 chars).");
+            
+            // Update Supabase Database!
+            const { error } = await _db.from('users').update(updates).eq('uid', currentUser.uid);
+            if (error) return alert("Error updating credentials: " + error.message);
+            
+            if (updates.username) currentUser.username = updates.username;
+            if (updates.password) currentUser.password = updates.password;
+            
+            localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
+            alert("Credentials successfully updated in the database!");
+            closeChangeCredentials();
+            updateSettingsUI();
+        }
 
         // ==========================================
         // 3. ORDERS SYSTEM (Supabase 'orders' Table)
@@ -1261,8 +1307,16 @@
             const isAdmin = currentUser && currentUser.role === 'Administrator';
 
             if (isAdmin) {
-                const addBtn = document.createElement('div'); addBtn.className = 'menu-card admin-add-card';
-                addBtn.onclick = () => openAdminEdit('menu', 'new'); addBtn.innerHTML = '+'; grid.appendChild(addBtn);
+                const addBtn = document.createElement('div'); 
+                addBtn.className = 'menu-card admin-add-card';
+                addBtn.style.minHeight = '200px';
+                addBtn.style.display = 'flex';
+                addBtn.style.alignItems = 'center';
+                addBtn.style.justifyContent = 'center';
+                addBtn.style.fontSize = '4em';
+                addBtn.onclick = () => openAdminEdit('menu', 'new'); 
+                addBtn.innerHTML = '+'; 
+                grid.appendChild(addBtn);
             }
 
             menuItems.forEach((m) => {
@@ -1321,16 +1375,19 @@
                     document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
                 } else {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
                     document.getElementById('orders-view-title').innerText = "Your Order History";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
                 }
             } else {
                 document.getElementById('logged-in-view').style.display = 'none';
                 document.getElementById('logged-out-view').style.display = 'flex';
                 document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
+                document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
             }
         }
 
@@ -1342,29 +1399,79 @@
             });
         }
 
-        // Editor functions
+        // ==========================================
+        // 7. ADMIN EDITOR (Stored safely in memory)
+        // ==========================================
         function openAdminEdit(type, id) {
-            document.getElementById('admin-edit-type').value = type; document.getElementById('admin-edit-id').value = id;
+            document.getElementById('admin-edit-type').value = type; 
+            document.getElementById('admin-edit-id').value = id;
+            const delBtn = document.getElementById('admin-delete-btn');
+
             if (type === 'menu') {
-                if (id === 'new') { document.getElementById('admin-edit-title').innerText = "Add Menu Item"; document.getElementById('admin-edit-name').value = ""; document.getElementById('admin-edit-desc').value = "₱0.00"; document.getElementById('admin-edit-img').value = "🧁"; } 
-                else { const item = menuItems.find(m => m.id == id); document.getElementById('admin-edit-title').innerText = "Edit Menu Item"; document.getElementById('admin-edit-name').value = item.name; document.getElementById('admin-edit-desc').value = item.price; document.getElementById('admin-edit-img').value = item.img; }
+                if (id === 'new') { 
+                    document.getElementById('admin-edit-title').innerText = "Add Menu Item"; 
+                    document.getElementById('admin-edit-name').value = ""; 
+                    document.getElementById('admin-edit-desc').value = "₱0.00"; 
+                    document.getElementById('admin-edit-img').value = "🧁"; 
+                    delBtn.style.display = 'none';
+                } else { 
+                    const item = menuItems.find(m => m.id == id); 
+                    document.getElementById('admin-edit-title').innerText = "Edit Menu Item"; 
+                    document.getElementById('admin-edit-name').value = item.name; 
+                    document.getElementById('admin-edit-desc').value = item.price; 
+                    document.getElementById('admin-edit-img').value = item.img; 
+                    delBtn.style.display = 'block';
+                }
             } else if (type === 'home') {
-                if (id === 'new') { document.getElementById('admin-edit-title').innerText = "Add Promo"; document.getElementById('admin-edit-name').value = ""; document.getElementById('admin-edit-desc').value = ""; document.getElementById('admin-edit-img').value = ""; } 
-                else { const promo = homePromos.find(p => p.id == id); document.getElementById('admin-edit-title').innerText = "Edit Promo"; document.getElementById('admin-edit-name').value = promo.title; document.getElementById('admin-edit-desc').value = promo.desc; document.getElementById('admin-edit-img').value = promo.img; }
+                if (id === 'new') { 
+                    document.getElementById('admin-edit-title').innerText = "Add Promo"; 
+                    document.getElementById('admin-edit-name').value = ""; 
+                    document.getElementById('admin-edit-desc').value = ""; 
+                    document.getElementById('admin-edit-img').value = ""; 
+                    delBtn.style.display = 'none';
+                } else { 
+                    const promo = homePromos.find(p => p.id == id); 
+                    document.getElementById('admin-edit-title').innerText = "Edit Promo"; 
+                    document.getElementById('admin-edit-name').value = promo.title; 
+                    document.getElementById('admin-edit-desc').value = promo.desc; 
+                    document.getElementById('admin-edit-img').value = promo.img; 
+                    delBtn.style.display = 'block';
+                }
             }
             document.getElementById('admin-edit-overlay').classList.add('active');
         }
+
         function closeAdminEdit() { document.getElementById('admin-edit-overlay').classList.remove('active'); }
+        
         function saveAdminEdit() {
             const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value;
             const name = document.getElementById('admin-edit-name').value; const desc = document.getElementById('admin-edit-desc').value; const img = document.getElementById('admin-edit-img').value;
             if (type === 'menu') {
                 if (id === 'new') menuItems.push({ id: Date.now(), name: name, price: desc, img: img });
                 else { const idx = menuItems.findIndex(m => m.id == id); if(idx > -1) { menuItems[idx].name = name; menuItems[idx].price = desc; menuItems[idx].img = img; } }
+                localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
                 renderMenu();
             } else if (type === 'home') {
                 if (id === 'new') homePromos.push({ id: Date.now(), title: name, desc: desc, img: img });
                 else { const idx = homePromos.findIndex(p => p.id == id); if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; } }
+                localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
+                renderHomePromos();
+            }
+            closeAdminEdit();
+        }
+
+        function deleteAdminEdit() {
+            const type = document.getElementById('admin-edit-type').value; 
+            const id = document.getElementById('admin-edit-id').value;
+            if(!confirm("Are you sure you want to delete this item?")) return;
+
+            if (type === 'menu') {
+                menuItems = menuItems.filter(m => m.id != id);
+                localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
+                renderMenu();
+            } else if (type === 'home') {
+                homePromos = homePromos.filter(p => p.id != id);
+                localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
                 renderHomePromos();
             }
             closeAdminEdit();
