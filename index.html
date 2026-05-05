@@ -33,12 +33,17 @@
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            margin: 0; display: flex; height: 100vh; width: 100vw;
+            margin: 0; padding: 0; display: flex; height: 100vh; width: 100vw;
             background: var(--bg-main); background-color: #ffb6c1; 
             background-repeat: repeat; background-position: top left; background-attachment: fixed; background-size: 250px;
             overflow: hidden; transition: background 0.4s ease, color 0.3s ease;
             color: var(--dynamic-text-color); font-size: var(--base-font-size);
-            z-index: -2;
+            z-index: -2; align-items: flex-start;
+        }
+
+        .wallpaper-layer, .wallpaper-pattern {
+            position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -3; pointer-events: none; display: none;
         }
 
         .glass-noise {
@@ -49,15 +54,14 @@
 
         /* --- RESPONSIVE LAYOUT (PC) --- */
         @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
-            body { display: grid; grid-template-columns: var(--side-full) 1fr; }
+            body { display: grid; grid-template-columns: var(--side-full) 1fr; align-items: stretch; }
             #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 2000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); }
             #bottom-nav { display: none; }
             .desktop-carousel-container { display: flex; }
             .mobile-promo-feed { display: none; }
             
-            /* FIXED: Smaller top spacing to remove huge void */
             .shop-header-logo { display: none; }
-            .shop-header-container { margin-bottom: 15px; display: block; text-align: left; }
+            .shop-header-container { margin: 0 0 15px 0; display: block; text-align: left; }
             .shop-header-title { 
                 display: inline-block; font-size: 1.5em; font-weight: 800; 
                 background: linear-gradient(135deg, rgba(255,105,180,0.6), rgba(255,20,147,0.3));
@@ -73,10 +77,7 @@
             body { display: flex; flex-direction: column; overflow: hidden; height: 100dvh; }
             #sidebar { display: none; } 
             
-            #main-content { 
-                flex: 1; padding: 10px; height: auto; 
-                overflow-y: auto; overflow-x: hidden;
-            }
+            #main-content { flex: 1; padding: 10px 15px; height: auto; overflow-y: auto; overflow-x: hidden; }
 
             #bottom-nav { 
                 display: flex; flex-direction: row; justify-content: space-around; align-items: center; 
@@ -91,7 +92,7 @@
             .shop-header-container {
                 display: flex; align-items: center; justify-content: center; gap: 10px;
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-                border-radius: 15px; padding: 8px 12px; margin-bottom: 15px;
+                border-radius: 15px; padding: 8px 12px; margin: 0 0 15px 0;
                 border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow);
             }
             .shop-header-logo { width: 35px; flex-shrink: 0; }
@@ -112,7 +113,7 @@
             .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; }
             .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important; }
 
-            #settings-hub, #messaging-hub, #admin-user-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
+            #settings-hub, #messaging-hub, #admin-user-hub, #admin-edit-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
             #receipt-hub { max-height: 90vh !important; width: 95vw !important; border-radius: 16px !important; padding: 20px !important;}
 
             .mobile-settings-header { display: block !important; text-align: center; color: white; font-size: 16px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); position: absolute; top: -30px; left: 0; right: 0; }
@@ -141,14 +142,11 @@
         .order-badge { background: #ff9500; }
 
         /* --- MAIN CONTENT AREA --- */
-        /* FIXED: Minimal top padding for #main-content */
         #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth; padding: 15px 30px; }
-        @media (max-width: 1024px) { #main-content { padding: 15px 10px; } }
-
         .view-section { display: none; animation: fadeIn 0.4s var(--liquid-ease); width: 100%; }
         .view-section.active { display: block; }
 
-        .search-container { margin-bottom: 20px; }
+        .search-container { margin-bottom: 15px; }
         #product-search { font-size: 15px; padding: 12px 20px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: var(--apple-glass-shadow); width: 100%; border-radius: 12px; color: white; transition: 0.3s; }
         #product-search::placeholder { color: rgba(255,255,255,0.6); }
 
@@ -157,7 +155,8 @@
         .menu-card:hover { border-color: var(--accent-pink); }
         .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; }
         
-        .admin-edit-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; display: none; }
+        .admin-edit-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 10; display: none; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.4); }
+        .admin-edit-btn:hover { background: var(--accent-pink); }
         .admin-add-card { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 3em; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; border-radius: 20px;}
         .admin-add-card:hover { background: rgba(255,255,255,0.2); color: white; }
 
@@ -173,7 +172,7 @@
         .promo-details p { margin: 0 0 15px 0; font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
         .promo-action { display: inline-block; padding: 8px 15px; background: var(--accent-pink); color: white; font-weight: bold; border-radius: 10px; font-size: 13px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4); }
 
-        .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
         #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 800px; }
         
         .order-panel, .cart-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
@@ -184,11 +183,11 @@
         .order-info small { color: rgba(255,255,255,0.6); font-size: 12px; }
         .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 
-        .order-img-thumb { width: 45px; height: 45px; border-radius: 10px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5em; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+        .order-img-thumb { width: 45px; height: 45px; border-radius: 10px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5em; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; overflow:hidden;}
         .qr-thumb { width: 45px; height: 45px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
 
         .admin-order-card { display: flex; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-        .admin-order-img { font-size: 2em; background: rgba(255,255,255,0.1); border-radius: 12px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
+        .admin-order-img { font-size: 2em; background: rgba(255,255,255,0.1); border-radius: 12px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; overflow:hidden; }
         .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .admin-user-row:hover { border-color: var(--accent-pink); }
 
@@ -382,7 +381,7 @@
         <hr class="shop-divider">
         
         <div id="home-view" class="view-section active">
-            <button class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px;" onclick="openAdminEdit('home')">✏️ Edit Promos</button>
+            <button class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px;" onclick="openAdminEdit('home', 'new')">✏️ Add New Promo</button>
 
             <div class="desktop-carousel-container">
                 <div class="desktop-carousel-viewport">
@@ -434,25 +433,25 @@
 
     <div id="bottom-nav">
         <div class="bnav-item active" id="mob-nav-home" onclick="switchMainView('home')">
-            <span>🏠</span>Home
+            <span>🏠</span><span class="nav-text">Home</span>
         </div>
         <div class="bnav-item" id="mob-nav-menu" onclick="switchMainView('menu')">
-            <span>📜</span>Menu
+            <span>📜</span><span class="nav-text">Menu</span>
         </div>
         <div class="bnav-item user-only-nav" id="mob-nav-cart" onclick="switchMainView('cart')">
-            <span>🛒</span>Cart
+            <span>🛒</span><span class="nav-text">Cart</span>
             <div id="mob-badge-cart" class="nav-badge" style="display:none;">0</div>
         </div>
         <div class="bnav-item" id="mob-nav-orders" onclick="switchMainView('orders')">
-            <span>📦</span>Orders
+            <span>📦</span><span class="nav-text">Orders</span>
             <div id="mob-badge-orders" class="nav-badge" style="display:none;">0</div>
         </div>
         <div class="bnav-item user-only-nav" onclick="openMessaging()">
-            <span>💬</span>Chat
+            <span>💬</span><span class="nav-text">Chat</span>
             <div id="mob-badge-chat" class="nav-badge" style="display:none;">0</div>
         </div>
         <div class="bnav-item" onclick="openSettings()">
-            <span>⚙️</span>More
+            <span>⚙️</span><span class="nav-text">More</span>
         </div>
     </div>
 
@@ -531,7 +530,7 @@
             <input type="text" id="admin-edit-desc" class="input-field">
             
             <label style="font-size: 13px; margin-bottom: 5px; display: block;">Emoji / Image URL:</label>
-            <input type="text" id="admin-edit-img" class="input-field">
+            <input type="text" id="admin-edit-img" class="input-field" placeholder="e.g. 🧁 or https://...">
 
             <button class="submit-btn" style="margin-top: 15px;" onclick="saveAdminEdit()">Save Changes</button>
         </div>
@@ -935,7 +934,6 @@
         function setCurrentUid(uid) { localStorage.setItem(uidCounterKey, uid); }
         function getCurrentUid() { const uid = localStorage.getItem(uidCounterKey); return uid ? parseInt(uid) : 2; }
         
-        function saveOrder(order) { orderHistory.push(order); localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory)); }
         function getOrderHistory(uid) { const historyStr = localStorage.getItem(`${orderHistoryKey}_${uid}`); return historyStr ? JSON.parse(historyStr) : []; }
 
         function saveCart(cart) { cartItems = cart; localStorage.setItem(`${cartItemsKey}_${currentUser.uid}`, JSON.stringify(cartItems)); }
@@ -988,7 +986,7 @@
                 const card = document.createElement('div');
                 card.className = 'menu-card';
                 
-                let editBtnHTML = isAdmin ? `<button class="admin-edit-btn" style="display:block;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️</button>` : '';
+                let editBtnHTML = isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️</button>` : '';
 
                 card.innerHTML = `
                     ${editBtnHTML}
@@ -1016,7 +1014,7 @@
                 const card = document.createElement('div');
                 card.className = 'promo-card';
                 card.innerHTML = `
-                    ${isAdmin ? `<button class="admin-edit-btn" style="display:block;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️</button>` : ''}
+                    ${isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️</button>` : ''}
                     <img class="promo-image" src="${p.img}" alt="Promo">
                     <div class="promo-details">
                         <h3>${p.title}</h3>
@@ -1081,8 +1079,12 @@
                 }
                 saveMenu();
             } else if (type === 'home') {
-                const idx = homePromos.findIndex(p => p.id == id);
-                if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; }
+                if (id === 'new') {
+                    homePromos.push({ id: Date.now(), title: name, desc: desc, img: img });
+                } else {
+                    const idx = homePromos.findIndex(p => p.id == id);
+                    if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; }
+                }
                 savePromos();
             }
             closeAdminEdit();
@@ -1200,15 +1202,21 @@
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
                     document.getElementById('orders-view-title').innerText = "Store Operations";
                     document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
+                    document.getElementById('desk-nav-orders').querySelector('.text').innerText = "Customer Orders";
+                    document.getElementById('mob-nav-orders').querySelector('.nav-text').innerText = "Customer Orders";
                 } else {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
                     document.getElementById('orders-view-title').innerText = "Your Order History";
                     document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
+                    document.getElementById('desk-nav-orders').querySelector('.text').innerText = "Orders";
+                    document.getElementById('mob-nav-orders').querySelector('.nav-text').innerText = "Orders";
                 }
             } else {
                 document.getElementById('logged-in-view').style.display = 'none';
                 document.getElementById('logged-out-view').style.display = 'flex';
                 document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
+                document.getElementById('desk-nav-orders').querySelector('.text').innerText = "Orders";
+                document.getElementById('mob-nav-orders').querySelector('.nav-text').innerText = "Orders";
             }
         }
 
@@ -1267,14 +1275,22 @@
 
         function processOrder(type) {
             const imgContent = getEmojiForItem(currentItemToOrder);
+            const targetUid = currentUser ? currentUser.uid : 0;
             const order = {
                 id: 'ORD-' + Math.floor(Math.random() * 1000000), item: currentItemToOrder, price: currentPriceToOrder, img: imgContent,
                 date: document.getElementById('order-date').value, time: document.getElementById('order-time').value,
                 toppings: Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value), status: "Pending", type: type 
             };
+
             if (type === 'buy') {
                 if(!confirm("Warning: Buying directly skips the cart and sends the order immediately. Proceed?")) return;
-                if (currentUser) { saveOrder(order); saveSession(); } else { orderHistory.push(order); }
+                
+                let hist = getOrderHistory(targetUid);
+                hist.push(order);
+                localStorage.setItem(`${orderHistoryKey}_${targetUid}`, JSON.stringify(hist));
+                
+                if (!currentUser || targetUid === currentUser.uid) { orderHistory = hist; }
+                
                 updateOrdersView(); closeDetails(); switchMainView('orders');
                 showReceipt(order); 
             } else {
@@ -1294,8 +1310,8 @@
             document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => { b.innerText = cartItems.length; b.style.display = 'flex'; });
 
             cartItems.forEach((cItem, index) => {
-                const isImg = cItem.img.startsWith('http') || cItem.img.startsWith('data:');
-                const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : cItem.img;
+                const isImg = cItem.img && (cItem.img.startsWith('http') || cItem.img.startsWith('data:'));
+                const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : (cItem.img || '🧁');
                 
                 const p = document.createElement('div'); p.className = 'cart-panel';
                 p.innerHTML = `
@@ -1324,8 +1340,8 @@
         function openCartCheckout(index) {
             checkoutCartIndex = index;
             const cItem = cartItems[index];
-            const isImg = cItem.img.startsWith('http') || cItem.img.startsWith('data:');
-            const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : cItem.img;
+            const isImg = cItem.img && (cItem.img.startsWith('http') || cItem.img.startsWith('data:'));
+            const thumbHTML = isImg ? `<img src="${cItem.img}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : (cItem.img || '🧁');
 
             document.getElementById('cart-co-name').innerText = cItem.item;
             document.getElementById('cart-co-price').innerText = cItem.price;
@@ -1349,7 +1365,13 @@
             if(!cItem.date || !cItem.time) return alert("Select valid Date and Time.");
 
             cItem.status = "Pending";
-            if (currentUser) { saveOrder(cItem); } else { orderHistory.push(cItem); }
+            
+            const targetUid = currentUser ? currentUser.uid : 0;
+            let hist = getOrderHistory(targetUid);
+            hist.push(cItem);
+            localStorage.setItem(`${orderHistoryKey}_${targetUid}`, JSON.stringify(hist));
+            
+            if (!currentUser || targetUid === currentUser.uid) { orderHistory = hist; }
             
             removeFromCart(checkoutCartIndex); 
             closeCartCheckout();
@@ -1401,7 +1423,9 @@
             const users = getUsers();
             let hasRecords = false;
 
-            users.forEach(u => {
+            const allUsersToCheck = [...users, { uid: 0, fullname: "Guest Customer", username: "anonymous", role: "Guest" }];
+
+            allUsersToCheck.forEach(u => {
                 if(u.role === 'Administrator') return;
                 const userOrders = getOrderHistory(u.uid);
                 const userMsgs = getMessages(u.uid);
@@ -1445,7 +1469,8 @@
 
         function renderAdminUserModal(uid) {
             const users = getUsers();
-            const u = users.find(x => x.uid === uid);
+            const allUsersToCheck = [...users, { uid: 0, fullname: "Guest Customer", username: "anonymous", role: "Guest" }];
+            const u = allUsersToCheck.find(x => x.uid === uid);
             if(!u) return;
 
             document.getElementById('admin-user-title').innerText = `Managing: ${u.fullname} (#${u.uid})`;
@@ -1504,11 +1529,23 @@
         }
 
         function pollSystemData() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                if (document.getElementById('orders-list').offsetParent !== null) {
+                    const latest = getOrderHistory(0);
+                    if(JSON.stringify(latest) !== JSON.stringify(orderHistory)) {
+                        orderHistory = latest;
+                        updateOrdersView();
+                    }
+                }
+                return;
+            }
+
             if (currentUser.role === 'Administrator') {
                 updateAdminBadges();
+                const users = getUsers();
+                const allUsersToCheck = [...users, { uid: 0 }];
                 
-                const currentOrderState = JSON.stringify(getUsers().map(u => getOrderHistory(u.uid)));
+                const currentOrderState = JSON.stringify(allUsersToCheck.map(u => getOrderHistory(u.uid)));
                 if (lastGlobalOrderState !== currentOrderState) {
                     lastGlobalOrderState = currentOrderState;
                     if (document.getElementById('admin-orders-list').offsetParent !== null && !document.getElementById('admin-user-overlay').classList.contains('active')) {
@@ -1516,7 +1553,7 @@
                     }
                 }
                 
-                if (currentAdminViewingUid && document.getElementById('admin-user-overlay').classList.contains('active')) {
+                if (currentAdminViewingUid !== null && document.getElementById('admin-user-overlay').classList.contains('active')) {
                     renderAdminUserModal(currentAdminViewingUid);
                 }
             } else {
@@ -1537,7 +1574,10 @@
         function updateAdminBadges() {
             const users = getUsers();
             let totalUnreadMsgs = 0; let totalPendingOrders = 0;
-            users.forEach(u => {
+            
+            const allUsersToCheck = [...users, { uid: 0, role: 'Guest' }];
+
+            allUsersToCheck.forEach(u => {
                 if(u.role === 'Administrator') return;
                 totalUnreadMsgs += getMessages(u.uid).filter(m => m.sender === 'user' && !m.read).length;
                 totalPendingOrders += getOrderHistory(u.uid).filter(o => o.status === 'Pending').length;
@@ -1559,7 +1599,8 @@
 
             if(o) {
                 o.status = "Canceled"; 
-                if (currentUser) localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory));
+                const targetUid = currentUser ? currentUser.uid : 0;
+                localStorage.setItem(`${orderHistoryKey}_${targetUid}`, JSON.stringify(orderHistory));
                 updateOrdersView(); 
             }
         }
