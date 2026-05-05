@@ -15,7 +15,7 @@
             --glass-blur: none; 
             --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
             --base-font-size: 16px;
-            --side-full: 320px; /* Made the left sidebar larger */
+            --side-full: 320px;
             --apple-spring: cubic-bezier(0.25, 1, 0.5, 1);
             --liquid-ease: cubic-bezier(0.23, 1, 0.32, 1);
             --dynamic-text-color: #ffffff;
@@ -66,7 +66,7 @@
             .shop-header-logo { display: none; }
             .shop-header-container { margin: 0 0 20px 0; display: block; text-align: left; }
             .shop-header-title { 
-                display: inline-block; font-size: 2em; /* Made Header Larger */ font-weight: 800; 
+                display: inline-block; font-size: 2em; font-weight: 800; 
                 background: linear-gradient(135deg, rgba(255,105,180,0.6), rgba(255,20,147,0.3));
                 padding: 15px 25px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.4);
                 box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
@@ -131,7 +131,7 @@
 
         /* --- PC SIDEBAR STYLES --- */
         .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
-        .front-screen-logo svg { width: 100%; height: auto; max-width: 240px; /* Made SVG logo larger */ filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+        .front-screen-logo svg { width: 100%; height: auto; max-width: 240px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
         
         .sidebar-btn {
             position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);
@@ -535,9 +535,7 @@
         </div>
     </div>
 
-    <!-- Modified cart checkout to remain as previously implemented to not break layout, modified detailed overlay below -->
     <div class="ui-modal-overlay" id="cart-checkout-overlay">
-        <!-- Re-using messaging hub styling size for single column basic details -->
         <div id="messaging-hub" style="max-width: 480px;">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeCartCheckout()">×</button>
@@ -598,7 +596,7 @@
             </p>
             <h3 style="color: var(--accent-pink); font-size: 16px; margin: 0;">Get In Touch</h3>
             <div class="contact-card">
-                <div class="contact-item"><strong>📍 Address:</strong> <span></span></div>2211B Lacson St. Brgy 96 Tondo, Manila</div
+                <div class="contact-item"><strong>📍 Address:</strong> <span>Caloocan, Metro Manila, Philippines</span></div>
                 <div class="contact-item"><strong>📞 Phone:</strong> <span>+63 912 345 6789</span></div>
                 <div class="contact-item"><strong>✉️ Email:</strong> <span>laprinsesadecupcake@gmail.com</span></div>
             </div>
@@ -731,7 +729,6 @@
         </div>
     </div>
 
-    <!-- NEW SPLIT-VIEW ITEM DETAILS MODAL -->
     <div class="ui-modal-overlay" id="details-overlay">
         <div id="details-hub">
             <button class="close-btn" onclick="closeDetails()" style="z-index: 10;">×</button>
@@ -743,14 +740,12 @@
             </div>
             
             <div class="modal-body">
-                <!-- Left Picture Preview Panel -->
                 <div class="modal-preview-panel">
                     <div class="modal-image-wrap" id="details-image-container">
                         <!-- Content dynamically injected here -->
                     </div>
                 </div>
 
-                <!-- Right Customization Panel -->
                 <div class="modal-options-panel">
                     <div id="wizard-step-1" class="wizard-step active">
                         <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
@@ -839,9 +834,6 @@
     </div>
 
     <script>
-        // ==========================================
-        // 1. SUPABASE CONNECTION & INIT
-        // ==========================================
         const { createClient } = supabase;
         const supabaseUrl = 'https://aetufsoytqddgwajqoap.supabase.co';
         const supabaseKey = 'sb_publishable_3Wlkbw5X162n_OgAKnU7FQ_0ZN68m-c';
@@ -861,7 +853,6 @@
         window.onload = initializeSession; 
 
         async function initializeSession() {
-            // Attempt anonymous sign-in to satisfy default RLS policies that check auth state
             _db.auth.signInAnonymously().catch(e => console.warn(e));
 
             const savedUser = localStorage.getItem('la_prinsesa_session_user');
@@ -882,7 +873,6 @@
         }
 
         async function loadMenuAndPromos() {
-            // Attempt to load from Supabase 'menu' table
             const { data: menuData, error: menuErr } = await _db.from('menu').select('*');
             if (!menuErr && menuData && menuData.length > 0) {
                 menuItems = menuData;
@@ -900,7 +890,6 @@
                 ];
             }
 
-            // Attempt to load from Supabase 'promos' table
             const { data: promoData, error: promoErr } = await _db.from('promos').select('*');
             if (!promoErr && promoData && promoData.length > 0) {
                 homePromos = promoData;
@@ -948,9 +937,6 @@
             }
         }
 
-        // ==========================================
-        // 2. AUTHENTICATION
-        // ==========================================
         async function validateLogin() {
             const userInput = document.getElementById('login-username').value.trim();
             const passInput = document.getElementById('login-password').value.trim();
@@ -1003,9 +989,6 @@
             location.reload(); 
         }
 
-        // ==========================================
-        // UPDATE CREDENTIALS LOGIC
-        // ==========================================
         function openChangeCredentials() { document.getElementById('credentials-overlay').classList.add('active'); }
         function closeChangeCredentials() { document.getElementById('credentials-overlay').classList.remove('active'); }
 
@@ -1032,12 +1015,6 @@
             updateSettingsUI();
         }
 
-        // ==========================================
-        // 3. ORDERS SYSTEM (PHOTO LAYERED)
-        // ==========================================
-        
-        // This function would ideally use transparent illustrative photo layered assets.
-        // For Turn 9, this Turn, transparent illustrative placeholder assets illustrative have illustrative been illustrative illustrative used.
         const toppingPhotoMap = {
             'Extra Sprinkles': 'topping-sprinkles-photo',
             'Choco Drizzle': 'topping-choco-photo',
@@ -1050,7 +1027,6 @@
             document.getElementById('details-price').innerText = price;
             
             const imgContainer = document.getElementById('details-image-container');
-            // Layer base photo first. Layer z-index matters.
             imgContainer.innerHTML = `
                 <img src="${currentImgToOrder}" alt="${item}" class="photo-layer base-cupcake-photo" id="cupcake-base-layer">
                 <img src="https://via.placeholder.com/400x300/eee/fff?text=Illustrative%20Sprinkles%20Overlay" alt="Illustrative Sprinkles" class="photo-layer topping-sprinkles-photo" id="layer-Extra Sprinkles">
@@ -1058,7 +1034,6 @@
                 <img src="https://via.placeholder.com/400x300/eee/fff?text=Illustrative%20Strawberry%20Syrup%20Overlay" alt="Illustrative Strawberry Syrup" class="photo-layer topping-strawberry-photo" id="layer-Strawberry Syrup">
             `;
             
-            // Set illustrative dynamic update logic
             document.querySelectorAll('.topping-check').forEach(check => {
                 check.checked = false;
                 check.onchange = function() {
@@ -1214,9 +1189,6 @@
             if (!error) await refreshData();
         }
 
-        // ==========================================
-        // 4. CHAT SYSTEM
-        // ==========================================
         async function sendChatMessage(senderType, imgBase64 = null) {
             let inputId = senderType === 'user' ? 'chat-text-input' : 'admin-chat-text-input';
             const input = document.getElementById(inputId); 
@@ -1277,9 +1249,6 @@
             document.querySelectorAll('#desk-badge-chat, #mob-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
         }
 
-        // ==========================================
-        // 5. ADMIN CONTROLS 
-        // ==========================================
         async function renderAdminOrders() {
             const list = document.getElementById('admin-orders-list'); list.innerHTML = '';
             
@@ -1319,7 +1288,6 @@
                 });
             }
             
-            // Handle Guest Orders
             const guestOrders = allOrders ? allOrders.filter(o => o.user_uid === "GUEST") : [];
             if(guestOrders.length > 0) {
                 hasRecords = true;
@@ -1340,7 +1308,6 @@
 
             if(!hasRecords) list.innerHTML = '<p>No customer records yet.</p>';
             
-            // Admin Global Badges
             let totalUnread = allMsgs ? allMsgs.filter(m => m.sender === 'user' && !m.is_read).length : 0;
             let totalPending = allOrders ? allOrders.filter(o => o.status === 'Pending').length : 0;
             const count = totalUnread + totalPending;
@@ -1360,7 +1327,6 @@
             const ordersDiv = document.getElementById('admin-user-orders'); ordersDiv.innerHTML = '';
             const hist = document.getElementById('admin-chat-history'); hist.innerHTML = '';
             
-            // Render Orders
             const { data: userOrders } = await _db.from('orders').select('*').eq('user_uid', uid).order('order_id', { ascending: false });
             
             if(!userOrders || userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
@@ -1388,7 +1354,6 @@
                 });
             }
 
-            // Render Chat
             await _db.from('messages').update({ is_read: true }).eq('user_uid', uid).eq('sender', 'user').eq('is_read', false);
             const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', uid).order('created_at', { ascending: true });
             
@@ -1408,9 +1373,6 @@
             await renderAdminUserModal(currentAdminViewingUid); 
         }
 
-        // ==========================================
-        // 6. UI UTILS AND RENDERING (PHOTO BASED)
-        // ==========================================
         function renderDesktopCarousel() {
             const track = document.getElementById('desktop-carousel-track');
             if (!track) return;
@@ -1492,21 +1454,44 @@
                 document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span>`;
                 
                 if (currentUser.role === 'Administrator') {
+                    // Update Role-Based Viewing Access
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+                    
+                    // Update Orders Header Info
+                    document.getElementById('orders-view-title').innerText = "Store Operations";
+                    document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
-                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+                    
+                    // Display the Correct Orders Container
+                    document.getElementById('admin-orders-list').style.display = 'flex';
+                    document.getElementById('orders-list').style.display = 'none';
                 } else {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
+                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+                    
+                    // Update Orders Header Info
+                    document.getElementById('orders-view-title').innerText = "Your Order History";
+                    document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
-                    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+                    
+                    // Display the Correct Orders Container
+                    document.getElementById('admin-orders-list').style.display = 'none';
+                    document.getElementById('orders-list').style.display = 'flex';
                 }
             } else {
                 document.getElementById('logged-in-view').style.display = 'none';
                 document.getElementById('logged-out-view').style.display = 'flex';
                 document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
                 document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+                
+                // Fallback UI State
+                document.getElementById('orders-view-title').innerText = "Your Order History";
+                document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
+                document.getElementById('admin-orders-list').style.display = 'none';
+                document.getElementById('orders-list').style.display = 'flex';
             }
         }
 
@@ -1518,9 +1503,6 @@
             });
         }
 
-        // ==========================================
-        // 7. ADMIN EDITOR (PHOTO BASED)
-        // ==========================================
         function openAdminEdit(type, id) {
             document.getElementById('admin-edit-type').value = type; 
             document.getElementById('admin-edit-id').value = id;
@@ -1531,7 +1513,6 @@
                     document.getElementById('admin-edit-title').innerText = "Add Menu Item"; 
                     document.getElementById('admin-edit-name').value = ""; 
                     document.getElementById('admin-edit-desc').value = "₱0.00"; 
-                    // Field description updated for illustrative URL
                     document.getElementById('admin-edit-img').value = ""; 
                     document.getElementById('admin-edit-img').placeholder = "Enter illustrative photo URL";
                     delBtn.style.display = 'none';
@@ -1540,7 +1521,6 @@
                     document.getElementById('admin-edit-title').innerText = "Edit Menu Item"; 
                     document.getElementById('admin-edit-name').value = item.name; 
                     document.getElementById('admin-edit-desc').value = item.price; 
-                    // Field updated to illustrative URL
                     document.getElementById('admin-edit-img').value = item.img; 
                     document.getElementById('admin-edit-img').placeholder = "Enter illustrative photo URL";
                     delBtn.style.display = 'block';
@@ -1573,7 +1553,6 @@
             const id = document.getElementById('admin-edit-id').value;
             const name = document.getElementById('admin-edit-name').value; 
             const desc = document.getElementById('admin-edit-desc').value; 
-            // Field updated to illustrative URL
             const img = document.getElementById('admin-edit-img').value;
 
             if (type === 'menu') {
@@ -1623,7 +1602,6 @@
             renderDesktopCarousel();
         }
 
-        // Receipt Handlers
         function showReceipt(o) {
             document.getElementById('receipt-id-print').innerText = o.id;
             document.getElementById('receipt-datetime-print').innerText = `${o.date} ${o.time}`;
@@ -1647,7 +1625,6 @@
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
         
-        // Toggles
         function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
         function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
         function openMessaging() { document.getElementById('messaging-overlay').classList.add('active'); renderUserChat(); }
