@@ -9,7 +9,7 @@
             /* INTEGRATED: Pink repeating cupcake/cake pattern */
             --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ff9eb5'/%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
             
-            /* FIXED: Removed general glassmorphism (dirty gray) and replaced with a darker pinkish tone matching wallpaper algorithm */
+            /* UI Color Base */
             --glass-bg: rgba(209, 107, 134, 0.95); 
             --header-bg: rgba(209, 107, 134, 0.95); 
             --glass-blur: none; 
@@ -24,10 +24,10 @@
             --os-green: #2ecc71;
         }
 
-        /* --- FIXED: ZERO-SHIFT HIGH CONTRAST BORDERS --- */
+        /* --- ZERO-SHIFT HIGH CONTRAST BORDERS --- */
         body.borders-enabled #sidebar, body.borders-enabled .menu-card, body.borders-enabled .sidebar-btn,
         body.borders-enabled .os-card, body.borders-enabled .promo-card, body.borders-enabled #settings-hub,
-        body.borders-enabled #details-hub, body.borders-enabled .order-panel, body.borders-enabled .ui-modal-overlay > div {
+        body.borders-enabled #details-hub, body.borders-enabled .order-panel, body.borders-enabled .ui-modal-overlay > div, body.borders-enabled .shop-header-container, body.borders-enabled .orders-header-card, body.borders-enabled #admin-user-hub {
             box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255,255,255,0.4) !important;
         }
 
@@ -37,7 +37,7 @@
         *::-webkit-scrollbar-track { background: transparent; }
         *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.5); border-radius: 10px; }
 
-        /* --- DESKTOP FIRST BASE STRUCTURE --- */
+        /* --- BASE STRUCTURE --- */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; display: flex; height: 100vh; width: 100vw;
@@ -48,32 +48,41 @@
             z-index: -2;
         }
 
-        /* FIXED: Prevent empty divs from occupying grid layout slots on Desktop mode */
         .wallpaper-layer, .wallpaper-pattern {
             position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
             z-index: -3; pointer-events: none; display: none;
         }
 
-        /* Pure Static Noise */
         .glass-noise {
             position: absolute !important; top: 0; left: 0; right: 0; bottom: 0;
             background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');
             opacity: 0.08; pointer-events: none; z-index: -1; mix-blend-mode: overlay;
         }
 
-        /* --- RESPONSIVE LAYOUT (PC vs MOBILE/TABLET) --- */
-        /* Note: Forcing vertical layout on mobile and tablet regardless of orientation */
-        @media (min-width: 1025px) { /* Changed breakpoint to strictly target PCs */
+        /* --- RESPONSIVE LAYOUT (PC) --- */
+        @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
             body { display: grid; grid-template-columns: var(--side-full) 1fr; }
             #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 2000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); }
             #bottom-nav { display: none; }
             .desktop-carousel-container { display: flex; }
             .mobile-promo-feed { display: none; }
+            
+            .shop-header-logo { display: none; }
+            .shop-header-container { margin-bottom: 25px; display: block; text-align: left; }
+            .shop-header-title { 
+                display: inline-block; font-size: 2em; font-weight: 800; 
+                background: linear-gradient(135deg, rgba(255,105,180,0.6), rgba(255,20,147,0.3));
+                padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.4);
+                box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+                color: #fff; letter-spacing: 1px; margin: 0;
+            }
+            .shop-divider { border: none; height: 2px; background: rgba(255, 255, 255, 0.5); margin-bottom: 30px; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: block; }
         }
 
-        @media (max-width: 1024px) { /* Targets Mobile and Tablet (Vertical Mode Enforced) */
+        /* --- RESPONSIVE LAYOUT (TABLET & MOBILE) --- */
+        @media (hover: none), (pointer: coarse), (max-width: 1024px) {
             body { display: flex; flex-direction: column; overflow: hidden; height: 100dvh; }
-            #sidebar { display: none; } /* Hide PC sidebar */
+            #sidebar { display: none; } 
             
             #main-content { 
                 flex: 1; padding: 15px; height: auto; 
@@ -86,16 +95,27 @@
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15);
                 padding-bottom: env(safe-area-inset-bottom); z-index: 2000;
             }
-            .bnav-item { flex: 1; text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+            .bnav-item { flex: 1; text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative;}
             .bnav-item span { font-size: 22px; display: block; margin-bottom: 4px; }
             .bnav-item.active { color: var(--accent-pink); text-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
             
-            .shop-header-container { text-align: center; margin-bottom: 15px; }
-            .shop-badge { font-size: 1.3em !important; padding: 8px 16px !important; }
+            .shop-header-container {
+                display: flex; align-items: center; justify-content: center; gap: 12px;
+                background: var(--glass-bg); backdrop-filter: var(--glass-blur);
+                border-radius: 20px; padding: 12px 15px; margin-bottom: 20px;
+                border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow);
+            }
+            .shop-header-logo { width: 45px; flex-shrink: 0; }
+            .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+            .shop-header-title {
+                font-size: 1.15rem; font-weight: 800; color: white;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px;
+            }
+            .shop-divider { display: none; }
+
             .desktop-carousel-container { display: none !important; }
             .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 500px; margin: 0 auto; }
             
-            /* --- FIXED: Mobile/Tablet Menu Grid (McDonalds Reward Style) --- */
             .menu-grid { 
                 display: grid !important; 
                 grid-template-columns: repeat(2, 1fr) !important; 
@@ -104,8 +124,8 @@
             .menu-card { 
                 padding: 12px 8px !important; 
                 border-radius: 12px !important;
-                background: rgba(255, 255, 255, 0.95) !important; /* White bg like McDonald's */
-                color: #333 !important; /* Dark text for contrast */
+                background: rgba(255, 255, 255, 0.95) !important; 
+                color: #333 !important; 
                 border: 1px solid rgba(0,0,0,0.05) !important;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
                 display: flex !important;
@@ -117,7 +137,7 @@
                 font-size: 0.9em !important; 
                 color: #333 !important;
                 text-shadow: none !important;
-                margin-top: auto !important; /* Push title to bottom */
+                margin-top: auto !important; 
                 text-align: center !important;
                 font-weight: 700 !important;
                 line-height: 1.2 !important;
@@ -140,23 +160,19 @@
                 border: none !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
-                /* Simple radial gradient behind emoji similar to McDonald's arc */
                 background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important;
             }
 
-            /* --- FIXED: Settings Modal (Mobile/Tablet specific) --- */
-            #settings-hub { 
+            #settings-hub, #messaging-hub, #admin-user-hub { 
                 flex-direction: column !important; 
-                height: 380px !important; /* Reduced height to make it more square/compact */
+                height: 400px !important; 
                 max-height: 85vh !important; 
                 width: 90vw !important; 
                 max-width: 400px !important;
                 margin: auto;
                 border-radius: 16px !important;
-                padding-top: 10px !important; /* Make room for external title */
             }
             
-            /* External Settings Title (Mobile/Tablet) */
             .mobile-settings-header {
                 display: block !important;
                 text-align: center;
@@ -167,7 +183,7 @@
                 margin-bottom: 10px;
                 text-shadow: 0 2px 5px rgba(0,0,0,0.5);
                 position: absolute;
-                top: -30px; /* Position above the modal box */
+                top: -30px; 
                 left: 0;
                 right: 0;
             }
@@ -177,14 +193,13 @@
                 border-right: none !important; 
                 border-bottom: 1px solid rgba(255,255,255,0.2) !important; 
                 flex-direction: row !important; 
-                overflow-x: auto !important; /* Keep tabs scrollable horizontally */
+                overflow-x: auto !important; 
                 padding: 10px 15px !important; 
                 min-width: 0 !important; 
                 flex-shrink: 0; 
                 background: transparent !important;
             }
             
-            /* Hide the internal sidebar title */
             .settings-sidebar h3 { display: none !important; }
             
             .settings-tab-btn { 
@@ -201,7 +216,6 @@
                 flex: 1; 
             }
             .theme-preview-box { grid-column: span 2 !important; }
-            
             .os-card { padding: 15px !important; margin-bottom: 15px !important;}
         }
 
@@ -210,6 +224,7 @@
         .front-screen-logo svg { width: 100%; height: auto; max-width: 250px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
         
         .sidebar-btn {
+            position: relative;
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); color: white; padding: 12px 15px; border-radius: 12px; 
             cursor: pointer; text-align: left; font-size: 16px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 10px;
@@ -217,21 +232,27 @@
         .sidebar-btn:hover { background: rgba(255, 255, 255, 0.15); }
         .sidebar-btn.active { background: rgba(255, 255, 255, 0.2); font-weight: bold; border-color: rgba(255, 255, 255, 0.3); }
 
+        /* Notification Badge */
+        .nav-badge {
+            position: absolute; top: 5px; right: 5px;
+            background: #ff3b30; color: white; border-radius: 50%;
+            font-size: 10px; width: 18px; height: 18px; display: flex;
+            align-items: center; justify-content: center; font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .user-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #ff3b30; color: white; border-radius: 10px; padding: 2px 8px;
+            font-size: 11px; font-weight: bold; margin-left: 10px;
+        }
+        .order-badge { background: #ff9500; }
+
         /* --- MAIN CONTENT AREA --- */
         #main-content {
             flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth;
             padding: 30px; 
         }
-        
-        .shop-header-container { margin-bottom: 25px; }
-        .shop-badge { 
-            display: inline-block; font-size: 2em; font-weight: 800; 
-            background: linear-gradient(135deg, rgba(255,105,180,0.6), rgba(255,20,147,0.3));
-            padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 10px 25px rgba(255, 20, 147, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            color: #fff; letter-spacing: 1px;
-        }
-        .shop-divider { border: none; height: 2px; background: rgba(255, 255, 255, 0.5); margin-bottom: 30px; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         
         .view-section { display: none; animation: fadeIn 0.4s var(--liquid-ease); width: 100%; }
         .view-section.active { display: block; }
@@ -299,7 +320,15 @@
         .menu-item-title { margin: 0; font-size: 1.15em; font-weight: 800; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); line-height: 1.4; }
 
         /* --- ORDERS PANELS --- */
-        #orders-list { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 800px; }
+        .orders-header-card {
+            background: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #orders-list, #admin-orders-list { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 800px; }
         .order-panel {
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15);
             padding: 20px; display: flex; justify-content: space-between; align-items: center;
@@ -312,6 +341,17 @@
         .order-info small { color: rgba(255,255,255,0.6); font-size: 13px; }
         .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
 
+        /* Admin Specific order card */
+        .admin-order-card {
+            display: flex; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.2); 
+            padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .admin-order-img {
+            font-size: 2.5em; background: rgba(255,255,255,0.1); border-radius: 12px; 
+            width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;
+        }
+
         /* General Modal Styles */
         .ui-modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -321,23 +361,23 @@
         }
         .ui-modal-overlay.active { display: flex; }
 
-        #details-hub, #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub {
+        #details-hub, #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-user-hub {
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow);
             border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; 
             overflow-y: auto; border-radius: 24px; padding: 30px; position: relative; box-sizing: border-box;
         }
 
         /* --- X-INFINITY OS SETTINGS MODAL --- */
-        .mobile-settings-header { display: none; } /* Hidden on PC */
+        .mobile-settings-header { display: none; } 
         
         #settings-hub {
             display: flex; flex-direction: row; 
             width: 950px; height: 600px; 
             max-width: 95vw; 
-            background: rgba(0, 0, 0, 0.25) !important; /* Strictly keep glass enabled for Settings Default */
+            background: rgba(0, 0, 0, 0.25) !important; 
             backdrop-filter: blur(25px) saturate(150%) !important; 
             border-radius: 24px; box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2);
-            overflow: visible; /* Changed from hidden to allow external header on mobile */
+            overflow: visible; 
             position: relative; box-sizing: border-box;
         }
 
@@ -375,7 +415,6 @@
             margin-top: 15px; padding-bottom: 10px; width: 100%; line-height: 1.5; display: block; clear: both;
         }
 
-        /* FIXED: Perfect Circular Close Buttons that never shrink */
         .close-btn, .settings-close-btn { 
             position: absolute; top: 15px; right: 15px; 
             width: 34px !important; height: 34px !important; flex-shrink: 0 !important;
@@ -437,7 +476,7 @@
         .guide-card h4 { margin: 0 0 8px 0; font-size: 16px; color: white; }
         .guide-card p { margin: 0; font-size: 13px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .chat-history { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; min-height: 250px;}
+        .chat-history { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; min-height: 200px; max-height: 250px;}
         .chat-message { padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 14px; line-height: 1.4; }
         .chat-message.owner { background: rgba(255, 255, 255, 0.15); align-self: flex-start; border-bottom-left-radius: 4px; }
         .chat-message.user { background: var(--accent-pink); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
@@ -452,6 +491,14 @@
         .toppings-panel { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .topping-item { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px; color: #fff; }
         .topping-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-pink); }
+
+        /* Admin Orders Styles */
+        .admin-user-row {
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15);
+            padding: 20px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s;
+        }
+        .admin-user-row:hover { border-color: var(--accent-pink); }
     </style>
 </head>
 <body>
@@ -500,15 +547,51 @@
         
         <button class="sidebar-btn active" id="desk-nav-home" onclick="switchMainView('home')"><span class="icon">🏠</span><span class="text">Home</span></button>
         <button class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu')"><span class="icon">📜</span><span class="text">Menu</span></button>
-        <button class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')"><span class="icon">📦</span><span class="text">Orders</span></button>
-        <button class="sidebar-btn" onclick="openMessaging()"><span class="icon">💬</span><span class="text">Message Owner</span></button>
+        <button class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')">
+            <span class="icon">📦</span><span class="text">Orders</span>
+            <div id="desk-badge-orders" class="nav-badge" style="display:none;">0</div>
+        </button>
+        <button class="sidebar-btn user-only-nav" onclick="openMessaging()">
+            <span class="icon">💬</span><span class="text">Message Owner</span>
+            <div id="desk-badge-chat" class="nav-badge" style="display:none;">0</div>
+        </button>
         <button class="sidebar-btn" onclick="openAbout()"><span class="icon">ℹ️</span><span class="text">About Us</span></button>
         <button class="sidebar-btn" onclick="openSettings()"><span class="icon">⚙️</span><span class="text">Settings & Auth</span></button>
     </div>
 
     <div id="main-content">
         <div class="shop-header-container">
-            <div class="shop-badge">👑 LA PRINSESA BAKESHOP</div>
+            <div class="shop-header-logo">
+                <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="goldGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#FFF7AA" /><stop offset="20%" stop-color="#FFD700" /><stop offset="80%" stop-color="#DAA520" /><stop offset="100%" stop-color="#B8860B" />
+                        </linearGradient>
+                        <linearGradient id="pinkRibbon2" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#FF85A2" /><stop offset="50%" stop-color="#FF1493" /><stop offset="100%" stop-color="#C71585" />
+                        </linearGradient>
+                        <filter id="shadow2" x="-10%" y="-10%" width="120%" height="120%">
+                            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/>
+                        </filter>
+                    </defs>
+                    <path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Q200,150 20,120 Z" fill="url(#goldGradient2)" filter="url(#shadow2)" />
+                    <ellipse cx="200" cy="70" rx="15" ry="10" fill="#8B0000" stroke="#FFD700" stroke-width="2" />
+                    <ellipse cx="120" cy="105" rx="8" ry="5" fill="#8B0000" />
+                    <ellipse cx="280" cy="105" rx="8" ry="5" fill="#8B0000" />
+                    <ellipse cx="60" cy="115" rx="6" ry="4" fill="#8B0000" />
+                    <ellipse cx="340" cy="115" rx="6" ry="4" fill="#8B0000" />
+                    <path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" />
+                    <path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" />
+                    <path d="M20,120 Q200,80 380,120 L380,170 Q200,130 20,170 Z" fill="url(#pinkRibbon2)" stroke="#FFC0CB" stroke-width="4" filter="url(#shadow2)" />
+                    <text x="200" y="145" font-family="Impact, sans-serif" font-size="44" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINSESA</text>
+                    <circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FFD700" stroke-width="6" filter="url(#shadow2)" />
+                    <circle cx="200" cy="190" r="38" fill="none" stroke="#FF1493" stroke-width="3" stroke-dasharray="4,2" />
+                    <path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                    <path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/>
+                    <path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                </svg>
+            </div>
+            <h1 class="shop-header-title">LA PRINSESA BAKESHOP</h1>
         </div>
         <hr class="shop-divider">
         
@@ -580,11 +663,13 @@
         </div>
 
         <div id="orders-view" class="view-section">
-            <h2 style="margin-top: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Your Order History</h2>
-            <p style="color: rgba(255,255,255,0.9); margin-bottom: 25px;">Click on any past order below to retrieve its QR Receipt.</p>
-            <div id="orders-list">
-                <p style="color: rgba(255,255,255,0.8);">No orders placed yet.</p>
+            <div class="orders-header-card">
+                <h2 id="orders-view-title" style="margin: 0 0 5px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); color: white;">Your Order History</h2>
+                <p id="orders-view-desc" style="color: rgba(255,255,255,0.9); margin: 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p>
             </div>
+            <div id="orders-list"></div>
+            <!-- Admin specific orders list view -->
+            <div id="admin-orders-list" style="display:none;"></div>
         </div>
     </div>
 
@@ -597,31 +682,53 @@
         </div>
         <div class="bnav-item" id="mob-nav-orders" onclick="switchMainView('orders')">
             <span>📦</span>Orders
+            <div id="mob-badge-orders" class="nav-badge" style="display:none;">0</div>
         </div>
-        <div class="bnav-item" onclick="openMessaging()">
+        <div class="bnav-item user-only-nav" onclick="openMessaging()">
             <span>💬</span>Chat
+            <div id="mob-badge-chat" class="nav-badge" style="display:none;">0</div>
         </div>
         <div class="bnav-item" onclick="openSettings()">
             <span>⚙️</span>More
         </div>
     </div>
 
+    <!-- User Messaging Modal -->
     <div class="ui-modal-overlay" id="messaging-overlay">
         <div id="messaging-hub">
+            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeMessaging()">×</button>
             <h2 class="modal-title">Message Owner</h2>
-            <div class="chat-history" id="chat-history">
-                <div class="chat-message owner">Hello! Welcome to La Prinsesa Bakeshop. How can we help you today?</div>
-            </div>
+            <div class="chat-history" id="chat-history"></div>
             <div style="display:flex;gap:10px;">
-                <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event)">
-                <button class="submit-btn" style="width: auto; padding: 0 20px;" onclick="sendChatMessage()">Send</button>
+                <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'user')">
+                <button class="submit-btn" style="width: auto; padding: 0 20px;" onclick="sendChatMessage('user')">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin User Details Modal -->
+    <div class="ui-modal-overlay" id="admin-user-overlay">
+        <div id="admin-user-hub">
+            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
+            <button class="close-btn" onclick="closeAdminUserModal()">×</button>
+            <h2 class="modal-title" id="admin-user-title">User Details</h2>
+            
+            <h3 style="margin:0 0 10px 0; color:var(--accent-pink);">Active Orders</h3>
+            <div id="admin-user-orders" style="margin-bottom: 25px;"></div>
+
+            <h3 style="margin:0 0 10px 0; color:var(--accent-pink);">Direct Message</h3>
+            <div class="chat-history" id="admin-chat-history"></div>
+            <div style="display:flex;gap:10px;">
+                <input type="text" id="admin-chat-text-input" class="input-field" placeholder="Type message to user..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'owner')">
+                <button class="submit-btn" style="width: auto; padding: 0 20px;" onclick="sendChatMessage('owner')">Send</button>
             </div>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="about-overlay">
         <div id="about-hub">
+            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeAbout()">×</button>
             <h2 class="modal-title">About Us</h2>
             <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px;">
@@ -638,10 +745,10 @@
 
     <div class="ui-modal-overlay" id="settings-overlay">
         <div id="settings-hub">
-            <div class="mobile-settings-header">LA PRINSESA OS</div>
+            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="settings-close-btn" onclick="closeSettings()">×</button>
             <div class="settings-sidebar">
-                <h3><span style="font-size: 18px; margin-right: 5px;">🧁</span> LA PRINSESA OS</h3>
+                <h3>LA PRINSESA BAKESHOP</h3>
                 <button id="nav-accounts" class="settings-tab-btn active" onclick="switchSettingsNav('accounts')">Accounts & Control</button>
                 <button id="nav-personalization" class="settings-tab-btn" onclick="switchSettingsNav('personalization')">Personalization</button>
                 <button id="nav-guides" class="settings-tab-btn" onclick="switchSettingsNav('guides')">Guides</button>
@@ -781,6 +888,7 @@
 
     <div class="ui-modal-overlay" id="details-overlay">
         <div id="details-hub">
+            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeDetails()">×</button>
             <h2 class="modal-title" id="details-title">Item Details</h2>
             <p id="details-price" style="color: var(--accent-pink); font-size: 20px; font-weight: bold; margin-bottom: 20px;"></p>
@@ -847,6 +955,14 @@
         }
         setInterval(moveSlider, 4500);
 
+        // Map item names to emojis for dynamic rendering
+        const itemEmojis = {
+            'Red Velvet Royal': '🧁',
+            'Dark Chocolate Crown': '🍫',
+            'Strawberry Princess': '🍓',
+            'Classic Vanilla Bean': '🍦'
+        };
+
         // --- NAVIGATION SYNC LOGIC ---
         function updateNavState(viewName) {
             document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
@@ -877,12 +993,11 @@
             document.body.style.backgroundBlendMode = preset.blend || 'normal';
             document.documentElement.style.setProperty('--accent-pink', accentColor);
             
-            // FIXED: Dynamically map the UI Panel color to match the theme following the algorithm
             const themeToPanelBg = { 
-                'default': 'rgba(209, 107, 134, 0.95)', // Darker pinkish
-                'blue-gradient': 'rgba(42, 82, 152, 0.95)', // Darker blue
-                'peach-gradient': 'rgba(219, 115, 142, 0.95)', // Darker peach
-                'mint-gradient': 'rgba(90, 180, 140, 0.95)', // Darker mint
+                'default': 'rgba(209, 107, 134, 0.95)', 
+                'blue-gradient': 'rgba(42, 82, 152, 0.95)', 
+                'peach-gradient': 'rgba(219, 115, 142, 0.95)', 
+                'mint-gradient': 'rgba(90, 180, 140, 0.95)', 
                 'solid-black': 'rgba(20, 20, 20, 0.95)',
                 'uploaded': 'rgba(209, 107, 134, 0.95)'
             };
@@ -939,7 +1054,6 @@
             savePersonalization();
         }
 
-        // --- DATA PERSISTENCE & PERSONALIZATION ---
         const personalSettingsKey = 'la_prinsesa_personalization';
 
         function savePersonalization() {
@@ -959,13 +1073,10 @@
             if (settingsStr) {
                 const settings = JSON.parse(settingsStr);
                 if (settings.themeKey) applyTheme(settings.themeKey, getAccentColorForTheme(settings.themeKey)); 
-                
                 document.getElementById('borders-toggle').checked = settings.borders;
                 toggleBorders(document.getElementById('borders-toggle')); 
-                
                 document.getElementById('font-size-slider').value = settings.fontSize;
                 updateFontSize(settings.fontSize); 
-                
                 setUIStyle(settings.uiStyle); 
             } else {
                 resetPersonalizationToDefaults();
@@ -996,11 +1107,13 @@
         let orderHistory = [];
         let currentItemToOrder = "";
         let currentPriceToOrder = "";
+        let currentAdminViewingUid = null;
 
         const usersDataKey = 'la_prinsesa_users';
         const sessionUserKey = 'la_prinsesa_session_user';
         const uidCounterKey = 'la_prinsesa_uid_counter';
         const orderHistoryKey = 'la_prinsesa_order_history';
+        const chatHistoryKey = 'la_prinsesa_chat_';
 
         function saveSession() { if (currentUser) sessionStorage.setItem(sessionUserKey, JSON.stringify(currentUser)); }
         function clearSession() { sessionStorage.removeItem(sessionUserKey); }
@@ -1025,6 +1138,9 @@
         
         function getOrderHistory(uid) { const historyStr = localStorage.getItem(`${orderHistoryKey}_${uid}`); return historyStr ? JSON.parse(historyStr) : []; }
 
+        function getMessages(uid) { const msgs = localStorage.getItem(chatHistoryKey + uid); return msgs ? JSON.parse(msgs) : []; }
+        function saveMessages(uid, msgs) { localStorage.setItem(chatHistoryKey + uid, JSON.stringify(msgs)); }
+
         function initializeSession() {
             const savedUser = getSessionUser();
             if (savedUser) {
@@ -1036,6 +1152,8 @@
                 switchMainView('home'); switchSettingsNav('accounts');
             }
             updateSettingsUI(); 
+            pollSystemData();
+            setInterval(pollSystemData, 3000);
         }
 
         window.onload = initializeSession; 
@@ -1055,7 +1173,11 @@
 
         function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
         function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
-        function openMessaging() { document.getElementById('messaging-overlay').classList.add('active'); }
+        function openMessaging() { 
+            if (!currentUser) return alert("Please log in to message owner.");
+            document.getElementById('messaging-overlay').classList.add('active'); 
+            renderUserChat();
+        }
         function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
         function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
         function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
@@ -1084,16 +1206,43 @@
             saveUser(currentUser); alert("Updated!"); closeChangeCredentials();
         }
 
-        function sendChatMessage() {
-            const input = document.getElementById('chat-text-input'); const msg = input.value.trim();
-            if (msg) {
-                const hist = document.getElementById('chat-history');
-                const d = document.createElement('div'); d.className = 'chat-message user'; d.innerText = msg; hist.appendChild(d);
-                input.value = ""; hist.scrollTop = hist.scrollHeight;
-                setTimeout(() => { const r = document.createElement('div'); r.className = 'chat-message owner'; r.innerText = "Thanks! We'll reply soon."; hist.appendChild(r); hist.scrollTop = hist.scrollHeight; }, 1500);
-            }
+        // CHAT LOGIC
+        function sendChatMessage(senderType) {
+            let inputId = senderType === 'user' ? 'chat-text-input' : 'admin-chat-text-input';
+            const input = document.getElementById(inputId); 
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            let targetUid = senderType === 'user' ? currentUser.uid : currentAdminViewingUid;
+            let msgs = getMessages(targetUid);
+            msgs.push({ sender: senderType, text: msg, read: false, time: new Date().toLocaleTimeString() });
+            saveMessages(targetUid, msgs);
+
+            input.value = "";
+            if (senderType === 'user') renderUserChat();
+            else renderAdminUserModal(currentAdminViewingUid);
         }
-        function handleKeyPress(e) { if (e.key === 'Enter') sendChatMessage(); }
+        function handleKeyPress(e, senderType) { if (e.key === 'Enter') sendChatMessage(senderType); }
+
+        function renderUserChat() {
+            if (!currentUser) return;
+            const hist = document.getElementById('chat-history');
+            let msgs = getMessages(currentUser.uid);
+            
+            // Mark owner messages as read
+            msgs.forEach(m => { if(m.sender === 'owner') m.read = true; });
+            saveMessages(currentUser.uid, msgs);
+
+            hist.innerHTML = '<div class="chat-message owner">Hello! Welcome to La Prinsesa Bakeshop. How can we help you today?</div>';
+            msgs.forEach(m => {
+                const d = document.createElement('div');
+                d.className = `chat-message ${m.sender}`;
+                d.innerText = m.text;
+                hist.appendChild(d);
+            });
+            hist.scrollTop = hist.scrollHeight;
+            updateUserBadges();
+        }
 
         function switchAuthTab(tabId) {
             document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active'));
@@ -1118,9 +1267,21 @@
                 document.getElementById('logged-in-view').style.display = 'flex'; 
                 document.getElementById('profile-fullname').innerText = currentUser.fullname;
                 document.getElementById('profile-details').innerHTML = `Rank: ${currentUser.role} | UID: <span style="color: var(--os-green);">#${currentUser.uid}</span>`;
+                
+                // Hide/Show Admin specific items
+                if (currentUser.role === 'Administrator') {
+                    document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
+                    document.getElementById('orders-view-title').innerText = "Store Operations";
+                    document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
+                } else {
+                    document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
+                    document.getElementById('orders-view-title').innerText = "Your Order History";
+                    document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
+                }
             } else {
                 document.getElementById('logged-in-view').style.display = 'none';
                 document.getElementById('logged-out-view').style.display = 'flex';
+                document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
             }
         }
 
@@ -1130,8 +1291,8 @@
             
             if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
             
-            // ADMIN CREDENTIALS
-            if (userInput === "LAPRINSESA" && passInput === "1020304050") {
+            // ADMIN CREDENTIALS UPDATED
+            if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") {
                 currentUser = { fullname: "ROWENA ANGELES", username: userInput, password: passInput, uid: 1, role: "Administrator", photo: null };
                 loginSuccess(); return;
             } 
@@ -1185,40 +1346,200 @@
                 toppings: Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value), status: "Pending", type: type 
             };
             if (currentUser) { saveOrder(order); saveSession(); } else { orderHistory.push(order); }
-            updateOrdersView(); simulatePreparation(order.id); closeDetails();
+            updateOrdersView(); closeDetails(); // Removed simulatePreparation for manual accept
             type === 'buy' ? showReceipt(order) : alert("Added to cart!");
         }
 
-        function simulatePreparation(orderId) {
-            setTimeout(() => {
-                const order = orderHistory.find(o => o.id === orderId);
-                if(order && order.status === "Pending") {
-                    order.status = "Prepared";
-                    if (currentUser) { localStorage.setItem(`${orderHistoryKey}_${currentUser.uid}`, JSON.stringify(orderHistory)); }
-                    updateOrdersView();
-                }
-            }, 20000); 
+        function updateOrdersView() {
+            if (currentUser && currentUser.role === 'Administrator') {
+                document.getElementById('orders-list').style.display = 'none';
+                document.getElementById('admin-orders-list').style.display = 'flex';
+                renderAdminOrders();
+            } else {
+                document.getElementById('orders-list').style.display = 'flex';
+                document.getElementById('admin-orders-list').style.display = 'none';
+                const list = document.getElementById('orders-list'); list.innerHTML = ''; 
+                if (!orderHistory.length) return list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No orders yet.</p>';
+                orderHistory.forEach(o => {
+                    const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt(o); 
+                    p.innerHTML = `
+                        <div class="order-info">
+                            <h3>${o.item}</h3><p>${o.price}</p><small>${o.date} | ${o.time}</small>
+                            ${o.toppings.length ? `<small style="color: #ffeb3b; display:block; margin-top:5px;">+ ${o.toppings.join(', ')}</small>` : ''}
+                        </div>
+                        <div class="order-actions">
+                            <span class="status-badge status-${o.status}">${o.status}</span>
+                            ${o.status === 'Pending' ? `<button class="cancel-btn" onclick="cancelOrder(event, '${o.id}')">Cancel</button>` : ''}
+                        </div>
+                    `;
+                    list.appendChild(p);
+                });
+            }
         }
 
-        function updateOrdersView() {
-            const list = document.getElementById('orders-list'); list.innerHTML = ''; 
-            if (!orderHistory.length) return list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No orders yet.</p>';
-            orderHistory.forEach(o => {
-                const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt(o); 
-                p.innerHTML = `
-                    <div class="order-info">
-                        <h3>${o.item}</h3><p>${o.price}</p><small>${o.date} | ${o.time}</small>
-                        ${o.toppings.length ? `<small style="color: #ffeb3b; display:block; margin-top:5px;">+ ${o.toppings.join(', ')}</small>` : ''}
-                    </div>
-                    <div class="order-actions">
-                        <span class="status-badge status-${o.status}">${o.status}</span>
-                        ${o.status === 'Pending' ? `<button class="cancel-btn" onclick="cancelOrder(event, '${o.id}')">Cancel</button>` : ''}
+        // --- ADMIN SPECIFIC VIEWS ---
+        function renderAdminOrders() {
+            const list = document.getElementById('admin-orders-list'); list.innerHTML = '';
+            const users = getUsers();
+            let hasRecords = false;
+
+            users.forEach(u => {
+                if(u.role === 'Administrator') return; // skip self
+                const userOrders = getOrderHistory(u.uid);
+                const userMsgs = getMessages(u.uid);
+                
+                if(userOrders.length > 0 || userMsgs.length > 0) {
+                    hasRecords = true;
+                    const pendingCount = userOrders.filter(o => o.status === 'Pending').length;
+                    const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.read).length;
+
+                    const row = document.createElement('div');
+                    row.className = 'admin-user-row';
+                    row.onclick = () => openAdminUserModal(u.uid);
+                    row.innerHTML = `
+                        <div style="display:flex; flex-direction:column;">
+                            <h3 style="margin:0 0 5px 0;">${u.fullname}</h3>
+                            <small style="color:rgba(255,255,255,0.6);">UID: #${u.uid} | Username: @${u.username}</small>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                            ${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}
+                            ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
+                            ${(unreadCount === 0 && pendingCount === 0) ? `<span style="font-size:12px; color:rgba(255,255,255,0.4);">No pending tasks</span>` : ''}
+                        </div>
+                    `;
+                    list.appendChild(row);
+                }
+            });
+            if(!hasRecords) list.innerHTML = '<p style="color: rgba(255,255,255,0.8);">No customer records yet.</p>';
+            updateAdminBadges();
+        }
+
+        function openAdminUserModal(uid) {
+            currentAdminViewingUid = uid;
+            document.getElementById('admin-user-overlay').classList.add('active');
+            renderAdminUserModal(uid);
+        }
+        function closeAdminUserModal() {
+            document.getElementById('admin-user-overlay').classList.remove('active');
+            currentAdminViewingUid = null;
+            renderAdminOrders();
+        }
+
+        function renderAdminUserModal(uid) {
+            const users = getUsers();
+            const u = users.find(x => x.uid === uid);
+            if(!u) return;
+
+            document.getElementById('admin-user-title').innerText = `Managing: ${u.fullname} (#${u.uid})`;
+            
+            // Orders
+            const userOrders = getOrderHistory(uid);
+            const ordersDiv = document.getElementById('admin-user-orders');
+            ordersDiv.innerHTML = '';
+            if(userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
+            
+            userOrders.slice().reverse().forEach(o => {
+                const imgEmoji = itemEmojis[o.item] || '🧁';
+                ordersDiv.innerHTML += `
+                    <div class="admin-order-card">
+                       <div class="admin-order-img">${imgEmoji}</div>
+                       <div style="flex:1;">
+                           <h4 style="margin:0 0 5px 0;">${o.item} <span class="status-badge status-${o.status}" style="float:right; transform: scale(0.8); transform-origin: right;">${o.status}</span></h4>
+                           <p style="margin:0 0 5px 0; color: var(--accent-pink);"><b>${o.price}</b></p>
+                           <p style="margin:0 0 5px 0; font-size:12px; color:rgba(255,255,255,0.8);">${o.date} | ${o.time} ${o.toppings.length ? `| +${o.toppings.join(', ')}` : ''}</p>
+                           <p style="margin:0; font-size:11px; color:rgba(255,255,255,0.5);">ID: ${o.id}</p>
+                           ${o.status === 'Pending' ? `
+                           <div style="display:flex; gap:10px; margin-top:10px;">
+                               <button class="cancel-btn" onclick="adminUpdateOrder(${uid}, '${o.id}', 'Canceled')">Reject / Cancel</button>
+                               <button class="os-btn-primary" style="padding: 5px 15px; font-size: 13px;" onclick="adminUpdateOrder(${uid}, '${o.id}', 'Prepared')">Accept Order</button>
+                           </div>` : ''}
+                       </div>
                     </div>
                 `;
-                list.appendChild(p);
+            });
+
+            // Chat
+            let msgs = getMessages(uid);
+            msgs.forEach(m => { if(m.sender === 'user') m.read = true; }); // mark read
+            saveMessages(uid, msgs);
+
+            const hist = document.getElementById('admin-chat-history');
+            hist.innerHTML = '';
+            msgs.forEach(m => {
+                const d = document.createElement('div');
+                d.className = `chat-message ${m.sender}`;
+                d.innerText = m.text;
+                hist.appendChild(d);
+            });
+            hist.scrollTop = hist.scrollHeight;
+            updateAdminBadges();
+        }
+
+        function adminUpdateOrder(uid, orderId, newStatus) {
+            let userOrders = getOrderHistory(uid);
+            let o = userOrders.find(x => x.id === orderId);
+            if(o) { 
+                o.status = newStatus; 
+                localStorage.setItem(`${orderHistoryKey}_${uid}`, JSON.stringify(userOrders)); 
+            }
+            renderAdminUserModal(uid);
+        }
+
+        // --- BADGE POLLING SYSTEM ---
+        function pollSystemData() {
+            if (!currentUser) return;
+            if (currentUser.role === 'Administrator') {
+                updateAdminBadges();
+                if (document.getElementById('admin-orders-list').offsetParent !== null) {
+                    // Update only if no modal open to avoid re-rendering issues, or check differences
+                    // Keeping simple: only render if list changes length to avoid clicking disruptions
+                }
+                if (currentAdminViewingUid && document.getElementById('admin-user-overlay').classList.contains('active')) {
+                    // Auto refresh chat if looking at user
+                    renderAdminUserModal(currentAdminViewingUid);
+                }
+            } else {
+                updateUserBadges();
+                if (document.getElementById('messaging-overlay').classList.contains('active')) {
+                    renderUserChat();
+                }
+                if (document.getElementById('orders-list').offsetParent !== null) {
+                    const latest = getOrderHistory(currentUser.uid);
+                    if(JSON.stringify(latest) !== JSON.stringify(orderHistory)) {
+                        orderHistory = latest;
+                        updateOrdersView();
+                    }
+                }
+            }
+        }
+
+        function updateAdminBadges() {
+            const users = getUsers();
+            let totalUnreadMsgs = 0;
+            let totalPendingOrders = 0;
+
+            users.forEach(u => {
+                if(u.role === 'Administrator') return;
+                totalUnreadMsgs += getMessages(u.uid).filter(m => m.sender === 'user' && !m.read).length;
+                totalPendingOrders += getOrderHistory(u.uid).filter(o => o.status === 'Pending').length;
+            });
+
+            const count = totalUnreadMsgs + totalPendingOrders;
+            document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => {
+                b.innerText = count;
+                b.style.display = count > 0 ? 'flex' : 'none';
             });
         }
 
+        function updateUserBadges() {
+            let unread = getMessages(currentUser.uid).filter(m => m.sender === 'owner' && !m.read).length;
+            document.querySelectorAll('#desk-badge-chat, #mob-badge-chat').forEach(b => {
+                b.innerText = unread;
+                b.style.display = unread > 0 ? 'flex' : 'none';
+            });
+        }
+
+        // Standard Functions
         function cancelOrder(e, id) {
             e.stopPropagation(); const o = orderHistory.find(x => x.id === id);
             if(o && o.status === 'Pending' && confirm("Cancel order?")) { 
