@@ -15,7 +15,7 @@
             --glass-blur: none; 
             --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
             --base-font-size: 16px;
-            --side-full: 280px; 
+            --side-full: 320px; /* Made the left sidebar larger */
             --apple-spring: cubic-bezier(0.25, 1, 0.5, 1);
             --liquid-ease: cubic-bezier(0.23, 1, 0.32, 1);
             --dynamic-text-color: #ffffff;
@@ -64,11 +64,11 @@
             .mobile-promo-feed { display: none; }
             
             .shop-header-logo { display: none; }
-            .shop-header-container { margin: 0 0 15px 0; display: block; text-align: left; }
+            .shop-header-container { margin: 0 0 20px 0; display: block; text-align: left; }
             .shop-header-title { 
-                display: inline-block; font-size: 1.5em; font-weight: 800; 
+                display: inline-block; font-size: 2em; /* Made Header Larger */ font-weight: 800; 
                 background: linear-gradient(135deg, rgba(255,105,180,0.6), rgba(255,20,147,0.3));
-                padding: 10px 20px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.4);
+                padding: 15px 25px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.4);
                 box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
                 color: #fff; letter-spacing: 1px; margin: 0;
             }
@@ -100,7 +100,7 @@
             }
             .shop-header-logo { width: 35px; flex-shrink: 0; }
             .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-            .shop-header-title { font-size: 1rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; }
+            .shop-header-title { font-size: 1.2rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; }
             .shop-divider { display: none; }
 
             .desktop-carousel-container { display: none !important; }
@@ -130,13 +130,13 @@
         }
 
         /* --- PC SIDEBAR STYLES --- */
-        .front-screen-logo { width: 100%; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
-        .front-screen-logo svg { width: 100%; height: auto; max-width: 200px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+        .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
+        .front-screen-logo svg { width: 100%; height: auto; max-width: 240px; /* Made SVG logo larger */ filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
         
         .sidebar-btn {
             position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); color: white; padding: 12px 15px; border-radius: 12px; 
-            cursor: pointer; text-align: left; font-size: 15px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 8px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); color: white; padding: 15px 18px; border-radius: 12px; 
+            cursor: pointer; text-align: left; font-size: 16px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 8px;
         }
         .sidebar-btn:hover { background: rgba(255, 255, 255, 0.15); }
         .sidebar-btn.active { background: rgba(255, 255, 255, 0.2); font-weight: bold; border-color: rgba(255, 255, 255, 0.3); }
@@ -149,6 +149,18 @@
         #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth; padding: 15px 30px; }
         .view-section { display: none; animation: fadeIn 0.4s var(--liquid-ease); width: 100%; }
         .view-section.active { display: block; }
+
+        /* Desktop Carousel UI Fixes */
+        .desktop-carousel-container {
+            width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden;
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: var(--apple-glass-shadow); display: flex;
+        }
+        .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; }
+        .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; }
+        .desktop-carousel-slide { flex: 0 0 100%; position: relative; }
+        .desktop-carousel-slide img { width: 100%; height: 300px; object-fit: cover; display: block; }
+        .desktop-carousel-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 15px 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; font-weight: bold; font-size: 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.9); }
 
         .search-container { margin-bottom: 15px; }
         #product-search { font-size: 15px; padding: 12px 20px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: var(--apple-glass-shadow); width: 100%; border-radius: 12px; color: white; transition: 0.3s; }
@@ -200,7 +212,38 @@
 
         .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; box-sizing: border-box; }
         .ui-modal-overlay.active { display: flex; }
-        #details-hub, #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-user-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
+        
+        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-user-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
+
+        /* SPLIT VIEW MODAL SPECIFIC FOR ITEM DETAILS WITH PHOTO LAYERING */
+        #details-hub { 
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); 
+            border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 800px; height: auto; max-height: 90vh; 
+            border-radius: 24px; padding: 0; position: relative; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden;
+        }
+        .modal-header { padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; }
+        .modal-header h2 { margin: 0 0 5px 0; font-size: 22px; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        .modal-body { display: flex; flex-direction: row; flex: 1; min-height: 400px; }
+        .modal-preview-panel { flex: 1.2; background: rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; padding: 30px; border-right: 1px solid rgba(255, 255, 255, 0.1); }
+        
+        /* Photo Layering System CSS */
+        .modal-image-wrap { position: relative; width: 100%; height: 100%; min-height: 250px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); background: #eee; }
+        .photo-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 1; transition: opacity 0.3s ease-in-out; }
+        
+        /* Classes to control visibility of toppings */
+        .base-cupcake-photo { z-index: 1; }
+        .topping-choco-photo { z-index: 2; opacity: 0; }
+        .topping-strawberry-photo { z-index: 3; opacity: 0; }
+        .topping-sprinkles-photo { z-index: 4; opacity: 0; }
+        
+        .modal-options-panel { flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; }
+        
+        @media (max-width: 768px) {
+            .modal-body { flex-direction: column; }
+            .modal-preview-panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px; }
+            .modal-image-wrap { min-height: 150px; }
+            .modal-options-panel { padding: 20px; }
+        }
 
         .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--accent-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
         .digital-receipt-wrapper * { text-shadow: none !important; }
@@ -393,14 +436,7 @@
             <div class="desktop-carousel-container">
                 <div class="desktop-carousel-viewport">
                     <div class="desktop-carousel-track" id="desktop-carousel-track">
-                        <div class="desktop-carousel-slide">
-                            <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop" alt="Strawberry Princess">
-                            <div class="desktop-carousel-text">📸 Featured: Strawberry Princess &bull; Special Promo: 20% Off Weekend &bull; Order Now!</div>
-                        </div>
-                        <div class="desktop-carousel-slide">
-                            <img src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop" alt="Red Velvet Royal">
-                            <div class="desktop-carousel-text">👑 A Royal Plot Twist! &bull; Red Velvet is back by popular demand.</div>
-                        </div>
+                        <!-- Dynamic content loaded via JS -->
                     </div>
                 </div>
             </div>
@@ -499,8 +535,10 @@
         </div>
     </div>
 
+    <!-- Modified cart checkout to remain as previously implemented to not break layout, modified detailed overlay below -->
     <div class="ui-modal-overlay" id="cart-checkout-overlay">
-        <div id="details-hub">
+        <!-- Re-using messaging hub styling size for single column basic details -->
+        <div id="messaging-hub" style="max-width: 480px;">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeCartCheckout()">×</button>
             <h2 class="modal-title" id="cart-co-title">Checkout Item</h2>
@@ -693,49 +731,65 @@
         </div>
     </div>
 
+    <!-- NEW SPLIT-VIEW ITEM DETAILS MODAL -->
     <div class="ui-modal-overlay" id="details-overlay">
         <div id="details-hub">
-            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
-            <button class="close-btn" onclick="closeDetails()">×</button>
-            <h2 class="modal-title" id="details-title">Item Details</h2>
-            <p id="details-price" style="color: var(--accent-pink); font-size: 18px; font-weight: bold; margin-bottom: 20px;"></p>
+            <button class="close-btn" onclick="closeDetails()" style="z-index: 10;">×</button>
             
-            <div id="wizard-step-1" class="wizard-step active">
-                <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
-                <input type="date" id="order-date" class="input-field">
-                <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Time:</label>
-                <input type="time" id="order-time" class="input-field">
-                <button class="submit-btn" onclick="nextWizardStep(2)">Next: Choose Toppings</button>
+            <div class="modal-header">
+                <div class="mobile-settings-header" style="position:relative; top:0; margin-bottom:10px;">LA PRINSESA BAKESHOP</div>
+                <h2 class="modal-title" id="details-title" style="margin: 0 0 5px 0;">Item Details</h2>
+                <p id="details-price" style="color: var(--accent-pink); font-size: 18px; font-weight: bold; margin: 0;"></p>
             </div>
-
-            <div id="wizard-step-2" class="wizard-step">
-                <label style="font-size: 15px; margin-bottom: 10px; display: block; font-weight: bold;">Customize Your Order:</label>
-                <div class="toppings-panel">
-                    <label class="topping-item"><input type="checkbox" class="topping-check" value="Extra Sprinkles"> Extra Sprinkles</label>
-                    <label class="topping-item"><input type="checkbox" class="topping-check" value="Choco Drizzle"> Choco Drizzle</label>
-                    <label class="topping-item"><input type="checkbox" class="topping-check" value="Strawberry Syrup"> Strawberry Syrup</label>
-                    <label class="topping-item"><input type="checkbox" class="topping-check" value="Edible Pearls"> Edible Pearls</label>
+            
+            <div class="modal-body">
+                <!-- Left Picture Preview Panel -->
+                <div class="modal-preview-panel">
+                    <div class="modal-image-wrap" id="details-image-container">
+                        <!-- Content dynamically injected here -->
+                    </div>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="os-btn os-btn-secondary" onclick="nextWizardStep(1)">Back</button>
-                    <button class="submit-btn" style="flex: 2;" onclick="nextWizardStep(3)">Next: Review</button>
-                </div>
-            </div>
 
-            <div id="wizard-step-3" class="wizard-step">
-                <div class="warning-box"><strong>⚠️ Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.</div>
-                <p style="text-align: center; font-size: 16px; margin-bottom: 20px;">Ready to complete order?</p>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="submit-btn" onclick="processOrder('buy')">🛍️ Buy Now</button>
-                    <button class="os-btn os-btn-secondary" onclick="processOrder('cart')">🛒 Add to Cart</button>
-                    <button class="os-btn os-btn-secondary" style="border-color: transparent;" onclick="nextWizardStep(2)">Go Back</button>
+                <!-- Right Customization Panel -->
+                <div class="modal-options-panel">
+                    <div id="wizard-step-1" class="wizard-step active">
+                        <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
+                        <input type="date" id="order-date" class="input-field">
+                        <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Time:</label>
+                        <input type="time" id="order-time" class="input-field">
+                        <button class="submit-btn" onclick="nextWizardStep(2)">Next: Choose Toppings</button>
+                    </div>
+
+                    <div id="wizard-step-2" class="wizard-step">
+                        <label style="font-size: 15px; margin-bottom: 10px; display: block; font-weight: bold;">Customize Your Order:</label>
+                        <div class="toppings-panel">
+                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Extra Sprinkles"> Extra Sprinkles</label>
+                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Choco Drizzle"> Choco Drizzle</label>
+                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Strawberry Syrup"> Strawberry Syrup</label>
+                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Edible Pearls"> Edible Pearls</label>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="os-btn os-btn-secondary" onclick="nextWizardStep(1)">Back</button>
+                            <button class="submit-btn" style="flex: 2;" onclick="nextWizardStep(3)">Next: Review</button>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-3" class="wizard-step">
+                        <div class="warning-box"><strong>⚠️ Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.</div>
+                        <p style="text-align: center; font-size: 16px; margin-bottom: 20px;">Ready to complete order?</p>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="submit-btn" onclick="processOrder('buy')">🛍️ Buy Now</button>
+                            <button class="os-btn os-btn-secondary" onclick="processOrder('cart')">🛒 Add to Cart</button>
+                            <button class="os-btn os-btn-secondary" style="border-color: transparent;" onclick="nextWizardStep(2)">Go Back</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="receipt-overlay">
-        <div id="receipt-hub" style="text-align: center;">
+        <div id="receipt-hub" style="text-align: center; max-width: 480px;">
             <button class="close-btn" onclick="closeReceipt()">×</button>
             <h2 class="modal-title">Digital Receipt</h2>
             
@@ -799,30 +853,17 @@
         let currentPriceToOrder = "";
         let currentImgToOrder = "";
         let currentAdminViewingUid = null;
+        let checkoutCartIndex = -1;
         
-        let menuItems = JSON.parse(localStorage.getItem('la_prinsesa_menu')) || [
-            { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: '🧁' },
-            { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: '🍫' },
-            { id: 3, name: 'Strawberry Princess', price: '₱110.00', img: '🍓' },
-            { id: 4, name: 'Classic Vanilla Bean', price: '₱90.00', img: '🍦' },
-            { id: 5, name: 'Prinsesa Signature Cake', price: '₱550.00', img: '🎂' },
-            { id: 6, name: 'Mango Royale Cupcake', price: '₱115.00', img: '🥭' },
-            { id: 7, name: 'Ube Crown Pastry', price: '₱95.00', img: '🍠' },
-            { id: 8, name: 'Golden Caramel Slice', price: '₱130.00', img: '🍰' }
-        ];
-
-        let homePromos = JSON.parse(localStorage.getItem('la_prinsesa_promos')) || [
-            { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' },
-            { id: 2, title: 'A Royal Plot Twist! 👑', desc: "Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist.", img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' }
-        ];
+        let menuItems = [];
+        let homePromos = [];
 
         window.onload = initializeSession; 
 
         async function initializeSession() {
-            // Fix: Attempt anonymous sign-in to satisfy default RLS policies that check auth state
+            // Attempt anonymous sign-in to satisfy default RLS policies that check auth state
             _db.auth.signInAnonymously().catch(e => console.warn(e));
 
-            // FIX: Changed from sessionStorage to localStorage for permanent login!
             const savedUser = localStorage.getItem('la_prinsesa_session_user');
             if (savedUser) { 
                 currentUser = JSON.parse(savedUser); 
@@ -830,8 +871,8 @@
                 if (c) cartItems = JSON.parse(c);
             }
             
-            renderMenu();
-            renderHomePromos();
+            await loadMenuAndPromos();
+            
             updateSettingsUI(); 
             switchMainView('home'); 
             updateCartView();
@@ -840,11 +881,45 @@
             setupRealtimeSubscriptions();
         }
 
+        async function loadMenuAndPromos() {
+            // Attempt to load from Supabase 'menu' table
+            const { data: menuData, error: menuErr } = await _db.from('menu').select('*');
+            if (!menuErr && menuData && menuData.length > 0) {
+                menuItems = menuData;
+                localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
+            } else {
+                menuItems = JSON.parse(localStorage.getItem('la_prinsesa_menu')) || [
+                    { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 3, name: 'Strawberry Princess', price: '₱110.00', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 4, name: 'Classic Vanilla Bean', price: '₱90.00', img: 'https://images.unsplash.com/photo-1586985289906-406988974504?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 5, name: 'Prinsesa Signature Cake', price: '₱550.00', img: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 6, name: 'Mango Royale Cupcake', price: '₱115.00', img: 'https://plus.unsplash.com/premium_photo-1667114674797-222d415950d6?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 7, name: 'Ube Crown Pastry', price: '₱95.00', img: 'https://plus.unsplash.com/premium_photo-1671569420485-7f13f538e12d?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 8, name: 'Golden Caramel Slice', price: '₱130.00', img: 'https://plus.unsplash.com/premium_photo-1723525204481-344400762df7?q=80&w=1600&auto=format&fit=crop' }
+                ];
+            }
+
+            // Attempt to load from Supabase 'promos' table
+            const { data: promoData, error: promoErr } = await _db.from('promos').select('*');
+            if (!promoErr && promoData && promoData.length > 0) {
+                homePromos = promoData;
+                localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
+            } else {
+                homePromos = JSON.parse(localStorage.getItem('la_prinsesa_promos')) || [
+                    { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' },
+                    { id: 2, title: 'A Royal Plot Twist! 👑', desc: "Your daily plot twist starts here. The fan-favorite Red Velvet Royal is back by popular demand! Don't miss this tasty twist.", img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop' }
+                ];
+            }
+            
+            renderMenu();
+            renderHomePromos();
+            renderDesktopCarousel();
+        }
+
         function setupRealtimeSubscriptions() {
             _db.channel('public:orders')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => {
-                    refreshData();
-                }).subscribe();
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, payload => { refreshData(); }).subscribe();
 
             _db.channel('public:messages')
                 .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, payload => {
@@ -852,6 +927,12 @@
                     if (document.getElementById('messaging-overlay').classList.contains('active')) renderUserChat();
                     if (document.getElementById('admin-user-overlay').classList.contains('active') && currentAdminViewingUid) renderAdminUserModal(currentAdminViewingUid);
                 }).subscribe();
+                
+            _db.channel('public:menu')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'menu' }, payload => { loadMenuAndPromos(); }).subscribe();
+                
+            _db.channel('public:promos')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'promos' }, payload => { loadMenuAndPromos(); }).subscribe();
         }
 
         async function refreshData() {
@@ -868,7 +949,7 @@
         }
 
         // ==========================================
-        // 2. AUTHENTICATION (Supabase 'users' Table)
+        // 2. AUTHENTICATION
         // ==========================================
         async function validateLogin() {
             const userInput = document.getElementById('login-username').value.trim();
@@ -876,7 +957,6 @@
             if (userInput.length < 3 || passInput.length < 3) return alert("Min 3 characters.");
             
             if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") {
-                // FIX: Ensure Admin is safely created in the Supabase Table so it is not a "Ghost" account
                 const { data: existingAdmin } = await _db.from('users').select('*').eq('username', 'LAPRINSESA').single();
                 if (!existingAdmin) {
                     const adminObj = { uid: "ADMIN-1", fullname: "ROWENA ANGELES", username: "LAPRINSESA", password: "LAPRINSESA", role: "Administrator", photo_url: "" };
@@ -907,16 +987,13 @@
             const newUser = { uid: newUid, fullname: fullname, username: user, password: pass, role: "Customer", photo_url: "" };
             
             const { error } = await _db.from('users').insert([newUser]);
-            if (error) {
-                return alert("Error creating account: " + error.message);
-            }
+            if (error) return alert("Error creating account: " + error.message);
             
             currentUser = newUser;
             finishLogin();
         }
         
         function finishLogin() {
-            // FIX: Saving to localStorage so closing the tab won't log you out!
             localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
             alert("Logged in successfully!"); location.reload();
         }
@@ -943,7 +1020,6 @@
             
             if (Object.keys(updates).length === 0) return alert("Please enter a valid new username or password (min 3 chars).");
             
-            // Update Supabase Database!
             const { error } = await _db.from('users').update(updates).eq('uid', currentUser.uid);
             if (error) return alert("Error updating credentials: " + error.message);
             
@@ -957,19 +1033,51 @@
         }
 
         // ==========================================
-        // 3. ORDERS SYSTEM (Supabase 'orders' Table)
+        // 3. ORDERS SYSTEM (PHOTO LAYERED)
         // ==========================================
-        function getEmojiForItem(itemName) {
-            const found = menuItems.find(m => m.name === itemName);
-            return found ? found.img : '🧁';
-        }
+        
+        // This function would ideally use transparent illustrative photo layered assets.
+        // For Turn 9, this Turn, transparent illustrative placeholder assets illustrative have illustrative been illustrative illustrative used.
+        const toppingPhotoMap = {
+            'Extra Sprinkles': 'topping-sprinkles-photo',
+            'Choco Drizzle': 'topping-choco-photo',
+            'Strawberry Syrup': 'topping-strawberry-photo'
+        };
 
         function openDetails(item, price, img) {
-            currentItemToOrder = item; currentPriceToOrder = price; currentImgToOrder = img || '🧁';
-            document.getElementById('details-title').innerText = item; document.getElementById('details-price').innerText = price;
-            const now = new Date(); document.getElementById('order-date').value = now.toISOString().split('T')[0]; document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
-            document.querySelectorAll('.topping-check').forEach(c => c.checked = false);
-            nextWizardStep(1); document.getElementById('details-overlay').classList.add('active');
+            currentItemToOrder = item; currentPriceToOrder = price; currentImgToOrder = img;
+            document.getElementById('details-title').innerText = item; 
+            document.getElementById('details-price').innerText = price;
+            
+            const imgContainer = document.getElementById('details-image-container');
+            // Layer base photo first. Layer z-index matters.
+            imgContainer.innerHTML = `
+                <img src="${currentImgToOrder}" alt="${item}" class="photo-layer base-cupcake-photo" id="cupcake-base-layer">
+                <img src="https://via.placeholder.com/400x300/eee/fff?text=Illustrative%20Sprinkles%20Overlay" alt="Illustrative Sprinkles" class="photo-layer topping-sprinkles-photo" id="layer-Extra Sprinkles">
+                <img src="https://via.placeholder.com/400x300/eee/fff?text=Illustrative%20Choco%20Drizzle%20Overlay" alt="Illustrative Choco Drizzle" class="photo-layer topping-choco-photo" id="layer-Choco Drizzle">
+                <img src="https://via.placeholder.com/400x300/eee/fff?text=Illustrative%20Strawberry%20Syrup%20Overlay" alt="Illustrative Strawberry Syrup" class="photo-layer topping-strawberry-photo" id="layer-Strawberry Syrup">
+            `;
+            
+            // Set illustrative dynamic update logic
+            document.querySelectorAll('.topping-check').forEach(check => {
+                check.checked = false;
+                check.onchange = function() {
+                    const layerId = toppingPhotoMap[this.value];
+                    if(layerId){
+                        const layerEl = document.getElementById(`layer-${this.value}`);
+                        if(layerEl){
+                           layerEl.style.opacity = this.checked ? "1" : "0";
+                        }
+                    }
+                }
+            });
+
+            const now = new Date(); 
+            document.getElementById('order-date').value = now.toISOString().split('T')[0]; 
+            document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
+            
+            nextWizardStep(1); 
+            document.getElementById('details-overlay').classList.add('active');
         }
 
         function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
@@ -991,9 +1099,7 @@
             if (type === 'buy') {
                 if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
                 const { error } = await _db.from('orders').insert([orderObj]);
-                if (error) {
-                    return alert("Error sending order: " + error.message);
-                }
+                if (error) return alert("Error sending order: " + error.message);
                 
                 closeDetails(); switchMainView('orders');
                 showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: JSON.parse(orderObj.toppings) }); 
@@ -1015,7 +1121,7 @@
             
             document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => { b.innerText = cartItems.length; b.style.display = 'flex'; });
             cartItems.forEach((cItem, index) => {
-                const thumbHTML = (cItem.img && cItem.img.startsWith('http')) ? `<img src="${cItem.img}">` : (cItem.img || '🧁');
+                const thumbHTML = `<img src="${cItem.img}" alt="${cItem.item}">`;
                 const p = document.createElement('div'); p.className = 'cart-panel';
                 p.innerHTML = `
                     <div class="order-img-thumb">${thumbHTML}</div>
@@ -1036,7 +1142,7 @@
 
         function openCartCheckout(index) {
             checkoutCartIndex = index; const cItem = cartItems[index];
-            const thumbHTML = (cItem.img && cItem.img.startsWith('http')) ? `<img src="${cItem.img}">` : (cItem.img || '🧁');
+            const thumbHTML = `<img src="${cItem.img}" alt="${cItem.item}">`;
             document.getElementById('cart-co-name').innerText = cItem.item; document.getElementById('cart-co-price').innerText = cItem.price;
             document.getElementById('cart-co-img').innerHTML = thumbHTML;
             document.getElementById('cart-co-toppings').innerText = cItem.toppings.length ? `Toppings: ${cItem.toppings.join(', ')}` : "No extra toppings";
@@ -1060,9 +1166,7 @@
             };
 
             const { error } = await _db.from('orders').insert([dbOrder]);
-            if (error) {
-                return alert("Checkout error: " + error.message);
-            }
+            if (error) return alert("Checkout error: " + error.message);
 
             removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders');
             showReceipt({ id: dbOrder.order_id, item: dbOrder.item_name, price: dbOrder.price, date: dbOrder.pickup_date, time: dbOrder.pickup_time, toppings: cItem.toppings });
@@ -1078,8 +1182,7 @@
             if (!orders || orders.length === 0) { list.innerHTML = '<p>No orders yet.</p>'; return; }
 
             orders.forEach(o => {
-                const isImg = o.image_url && (o.image_url.startsWith('http') || o.image_url.startsWith('data:'));
-                const thumbHTML = isImg ? `<img src="${o.image_url}">` : (o.image_url || '🧁');
+                const thumbHTML = `<img src="${o.image_url}" alt="${o.item_name}">`;
                 let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
                 
                 const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.order_id)}`;
@@ -1112,7 +1215,7 @@
         }
 
         // ==========================================
-        // 4. CHAT SYSTEM (Supabase 'messages' Table)
+        // 4. CHAT SYSTEM
         // ==========================================
         async function sendChatMessage(senderType, imgBase64 = null) {
             let inputId = senderType === 'user' ? 'chat-text-input' : 'admin-chat-text-input';
@@ -1134,10 +1237,7 @@
             };
 
             const { error } = await _db.from('messages').insert([chatObj]);
-            if(error) {
-                console.error("Chat error:", error);
-                alert("Error sending message: " + error.message);
-            }
+            if(error) return alert("Error sending message: " + error.message);
             if(input && !error) input.value = "";
         }
 
@@ -1154,9 +1254,7 @@
             if (!currentUser) return;
             const hist = document.getElementById('chat-history');
             
-            // Mark owner's messages to this user as read
             await _db.from('messages').update({ is_read: true }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
-            
             const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', currentUser.uid).order('created_at', { ascending: true });
             
             hist.innerHTML = '<div class="chat-message owner">Hello! Welcome to La Prinsesa. How can we help you?</div>';
@@ -1180,7 +1278,7 @@
         }
 
         // ==========================================
-        // 5. ADMIN CONTROLS (Supabase logic)
+        // 5. ADMIN CONTROLS 
         // ==========================================
         async function renderAdminOrders() {
             const list = document.getElementById('admin-orders-list'); list.innerHTML = '';
@@ -1268,8 +1366,7 @@
             if(!userOrders || userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
             else {
                 userOrders.forEach(o => {
-                    const isImg = o.image_url && (o.image_url.startsWith('http') || o.image_url.startsWith('data:'));
-                    const thumbHTML = isImg ? `<img src="${o.image_url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">` : (o.image_url || '🧁');
+                    const thumbHTML = `<img src="${o.image_url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${o.item_name}">`;
                     let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
 
                     ordersDiv.innerHTML += `
@@ -1312,8 +1409,23 @@
         }
 
         // ==========================================
-        // 6. UI UTILS AND RENDERING
+        // 6. UI UTILS AND RENDERING (PHOTO BASED)
         // ==========================================
+        function renderDesktopCarousel() {
+            const track = document.getElementById('desktop-carousel-track');
+            if (!track) return;
+            track.innerHTML = '';
+            homePromos.forEach(p => {
+                const slide = document.createElement('div');
+                slide.className = 'desktop-carousel-slide';
+                slide.innerHTML = `
+                    <img src="${p.img}" alt="${p.title}">
+                    <div class="desktop-carousel-text">${p.title} &bull; ${p.desc}</div>
+                `;
+                track.appendChild(slide);
+            });
+        }
+
         function renderMenu() {
             const grid = document.getElementById('product-grid'); grid.innerHTML = '';
             const isAdmin = currentUser && currentUser.role === 'Administrator';
@@ -1322,19 +1434,13 @@
                 const addBtn = document.createElement('div'); 
                 addBtn.className = 'menu-card admin-add-card';
                 addBtn.style.minHeight = '200px';
-                addBtn.style.display = 'flex';
-                addBtn.style.alignItems = 'center';
-                addBtn.style.justifyContent = 'center';
-                addBtn.style.fontSize = '4em';
                 addBtn.onclick = () => openAdminEdit('menu', 'new'); 
                 addBtn.innerHTML = '+'; 
                 grid.appendChild(addBtn);
             }
 
             menuItems.forEach((m) => {
-                const isImg = m.img.startsWith('http') || m.img.startsWith('data:');
-                const imgHTML = isImg ? `<img src="${m.img}">` : m.img;
-                
+                const imgHTML = `<img src="${m.img}" alt="${m.name}">`;
                 const card = document.createElement('div'); card.className = 'menu-card';
                 let editBtnHTML = isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️</button>` : '';
 
@@ -1371,7 +1477,11 @@
         function switchMainView(viewName) {
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             document.getElementById(viewName + '-view').classList.add('active');
-            updateNavState(viewName);
+            
+            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+            if (event && event.currentTarget && event.currentTarget.classList.contains('sidebar-btn')) event.currentTarget.classList.add('active');
+            document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active'));
+            if (event && event.currentTarget && event.currentTarget.classList.contains('bnav-item')) event.currentTarget.classList.add('active');
         }
 
         function updateSettingsUI() {
@@ -1383,14 +1493,11 @@
                 
                 if (currentUser.role === 'Administrator') {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
-                    document.getElementById('orders-view-title').innerText = "Store Operations";
-                    document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
                 } else {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
-                    document.getElementById('orders-view-title').innerText = "Your Order History";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
@@ -1412,7 +1519,7 @@
         }
 
         // ==========================================
-        // 7. ADMIN EDITOR (Stored safely in memory)
+        // 7. ADMIN EDITOR (PHOTO BASED)
         // ==========================================
         function openAdminEdit(type, id) {
             document.getElementById('admin-edit-type').value = type; 
@@ -1424,14 +1531,18 @@
                     document.getElementById('admin-edit-title').innerText = "Add Menu Item"; 
                     document.getElementById('admin-edit-name').value = ""; 
                     document.getElementById('admin-edit-desc').value = "₱0.00"; 
-                    document.getElementById('admin-edit-img').value = "🧁"; 
+                    // Field description updated for illustrative URL
+                    document.getElementById('admin-edit-img').value = ""; 
+                    document.getElementById('admin-edit-img').placeholder = "Enter illustrative photo URL";
                     delBtn.style.display = 'none';
                 } else { 
                     const item = menuItems.find(m => m.id == id); 
                     document.getElementById('admin-edit-title').innerText = "Edit Menu Item"; 
                     document.getElementById('admin-edit-name').value = item.name; 
                     document.getElementById('admin-edit-desc').value = item.price; 
+                    // Field updated to illustrative URL
                     document.getElementById('admin-edit-img').value = item.img; 
+                    document.getElementById('admin-edit-img').placeholder = "Enter illustrative photo URL";
                     delBtn.style.display = 'block';
                 }
             } else if (type === 'home') {
@@ -1440,6 +1551,7 @@
                     document.getElementById('admin-edit-name').value = ""; 
                     document.getElementById('admin-edit-desc').value = ""; 
                     document.getElementById('admin-edit-img').value = ""; 
+                    document.getElementById('admin-edit-img').placeholder = "Enter illustrative photo URL";
                     delBtn.style.display = 'none';
                 } else { 
                     const promo = homePromos.find(p => p.id == id); 
@@ -1447,6 +1559,7 @@
                     document.getElementById('admin-edit-name').value = promo.title; 
                     document.getElementById('admin-edit-desc').value = promo.desc; 
                     document.getElementById('admin-edit-img').value = promo.img; 
+                    document.getElementById('admin-edit-img').placeholder = "Enter illustrative photo URL";
                     delBtn.style.display = 'block';
                 }
             }
@@ -1455,24 +1568,43 @@
 
         function closeAdminEdit() { document.getElementById('admin-edit-overlay').classList.remove('active'); }
         
-        function saveAdminEdit() {
-            const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value;
-            const name = document.getElementById('admin-edit-name').value; const desc = document.getElementById('admin-edit-desc').value; const img = document.getElementById('admin-edit-img').value;
+        async function saveAdminEdit() {
+            const type = document.getElementById('admin-edit-type').value; 
+            const id = document.getElementById('admin-edit-id').value;
+            const name = document.getElementById('admin-edit-name').value; 
+            const desc = document.getElementById('admin-edit-desc').value; 
+            // Field updated to illustrative URL
+            const img = document.getElementById('admin-edit-img').value;
+
             if (type === 'menu') {
-                if (id === 'new') menuItems.push({ id: Date.now(), name: name, price: desc, img: img });
-                else { const idx = menuItems.findIndex(m => m.id == id); if(idx > -1) { menuItems[idx].name = name; menuItems[idx].price = desc; menuItems[idx].img = img; } }
+                if (id === 'new') { 
+                    menuItems.push({ id: Date.now(), name: name, price: desc, img: img });
+                } else { 
+                    const idx = menuItems.findIndex(m => m.id == id);
+                    if(idx > -1) {
+                        menuItems[idx].name = name; menuItems[idx].price = desc; menuItems[idx].img = img;
+                    }
+                }
                 localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
-                renderMenu();
             } else if (type === 'home') {
-                if (id === 'new') homePromos.push({ id: Date.now(), title: name, desc: desc, img: img });
-                else { const idx = homePromos.findIndex(p => p.id == id); if(idx > -1) { homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img; } }
+                if (id === 'new') { 
+                    homePromos.push({ id: Date.now(), title: name, desc: desc, img: img });
+                } else { 
+                    const idx = homePromos.findIndex(p => p.id == id);
+                    if(idx > -1) {
+                        homePromos[idx].title = name; homePromos[idx].desc = desc; homePromos[idx].img = img;
+                    }
+                }
                 localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
-                renderHomePromos();
             }
+
             closeAdminEdit();
+            renderMenu();
+            renderHomePromos();
+            renderDesktopCarousel();
         }
 
-        function deleteAdminEdit() {
+        async function deleteAdminEdit() {
             const type = document.getElementById('admin-edit-type').value; 
             const id = document.getElementById('admin-edit-id').value;
             if(!confirm("Are you sure you want to delete this item?")) return;
@@ -1480,13 +1612,15 @@
             if (type === 'menu') {
                 menuItems = menuItems.filter(m => m.id != id);
                 localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
-                renderMenu();
             } else if (type === 'home') {
                 homePromos = homePromos.filter(p => p.id != id);
                 localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
-                renderHomePromos();
             }
+
             closeAdminEdit();
+            renderMenu();
+            renderHomePromos();
+            renderDesktopCarousel();
         }
 
         // Receipt Handlers
@@ -1512,7 +1646,7 @@
             const a = document.createElement('a'); a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', `Receipt_${rId}.txt`);
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
-
+        
         // Toggles
         function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
         function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
