@@ -117,7 +117,7 @@
             .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
             .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
 
-            #settings-hub, #messaging-hub, #admin-user-hub, #admin-edit-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
+            #settings-hub, #messaging-hub, #admin-edit-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
             #receipt-hub { max-height: 90vh !important; width: 95vw !important; border-radius: 16px !important; padding: 20px !important;}
 
             .mobile-settings-header { display: block !important; text-align: center; color: white; font-size: 16px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); position: absolute; top: -30px; left: 0; right: 0; }
@@ -127,6 +127,16 @@
             .settings-content { padding: 15px !important; overflow-x: hidden; flex: 1; }
             .theme-preview-box { grid-column: span 2 !important; }
             .os-card { padding: 15px !important; margin-bottom: 15px !important;}
+
+            /* Make Canva Admin modal mobile friendly if accessed on phone */
+            #admin-user-hub {
+                flex-direction: column !important;
+                height: 85vh !important;
+                max-width: 90vw !important;
+                overflow-y: auto !important;
+                padding: 20px !important;
+            }
+            .admin-divider { display: none !important; }
         }
 
         /* --- PC SIDEBAR STYLES --- */
@@ -213,7 +223,7 @@
         .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; box-sizing: border-box; }
         .ui-modal-overlay.active { display: flex; }
         
-        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-user-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
+        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
 
         /* SPLIT VIEW MODAL SPECIFIC FOR ITEM DETAILS WITH PHOTO LAYERING */
         #details-hub { 
@@ -337,6 +347,95 @@
         .toppings-panel { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .topping-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #fff; }
         .topping-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent-pink); }
+        
+        /* -----------------------------------------------------
+           CANVA CONCEPT UI INTEGRATION: ADMIN USER HUB
+        ----------------------------------------------------- */
+        #admin-user-hub { 
+            background: #ffb6c1 !important; /* Canva light pink background */
+            display: flex !important;
+            flex-direction: row !important;
+            max-width: 850px !important;
+            height: 550px !important;
+            max-height: 90vh !important;
+            border-radius: 30px !important;
+            padding: 30px !important;
+            border: none !important;
+            gap: 20px;
+            backdrop-filter: none !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
+            
+            /* FIX FOR CLOSE BUTTON: Allows absolute positioning within bounds */
+            position: relative !important; 
+            overflow: visible !important; 
+        }
+
+        .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; }
+        .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+        
+        .admin-divider { width: 3px; background: white; border-radius: 2px; opacity: 0.8;}
+        
+        .admin-canva-header { font-size: 20px; color: #333; margin: 0; font-weight: 700; text-shadow: none; }
+        
+        .admin-canva-chat-box {
+            flex: 1; background: #c2185b; /* Dark deep pink container */
+            border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+        }
+        
+        /* Specialized chat bubbles to fit Canva theme */
+        #admin-chat-history .chat-message.owner { background: #fff; color: #c2185b; align-self: flex-end; border-bottom-right-radius: 4px; border-bottom-left-radius: 15px;}
+        #admin-chat-history .chat-message.user { background: #ffb6c1; color: #c2185b; align-self: flex-start; border-bottom-left-radius: 4px; border-bottom-right-radius: 15px;}
+        
+        /* FIX FOR OVERSIZED IMAGES IN CHAT */
+        #admin-chat-history .chat-img {
+            max-width: 100%;
+            max-height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .admin-canva-input {
+            background: #c2185b; border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 14px; outline: none; width: 100%; box-sizing: border-box; font-weight: 500;
+        }
+        .admin-canva-input::placeholder { color: rgba(255,255,255,0.7); font-weight: normal;}
+        
+        .admin-canva-btn-row { display: flex; gap: 10px; }
+        .admin-canva-btn {
+            background: #c2185b; color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(194, 24, 91, 0.2);
+        }
+        .admin-canva-btn:hover { background: #a01048; transform: translateY(-2px); }
+        
+        /* FIX FOR DISAPPEARING / MISPLACED CLOSE BUTTON */
+        .admin-canva-close {
+            position: absolute !important; 
+            top: 15px !important; 
+            right: 15px !important; 
+            background: #c2185b !important; 
+            color: white !important; 
+            border: 2px solid white !important; 
+            width: 32px !important; 
+            height: 32px !important; 
+            border-radius: 50% !important; 
+            font-weight: bold !important; 
+            font-size: 18px !important; 
+            line-height: 1 !important;
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
+            cursor: pointer !important; 
+            z-index: 100 !important; 
+            transition: 0.2s !important;
+            padding: 0 !important;
+        }
+        .admin-canva-close:hover { transform: scale(1.1); background: #a01048 !important; }
+
+        .admin-canva-order-card {
+            background: #c2185b; border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .admin-canva-order-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;}
+        .admin-canva-order-status {
+            position: absolute; top: 12px; right: 12px; background: #ffb6c1; color: #c2185b; padding: 4px 12px; border-radius: 15px; font-size: 10px; font-weight: 900;
+        }
     </style>
 </head>
 <body>
@@ -514,23 +613,30 @@
         </div>
     </div>
 
+    <!-- REPLACED ADMIN USER HUB WITH CANVA CONCEPT UI DESIGN -->
     <div class="ui-modal-overlay" id="admin-user-overlay">
         <div id="admin-user-hub">
-            <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
-            <button class="close-btn" onclick="closeAdminUserModal()">×</button>
-            <h2 class="modal-title" id="admin-user-title">User Details</h2>
+            <button class="admin-canva-close" onclick="closeAdminUserModal()">×</button>
             
-            <h3 style="margin:0 0 10px 0; color:var(--accent-pink);">Active Orders</h3>
-            <div id="admin-user-orders" style="margin-bottom: 25px;"></div>
+            <div class="admin-left-col">
+                <h2 class="admin-canva-header">Direct Message</h2>
+                <div class="admin-canva-chat-box chat-history" id="admin-chat-history"></div>
+                <input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')">
+                <div class="admin-canva-btn-row">
+                    <label class="admin-canva-btn" style="display:flex; align-items:center; justify-content:center; margin:0;">
+                        📷 SEND PHOTO
+                        <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')">
+                    </label>
+                    <button class="admin-canva-btn" onclick="sendChatMessage('owner')">SEND</button>
+                </div>
+            </div>
 
-            <h3 style="margin:0 0 10px 0; color:var(--accent-pink);">Direct Message</h3>
-            <div class="chat-history" id="admin-chat-history"></div>
-            <div style="display:flex;gap:10px; flex-direction: column;">
-                <input type="text" id="admin-chat-text-input" class="input-field" placeholder="Type message to user..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'owner')">
-                <label class="os-btn os-btn-secondary" style="margin-bottom:0; text-align:center;">📷 Send Photo
-                    <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')">
-                </label>
-                <button class="submit-btn" style="width: 100%;" onclick="sendChatMessage('owner')">Send</button>
+            <div class="admin-divider"></div>
+
+            <div class="admin-right-col">
+                <h2 class="admin-canva-header" id="admin-user-title">Managing: USER</h2>
+                <p style="margin:0; font-size: 16px; color: #333; font-weight: 500;">Active Orders</p>
+                <div id="admin-user-orders" style="flex: 1; overflow-y: auto; padding-right: 5px;"></div>
             </div>
         </div>
     </div>
@@ -851,6 +957,13 @@
         let homePromos = [];
 
         window.onload = initializeSession; 
+
+        // Added missing input handler
+        function handleKeyPress(e, sender) {
+            if (e.key === 'Enter') {
+                sendChatMessage(sender);
+            }
+        }
 
         async function initializeSession() {
             _db.auth.signInAnonymously().catch(e => console.warn(e));
@@ -1323,32 +1436,38 @@
 
         function closeAdminUserModal() { document.getElementById('admin-user-overlay').classList.remove('active'); currentAdminViewingUid = null; refreshData(); }
 
+        /* 
+           MODIFIED: Integrates the Canva layout UI for the Admin User Hub. 
+           Order rendering utilizes new CSS classes built above. 
+        */
         async function renderAdminUserModal(uid) {
             const ordersDiv = document.getElementById('admin-user-orders'); ordersDiv.innerHTML = '';
             const hist = document.getElementById('admin-chat-history'); hist.innerHTML = '';
             
             const { data: userOrders } = await _db.from('orders').select('*').eq('user_uid', uid).order('order_id', { ascending: false });
             
-            if(!userOrders || userOrders.length === 0) ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(255,255,255,0.6);">No orders placed.</p>';
-            else {
+            if(!userOrders || userOrders.length === 0) {
+                ordersDiv.innerHTML = '<p style="font-size:13px; color:rgba(50,50,50,0.6);">No orders placed.</p>';
+            } else {
                 userOrders.forEach(o => {
-                    const thumbHTML = `<img src="${o.image_url}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" alt="${o.item_name}">`;
                     let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
 
+                    // Changed from old UI wrapper to Canva UI wrapper
                     ordersDiv.innerHTML += `
-                        <div class="admin-order-card">
-                           <div class="admin-order-img">${thumbHTML}</div>
+                        <div class="admin-canva-order-card">
+                           <img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}">
                            <div style="flex:1;">
-                               <h4 style="margin:0 0 5px 0;">${o.item_name} <span class="status-badge status-${o.status}" style="float:right;">${o.status}</span></h4>
-                               <p style="margin:0 0 5px 0; color: var(--accent-pink);"><b>${o.price}</b></p>
-                               <p style="margin:0 0 5px 0; font-size:12px; color:rgba(255,255,255,0.8);">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
-                               <p style="margin:0; font-size:11px; color:rgba(255,255,255,0.5);">ID: ${o.order_id}</p>
+                               <h4 style="margin:0 0 5px 0; font-size: 14px;">${o.item_name}</h4>
+                               <p style="margin:0 0 5px 0; font-size: 12px;"><b>${o.price}</b></p>
+                               <p style="margin:0 0 5px 0; font-size:10px; color:rgba(255,255,255,0.8);">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
+                               <p style="margin:0; font-size:10px; color:rgba(255,255,255,0.6);">ID: ${o.order_id}</p>
                                ${o.status === 'Pending' ? `
-                               <div style="display:flex; gap:10px; margin-top:10px;">
-                                   <button class="cancel-btn" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button>
-                                   <button class="os-btn-primary" style="padding: 5px 15px; font-size: 13px;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept Order</button>
+                               <div style="display:flex; gap:5px; margin-top:10px;">
+                                   <button class="os-btn os-btn-danger" style="padding:4px 8px; font-size:10px; width:auto; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button>
+                                   <button class="os-btn-primary" style="padding: 4px 8px; font-size: 10px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button>
                                </div>` : ''}
                            </div>
+                           <div class="admin-canva-order-status">${o.status}</div>
                         </div>
                     `;
                 });
