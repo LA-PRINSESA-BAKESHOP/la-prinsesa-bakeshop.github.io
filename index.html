@@ -9,9 +9,16 @@
     
     <style>
         :root {
-            --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' fill='%23ff9eb5'/%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
-            --glass-bg: rgba(233, 30, 99, 0.85); 
-            --header-bg: rgba(233, 30, 99, 0.95); 
+            /* Theme Variables - Defaults to Pink */
+            --theme-accent: #d81b60;
+            --theme-base: rgba(233, 30, 99, 0.85);
+            --theme-text-dark: #880e4f;
+            --theme-bg-light: #f8bbd0;
+            --theme-btn-hover: #ad1457;
+
+            --bg-main: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Ctext x='30' y='60' font-size='40'%3E🧁%3C/text%3E%3Ctext x='110' y='140' font-size='40'%3E🍰%3C/text%3E%3Ctext x='110' y='50' font-size='25'%3E🍰%3C/text%3E%3Ctext x='30' y='130' font-size='25'%3E🎂%3C/text%3E%3C/svg%3E"); 
+            --glass-bg: var(--theme-base); 
+            --header-bg: var(--theme-base); 
             --glass-blur: blur(15px); 
             --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
             --base-font-size: 16px;
@@ -19,7 +26,6 @@
             --apple-spring: cubic-bezier(0.25, 1, 0.5, 1);
             --liquid-ease: cubic-bezier(0.23, 1, 0.32, 1);
             --dynamic-text-color: #ffffff;
-            --accent-pink: #d81b60; 
             --os-green: #2ecc71;
         }
 
@@ -37,9 +43,10 @@
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0; padding: 0; display: flex; height: 100vh; width: 100vw;
-            background: var(--bg-main); background-color: #f8bbd0; 
+            background-color: var(--theme-bg-light);
+            background-image: var(--bg-main);
             background-repeat: repeat; background-position: top left; background-attachment: fixed; background-size: 250px;
-            overflow: hidden; transition: background 0.4s ease, color 0.3s ease;
+            overflow: hidden; transition: background-color 0.4s ease, color 0.3s ease;
             color: var(--dynamic-text-color); font-size: var(--base-font-size);
             z-index: -2; align-items: flex-start;
         }
@@ -57,7 +64,7 @@
 
         @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
             body { display: grid; grid-template-columns: var(--side-full) 1fr; align-items: stretch; }
-            #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 2000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); }
+            #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 2000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); transition: background 0.3s ease; }
             #bottom-nav { display: none; }
             .desktop-carousel-container { display: flex; }
             .mobile-promo-feed { display: none; }
@@ -66,10 +73,10 @@
             .shop-header-container { margin: 0 0 20px 0; display: block; text-align: left; }
             .shop-header-title { 
                 display: inline-block; font-size: 2em; font-weight: 800; 
-                background: linear-gradient(135deg, rgba(216, 27, 96, 0.8), rgba(194, 24, 91, 0.6));
+                background: linear-gradient(135deg, var(--theme-accent), var(--theme-btn-hover));
                 padding: 15px 25px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.4);
-                box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-                color: #fff; letter-spacing: 1px; margin: 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+                color: #fff; letter-spacing: 1px; margin: 0; transition: background 0.3s ease;
             }
             .shop-divider { border: none; height: 1px; background: rgba(255, 255, 255, 0.3); margin-bottom: 20px; width: 100%; display: block; }
         }
@@ -84,17 +91,17 @@
                 display: flex; flex-direction: row; justify-content: space-around; align-items: center; 
                 flex-shrink: 0; position: relative; width: 100%; height: 70px; 
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15);
-                padding-bottom: env(safe-area-inset-bottom); z-index: 2000;
+                padding-bottom: env(safe-area-inset-bottom); z-index: 2000; transition: background 0.3s ease;
             }
             .bnav-item { flex: 1; text-align: center; color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative;}
             .bnav-item span { font-size: 20px; display: block; margin-bottom: 2px; }
-            .bnav-item.active { color: var(--accent-pink); text-shadow: 0 0 10px rgba(255, 105, 180, 0.5); }
+            .bnav-item.active { color: var(--theme-accent); text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
             
             .shop-header-container {
                 display: flex; align-items: center; justify-content: center; gap: 10px;
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur);
                 border-radius: 15px; padding: 8px 12px; margin: 0 0 15px 0;
-                border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow);
+                border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease;
             }
             .shop-header-logo { width: 35px; flex-shrink: 0; }
             .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
@@ -112,7 +119,7 @@
             }
             .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; }
             .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; }
-            .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(216, 27, 96, 0.1) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
+            .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
             .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
 
             #settings-hub, #messaging-hub, #admin-edit-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
@@ -123,7 +130,7 @@
             .settings-sidebar h3 { display: none !important; }
             .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; }
             .settings-content { padding: 15px !important; overflow-x: hidden; flex: 1; }
-            .theme-preview-box { grid-column: span 2 !important; }
+            .theme-preview-box { grid-column: span 1 !important; }
             .os-card { padding: 15px !important; margin-bottom: 15px !important;}
 
             #admin-user-hub {
@@ -154,7 +161,7 @@
             cursor: pointer; text-align: left; font-size: 16px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 8px;
         }
         .sidebar-btn:hover { background: rgba(255, 255, 255, 0.15); }
-        .sidebar-btn.active { background: rgba(255, 255, 255, 0.2); font-weight: bold; border-color: rgba(255, 255, 255, 0.3); }
+        .sidebar-btn.active { background: var(--theme-accent); font-weight: bold; border-color: rgba(255, 255, 255, 0.3); }
 
         .nav-badge { position: absolute; top: 5px; right: 5px; background: #ff3b30; color: white; border-radius: 50%; font-size: 10px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .user-badge { display: inline-flex; align-items: center; justify-content: center; background: #ff3b30; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px; font-weight: bold; margin-left: 10px; }
@@ -167,7 +174,7 @@
         .desktop-carousel-container {
             width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden;
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: var(--apple-glass-shadow); display: flex;
+            box-shadow: var(--apple-glass-shadow); display: flex; transition: background 0.3s ease;
         }
         .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; }
         .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; }
@@ -180,19 +187,19 @@
         #product-search::placeholder { color: rgba(255,255,255,0.6); }
 
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; width: 100%; }
-        .menu-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
-        .menu-card:hover { border-color: var(--accent-pink); }
-        .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--accent-pink); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; overflow: hidden;}
+        .menu-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease, background 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        .menu-card:hover { border-color: var(--theme-accent); }
+        .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--theme-accent); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; overflow: hidden; transition: border-top-color 0.3s ease;}
         .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
         
         .admin-edit-btn { 
             position: absolute; top: 10px; right: 10px; 
-            background: rgba(194, 24, 91, 0.95); 
+            background: var(--theme-base); 
             color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; 
             padding: 6px 12px; cursor: pointer; z-index: 10; display: none; align-items: center; justify-content: center; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 12px; font-weight: 700; transition: 0.2s;
         }
-        .admin-edit-btn:hover { background: #d81b60; transform: translateY(-2px); border-color: white;}
+        .admin-edit-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px); border-color: white;}
         
         .admin-add-card { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; font-size: 4em; color: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; border-radius: 20px;}
         .admin-add-card:hover { background: rgba(255,255,255,0.2); color: white; }
@@ -206,13 +213,14 @@
         .promo-details { padding: 15px; }
         .promo-details h3 { margin: 0 0 8px 0; font-size: 16px; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         .promo-details p { margin: 0 0 15px 0; font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
-        .promo-action { display: inline-block; padding: 8px 15px; background: var(--accent-pink); color: white; font-weight: bold; border-radius: 10px; font-size: 13px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.4); }
+        .promo-action { display: inline-block; padding: 8px 15px; background: var(--theme-accent); color: white; font-weight: bold; border-radius: 10px; font-size: 13px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s ease;}
+        .promo-action:hover { background: var(--theme-btn-hover); }
 
         .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
         #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 800px; }
         
         .order-panel, .cart-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
-        .order-panel:hover, .cart-panel:hover { border-color: var(--accent-pink); }
+        .order-panel:hover, .cart-panel:hover { border-color: var(--theme-accent); }
         .order-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; flex: 1;}
         .order-info h3 { margin: 0 0 5px 0; font-size: 16px; text-shadow: 0 1px 3px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px;}
         .order-info p { margin: 0 0 5px 0; color: #fff; font-weight: bold; font-size: 14px;}
@@ -224,18 +232,18 @@
         .qr-thumb { width: 45px; height: 45px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
 
         .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
-        .admin-user-row:hover { border-color: var(--accent-pink); }
+        .admin-user-row:hover { border-color: var(--theme-accent); }
 
         .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; box-sizing: border-box; }
         .ui-modal-overlay.active { display: flex; }
         
-        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
+        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; transition: background 0.3s ease; }
 
-        .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--accent-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+        .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--theme-accent); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
         .digital-receipt-wrapper * { text-shadow: none !important; }
-        .receipt-header-logo { width: 45px; height: 45px; margin: 0 auto 10px auto; display: flex; justify-content: center; align-items: center; background: #fff; border-radius: 50%; border: 2px solid var(--accent-pink); }
+        .receipt-header-logo { width: 45px; height: 45px; margin: 0 auto 10px auto; display: flex; justify-content: center; align-items: center; background: #fff; border-radius: 50%; border: 2px solid var(--theme-accent); }
         .receipt-header-logo svg { width: 30px; }
-        .receipt-title { font-size: 15px; font-weight: bold; margin: 0 0 10px 0; color: #c2185b; }
+        .receipt-title { font-size: 15px; font-weight: bold; margin: 0 0 10px 0; color: var(--theme-text-dark); }
         .receipt-divider { border-top: 1px dashed #ccc; margin: 10px 0; }
         .receipt-detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; text-align: left;}
         .receipt-qr-box { margin: 15px auto 10px auto; width: 100px; height: 100px; background: #f9f9f9; padding: 8px; border: 1px solid #eee; }
@@ -286,21 +294,21 @@
         .range-slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); outline: none; margin-top: 15px; border: 1px solid rgba(255,255,255,0.1); }
         .range-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
 
-        .theme-preview-box { border: 2px solid rgba(255,255,255,0.2); transition: transform 0.3s var(--apple-spring), border-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 12px; cursor: pointer; }
+        .theme-preview-box { border: 2px solid rgba(255,255,255,0.2); transition: transform 0.3s var(--apple-spring), border-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 12px; cursor: pointer; overflow: hidden; }
         .theme-preview-box:hover { border-color: rgba(255,255,255,1); }
 
         .auth-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; }
         .auth-tab { flex: 1; text-align: center; padding: 12px 5px; font-size: 14px; font-weight: bold; color: rgba(255,255,255,0.6); background: transparent; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
-        .auth-tab.active { color: white; border-bottom: 3px solid var(--accent-pink); text-shadow: 0 0 10px var(--accent-pink); }
+        .auth-tab.active { color: white; border-bottom: 3px solid var(--theme-accent); text-shadow: 0 0 10px var(--theme-accent); }
         .auth-pane { display: none; width: 100%; animation: fadeIn 0.3s ease; text-align: left; }
         .auth-pane.active { display: block; }
 
         .input-field { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: white; font-size: 13px; transition: 0.3s; box-sizing: border-box; }
-        .input-field:focus { outline: none; border-color: var(--accent-pink); background: rgba(255,255,255,0.15); box-shadow: 0 0 15px rgba(216, 27, 96, 0.3); }
-        .submit-btn { width: 100%; background: var(--accent-pink); color: white; border: 1px solid transparent; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.4); }
-        .submit-btn:hover { background: #ad1457; }
+        .input-field:focus { outline: none; border-color: var(--theme-accent); background: rgba(255,255,255,0.15); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+        .submit-btn { width: 100%; background: var(--theme-accent); color: white; border: 1px solid transparent; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        .submit-btn:hover { background: var(--theme-btn-hover); }
 
-        .card-profile-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0 auto 15px auto; }
+        .card-profile-photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0; }
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; margin-bottom: 5px; backdrop-filter: blur(5px); }
         .status-Pending { background: rgba(255, 165, 0, 0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.5); }
         .status-Prepared { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46,204,113,0.5); }
@@ -321,7 +329,7 @@
         
         .chat-message { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 13px; line-height: 1.4; word-wrap: break-word; }
         .chat-message.owner { background: rgba(255, 255, 255, 0.15); border-bottom-left-radius: 4px; }
-        .chat-message.user { background: var(--accent-pink); color: white; border-bottom-right-radius: 4px; }
+        .chat-message.user { background: var(--theme-accent); color: white; border-bottom-right-radius: 4px; transition: background 0.3s ease;}
         .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; }
         
         .contact-card { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); line-height: 2; margin-top: 15px; font-size: 14px;}
@@ -330,7 +338,7 @@
 
         /* CANVA CONCEPT UI INTEGRATION: ADMIN USER HUB */
         #admin-user-hub { 
-            background: #f8bbd0 !important;
+            background: var(--theme-bg-light) !important;
             display: flex !important;
             flex-direction: row !important;
             max-width: 850px !important;
@@ -344,46 +352,48 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
             position: relative !important; 
             overflow: visible !important; 
+            transition: background 0.3s ease;
         }
 
         .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; overflow:hidden;}
         .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
         .admin-divider { width: 3px; background: white; border-radius: 2px; opacity: 0.8;}
-        .admin-canva-header { font-size: 20px; color: #880e4f; margin: 0; font-weight: 500; text-shadow: none; }
+        .admin-canva-header { font-size: 20px; color: var(--theme-text-dark); margin: 0; font-weight: 500; text-shadow: none; transition: color 0.3s ease;}
         
         .admin-canva-chat-box {
-            flex: 1; background: rgba(233, 30, 99, 0.8);
+            flex: 1; background: var(--theme-base);
             border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; min-height: 0;
+            transition: background 0.3s ease;
         }
         
-        #admin-chat-history .chat-message.owner { background: #fff; color: #c2185b; border-bottom-right-radius: 4px; border-bottom-left-radius: 15px;}
-        #admin-chat-history .chat-message.user { background: #ffb6c1; color: #c2185b; border-bottom-left-radius: 4px; border-bottom-right-radius: 15px;}
+        #admin-chat-history .chat-message.owner { background: #fff; color: var(--theme-text-dark); border-bottom-right-radius: 4px; border-bottom-left-radius: 15px;}
+        #admin-chat-history .chat-message.user { background: rgba(255,255,255,0.4); color: #fff; border-bottom-left-radius: 4px; border-bottom-right-radius: 15px;}
         #admin-chat-history .chat-img { max-width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; }
 
-        .admin-canva-input { background: rgba(233, 30, 99, 0.9); border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 15px; outline: none; width: 100%; box-sizing: border-box; flex-shrink:0;}
+        .admin-canva-input { background: var(--theme-base); border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 15px; outline: none; width: 100%; box-sizing: border-box; flex-shrink:0; transition: background 0.3s ease;}
         .admin-canva-input::placeholder { color: rgba(255,255,255,0.7); }
         
         .admin-canva-btn-row { display: flex; gap: 10px; flex-shrink:0;}
-        .admin-canva-btn { background: rgba(233, 30, 99, 0.9); color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; }
-        .admin-canva-btn:hover { background: #c2185b; transform: translateY(-2px);}
+        .admin-canva-btn { background: var(--theme-base); color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; }
+        .admin-canva-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px);}
         
         .admin-canva-close {
             position: absolute !important; top: 15px !important; right: 15px !important; 
-            background: #d81b60 !important; color: white !important; border: 2px solid white !important; 
+            background: var(--theme-accent) !important; color: white !important; border: 2px solid white !important; 
             width: 35px !important; height: 35px !important; border-radius: 50% !important; 
             font-weight: bold !important; font-size: 18px !important; display: flex !important; 
             align-items: center !important; justify-content: center !important; cursor: pointer !important; 
             z-index: 100 !important; transition: 0.2s !important; padding: 0 !important;
         }
-        .admin-canva-close:hover { transform: scale(1.1); background: #c2185b !important; }
+        .admin-canva-close:hover { transform: scale(1.1); background: var(--theme-btn-hover) !important; }
 
-        .admin-canva-order-card { background: rgba(233, 30, 99, 0.8); border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center; flex-shrink: 0;}
+        .admin-canva-order-card { background: var(--theme-base); border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center; flex-shrink: 0; transition: background 0.3s ease;}
         .admin-canva-order-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;}
-        .admin-canva-order-status { position: absolute; top: 12px; right: 12px; background: #ffb6c1; color: #c2185b; padding: 4px 12px; border-radius: 15px; font-size: 10px; font-weight: 900; }
+        .admin-canva-order-status { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.5); color: var(--theme-text-dark); padding: 4px 12px; border-radius: 15px; font-size: 10px; font-weight: 900; }
 
         /* CANVA CONCEPT UI INTEGRATION: DETAILS HUB & ADMIN EDIT HUB */
         #details-hub.canva-theme, #admin-edit-hub.canva-theme {
-            background: #f8bbd0 !important; 
+            background: var(--theme-bg-light) !important; 
             border-radius: 30px !important;
             padding: 30px !important;
             border: none !important;
@@ -395,26 +405,27 @@
             max-width: 850px !important;
             position: relative !important;
             overflow: visible !important;
+            transition: background 0.3s ease;
         }
         .canva-details-top { display: flex; flex-direction: column; align-items: flex-start; }
-        .canva-details-title { font-size: 24px; font-weight: 800; color: #880e4f; text-transform: uppercase; margin:0; text-shadow:none; }
-        .canva-details-price { font-size: 18px; font-weight: bold; color: #c2185b; margin-top:5px; text-shadow:none;}
+        .canva-details-title { font-size: 24px; font-weight: 800; color: var(--theme-text-dark); text-transform: uppercase; margin:0; text-shadow:none; }
+        .canva-details-price { font-size: 18px; font-weight: bold; color: var(--theme-accent); margin-top:5px; text-shadow:none;}
         .canva-details-body { display: flex; gap: 30px; }
         .canva-details-left { flex: 1; display: flex; flex-direction: column; gap: 15px; }
         .canva-details-right { flex: 1.2; display: flex; flex-direction: column; overflow-y:auto; padding-right:5px;}
         .canva-details-image-wrap { width: 100%; aspect-ratio: 1; border-radius: 30px; overflow: hidden; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; min-height: 250px;}
-        .canva-details-btn { background: #d81b60; color: white; border: none; padding: 15px; border-radius: 25px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; transition: 0.2s;}
-        .canva-details-btn:hover { background: #ad1457; transform: translateY(-2px); }
-        .canva-details-btn.secondary { background: #880e4f; }
-        .canva-details-btn.secondary:hover { background: #560027; }
+        .canva-details-btn { background: var(--theme-accent); color: white; border: none; padding: 15px; border-radius: 25px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; transition: 0.2s;}
+        .canva-details-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px); }
+        .canva-details-btn.secondary { background: var(--theme-text-dark); }
+        .canva-details-btn.secondary:hover { background: rgba(0,0,0,0.5); }
         
-        .canva-input-field { background: rgba(233, 30, 99, 0.15); border: none; border-radius: 15px; padding: 15px; width: 100%; color: #880e4f; font-size: 14px; box-sizing: border-box; margin-bottom: 10px; font-weight: bold;}
-        .canva-input-field:focus { outline: 2px solid #880e4f; }
+        .canva-input-field { background: rgba(255,255,255, 0.4); border: none; border-radius: 15px; padding: 15px; width: 100%; color: var(--theme-text-dark); font-size: 14px; box-sizing: border-box; margin-bottom: 10px; font-weight: bold;}
+        .canva-input-field:focus { outline: 2px solid var(--theme-text-dark); }
         
-        .canva-warning-box { background: #f48fb1; color: #880e4f; padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.4; text-align: left; font-weight: 500;}
+        .canva-warning-box { background: rgba(255,255,255,0.5); color: var(--theme-text-dark); padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.4; text-align: left; font-weight: 500;}
 
-        .canva-topping-content { background: rgba(233, 30, 99, 0.8); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; border: 3px solid transparent; transition: 0.2s; position:relative;}
-        .topping-check:checked + .canva-topping-content { border-color: #fff; background: #c2185b; }
+        .canva-topping-content { background: var(--theme-base); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; border: 3px solid transparent; transition: 0.2s; position:relative;}
+        .topping-check:checked + .canva-topping-content { border-color: #fff; background: var(--theme-btn-hover); }
         .canva-topping-img-box { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 10px; margin-bottom: 8px; overflow:hidden;}
         .canva-topping-label { color: white; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align:center;}
         
@@ -424,7 +435,7 @@
         .wizard-step.active { display: block; }
 
         /* Quantity Adjuster Styling */
-        .qty-btn { background:transparent; border:none; padding:10px 15px; color:#880e4f; font-weight:bold; cursor:pointer; font-size:18px;}
+        .qty-btn { background:transparent; border:none; padding:10px 15px; color:var(--theme-text-dark); font-weight:bold; cursor:pointer; font-size:18px;}
         .qty-btn:hover { background: rgba(0,0,0,0.05); }
 
     </style>
@@ -521,7 +532,7 @@
         <hr class="shop-divider">
         
         <div id="home-view" class="view-section active">
-            <button class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px; width: 100%; background: #d81b60; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor:pointer;" onclick="openAdminEdit('home', 'new')">✏️ Add New Promo</button>
+            <button class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px; width: 100%; background: var(--theme-accent); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor:pointer;" onclick="openAdminEdit('home', 'new')">✏️ Add New Promo</button>
 
             <div class="desktop-carousel-container">
                 <div class="desktop-carousel-viewport">
@@ -611,7 +622,7 @@
             
             <div class="admin-left-col">
                 <h2 class="admin-canva-header" style="margin-bottom: 0;">Messages</h2>
-                <div id="admin-user-phone" style="color: #880e4f; font-size: 14px; margin-bottom: 10px; font-weight: bold;">CUSTOMER NUMBER<br>#N/A</div>
+                <div id="admin-user-phone" style="color: var(--theme-text-dark); font-size: 14px; margin-bottom: 10px; font-weight: bold;">CUSTOMER NUMBER<br>#N/A</div>
                 
                 <div class="admin-canva-chat-box chat-history" id="admin-chat-history"></div>
                 <input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')">
@@ -628,7 +639,7 @@
 
             <div class="admin-right-col">
                 <h2 class="admin-canva-header" id="admin-user-title">Managing: USER</h2>
-                <p style="margin:0; font-size: 16px; color: #880e4f; font-weight: 500;">Active Orders</p>
+                <p style="margin:0; font-size: 16px; color: var(--theme-text-dark); font-weight: 500;">Active Orders</p>
                 <div id="admin-user-orders" style="flex: 1; overflow-y: auto; padding-right: 5px; display:flex; flex-direction:column;"></div>
             </div>
         </div>
@@ -648,7 +659,7 @@
                     <div class="canva-details-image-wrap" id="admin-preview-box" style="background:#ddd; display:flex; align-items:center; justify-content:center; min-height:300px;">
                         <img id="admin-edit-img-preview" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
                     </div>
-                    <label style="font-size:13px; font-weight:bold; color:#880e4f; margin-top:10px; display:block;">Change Item Photo:</label>
+                    <label style="font-size:13px; font-weight:bold; color:var(--theme-text-dark); margin-top:10px; display:block;">Change Item Photo:</label>
                     <input type="file" id="admin-edit-img-file" class="canva-input-field" accept="image/*" onchange="handleAdminImageUpload(this)">
                     <input type="hidden" id="admin-edit-img-base64">
                     <input type="hidden" id="admin-edit-img-url">
@@ -658,23 +669,23 @@
                     <input type="hidden" id="admin-edit-id">
                     <input type="hidden" id="admin-edit-type">
                     
-                    <label style="font-weight:bold; color:#880e4f; font-size:14px;">Name / Title:</label>
+                    <label style="font-weight:bold; color:var(--theme-text-dark); font-size:14px;">Name / Title:</label>
                     <input type="text" id="admin-edit-name" class="canva-input-field">
                     
-                    <label style="font-weight:bold; color:#880e4f; font-size:14px;">Price:</label>
+                    <label style="font-weight:bold; color:var(--theme-text-dark); font-size:14px;">Price:</label>
                     <input type="text" id="admin-edit-desc" class="canva-input-field">
                     
                     <!-- ADMIN TOPPINGS SECTION -->
                     <div id="admin-toppings-section">
-                        <label style="font-weight:bold; color:#880e4f; font-size:14px;">Available Toppings:</label>
+                        <label style="font-weight:bold; color:var(--theme-text-dark); font-size:14px;">Available Toppings:</label>
                         <div id="admin-toppings-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:15px; margin-top:5px;">
                             <!-- Dynamically generated topping cards -->
                         </div>
                         
-                        <div style="background: rgba(233, 30, 99, 0.1); padding: 15px; border-radius: 15px;">
-                            <label style="font-weight:bold; color:#880e4f; font-size:14px; margin-bottom:10px; display:block;">Add New Topping:</label>
+                        <div style="background: rgba(255,255,255, 0.2); padding: 15px; border-radius: 15px;">
+                            <label style="font-weight:bold; color:var(--theme-text-dark); font-size:14px; margin-bottom:10px; display:block;">Add New Topping:</label>
                             <input type="text" id="new-topping-name" class="canva-input-field" placeholder="Topping Name" style="padding:10px; margin-bottom:10px;">
-                            <label style="font-size:12px; font-weight:bold; color:#880e4f;">Topping Photo:</label>
+                            <label style="font-size:12px; font-weight:bold; color:var(--theme-text-dark);">Topping Photo:</label>
                             <input type="file" id="new-topping-file" class="canva-input-field" accept="image/*" style="padding:10px; margin-bottom:10px;">
                             <button class="canva-details-btn secondary" style="width:100%; padding:10px;" onclick="addNewAdminTopping()">+ Add Topping</button>
                         </div>
@@ -698,7 +709,7 @@
                 <div class="order-img-thumb" id="cart-co-img" style="width: 70px; height: 70px; font-size: 2.5em;"></div>
                 <div>
                     <h3 id="cart-co-name" style="margin: 0 0 5px 0;"></h3>
-                    <p id="cart-co-price" style="color: var(--accent-pink); font-weight: bold; margin: 0 0 5px 0;"></p>
+                    <p id="cart-co-price" style="color: var(--theme-accent); font-weight: bold; margin: 0 0 5px 0;"></p>
                     <small id="cart-co-toppings" style="color: rgba(255,255,255,0.6);"></small>
                 </div>
             </div>
@@ -722,14 +733,34 @@
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeAbout()">×</button>
             <h2 class="modal-title">About Us</h2>
-            <p style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px; font-size: 14px;">
-                Welcome to La Prinsesa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.
-            </p>
-            <h3 style="color: var(--accent-pink); font-size: 16px; margin: 0;">Get In Touch</h3>
-            <div class="contact-card">
-                <div class="contact-item"><strong>📍 Address:</strong> <span>Caloocan, Metro Manila, Philippines</span></div>
-                <div class="contact-item"><strong>📞 Phone:</strong> <span>+63 912 345 6789</span></div>
-                <div class="contact-item"><strong>✉️ Email:</strong> <span>laprinsesadecupcake@gmail.com</span></div>
+            
+            <div id="about-display-mode">
+                <p id="about-desc-display" style="color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 20px; font-size: 14px;">
+                    Welcome to La Prinsesa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.
+                </p>
+                <h3 style="color: var(--theme-accent); font-size: 16px; margin: 0;">Get In Touch</h3>
+                <div class="contact-card">
+                    <div class="contact-item"><strong>📍 Address:</strong> <span id="about-address-display">Caloocan, Metro Manila, Philippines</span></div>
+                    <div class="contact-item"><strong>📞 Phone:</strong> <span id="about-phone-display">+63 912 345 6789</span></div>
+                    <div class="contact-item"><strong>✉️ Email:</strong> <span id="about-email-display">laprinsesadecupcake@gmail.com</span></div>
+                </div>
+                <button id="btn-edit-about" class="os-btn-primary admin-only" style="display:none; margin-top:15px; width:100%;" onclick="toggleAboutEdit(true)">✏️ Edit About Info</button>
+            </div>
+
+            <div id="about-edit-mode" style="display:none;">
+                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Description</label>
+                <textarea id="about-desc-input" class="input-field" rows="4"></textarea>
+                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Address</label>
+                <input type="text" id="about-address-input" class="input-field">
+                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Phone</label>
+                <input type="text" id="about-phone-input" class="input-field">
+                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Email</label>
+                <input type="text" id="about-email-input" class="input-field">
+                
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="submit-btn" style="flex:1;" onclick="saveAboutInfo()">Save</button>
+                    <button class="os-btn os-btn-secondary" style="flex:1;" onclick="toggleAboutEdit(false)">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -743,6 +774,7 @@
                 <button id="nav-accounts" class="settings-tab-btn active" onclick="switchSettingsNav('accounts')">Accounts & Control</button>
                 <button id="nav-personalization" class="settings-tab-btn" onclick="switchSettingsNav('personalization')">Personalization</button>
                 <button id="nav-guides" class="settings-tab-btn" onclick="switchSettingsNav('guides')">Guides</button>
+                <button id="nav-updates" class="settings-tab-btn" onclick="switchSettingsNav('updates')">Updates</button>
             </div>
 
             <div class="settings-content">
@@ -752,7 +784,14 @@
                     <div id="logged-in-view" style="display: none; width: 100%; flex-direction: column;">
                         <div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;">
                             <h4 class="os-card-title">ACTIVE SESSION</h4>
-                            <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="display: none;">
+                            
+                            <div style="position:relative; display:inline-block; margin: 0 auto 15px auto;">
+                                <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="display: none;">
+                                <label class="edit-pen" style="position:absolute; bottom:0; right:-10px; background:rgba(0,0,0,0.8); padding:5px; border-radius:50%; cursor:pointer; font-size:12px; border:1px solid rgba(255,255,255,0.4);" title="Change Photo">
+                                    ✏️<input type="file" style="display:none;" accept="image/*" onchange="updateProfilePhoto(this)">
+                                </label>
+                            </div>
+                            
                             <h2 id="profile-fullname" style="margin: 10px 0; font-size: 20px;"></h2>
                             <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 25px; line-height: 1.6;"></p>
                             
@@ -804,15 +843,18 @@
                     <h2 class="modal-title" style="width:100%;">Interface Personalization</h2>
                     <div class="os-card">
                         <h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4>
-                        <div class="os-btn-row">
-                            <button class="os-btn os-btn-secondary" onclick="randomizeBackground()">Randomize Background</button>
-                        </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <div onclick="applyTheme('default', '#f8bbd0')" class="theme-preview-box" style="background: var(--bg-main); background-size: 80px; height: 50px;"></div>
-                            <div onclick="applyTheme('blue-gradient', '#8fd3f4')" class="theme-preview-box" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 50px;"></div>
-                            <div onclick="applyTheme('peach-gradient', '#ff85a2')" class="theme-preview-box" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%), var(--bg-main); background-size: cover, 80px; background-blend-mode: overlay; height: 50px;"></div>
-                            <div onclick="applyTheme('tinted-glass', 'rgba(233, 30, 99, 0.4)')" class="theme-preview-box" style="background: rgba(233, 30, 99, 0.4); backdrop-filter: blur(15px); display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; color:white; border: 1px solid rgba(255,255,255,0.4); height: 50px; text-align:center;">Tinted Blur Glassmorphism</div>
-                            <div onclick="applyTheme('solid-black', '#ff85a2')" class="theme-preview-box" style="background: #000; grid-column: span 2; display: flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold; color:white; border: 1px solid rgba(255,255,255,0.2); height: 40px;">Reset to Solid Black</div>
+                            <div onclick="applyTheme('pink-cupcake', '#f8bbd0', '#d81b60', 'rgba(233, 30, 99, 0.85)', '#880e4f', '#f8bbd0', '#ad1457')" class="theme-preview-box" style="background-color: #f8bbd0; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div>
+                            
+                            <div onclick="applyTheme('blue-cupcake', '#bbdefb', '#1976d2', 'rgba(33, 150, 243, 0.85)', '#0d47a1', '#bbdefb', '#1565c0')" class="theme-preview-box" style="background-color: #bbdefb; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div>
+                            
+                            <div onclick="applyTheme('yellow-cupcake', '#fff9c4', '#f57f17', 'rgba(255, 179, 0, 0.85)', '#e65100', '#fff9c4', '#ff6f00')" class="theme-preview-box" style="background-color: #fff9c4; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div>
+                            
+                            <div onclick="applyTheme('green-cupcake', '#c8e6c9', '#388e3c', 'rgba(76, 175, 80, 0.85)', '#1b5e20', '#c8e6c9', '#2e7d32')" class="theme-preview-box" style="background-color: #c8e6c9; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div>
+                            
+                            <div onclick="applyTheme('black-white', '#121212', '#555555', 'rgba(30, 30, 30, 0.85)', '#ffffff', '#2c2c2c', '#777777')" class="theme-preview-box" style="background-color: #121212; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div>
+                            
+                            <div onclick="applyTheme('white-cupcake', '#ffffff', '#d81b60', 'rgba(255, 255, 255, 0.85)', '#880e4f', '#f5f5f5', '#ad1457')" class="theme-preview-box" style="background-color: #ffffff; background-image: var(--bg-main); background-size: 80px; height: 50px; border-color: rgba(0,0,0,0.2);"></div>
                         </div>
                     </div>
 
@@ -825,25 +867,35 @@
                         <h4 class="os-card-title" id="font-size-label" style="margin-bottom: 15px;">GLOBAL FONT SIZE: 16PX</h4>
                         <input type="range" id="font-size-slider" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)">
                     </div>
-
-                    <div class="os-card">
-                        <h4 class="os-card-title">SYSTEM-WIDE UI STYLE</h4>
-                        <div class="os-btn-row" style="margin: 0;">
-                            <button id="btn-ui-glass" class="os-btn os-btn-secondary active-ui-btn" onclick="setUIStyle('glass')">Liquid Glass</button>
-                            <button id="btn-ui-solid" class="os-btn os-btn-secondary" onclick="setUIStyle('solid')">Opaque Solid</button>
-                        </div>
-                    </div>
                 </div>
 
                 <div id="view-guides" class="settings-view">
                     <h2 class="modal-title" style="width:100%;">System Guides</h2>
                     <div class="guide-grid">
-                        <div class="guide-card" onclick="openGuide('Liquid Navigation', 'Your system is powered by a real-time WebGL engine. Move your mouse across the screen to interact with the fluid refractive background layer underneath the glass UI.')">
-                            <h4>Liquid Navigation</h4><p>Your system is powered by...</p>
+                        <div class="guide-card" onclick="openGuide('How to Order', 'Browse the Menu and click on any cupcake to customize your order. You can adjust quantity, select toppings, and set a pickup time before adding to cart or buying immediately.')">
+                            <h4 style="margin:0 0 5px 0;">How to Order</h4><p style="margin:0; font-size:12px; color:rgba(255,255,255,0.7);">Browse the Menu and click...</p>
                         </div>
-                        <div class="guide-card" onclick="openGuide('Local Authentication', 'When anonymous, your data is local. Log in using your secure username and password to sync your order history and account preferences to the cloud.')">
-                            <h4>Local Authentication</h4><p>When anonymous, your dat...</p>
+                        <div class="guide-card" onclick="openGuide('Customizing your Cupcakes', 'In the order wizard, click the Checkboxes under the toppings section to add extra sprinkles, chocolate drizzles, and more. Total price will automatically update.')">
+                            <h4 style="margin:0 0 5px 0;">Customizing Cupcakes</h4><p style="margin:0; font-size:12px; color:rgba(255,255,255,0.7);">In the order wizard, click...</p>
                         </div>
+                        <div class="guide-card" onclick="openGuide('Tracking your Order', 'Visit the Orders tab from the navigation. You can see live statuses (Pending, Prepared, Canceled). Click any order to get its QR code for pickup.')">
+                            <h4 style="margin:0 0 5px 0;">Tracking your Order</h4><p style="margin:0; font-size:12px; color:rgba(255,255,255,0.7);">Visit the Orders tab from...</p>
+                        </div>
+                        <div class="guide-card" onclick="openGuide('Admin: Managing Items', 'As an admin, navigate to the Menu or Home view. Click the edit pencil icons on any item to update photos, names, pricing, and available toppings dynamically.')">
+                            <h4 style="margin:0 0 5px 0;">Admin: Managing Items</h4><p style="margin:0; font-size:12px; color:rgba(255,255,255,0.7);">As an admin, navigate to...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="view-updates" class="settings-view">
+                    <h2 class="modal-title" style="width:100%;">System Updates</h2>
+                    <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
+                        <h4 style="margin:0 0 5px 0; font-size:14px;">Version 2.2.0 - Theme & Profiles Engine</h4>
+                        <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.8); line-height: 1.5;">- Dynamic UI coloring matching your chosen theme.<br>- Upload and update user profile photos via account panel.<br>- Added new White Theme.<br>- Added live updates for Admin About section.</p>
+                    </div>
+                    <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
+                        <h4 style="margin:0 0 5px 0; font-size:14px;">Version 2.1.0 - Canva UI Rebuild</h4>
+                        <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.8); line-height: 1.5;">- Complete overhaul of Admin user manager and editor hubs using new bright UI.<br>- Toppings engine added to products.</p>
                     </div>
                 </div>
             </div>
@@ -885,19 +937,19 @@
 
                 <div class="canva-details-right">
                     <div id="wizard-step-1" class="wizard-step active">
-                        <h3 style="color:#880e4f; font-size:18px; margin-top:0;">Select Pickup/Delivery Date:</h3>
+                        <h3 style="color:var(--theme-text-dark); font-size:18px; margin-top:0;">Select Pickup/Delivery Date:</h3>
                         <input type="date" id="order-date" class="canva-input-field">
                         
                         <div style="display:flex; justify-content: space-between; gap: 15px; margin-top: 15px;">
                             <div style="flex:1;">
-                                <h3 style="color:#880e4f; font-size:18px; margin-top:0;">Select Time:</h3>
+                                <h3 style="color:var(--theme-text-dark); font-size:18px; margin-top:0;">Select Time:</h3>
                                 <input type="time" id="order-time" class="canva-input-field" style="margin-bottom:0;">
                             </div>
                             <div style="flex:0.7;">
-                                <h3 style="color:#880e4f; font-size:18px; margin-top:0;">Quantity:</h3>
-                                <div style="display:flex; align-items:center; background:rgba(233, 30, 99, 0.15); border-radius:15px; overflow:hidden;">
+                                <h3 style="color:var(--theme-text-dark); font-size:18px; margin-top:0;">Quantity:</h3>
+                                <div style="display:flex; align-items:center; background:rgba(255,255,255,0.4); border-radius:15px; overflow:hidden;">
                                     <button class="qty-btn" onclick="adjQty(-1)">-</button>
-                                    <input type="number" id="order-quantity" value="1" min="1" max="99" style="width:100%; border:none; background:transparent; text-align:center; font-weight:bold; color:#880e4f; outline:none; font-size:16px;" readonly>
+                                    <input type="number" id="order-quantity" value="1" min="1" max="99" style="width:100%; border:none; background:transparent; text-align:center; font-weight:bold; color:var(--theme-text-dark); outline:none; font-size:16px;" readonly>
                                     <button class="qty-btn" onclick="adjQty(1)">+</button>
                                 </div>
                             </div>
@@ -905,7 +957,7 @@
                     </div>
 
                     <div id="wizard-step-2" class="wizard-step">
-                        <h3 style="color:#880e4f; font-size:18px; margin-top:0;">Customize Your Order:</h3>
+                        <h3 style="color:var(--theme-text-dark); font-size:18px; margin-top:0;">Customize Your Order:</h3>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;" id="wizard-toppings-grid">
                             <!-- Injected dynamically based on available toppings -->
                         </div>
@@ -915,7 +967,7 @@
                         <div class="canva-warning-box">
                             ⚠️ <strong>Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.
                         </div>
-                        <h3 style="color:#880e4f; text-align:center; margin: 30px 0 20px 0; font-size: 20px;">Ready to complete order?</h3>
+                        <h3 style="color:var(--theme-text-dark); text-align:center; margin: 30px 0 20px 0; font-size: 20px;">Ready to complete order?</h3>
                         <div style="display:flex; gap:15px; justify-content:center;">
                             <button class="canva-details-btn" style="flex:1;" onclick="processOrder('buy')">Buy Now</button>
                             <button class="canva-details-btn" style="flex:1;" onclick="processOrder('cart')">Add to Cart</button>
@@ -943,7 +995,7 @@
                     </svg>
                 </div>
                 <div class="receipt-title">LA PRINSESA BAKESHOP</div>
-                <div style="font-size: 10px; margin-bottom: 10px;">Caloocan, Metro Manila<br>TIN: 000-123-456-000</div>
+                <div style="font-size: 10px; margin-bottom: 10px;" id="receipt-store-address">Caloocan, Metro Manila<br>TIN: 000-123-456-000</div>
                 <div class="receipt-divider"></div>
                 
                 <div class="receipt-detail-row"><span>Date:</span> <span id="receipt-datetime-print"></span></div>
@@ -998,6 +1050,13 @@
 
         let typingTimeout;
 
+        let storeInfo = {
+            description: "Welcome to La Prinsesa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.",
+            address: "Caloocan, Metro Manila, Philippines",
+            phone: "+63 912 345 6789",
+            email: "laprinsesadecupcake@gmail.com"
+        };
+
         window.onload = initializeSession; 
 
         function handleKeyPress(e, sender) {
@@ -1046,9 +1105,10 @@
             const savedTheme = localStorage.getItem('la_prinsesa_theme');
             if (savedTheme) {
                 const parsed = JSON.parse(savedTheme);
-                applyTheme(parsed.type, parsed.color, false);
+                applyTheme(parsed.type, parsed.color, parsed.accentHex, parsed.baseRgba, parsed.textDark, parsed.bgLight, parsed.btnHover, false);
             }
 
+            await loadStoreInfo();
             await loadMenuAndPromos();
             
             updateSettingsUI(); 
@@ -1057,6 +1117,56 @@
             
             await refreshData();
             setupRealtimeSubscriptions();
+        }
+
+        async function loadStoreInfo() {
+            try {
+                const { data, error } = await _db.from('store_info').select('*').limit(1);
+                if (data && data.length > 0) storeInfo = data[0];
+            } catch (e) {
+                const local = localStorage.getItem('la_prinsesa_store_info');
+                if (local) storeInfo = JSON.parse(local);
+            }
+            updateAboutDisplay();
+        }
+
+        function updateAboutDisplay() {
+            document.getElementById('about-desc-display').innerText = storeInfo.description;
+            document.getElementById('about-address-display').innerText = storeInfo.address;
+            document.getElementById('about-phone-display').innerText = storeInfo.phone;
+            document.getElementById('about-email-display').innerText = storeInfo.email;
+            document.getElementById('receipt-store-address').innerHTML = `${storeInfo.address}<br>TIN: 000-123-456-000`;
+        }
+
+        function toggleAboutEdit(editMode) {
+            if (editMode) {
+                document.getElementById('about-display-mode').style.display = 'none';
+                document.getElementById('about-edit-mode').style.display = 'block';
+                document.getElementById('about-desc-input').value = storeInfo.description;
+                document.getElementById('about-address-input').value = storeInfo.address;
+                document.getElementById('about-phone-input').value = storeInfo.phone;
+                document.getElementById('about-email-input').value = storeInfo.email;
+            } else {
+                document.getElementById('about-display-mode').style.display = 'block';
+                document.getElementById('about-edit-mode').style.display = 'none';
+            }
+        }
+
+        async function saveAboutInfo() {
+            storeInfo.description = document.getElementById('about-desc-input').value;
+            storeInfo.address = document.getElementById('about-address-input').value;
+            storeInfo.phone = document.getElementById('about-phone-input').value;
+            storeInfo.email = document.getElementById('about-email-input').value;
+            
+            try {
+                const obj = { id: 1, ...storeInfo };
+                await _db.from('store_info').upsert([obj]);
+            } catch (e) {}
+            localStorage.setItem('la_prinsesa_store_info', JSON.stringify(storeInfo));
+            
+            updateAboutDisplay();
+            toggleAboutEdit(false);
+            alert("About info updated successfully!");
         }
 
         async function loadMenuAndPromos() {
@@ -1149,9 +1259,20 @@
             
             const { data: existing } = await _db.from('users').select('*').eq('username', user);
             if (existing && existing.length > 0) return alert("Username already taken.");
+
+            let photoBase64 = "";
+            const photoInput = document.getElementById('create-photo');
+            if (photoInput.files && photoInput.files.length > 0) {
+                const file = photoInput.files[0];
+                photoBase64 = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
             
             const newUid = "USR-" + Date.now();
-            const newUser = { uid: newUid, fullname: fullname, username: user, password: pass, role: "Customer", photo_url: "", phone: phone };
+            const newUser = { uid: newUid, fullname: fullname, username: user, password: pass, role: "Customer", photo_url: photoBase64, phone: phone };
             
             const { error } = await _db.from('users').insert([newUser]);
             if (error) return alert("Error creating account: " + error.message);
@@ -1168,6 +1289,26 @@
         function logout() { 
             localStorage.removeItem('la_prinsesa_session_user'); 
             location.reload(); 
+        }
+
+        async function updateProfilePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const base64 = e.target.result;
+                    const { error } = await _db.from('users').update({ photo_url: base64 }).eq('uid', currentUser.uid);
+                    if (!error) {
+                        currentUser.photo_url = base64;
+                        localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
+                        document.getElementById('profile-photo-display').src = base64;
+                        document.getElementById('profile-photo-display').style.display = 'block';
+                        alert("Profile photo updated successfully!");
+                    } else {
+                        alert("Error updating photo: " + error.message);
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function openChangeCredentials() { document.getElementById('credentials-overlay').classList.add('active'); }
@@ -1259,7 +1400,7 @@
             grid.innerHTML = '';
             
             if(currentItemToppings.length === 0) {
-                 grid.innerHTML = '<p style="color:#880e4f; font-weight:bold;">No extra toppings available for this item.</p>';
+                 grid.innerHTML = '<p style="color:var(--theme-text-dark); font-weight:bold;">No extra toppings available for this item.</p>';
             } else {
                  currentItemToppings.forEach(t => {
                      let tName = typeof t === 'string' ? t : t.name;
@@ -1345,7 +1486,7 @@
                         ${cItem.toppings.length ? `<small style="color: #ffeb3b; display:block;">+ ${cItem.toppings.join(', ')}</small>` : ''}
                     </div>
                     <div class="order-actions">
-                        <button class="os-btn-primary" style="padding: 6px 12px; font-size: 13px; border-radius: 12px; background: #d81b60; color: white;" onclick="openCartCheckout(${index})">Checkout</button>
+                        <button class="os-btn-primary" style="padding: 6px 12px; font-size: 13px; border-radius: 12px; background: var(--theme-accent); color: white;" onclick="openCartCheckout(${index})">Checkout</button>
                         <button class="cancel-btn" onclick="removeFromCart(${index})">Remove</button>
                     </div>
                 `;
@@ -1472,7 +1613,7 @@
             hist.innerHTML = '<div class="chat-message-wrapper owner"><div class="chat-avatar-container"><img src="https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff" class="chat-avatar"></div><div class="chat-message owner">Hello! Welcome to La Prinsesa. How can we help you?</div></div>';
             if (msgs) {
                 msgs.forEach(m => {
-                    const avatarSrc = m.sender === 'owner' ? 'https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff' : 'https://ui-avatars.com/api/?name=User&background=880e4f&color=fff';
+                    const avatarSrc = m.sender === 'owner' ? 'https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff' : (currentUser.photo_url || 'https://ui-avatars.com/api/?name=User&background=880e4f&color=fff');
                     const d = document.createElement('div'); 
                     d.className = `chat-message-wrapper ${m.sender}`;
                     
@@ -1493,8 +1634,7 @@
             document.getElementById('messaging-overlay').classList.add('active'); 
             renderUserChat(); 
             
-            const { data: adminData } = await _db.from('users').select('phone').eq('role', 'Administrator').limit(1).single();
-            const phoneStr = (adminData && adminData.phone) ? adminData.phone : "827-928-9287";
+            const phoneStr = storeInfo.phone || "827-928-9287";
             document.getElementById('customer-view-owner-phone').innerHTML = "LA PRINSESA BAKESHOP NUMBER<br>#" + phoneStr;
         }
 
@@ -1611,7 +1751,7 @@
                                    ${o.status === 'Pending' ? `
                                    <div style="display:flex; gap:5px; margin-top:10px;">
                                        <button class="os-btn os-btn-danger" style="padding:4px 8px; font-size:10px; width:auto; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button>
-                                       <button class="os-btn-primary" style="padding: 4px 8px; font-size: 10px; border-radius: 12px; background: #d81b60; color: white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button>
+                                       <button class="os-btn-primary" style="padding: 4px 8px; font-size: 10px; border-radius: 12px; background: var(--theme-accent); color: white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button>
                                    </div>` : ''}
                                </div>
                                <div class="admin-canva-order-status">${o.status}</div>
@@ -1726,8 +1866,15 @@
                 document.getElementById('logged-out-view').style.display = 'none';
                 document.getElementById('logged-in-view').style.display = 'flex'; 
                 
-                document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname} <span class="edit-pen" title="Edit Name" onclick="editProfileField('fullname')">✏️</span>`;
-                document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'} <span class="edit-pen" title="Edit Phone" onclick="editProfileField('phone')">✏️</span>`;
+                if (currentUser.photo_url) {
+                    document.getElementById('profile-photo-display').src = currentUser.photo_url;
+                    document.getElementById('profile-photo-display').style.display = 'block';
+                } else {
+                    document.getElementById('profile-photo-display').style.display = 'none';
+                }
+
+                document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname}`;
+                document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'}`;
                 
                 if (currentUser.role === 'Administrator') {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
@@ -1794,7 +1941,7 @@
             grid.innerHTML = '';
             currentAdminToppings.forEach((t, index) => {
                 grid.innerHTML += `
-                    <div class="canva-topping-content" style="position:relative; background:#880e4f;">
+                    <div class="canva-topping-content" style="position:relative; background:var(--theme-text-dark);">
                         <button style="position:absolute; top:-5px; right:-5px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" onclick="removeAdminTopping(${index})">×</button>
                         <div class="canva-topping-img-box"><img src="${t.img}" style="width:100%;height:100%;object-fit:cover;"></div>
                         <div class="canva-topping-label">${t.name}</div>
@@ -1940,22 +2087,22 @@
             await loadMenuAndPromos(); 
         }
 
-        function applyTheme(type, color, save = true) {
-            if (type === 'tinted-glass') {
-                document.body.style.background = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Crect width=\'160\' height=\'160\' fill=\'%23ff9eb5\'/%3E%3Ctext x=\'30\' y=\'60\' font-size=\'40\'%3E🧁%3C/text%3E%3Ctext x=\'110\' y=\'140\' font-size=\'40\'%3E🍰%3C/text%3E%3Ctext x=\'110\' y=\'50\' font-size=\'25\'%3E🍰%3C/text%3E%3Ctext x=\'30\' y=\'130\' font-size=\'25\'%3E🎂%3C/text%3E%3C/svg%3E")';
-                document.getElementById('bg-shimmer').style.backgroundColor = color;
-                document.getElementById('bg-shimmer').style.backdropFilter = 'blur(15px)';
-                document.getElementById('bg-shimmer').style.opacity = '1';
-                document.getElementById('bg-shimmer').style.zIndex = '-2';
-            } else {
-                document.body.style.background = color;
-                document.getElementById('bg-shimmer').style.backdropFilter = 'none';
-                document.getElementById('bg-shimmer').style.opacity = '0.08';
-                document.getElementById('bg-shimmer').style.backgroundColor = 'transparent';
-                document.getElementById('bg-shimmer').style.zIndex = '-1';
-            }
+        function applyTheme(type, color, accentHex, baseRgba, textDark, bgLight, btnHover, save = true) {
+            document.body.style.backgroundColor = color;
+            document.documentElement.style.setProperty('--theme-base', baseRgba);
+            document.documentElement.style.setProperty('--theme-accent', accentHex);
+            document.documentElement.style.setProperty('--theme-text-dark', textDark);
+            document.documentElement.style.setProperty('--theme-bg-light', bgLight);
+            document.documentElement.style.setProperty('--theme-btn-hover', btnHover);
+            document.documentElement.style.setProperty('--glass-bg', baseRgba);
+            
+            document.getElementById('bg-shimmer').style.backdropFilter = 'none';
+            document.getElementById('bg-shimmer').style.opacity = '0.08';
+            document.getElementById('bg-shimmer').style.backgroundColor = 'transparent';
+            document.getElementById('bg-shimmer').style.zIndex = '-1';
+            
             if (save) {
-                localStorage.setItem('la_prinsesa_theme', JSON.stringify({ type, color }));
+                localStorage.setItem('la_prinsesa_theme', JSON.stringify({ type, color, accentHex, baseRgba, textDark, bgLight, btnHover }));
             }
         }
 
@@ -1982,7 +2129,7 @@
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
         
-        function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
+        function openAbout() { document.getElementById('about-overlay').classList.add('active'); toggleAboutEdit(false); }
         function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
         function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
         function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
