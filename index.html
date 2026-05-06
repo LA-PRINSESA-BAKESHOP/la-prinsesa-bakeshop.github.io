@@ -55,7 +55,6 @@
             opacity: 0.08; pointer-events: none; z-index: -1; mix-blend-mode: overlay;
         }
 
-        /* --- RESPONSIVE LAYOUT (PC) --- */
         @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
             body { display: grid; grid-template-columns: var(--side-full) 1fr; align-items: stretch; }
             #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 2000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); }
@@ -75,7 +74,6 @@
             .shop-divider { border: none; height: 1px; background: rgba(255, 255, 255, 0.3); margin-bottom: 20px; width: 100%; display: block; }
         }
 
-        /* --- RESPONSIVE LAYOUT (TABLET & MOBILE) --- */
         @media (hover: none), (pointer: coarse), (max-width: 1024px) {
             body { display: flex; flex-direction: column; overflow: hidden; height: 100dvh; }
             #sidebar { display: none; } 
@@ -128,7 +126,6 @@
             .theme-preview-box { grid-column: span 2 !important; }
             .os-card { padding: 15px !important; margin-bottom: 15px !important;}
 
-            /* Make Canva Admin modal mobile friendly if accessed on phone */
             #admin-user-hub {
                 flex-direction: column !important;
                 height: 85vh !important;
@@ -137,9 +134,17 @@
                 padding: 20px !important;
             }
             .admin-divider { display: none !important; }
+            
+            #details-hub.canva-theme {
+                flex-direction: column !important;
+                padding: 20px !important;
+                height: 85vh !important;
+                max-width: 90vw !important;
+                overflow-y: auto !important;
+            }
+            .canva-details-body { flex-direction: column !important; gap: 20px !important; }
         }
 
-        /* --- PC SIDEBAR STYLES --- */
         .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
         .front-screen-logo svg { width: 100%; height: auto; max-width: 240px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
         
@@ -155,12 +160,10 @@
         .user-badge { display: inline-flex; align-items: center; justify-content: center; background: #ff3b30; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px; font-weight: bold; margin-left: 10px; }
         .order-badge { background: #ff9500; }
 
-        /* --- MAIN CONTENT AREA --- */
         #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scroll-behavior: smooth; padding: 15px 30px; }
         .view-section { display: none; animation: fadeIn 0.4s var(--liquid-ease); width: 100%; }
         .view-section.active { display: block; }
 
-        /* Desktop Carousel UI Fixes */
         .desktop-carousel-container {
             width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden;
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15);
@@ -191,7 +194,6 @@
         .menu-price-pill::before { content: '🔒'; font-size: 12px; opacity: 0.7;}
         .menu-item-title { margin: 0; font-size: 1.1em; font-weight: 800; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); line-height: 1.4; }
 
-        /* Home Promos */
         .promo-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; }
         .promo-image { width: 100%; height: 160px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .promo-details { padding: 15px; }
@@ -214,46 +216,13 @@
         .order-img-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .qr-thumb { width: 45px; height: 45px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
 
-        .admin-order-card { display: flex; gap: 15px; margin-bottom: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-        .admin-order-img { font-size: 2em; background: rgba(255,255,255,0.1); border-radius: 12px; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; overflow:hidden; }
-        .admin-order-img img { width: 100%; height: 100%; object-fit: cover; }
         .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .admin-user-row:hover { border-color: var(--accent-pink); }
 
         .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; box-sizing: border-box; }
         .ui-modal-overlay.active { display: flex; }
         
-        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #guide-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
-
-        /* SPLIT VIEW MODAL SPECIFIC FOR ITEM DETAILS WITH PHOTO LAYERING */
-        #details-hub { 
-            background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); 
-            border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 800px; height: auto; max-height: 90vh; 
-            border-radius: 24px; padding: 0; position: relative; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden;
-        }
-        .modal-header { padding: 25px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: left; }
-        .modal-header h2 { margin: 0 0 5px 0; font-size: 22px; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-        .modal-body { display: flex; flex-direction: row; flex: 1; min-height: 400px; }
-        .modal-preview-panel { flex: 1.2; background: rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; padding: 30px; border-right: 1px solid rgba(255, 255, 255, 0.1); }
-        
-        /* Photo Layering System CSS */
-        .modal-image-wrap { position: relative; width: 100%; height: 100%; min-height: 250px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); background: #eee; }
-        .photo-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 1; transition: opacity 0.3s ease-in-out; }
-        
-        /* Classes to control visibility of toppings */
-        .base-cupcake-photo { z-index: 1; }
-        .topping-choco-photo { z-index: 2; opacity: 0; }
-        .topping-strawberry-photo { z-index: 3; opacity: 0; }
-        .topping-sprinkles-photo { z-index: 4; opacity: 0; }
-        
-        .modal-options-panel { flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; }
-        
-        @media (max-width: 768px) {
-            .modal-body { flex-direction: column; }
-            .modal-preview-panel { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px; }
-            .modal-image-wrap { min-height: 150px; }
-            .modal-options-panel { padding: 20px; }
-        }
+        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #admin-edit-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; }
 
         .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--accent-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
         .digital-receipt-wrapper * { text-shadow: none !important; }
@@ -282,7 +251,6 @@
         .active-session-card { border-color: rgba(46, 204, 113, 0.4); background: rgba(46, 204, 113, 0.05); text-align: center; margin: 0 auto 20px auto; }
         .active-session-card .os-card-title { color: var(--os-green); text-align: center;}
 
-        /* Ballpen Edit Icon Styling */
         .edit-pen { cursor: pointer; opacity: 0.6; transition: 0.2s; margin-left: 5px; font-size: 0.8em; }
         .edit-pen:hover { opacity: 1; transform: scale(1.2); display: inline-block; }
 
@@ -346,17 +314,9 @@
         .contact-item { display: flex; align-items: flex-start; gap: 10px; }
         .warning-box { background: rgba(255, 60, 60, 0.15); border: 1px solid #ff4d4d; color: #ffcccc; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; line-height: 1.4; }
 
-        .wizard-step { display: none; animation: fadeIn 0.3s ease; }
-        .wizard-step.active { display: block; }
-        .toppings-panel { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; margin-bottom: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .topping-item { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #fff; }
-        .topping-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent-pink); }
-        
-        /* -----------------------------------------------------
-           CANVA CONCEPT UI INTEGRATION: ADMIN USER HUB
-        ----------------------------------------------------- */
+        /* CANVA CONCEPT UI INTEGRATION: ADMIN USER HUB */
         #admin-user-hub { 
-            background: #ffb6c1 !important; /* Canva light pink background */
+            background: #ffb6c1 !important; 
             display: flex !important;
             flex-direction: row !important;
             max-width: 850px !important;
@@ -368,77 +328,91 @@
             gap: 20px;
             backdrop-filter: none !important;
             box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
-            
-            /* FIX FOR CLOSE BUTTON: Allows absolute positioning within bounds */
             position: relative !important; 
             overflow: visible !important; 
         }
 
         .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; }
         .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-        
         .admin-divider { width: 3px; background: white; border-radius: 2px; opacity: 0.8;}
-        
         .admin-canva-header { font-size: 20px; color: #333; margin: 0; font-weight: 500; text-shadow: none; }
         
         .admin-canva-chat-box {
-            flex: 1; background: #c2185b; /* Dark deep pink container */
+            flex: 1; background: #c2185b;
             border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
         }
         
-        /* Specialized chat bubbles to fit Canva theme */
         #admin-chat-history .chat-message.owner { background: #fff; color: #c2185b; align-self: flex-end; border-bottom-right-radius: 4px; border-bottom-left-radius: 15px;}
         #admin-chat-history .chat-message.user { background: #ffb6c1; color: #c2185b; align-self: flex-start; border-bottom-left-radius: 4px; border-bottom-right-radius: 15px;}
-        
-        /* FIX FOR OVERSIZED IMAGES IN CHAT */
-        #admin-chat-history .chat-img {
-            max-width: 100%;
-            max-height: 140px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
+        #admin-chat-history .chat-img { max-width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; }
 
-        .admin-canva-input {
-            background: #c2185b; border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 15px; outline: none; width: 100%; box-sizing: border-box;
-        }
+        .admin-canva-input { background: #c2185b; border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 15px; outline: none; width: 100%; box-sizing: border-box; }
         .admin-canva-input::placeholder { color: rgba(255,255,255,0.7); }
         
         .admin-canva-btn-row { display: flex; gap: 10px; }
-        .admin-canva-btn {
-            background: #c2185b; color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s;
-        }
+        .admin-canva-btn { background: #c2185b; color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; }
         .admin-canva-btn:hover { background: #a01048; transform: translateY(-2px);}
         
-        /* FIX FOR DISAPPEARING / MISPLACED CLOSE BUTTON */
         .admin-canva-close {
-            position: absolute !important; 
-            top: 15px !important; 
-            right: 15px !important; 
-            background: #c2185b !important; 
-            color: white !important; 
-            border: 2px solid white !important; 
-            width: 35px !important; 
-            height: 35px !important; 
-            border-radius: 50% !important; 
-            font-weight: bold !important; 
-            font-size: 18px !important; 
-            display: flex !important; 
-            align-items: center !important; 
-            justify-content: center !important; 
-            cursor: pointer !important; 
-            z-index: 100 !important; 
-            transition: 0.2s !important;
-            padding: 0 !important;
+            position: absolute !important; top: 15px !important; right: 15px !important; 
+            background: #c2185b !important; color: white !important; border: 2px solid white !important; 
+            width: 35px !important; height: 35px !important; border-radius: 50% !important; 
+            font-weight: bold !important; font-size: 18px !important; display: flex !important; 
+            align-items: center !important; justify-content: center !important; cursor: pointer !important; 
+            z-index: 100 !important; transition: 0.2s !important; padding: 0 !important;
         }
         .admin-canva-close:hover { transform: scale(1.1); background: #a01048 !important; }
 
-        .admin-canva-order-card {
-            background: #c2185b; border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center;
-        }
+        .admin-canva-order-card { background: #c2185b; border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center; }
         .admin-canva-order-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;}
-        .admin-canva-order-status {
-            position: absolute; top: 12px; right: 12px; background: #ffb6c1; color: #c2185b; padding: 4px 12px; border-radius: 15px; font-size: 10px; font-weight: 900;
+        .admin-canva-order-status { position: absolute; top: 12px; right: 12px; background: #ffb6c1; color: #c2185b; padding: 4px 12px; border-radius: 15px; font-size: 10px; font-weight: 900; }
+
+        /* CANVA CONCEPT UI INTEGRATION: DETAILS HUB */
+        #details-hub.canva-theme {
+            background: #ffb6c1 !important; 
+            border-radius: 30px !important;
+            padding: 30px !important;
+            border: none !important;
+            backdrop-filter: none !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px;
+            max-width: 850px !important;
+            position: relative !important;
+            overflow: visible !important;
         }
+        .canva-details-top { display: flex; flex-direction: column; align-items: flex-start; }
+        .canva-details-title { font-size: 24px; font-weight: 800; color: #000; text-transform: uppercase; margin:0; text-shadow:none; }
+        .canva-details-price { font-size: 18px; font-weight: bold; color: #000; margin-top:5px; text-shadow:none;}
+        .canva-details-body { display: flex; gap: 30px; }
+        .canva-details-left { flex: 1; display: flex; flex-direction: column; gap: 15px; }
+        .canva-details-right { flex: 1.2; display: flex; flex-direction: column; }
+        .canva-details-image-wrap { width: 100%; aspect-ratio: 1; border-radius: 30px; overflow: hidden; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; min-height: 250px;}
+        .canva-details-btn { background: #d81b60; color: white; border: none; padding: 15px; border-radius: 25px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; transition: 0.2s;}
+        .canva-details-btn:hover { background: #ad1457; transform: translateY(-2px); }
+        .canva-details-btn.secondary { background: #8e24aa; }
+        .canva-details-btn.secondary:hover { background: #6a1b9a; }
+        
+        .canva-input-field { background: #e1bee7; border: none; border-radius: 15px; padding: 15px; width: 100%; color: #000; font-size: 14px; box-sizing: border-box; margin-bottom: 10px; font-weight: bold;}
+        .canva-input-field:focus { outline: 2px solid #8e24aa; }
+        
+        .canva-warning-box { background: #f48fb1; color: white; padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.4; text-align: left; font-weight: 500;}
+
+        .canva-topping-content { background: #8e24aa; border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; border: 3px solid transparent; transition: 0.2s; }
+        .topping-check:checked + .canva-topping-content { border-color: #fff; background: #6a1b9a; }
+        .canva-topping-img-box { width: 100%; aspect-ratio: 1; background: #fff; border-radius: 10px; margin-bottom: 8px; overflow:hidden;}
+        .canva-topping-label { color: white; font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .photo-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 1; transition: opacity 0.3s ease-in-out; }
+        .base-cupcake-photo { z-index: 1; }
+        .topping-choco-photo { z-index: 2; opacity: 0; }
+        .topping-strawberry-photo { z-index: 3; opacity: 0; }
+        .topping-sprinkles-photo { z-index: 4; opacity: 0; }
+        
+        .wizard-step { display: none; animation: fadeIn 0.3s ease; }
+        .wizard-step.active { display: block; }
+
     </style>
 </head>
 <body>
@@ -538,7 +512,6 @@
             <div class="desktop-carousel-container">
                 <div class="desktop-carousel-viewport">
                     <div class="desktop-carousel-track" id="desktop-carousel-track">
-                        <!-- Dynamic content loaded via JS -->
                     </div>
                 </div>
             </div>
@@ -618,7 +591,6 @@
         </div>
     </div>
 
-    <!-- REPLACED ADMIN USER HUB WITH CANVA CONCEPT UI DESIGN -->
     <div class="ui-modal-overlay" id="admin-user-overlay">
         <div id="admin-user-hub">
             <button class="admin-canva-close" onclick="closeAdminUserModal()">×</button>
@@ -693,6 +665,10 @@
             
             <label style="font-size: 13px; margin-bottom: 5px; display: block;">Emoji / Image URL:</label>
             <input type="text" id="admin-edit-img" class="input-field" placeholder="e.g. 🧁 or https://...">
+
+            <label style="font-size: 13px; margin-bottom: 5px; display: block;">Upload Custom Image (Overrides URL):</label>
+            <input type="file" id="admin-edit-img-file" class="input-field" accept="image/*" style="padding: 10px; background: rgba(255,255,255,0.15);" onchange="handleAdminImageUpload(this)">
+            <input type="hidden" id="admin-edit-img-base64">
 
             <button class="submit-btn" style="margin-top: 15px;" onclick="saveAdminEdit()">Save Changes</button>
             <button class="os-btn os-btn-danger" style="margin-top: 10px; width: 100%;" id="admin-delete-btn" onclick="deleteAdminEdit()">Delete Item</button>
@@ -846,53 +822,77 @@
         </div>
     </div>
 
+    <!-- REPLACED OLD DETAILS HUB WITH CANVA CONCEPT UI DESIGN -->
     <div class="ui-modal-overlay" id="details-overlay">
-        <div id="details-hub">
-            <button class="close-btn" onclick="closeDetails()" style="z-index: 10;">×</button>
+        <div id="details-hub" class="canva-theme">
+            <button class="admin-canva-close" onclick="closeDetails()" style="z-index: 10;">×</button>
             
-            <div class="modal-header">
-                <div class="mobile-settings-header" style="position:relative; top:0; margin-bottom:10px;">LA PRINSESA BAKESHOP</div>
-                <h2 class="modal-title" id="details-title" style="margin: 0 0 5px 0;">Item Details</h2>
-                <p id="details-price" style="color: var(--accent-pink); font-size: 18px; font-weight: bold; margin: 0;"></p>
+            <div class="canva-details-top">
+                <h2 class="canva-details-title" id="details-title">FOOD NAME LABEL HERE</h2>
+                <p class="canva-details-price" id="details-price">PRICE: PRICE HERE</p>
             </div>
             
-            <div class="modal-body">
-                <div class="modal-preview-panel">
-                    <div class="modal-image-wrap" id="details-image-container">
-                        <!-- Content dynamically injected here -->
+            <div class="canva-details-body">
+                <div class="canva-details-left">
+                    <div class="canva-details-image-wrap" id="details-image-container">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top: 10px;" id="canva-left-buttons">
+                        <button class="canva-details-btn secondary" style="flex:1;" onclick="prevWStep()" id="btn-go-back">GO BACK</button>
+                        <button class="canva-details-btn secondary" style="flex:1;" onclick="nextWStep()" id="btn-next-step">NEXT: REVIEW</button>
                     </div>
                 </div>
 
-                <div class="modal-options-panel">
+                <div class="canva-details-right">
                     <div id="wizard-step-1" class="wizard-step active">
-                        <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Pickup/Delivery Date:</label>
-                        <input type="date" id="order-date" class="input-field">
-                        <label style="font-size: 13px; margin-bottom: 5px; display: block;">Select Time:</label>
-                        <input type="time" id="order-time" class="input-field">
-                        <button class="submit-btn" onclick="nextWizardStep(2)">Next: Choose Toppings</button>
+                        <h3 style="color:#000; font-size:18px; margin-top:0;">Select Pickup/Delivery Date:</h3>
+                        <input type="date" id="order-date" class="canva-input-field">
+                        
+                        <h3 style="color:#000; font-size:18px; margin-top:15px;">Select Time:</h3>
+                        <input type="time" id="order-time" class="canva-input-field">
                     </div>
 
                     <div id="wizard-step-2" class="wizard-step">
-                        <label style="font-size: 15px; margin-bottom: 10px; display: block; font-weight: bold;">Customize Your Order:</label>
-                        <div class="toppings-panel">
-                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Extra Sprinkles"> Extra Sprinkles</label>
-                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Choco Drizzle"> Choco Drizzle</label>
-                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Strawberry Syrup"> Strawberry Syrup</label>
-                            <label class="topping-item"><input type="checkbox" class="topping-check" value="Edible Pearls"> Edible Pearls</label>
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="os-btn os-btn-secondary" onclick="nextWizardStep(1)">Back</button>
-                            <button class="submit-btn" style="flex: 2;" onclick="nextWizardStep(3)">Next: Review</button>
+                        <h3 style="color:#000; font-size:18px; margin-top:0;">Customize Your Order:</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                            <label style="cursor:pointer;">
+                                <input type="checkbox" class="topping-check" value="Extra Sprinkles" style="display:none;">
+                                <div class="canva-topping-content">
+                                    <div class="canva-topping-img-box"><img src="https://images.unsplash.com/photo-1517260739337-6799d239ce83?q=80&w=200&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;"></div>
+                                    <div class="canva-topping-label">SPRINKLES</div>
+                                </div>
+                            </label>
+                            <label style="cursor:pointer;">
+                                <input type="checkbox" class="topping-check" value="Choco Drizzle" style="display:none;">
+                                <div class="canva-topping-content">
+                                    <div class="canva-topping-img-box"><img src="https://images.unsplash.com/photo-1540331547168-8b6310f62d5c?q=80&w=200&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;"></div>
+                                    <div class="canva-topping-label">CHOCO</div>
+                                </div>
+                            </label>
+                            <label style="cursor:pointer;">
+                                <input type="checkbox" class="topping-check" value="Strawberry Syrup" style="display:none;">
+                                <div class="canva-topping-content">
+                                    <div class="canva-topping-img-box"><img src="https://images.unsplash.com/photo-1464965911861-746a04b4bca6?q=80&w=200&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;"></div>
+                                    <div class="canva-topping-label">STRAWBERRY</div>
+                                </div>
+                            </label>
+                            <label style="cursor:pointer;">
+                                <input type="checkbox" class="topping-check" value="Edible Pearls" style="display:none;">
+                                <div class="canva-topping-content">
+                                    <div class="canva-topping-img-box"><img src="https://images.unsplash.com/photo-1514845555173-0fb6fc91d2c6?q=80&w=200&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;"></div>
+                                    <div class="canva-topping-label">PEARLS</div>
+                                </div>
+                            </label>
                         </div>
                     </div>
 
                     <div id="wizard-step-3" class="wizard-step">
-                        <div class="warning-box"><strong>⚠️ Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.</div>
-                        <p style="text-align: center; font-size: 16px; margin-bottom: 20px;">Ready to complete order?</p>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <button class="submit-btn" onclick="processOrder('buy')">🛍️ Buy Now</button>
-                            <button class="os-btn os-btn-secondary" onclick="processOrder('cart')">🛒 Add to Cart</button>
-                            <button class="os-btn os-btn-secondary" style="border-color: transparent;" onclick="nextWizardStep(2)">Go Back</button>
+                        <div class="canva-warning-box">
+                            ⚠️ <strong>Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.
+                        </div>
+                        <h3 style="color:#000; text-align:center; margin: 30px 0 20px 0; font-size: 20px;">Ready to complete order?</h3>
+                        <div style="display:flex; gap:15px; justify-content:center;">
+                            <button class="canva-details-btn" style="flex:1;" onclick="processOrder('buy')">Buy Now</button>
+                            <button class="canva-details-btn" style="flex:1;" onclick="processOrder('cart')">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -966,10 +966,10 @@
         
         let menuItems = [];
         let homePromos = [];
+        let currentWStepNum = 1;
 
         window.onload = initializeSession; 
 
-        // Added missing input handler
         function handleKeyPress(e, sender) {
             if (e.key === 'Enter') {
                 sendChatMessage(sender);
@@ -1149,6 +1149,41 @@
             'Strawberry Syrup': 'topping-strawberry-photo'
         };
 
+        function updateDetailsWizardUI() {
+            document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`wizard-step-${currentWStepNum}`).classList.add('active');
+
+            const btnBack = document.getElementById('btn-go-back');
+            const btnNext = document.getElementById('btn-next-step');
+
+            if(currentWStepNum === 1) {
+                btnBack.style.display = 'none';
+                btnNext.style.display = 'block';
+                btnNext.innerText = 'NEXT: TOPPINGS';
+            } else if(currentWStepNum === 2) {
+                btnBack.style.display = 'block';
+                btnNext.style.display = 'block';
+                btnNext.innerText = 'NEXT: REVIEW';
+            } else if(currentWStepNum === 3) {
+                btnBack.style.display = 'block';
+                btnNext.style.display = 'none';
+            }
+        }
+
+        function nextWStep() {
+            if(currentWStepNum < 3) {
+                currentWStepNum++;
+                updateDetailsWizardUI();
+            }
+        }
+
+        function prevWStep() {
+            if(currentWStepNum > 1) {
+                currentWStepNum--;
+                updateDetailsWizardUI();
+            }
+        }
+
         function openDetails(item, price, img) {
             currentItemToOrder = item; currentPriceToOrder = price; currentImgToOrder = img;
             document.getElementById('details-title').innerText = item; 
@@ -1179,12 +1214,12 @@
             document.getElementById('order-date').value = now.toISOString().split('T')[0]; 
             document.getElementById('order-time').value = now.toTimeString().substring(0, 5);
             
-            nextWizardStep(1); 
+            currentWStepNum = 1;
+            updateDetailsWizardUI();
             document.getElementById('details-overlay').classList.add('active');
         }
 
         function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
-        function nextWizardStep(step) { document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active')); document.getElementById(`wizard-step-${step}`).classList.add('active'); }
 
         async function processOrder(type) {
             const orderObj = {
@@ -1220,7 +1255,7 @@
 
         function updateCartView() {
             const list = document.getElementById('cart-list'); list.innerHTML = ''; 
-            if (!cartItems.length) { list.innerHTML = '<p>Your cart is empty.</p>'; document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => b.style.display = 'none'); return; }
+            if (!cartItems.length) { list.innerHTML = '<p>Your cart is empty.</p>'; document.querySelectorAll('#desk-badge-cart, mob-badge-cart').forEach(b => b.style.display = 'none'); return; }
             
             document.querySelectorAll('#desk-badge-cart, #mob-badge-cart').forEach(b => { b.innerText = cartItems.length; b.style.display = 'flex'; });
             cartItems.forEach((cItem, index) => {
@@ -1370,12 +1405,10 @@
             updateUserBadges();
         }
 
-        // Added functionality to display Owner's Phone inside the Customer's Chat View
         async function openMessaging() { 
             document.getElementById('messaging-overlay').classList.add('active'); 
             renderUserChat(); 
             
-            // Try fetching the Administrator's phone number
             const { data: adminData } = await _db.from('users').select('phone').eq('role', 'Administrator').limit(1).single();
             const phoneStr = (adminData && adminData.phone) ? adminData.phone : "827-928-9287";
             document.getElementById('customer-view-owner-phone').innerHTML = "LA PRINSESA BAKESHOP NUMBER<br>#" + phoneStr;
@@ -1465,10 +1498,6 @@
 
         function closeAdminUserModal() { document.getElementById('admin-user-overlay').classList.remove('active'); currentAdminViewingUid = null; refreshData(); }
 
-        /* 
-           MODIFIED: Integrates the Canva layout UI for the Admin User Hub. 
-           Order rendering utilizes new CSS classes built above. 
-        */
         async function renderAdminUserModal(uid) {
             const ordersDiv = document.getElementById('admin-user-orders'); ordersDiv.innerHTML = '';
             const hist = document.getElementById('admin-chat-history'); hist.innerHTML = '';
@@ -1481,7 +1510,6 @@
                 userOrders.forEach(o => {
                     let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
 
-                    // Changed from old UI wrapper to Canva UI wrapper
                     ordersDiv.innerHTML += `
                         <div class="admin-canva-order-card">
                            <img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}">
@@ -1599,35 +1627,29 @@
                 document.getElementById('logged-out-view').style.display = 'none';
                 document.getElementById('logged-in-view').style.display = 'flex'; 
                 
-                // ADDED: Inline Editing for Full Name and Phone via Ballpen icons ✏️
                 document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname} <span class="edit-pen" title="Edit Name" onclick="editProfileField('fullname')">✏️</span>`;
                 document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'} <span class="edit-pen" title="Edit Phone" onclick="editProfileField('phone')">✏️</span>`;
                 
                 if (currentUser.role === 'Administrator') {
-                    // Update Role-Based Viewing Access
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none');
                     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
                     
-                    // Update Orders Header Info
                     document.getElementById('orders-view-title').innerText = "Store Operations";
                     document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages.";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     
-                    // Display the Correct Orders Container
                     document.getElementById('admin-orders-list').style.display = 'flex';
                     document.getElementById('orders-list').style.display = 'none';
                 } else {
                     document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
                     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
                     
-                    // Update Orders Header Info
                     document.getElementById('orders-view-title').innerText = "Your Order History";
                     document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
                     document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>";
                     
-                    // Display the Correct Orders Container
                     document.getElementById('admin-orders-list').style.display = 'none';
                     document.getElementById('orders-list').style.display = 'flex';
                 }
@@ -1637,7 +1659,6 @@
                 document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = '');
                 document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
                 
-                // Fallback UI State
                 document.getElementById('orders-view-title').innerText = "Your Order History";
                 document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt.";
                 document.getElementById('admin-orders-list').style.display = 'none';
@@ -1653,10 +1674,24 @@
             });
         }
 
+        function handleAdminImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const r = new FileReader();
+                r.onload = function(e) { document.getElementById('admin-edit-img-base64').value = e.target.result; };
+                r.readAsDataURL(file);
+            } else {
+                document.getElementById('admin-edit-img-base64').value = "";
+            }
+        }
+
         function openAdminEdit(type, id) {
             document.getElementById('admin-edit-type').value = type; 
             document.getElementById('admin-edit-id').value = id;
             const delBtn = document.getElementById('admin-delete-btn');
+            
+            document.getElementById('admin-edit-img-file').value = "";
+            document.getElementById('admin-edit-img-base64').value = "";
 
             if (type === 'menu') {
                 if (id === 'new') { 
@@ -1703,7 +1738,12 @@
             const id = document.getElementById('admin-edit-id').value;
             const name = document.getElementById('admin-edit-name').value; 
             const desc = document.getElementById('admin-edit-desc').value; 
-            const img = document.getElementById('admin-edit-img').value;
+            
+            let img = document.getElementById('admin-edit-img').value;
+            const base64Img = document.getElementById('admin-edit-img-base64').value;
+            if (base64Img) {
+                img = base64Img;
+            }
 
             if (type === 'menu') {
                 if (id === 'new') { 
