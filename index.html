@@ -282,6 +282,10 @@
         .active-session-card { border-color: rgba(46, 204, 113, 0.4); background: rgba(46, 204, 113, 0.05); text-align: center; margin: 0 auto 20px auto; }
         .active-session-card .os-card-title { color: var(--os-green); text-align: center;}
 
+        /* Ballpen Edit Icon Styling */
+        .edit-pen { cursor: pointer; opacity: 0.6; transition: 0.2s; margin-left: 5px; font-size: 0.8em; }
+        .edit-pen:hover { opacity: 1; transform: scale(1.2); display: inline-block; }
+
         .auth-wrapper { display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; }
 
         .close-btn, .settings-close-btn { position: absolute; top: 15px; right: 15px; width: 30px !important; height: 30px !important; flex-shrink: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,0.2) !important; border: 1px solid rgba(255,255,255,0.4) !important; color: white !important; font-size: 16px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer; padding: 0 !important; margin: 0 !important; box-sizing: border-box !important; line-height: 1 !important; z-index: 9999; }
@@ -375,7 +379,7 @@
         
         .admin-divider { width: 3px; background: white; border-radius: 2px; opacity: 0.8;}
         
-        .admin-canva-header { font-size: 20px; color: #333; margin: 0; font-weight: 700; text-shadow: none; }
+        .admin-canva-header { font-size: 20px; color: #333; margin: 0; font-weight: 500; text-shadow: none; }
         
         .admin-canva-chat-box {
             flex: 1; background: #c2185b; /* Dark deep pink container */
@@ -395,15 +399,15 @@
         }
 
         .admin-canva-input {
-            background: #c2185b; border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 14px; outline: none; width: 100%; box-sizing: border-box; font-weight: 500;
+            background: #c2185b; border-radius: 25px; border: none; padding: 15px 25px; color: white; font-size: 15px; outline: none; width: 100%; box-sizing: border-box;
         }
-        .admin-canva-input::placeholder { color: rgba(255,255,255,0.7); font-weight: normal;}
+        .admin-canva-input::placeholder { color: rgba(255,255,255,0.7); }
         
         .admin-canva-btn-row { display: flex; gap: 10px; }
         .admin-canva-btn {
-            background: #c2185b; color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(194, 24, 91, 0.2);
+            background: #c2185b; color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s;
         }
-        .admin-canva-btn:hover { background: #a01048; transform: translateY(-2px); }
+        .admin-canva-btn:hover { background: #a01048; transform: translateY(-2px);}
         
         /* FIX FOR DISAPPEARING / MISPLACED CLOSE BUTTON */
         .admin-canva-close {
@@ -413,12 +417,11 @@
             background: #c2185b !important; 
             color: white !important; 
             border: 2px solid white !important; 
-            width: 32px !important; 
-            height: 32px !important; 
+            width: 35px !important; 
+            height: 35px !important; 
             border-radius: 50% !important; 
             font-weight: bold !important; 
             font-size: 18px !important; 
-            line-height: 1 !important;
             display: flex !important; 
             align-items: center !important; 
             justify-content: center !important; 
@@ -430,7 +433,7 @@
         .admin-canva-close:hover { transform: scale(1.1); background: #a01048 !important; }
 
         .admin-canva-order-card {
-            background: #c2185b; border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #c2185b; border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: white; position: relative; margin-bottom: 10px; align-items: center;
         }
         .admin-canva-order-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;}
         .admin-canva-order-status {
@@ -601,7 +604,9 @@
         <div id="messaging-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeMessaging()">×</button>
-            <h2 class="modal-title">Message Owner</h2>
+            <h2 class="modal-title" style="margin-bottom: 5px;">Message Owner</h2>
+            <p id="customer-view-owner-phone" style="text-align:center; color: var(--accent-pink); font-size: 14px; margin-top: 0; margin-bottom: 15px;">Owner Phone: Loading...</p>
+            
             <div class="chat-history" id="chat-history"></div>
             <div style="display:flex;gap:10px; flex-direction: column;">
                 <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'user')">
@@ -619,7 +624,9 @@
             <button class="admin-canva-close" onclick="closeAdminUserModal()">×</button>
             
             <div class="admin-left-col">
-                <h2 class="admin-canva-header">Direct Message</h2>
+                <h2 class="admin-canva-header" style="margin-bottom: 0;">Direct Message</h2>
+                <div id="admin-user-phone" style="color: #333; font-size: 18px; margin-bottom: 5px;">#Phone Number of Customer</div>
+                
                 <div class="admin-canva-chat-box chat-history" id="admin-chat-history"></div>
                 <input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')">
                 <div class="admin-canva-btn-row">
@@ -729,10 +736,10 @@
                             <h4 class="os-card-title">ACTIVE SESSION</h4>
                             <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="display: none;">
                             <h2 id="profile-fullname" style="margin: 10px 0; font-size: 20px;"></h2>
-                            <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 25px;"></p>
+                            <p id="profile-details" style="color: rgba(255,255,255,0.8); font-size: 13px; margin-bottom: 25px; line-height: 1.6;"></p>
                             
                             <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">Change Password</button>
+                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">Change Password / Phone</button>
                                 <button class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button>
                             </div>
                         </div>
@@ -760,6 +767,8 @@
                                 <input type="text" id="create-fullname" class="input-field" placeholder="Juan Dela Cruz">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Profile Photo (Optional)</label>
                                 <input type="file" id="create-photo" class="input-field" accept="image/*" style="padding: 10px;">
+                                <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Phone Number (Optional)</label>
+                                <input type="text" id="create-phone" class="input-field" placeholder="0912 345 6789">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Choose Username</label>
                                 <input type="text" id="create-username" class="input-field" placeholder="Min 3 chars">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: rgba(255,255,255,0.7);">Create Password</label>
@@ -831,6 +840,8 @@
             <input type="text" id="update-username" class="input-field" placeholder="Enter new username">
             <label style="font-size: 12px; margin-bottom: 5px; display: block;">New Password (Leave blank to keep current):</label>
             <input type="password" id="update-password" class="input-field" placeholder="Enter new password">
+            <label style="font-size: 12px; margin-bottom: 5px; display: block;">New Phone Number (Leave blank to keep current):</label>
+            <input type="text" id="update-phone" class="input-field" placeholder="Enter new phone number">
             <button class="submit-btn" style="margin-top: 15px;" onclick="saveCredentials()">Save Changes</button>
         </div>
     </div>
@@ -1058,7 +1069,7 @@
             if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") {
                 const { data: existingAdmin } = await _db.from('users').select('*').eq('username', 'LAPRINSESA').single();
                 if (!existingAdmin) {
-                    const adminObj = { uid: "ADMIN-1", fullname: "ROWENA ANGELES", username: "LAPRINSESA", password: "LAPRINSESA", role: "Administrator", photo_url: "" };
+                    const adminObj = { uid: "ADMIN-1", fullname: "ROWENA ANGELES", username: "LAPRINSESA", password: "LAPRINSESA", role: "Administrator", photo_url: "", phone: "+63 912 345 6789" };
                     await _db.from('users').insert([adminObj]);
                     currentUser = adminObj;
                 } else {
@@ -1076,6 +1087,7 @@
             const fullname = document.getElementById('create-fullname').value || "New Customer";
             const user = document.getElementById('create-username').value.trim();
             const pass = document.getElementById('create-password').value.trim();
+            const phone = document.getElementById('create-phone').value.trim();
             
             if (user.length < 3 || pass.length < 3) return alert("Min 3 chars required.");
             
@@ -1083,7 +1095,7 @@
             if (existing && existing.length > 0) return alert("Username already taken.");
             
             const newUid = "USR-" + Date.now();
-            const newUser = { uid: newUid, fullname: fullname, username: user, password: pass, role: "Customer", photo_url: "" };
+            const newUser = { uid: newUid, fullname: fullname, username: user, password: pass, role: "Customer", photo_url: "", phone: phone };
             
             const { error } = await _db.from('users').insert([newUser]);
             if (error) return alert("Error creating account: " + error.message);
@@ -1109,23 +1121,43 @@
             if (!currentUser) return;
             const newUsername = document.getElementById('update-username').value.trim();
             const newPassword = document.getElementById('update-password').value.trim();
+            const newPhone = document.getElementById('update-phone').value.trim();
             
             let updates = {};
             if (newUsername.length >= 3) updates.username = newUsername;
             if (newPassword.length >= 3) updates.password = newPassword;
+            if (newPhone.length >= 7) updates.phone = newPhone;
             
-            if (Object.keys(updates).length === 0) return alert("Please enter a valid new username or password (min 3 chars).");
+            if (Object.keys(updates).length === 0) return alert("Please enter valid new credentials.");
             
             const { error } = await _db.from('users').update(updates).eq('uid', currentUser.uid);
             if (error) return alert("Error updating credentials: " + error.message);
             
             if (updates.username) currentUser.username = updates.username;
             if (updates.password) currentUser.password = updates.password;
+            if (updates.phone) currentUser.phone = updates.phone;
             
             localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
             alert("Credentials successfully updated in the database!");
             closeChangeCredentials();
             updateSettingsUI();
+        }
+
+        // Inline Profile Editor
+        async function editProfileField(field) {
+            let promptText = field === 'fullname' ? "Enter your new name:" : "Enter your new phone number:";
+            let newVal = prompt(promptText, currentUser[field] || "");
+            
+            if (newVal !== null && newVal.trim() !== "") {
+                const { error } = await _db.from('users').update({ [field]: newVal.trim() }).eq('uid', currentUser.uid);
+                if (!error) {
+                    currentUser[field] = newVal.trim();
+                    localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
+                    updateSettingsUI();
+                } else {
+                    alert("Error saving changes: " + error.message);
+                }
+            }
         }
 
         const toppingPhotoMap = {
@@ -1355,6 +1387,19 @@
             updateUserBadges();
         }
 
+        // Added functionality to display Owner's Phone inside the Customer's Chat View
+        async function openMessaging() { 
+            document.getElementById('messaging-overlay').classList.add('active'); 
+            renderUserChat(); 
+            
+            // Try fetching the Administrator's phone number
+            const { data: adminData } = await _db.from('users').select('phone').eq('role', 'Administrator').limit(1).single();
+            const phoneStr = (adminData && adminData.phone) ? adminData.phone : "+63 912 345 6789";
+            document.getElementById('customer-view-owner-phone').innerText = "Owner Phone: " + phoneStr;
+        }
+
+        function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
+
         async function updateUserBadges() {
             if (!currentUser) return;
             const { data, count } = await _db.from('messages').select('message_id', { count: 'exact' }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
@@ -1384,7 +1429,7 @@
                         const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.is_read).length;
 
                         const row = document.createElement('div'); row.className = 'admin-user-row';
-                        row.onclick = () => openAdminUserModal(u.uid, u.fullname);
+                        row.onclick = () => openAdminUserModal(u.uid, u.fullname, u.phone);
                         row.innerHTML = `
                             <div style="display:flex; flex-direction:column;">
                                 <h3 style="margin:0 0 5px 0;">${u.fullname}</h3>
@@ -1406,7 +1451,7 @@
                 hasRecords = true;
                 const pendingCount = guestOrders.filter(o => o.status === 'Pending').length;
                 const row = document.createElement('div'); row.className = 'admin-user-row';
-                row.onclick = () => openAdminUserModal("GUEST", "Guest Customer");
+                row.onclick = () => openAdminUserModal("GUEST", "Guest Customer", null);
                 row.innerHTML = `
                     <div style="display:flex; flex-direction:column;">
                         <h3 style="margin:0 0 5px 0;">Guest Customer</h3>
@@ -1427,9 +1472,10 @@
             document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => { b.innerText = count; b.style.display = count > 0 ? 'flex' : 'none'; });
         }
 
-        async function openAdminUserModal(uid, fullname) {
+        async function openAdminUserModal(uid, fullname, phone) {
             currentAdminViewingUid = uid;
             document.getElementById('admin-user-title').innerText = `Managing: ${fullname}`;
+            document.getElementById('admin-user-phone').innerText = phone ? `#${phone}` : `#No Phone Number Found`;
             document.getElementById('admin-user-overlay').classList.add('active');
             await renderAdminUserModal(uid);
         }
@@ -1569,8 +1615,10 @@
             if (currentUser) {
                 document.getElementById('logged-out-view').style.display = 'none';
                 document.getElementById('logged-in-view').style.display = 'flex'; 
-                document.getElementById('profile-fullname').innerText = currentUser.fullname;
-                document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span>`;
+                
+                // ADDED: Inline Editing for Full Name and Phone via Ballpen icons ✏️
+                document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname} <span class="edit-pen" title="Edit Name" onclick="editProfileField('fullname')">✏️</span>`;
+                document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'} <span class="edit-pen" title="Edit Phone" onclick="editProfileField('phone')">✏️</span>`;
                 
                 if (currentUser.role === 'Administrator') {
                     // Update Role-Based Viewing Access
@@ -1746,8 +1794,6 @@
         
         function openAbout() { document.getElementById('about-overlay').classList.add('active'); }
         function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
-        function openMessaging() { document.getElementById('messaging-overlay').classList.add('active'); renderUserChat(); }
-        function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
         function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
         function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
         function switchSettingsNav(navId) { document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('nav-' + navId).classList.add('active'); document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active')); document.getElementById('view-' + navId).classList.add('active'); document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'}); }
