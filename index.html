@@ -153,6 +153,7 @@
                 overflow-y: auto !important;
                 height: auto !important;
                 max-height: 90vh !important;
+                padding-bottom: 50px !important;
                 -webkit-overflow-scrolling: touch;
             }
 
@@ -964,8 +965,8 @@
                 <div id="view-updates" class="settings-view">
                     <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.2 - The Network Engine</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Complete cache-to-network syncing deployed. 0-second perceived loading speeds.<br>- Complete layout isolation for Mobile / Tablet / PC modals.<br>- Removed Mobile side-by-side squashing entirely via rigid flex controls.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.5 - The Network Engine Upgrade</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Null-safe Order Parsing: Fixed fatal Javascript crash occurring when fetching users without a name.<br>- Absolute Database Sync: Rebuilt load operations to explicitly await live network data rather than getting trapped by empty local caches.<br>- Perfected Scroll Rules: Mobile edit panel UI padding enforced seamlessly while protecting desktop view.</p>
                     </div>
                 </div>
             </div>
@@ -1134,6 +1135,23 @@
 
         window.onload = initializeSession; 
 
+        // ----------------------------------------------------
+        // EXTREMELY ROBUST DATABASE FETCHING ENGINE (NO CRASHES)
+        // ----------------------------------------------------
+        async function fetchDataRobust(tableName, orderCol = 'id') {
+            try {
+                const { data, error } = await _db.from(tableName).select('*').order(orderCol, { ascending: true });
+                if (error) {
+                    console.error(`DB Fetch Error [${tableName}]:`, error);
+                    return null;
+                }
+                return data || [];
+            } catch (err) {
+                console.error(`Network Crash [${tableName}]:`, err);
+                return null;
+            }
+        }
+
         function handleKeyPress(e, sender) {
             triggerTypingIndicator(sender);
             if (e.key === 'Enter') {
@@ -1200,52 +1218,52 @@
                 applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff', false);
             }
 
-            // INSTANT CACHE LOAD + BACKGROUND SYNC
+            // Sync
             loadStoreInfo();
-            loadMenuAndPromos();
+            await loadMenuAndPromos();
             
             updateSettingsUI(); 
             switchMainView('home'); 
             updateCartView();
             
-            // Fire and forget database sync
             refreshData();
             setupRealtimeSubscriptions();
         }
 
-        function loadStoreInfo() {
+        async function loadStoreInfo() {
             // Load Local
             const local = localStorage.getItem('la_prinsesa_store_info');
             if (local) {
                 try { storeInfo = JSON.parse(local); updateAboutDisplay(); } catch(e){}
             }
             
-            // Background DB Sync
-            _db.from('store_info').select('*').limit(1).then(({data, error}) => {
+            // Background DB Sync safely
+            try {
+                const {data, error} = await _db.from('store_info').select('*').limit(1);
                 if(!error && data && data.length > 0) {
                     storeInfo = data[0];
                     localStorage.setItem('la_prinsesa_store_info', JSON.stringify(storeInfo));
                     updateAboutDisplay();
                 }
-            });
+            } catch(e) {}
         }
 
         function updateAboutDisplay() {
-            document.getElementById('about-desc-display').innerText = storeInfo.description;
-            document.getElementById('about-address-display').innerText = storeInfo.address;
-            document.getElementById('about-phone-display').innerText = storeInfo.phone;
-            document.getElementById('about-email-display').innerText = storeInfo.email;
-            document.getElementById('receipt-store-address').innerHTML = `${storeInfo.address}<br>TIN: 000-123-456-000`;
+            document.getElementById('about-desc-display').innerText = storeInfo.description || "Welcome!";
+            document.getElementById('about-address-display').innerText = storeInfo.address || "N/A";
+            document.getElementById('about-phone-display').innerText = storeInfo.phone || "N/A";
+            document.getElementById('about-email-display').innerText = storeInfo.email || "N/A";
+            document.getElementById('receipt-store-address').innerHTML = `${storeInfo.address || "N/A"}<br>TIN: 000-123-456-000`;
         }
 
         function toggleAboutEdit(editMode) {
             if (editMode) {
                 document.getElementById('about-display-mode').style.display = 'none';
                 document.getElementById('about-edit-mode').style.display = 'block';
-                document.getElementById('about-desc-input').value = storeInfo.description;
-                document.getElementById('about-address-input').value = storeInfo.address;
-                document.getElementById('about-phone-input').value = storeInfo.phone;
-                document.getElementById('about-email-input').value = storeInfo.email;
+                document.getElementById('about-desc-input').value = storeInfo.description || "";
+                document.getElementById('about-address-input').value = storeInfo.address || "";
+                document.getElementById('about-phone-input').value = storeInfo.phone || "";
+                document.getElementById('about-email-input').value = storeInfo.email || "";
             } else {
                 document.getElementById('about-display-mode').style.display = 'block';
                 document.getElementById('about-edit-mode').style.display = 'none';
@@ -1261,7 +1279,9 @@
             try {
                 const obj = { id: 1, ...storeInfo };
                 await _db.from('store_info').upsert([obj]);
-            } catch (e) {}
+            } catch (e) {
+                console.error("Failed to save store info to DB", e);
+            }
             localStorage.setItem('la_prinsesa_store_info', JSON.stringify(storeInfo));
             
             updateAboutDisplay();
@@ -1269,46 +1289,31 @@
             alert("About info updated successfully!");
         }
 
-        function loadMenuAndPromos() {
-            // Load Local Cache Immediately
-            const cachedMenu = localStorage.getItem('la_prinsesa_menu');
-            if (cachedMenu) { 
-                try { menuItems = JSON.parse(cachedMenu); renderMenu(); } catch(e){}
-            } else {
-                menuItems = [
-                    { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop', toppings: '[{"name":"Extra Sprinkles", "img":"https://images.unsplash.com/photo-1517260739337-6799d239ce83?q=80&w=200&auto=format&fit=crop"}]' },
-                    { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1600&auto=format&fit=crop', toppings: '[]' }
-                ];
+        async function loadMenuAndPromos() {
+            // First load from memory cache so UI paints instantly
+            try {
+                const cachedMenu = localStorage.getItem('la_prinsesa_menu');
+                if (cachedMenu) { menuItems = JSON.parse(cachedMenu); renderMenu(); }
+                
+                const cachedPromos = localStorage.getItem('la_prinsesa_promos');
+                if (cachedPromos) { homePromos = JSON.parse(cachedPromos); renderHomePromos(); renderDesktopCarousel(); }
+            } catch(e){}
+
+            // SECOND: Aggressively pull down Network Database (Ensures Device Sync!)
+            const dbMenu = await fetchDataRobust('menu', 'id');
+            if (dbMenu !== null) { // Null means network error, keep cache. If empty array [], it legitimately means 0 items.
+                menuItems = dbMenu;
+                localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
                 renderMenu();
             }
 
-            const cachedPromos = localStorage.getItem('la_prinsesa_promos');
-            if (cachedPromos) { 
-                try { homePromos = JSON.parse(cachedPromos); renderHomePromos(); renderDesktopCarousel(); } catch(e){}
-            } else {
-                homePromos = [
-                    { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' }
-                ];
-                renderHomePromos(); renderDesktopCarousel();
+            const dbPromos = await fetchDataRobust('promos', 'id');
+            if (dbPromos !== null) {
+                homePromos = dbPromos;
+                localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
+                renderHomePromos();
+                renderDesktopCarousel();
             }
-
-            // Sync from Database in Background
-            _db.from('menu').select('*').order('id', { ascending: true }).then(({data, error}) => {
-                if (!error && data) {
-                    menuItems = data;
-                    localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
-                    renderMenu();
-                }
-            });
-
-            _db.from('promos').select('*').order('id', { ascending: true }).then(({data, error}) => {
-                if (!error && data) {
-                    homePromos = data;
-                    localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
-                    renderHomePromos();
-                    renderDesktopCarousel();
-                }
-            });
         }
 
         function setupRealtimeSubscriptions() {
@@ -1587,7 +1592,6 @@
             const pickupDate = document.getElementById('order-date').value;
             const pickupTime = document.getElementById('order-time').value;
 
-            // Preserve single quantity name
             const baseItemName = currentItemToOrder;
             const finalItemName = `${qty}x ${baseItemName}`;
 
@@ -1606,7 +1610,6 @@
             if (type === 'buy') {
                 if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
                 
-                // Optimistic Cache Insert for INSTANT speed
                 let cached = JSON.parse(localStorage.getItem('la_prinsesa_orders_' + currentUser.uid) || '[]');
                 cached.unshift(orderObj);
                 localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(cached));
@@ -1615,7 +1618,6 @@
                 showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr }); 
                 updateOrdersView();
 
-                // Background Sync
                 _db.from('orders').insert([orderObj]).then(({error}) => {
                     if (error) alert("Error sending order: " + error.message);
                     refreshData();
@@ -1743,13 +1745,11 @@
             if (!currentUser || currentUser.role === 'Administrator') return;
             const list = document.getElementById('orders-list'); 
             
-            // Fast load from cache
             const cachedOrders = localStorage.getItem('la_prinsesa_orders_' + currentUser.uid);
             if (cachedOrders) {
                 try { renderOrdersToList(JSON.parse(cachedOrders), list); } catch(e){}
             }
 
-            // Sync from network
             const { data: orders } = await _db.from('orders').select('*').eq('user_uid', currentUser.uid).order('order_id', { ascending: false });
             if (orders) {
                 localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders));
@@ -1785,7 +1785,6 @@
                 image_url: imgBase64 || ''
             };
 
-            // OPTIMISTIC UI RENDER
             const hist = document.getElementById(senderType === 'user' ? 'chat-history' : 'admin-chat-history');
             const optimisticMsg = document.createElement('div');
             optimisticMsg.className = `chat-message-wrapper me`;
@@ -1800,7 +1799,6 @@
             if (hist) { hist.appendChild(optimisticMsg); hist.scrollTop = hist.scrollHeight; }
             if (input) input.value = "";
 
-            // Background insert
             _db.from('messages').insert([chatObj]).then(({error}) => {
                 if(error) alert("Error sending message: " + error.message);
                 if (senderType === 'user') renderUserChat();
@@ -1862,15 +1860,19 @@
             document.querySelectorAll('#desk-badge-chat, #mob-badge-chat, #inline-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
         }
 
+        // ----------------------------------------------------
+        // NULL-SAFE ADMIN ORDERS PARSER
+        // ----------------------------------------------------
         function buildAdminOrdersUI(users, allOrders, allMsgs, list) {
             list.innerHTML = '';
             let hasRecords = false;
 
             const uniqueUsersMap = new Map();
-            if (users) {
+            if (users && Array.isArray(users)) {
                 users.forEach(u => {
-                    if(u.role === 'Administrator') return;
-                    let key = u.fullname.toLowerCase().trim();
+                    if(!u || u.role === 'Administrator') return;
+                    // Extreme null safety to prevent the blank screen crash
+                    let key = (u.fullname || u.username || u.uid || 'Unknown').toLowerCase().trim();
                     if(!uniqueUsersMap.has(key)) {
                         uniqueUsersMap.set(key, u);
                     }
@@ -1880,8 +1882,8 @@
             const knownUids = Array.from(uniqueUsersMap.values()).map(u => u.uid);
 
             Array.from(uniqueUsersMap.values()).forEach(u => {
-                const userOrders = allOrders ? allOrders.filter(o => o.user_uid === u.uid) : [];
-                const userMsgs = allMsgs ? allMsgs.filter(m => m.user_uid === u.uid) : [];
+                const userOrders = (allOrders || []).filter(o => o.user_uid === u.uid);
+                const userMsgs = (allMsgs || []).filter(m => m.user_uid === u.uid);
                 
                 if(userOrders.length > 0 || userMsgs.length > 0) {
                     hasRecords = true;
@@ -1889,11 +1891,11 @@
                     const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.is_read).length;
 
                     const row = document.createElement('div'); row.className = 'admin-user-row';
-                    row.onclick = () => openAdminUserModal(u.uid, u.fullname, u.phone, u.photo_url);
+                    row.onclick = () => openAdminUserModal(u.uid, u.fullname || 'Unknown', u.phone, u.photo_url);
                     row.innerHTML = `
                         <div style="display:flex; flex-direction:column; min-width: 0;">
-                            <h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.fullname}</h3>
-                            <small style="color:var(--dynamic-text-color); opacity: 0.8;">@${u.username}</small>
+                            <h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.fullname || 'Unknown Customer'}</h3>
+                            <small style="color:var(--dynamic-text-color); opacity: 0.8;">@${u.username || 'unregistered'}</small>
                         </div>
                         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink: 0;">
                             ${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}
@@ -1905,7 +1907,7 @@
                 }
             });
             
-            const guestOrders = allOrders ? allOrders.filter(o => !knownUids.includes(o.user_uid)) : [];
+            const guestOrders = (allOrders || []).filter(o => !knownUids.includes(o.user_uid));
             if(guestOrders.length > 0) {
                 hasRecords = true;
                 const pendingCount = guestOrders.filter(o => o.status === 'Pending').length;
@@ -1925,8 +1927,8 @@
 
             if(!hasRecords) list.innerHTML = '<p style="color:var(--dynamic-text-color);">No customer records yet.</p>';
             
-            let totalUnread = allMsgs ? allMsgs.filter(m => m.sender === 'user' && !m.is_read).length : 0;
-            let totalPending = allOrders ? allOrders.filter(o => o.status === 'Pending').length : 0;
+            let totalUnread = (allMsgs || []).filter(m => m.sender === 'user' && !m.is_read).length;
+            let totalPending = (allOrders || []).filter(o => o.status === 'Pending').length;
             const count = totalUnread + totalPending;
             document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => { b.innerText = count; b.style.display = count > 0 ? 'flex' : 'none'; });
         }
@@ -1934,7 +1936,6 @@
         async function renderAdminOrders() {
             const list = document.getElementById('admin-orders-list');
             
-            // Fast cache load
             const cacheKey = 'la_prinsesa_admin_overview';
             const cachedData = localStorage.getItem(cacheKey);
             if(cachedData) {
@@ -1944,14 +1945,13 @@
                 } catch(e){}
             }
 
-            // Sync from network
-            const [{ data: users }, { data: allOrders }, { data: allMsgs }] = await Promise.all([
-                _db.from('users').select('*'),
-                _db.from('orders').select('*').order('order_id', { ascending: false }),
-                _db.from('messages').select('*')
-            ]);
+            // Await ALL robust fetches separately so one failure doesn't break everything
+            const users = await fetchDataRobust('users', 'uid');
+            const allOrders = await fetchDataRobust('orders', 'order_id');
+            const allMsgs = await fetchDataRobust('messages', 'created_at');
 
-            if (users || allOrders || allMsgs) {
+            // If any returned null, it failed network sync, but we shouldn't overwrite the cache with null.
+            if (users !== null || allOrders !== null || allMsgs !== null) {
                 localStorage.setItem(cacheKey, JSON.stringify({users: users||[], allOrders: allOrders||[], allMsgs: allMsgs||[]}));
                 buildAdminOrdersUI(users||[], allOrders||[], allMsgs||[], list);
             }
