@@ -266,6 +266,7 @@
         .wizard-step.active { display: block; }
         .qty-btn { background:transparent; border: none; padding:10px 15px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:18px;}
         .qty-btn:hover { background: rgba(0,0,0,0.05); }
+
     </style>
 </head>
 <body>
@@ -572,8 +573,8 @@
                 <div id="view-updates" class="settings-view">
                     <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 5.0.0 - Stale-While-Revalidate Engine</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed the "Disappearing Refresh": The screen no longer clears itself when fetching new data. It securely holds the cache and quiet-updates.<br>- Fortified the Session Lock to prevent Chrome from dropping you into Anonymous mode unexpectedly.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 6.0.0 - Unbreakable Caching Engine</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Bulletproofed JSON Session recovery to prevent sudden drops to Anonymous mode.<br>- Fixed Stale-While-Revalidate Engine: UI no longer empties itself when a refresh occurs. Fast cache rendering is preserved while quietly updating via Supabase.</p>
                     </div>
                 </div>
             </div>
@@ -719,17 +720,23 @@
         }
 
         function initializeSession() {
-            // SECURE SESSION RECOVERY: 
-            // Lock onto session, fallback robustly, don't drop to anon on refresh
+            // Absolute Ghost Cache Incinerator to catch any bad saves
+            if(localStorage.getItem('la_prinsesa_menu') === '[object Object]') localStorage.removeItem('la_prinsesa_menu');
+            if(localStorage.getItem('la_prinsesa_promos') === '[object Object]') localStorage.removeItem('la_prinsesa_promos');
+
+            // SECURE SESSION RECOVERY: Lock onto session, fallback robustly
             const savedUser = localStorage.getItem('la_prinsesa_session_user');
-            if (savedUser) { 
+            if (savedUser && savedUser !== 'null' && savedUser !== 'undefined') { 
                 try { 
                     currentUser = JSON.parse(savedUser); 
-                    // Refresh save to prevent arbitrary OS collection
+                    if (!currentUser || !currentUser.uid) throw new Error("Corrupt Session Data");
                     localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
                     const c = localStorage.getItem('la_prinsesa_cart_' + currentUser.uid); 
-                    if (c) cartItems = JSON.parse(c); 
-                } catch(e) { currentUser = null; } 
+                    if (c && c !== 'null' && c !== 'undefined') cartItems = JSON.parse(c); 
+                } catch(e) { 
+                    currentUser = null; 
+                    localStorage.removeItem('la_prinsesa_session_user'); 
+                } 
             }
             
             _db.from('users').select('photo_url').eq('role', 'Administrator').limit(1).single().then(res => { if(res.data && res.data.photo_url) cachedOwnerAvatar = res.data.photo_url; }).catch(e => {});
@@ -742,7 +749,7 @@
             switchMainView('home'); 
             loadStoreInfo(); 
             
-            // Core Stale-While-Revalidate Logic kicks off here
+            // Core Stale-While-Revalidate Logic 
             loadMenuAndPromos(); 
             refreshData(); 
             
@@ -773,15 +780,15 @@
         async function loadMenuAndPromos() {
             let hasMenuCache = false; let hasPromoCache = false;
             
-            // 1. STALE-WHILE-REVALIDATE: Paint Cache instantly
+            // 1. STALE-WHILE-REVALIDATE: Paint Cache safely
             try { 
                 const cMenu = localStorage.getItem('la_prinsesa_menu'); 
-                if (cMenu && cMenu !== '[]') { menuItems = JSON.parse(cMenu); renderMenu(); hasMenuCache = true; } 
+                if (cMenu && cMenu.startsWith('[')) { menuItems = JSON.parse(cMenu); renderMenu(); hasMenuCache = true; } 
                 const cPromos = localStorage.getItem('la_prinsesa_promos'); 
-                if (cPromos && cPromos !== '[]') { homePromos = JSON.parse(cPromos); renderHomePromos(); renderDesktopCarousel(); hasPromoCache = true; } 
+                if (cPromos && cPromos.startsWith('[')) { homePromos = JSON.parse(cPromos); renderHomePromos(); renderDesktopCarousel(); hasPromoCache = true; } 
             } catch(e){}
             
-            // 2. ONLY show non-intrusive loading text if the screen is literally empty
+            // 2. ONLY show non-intrusive loading text if the screen is literally empty (Seamless Refresh)
             if(!hasMenuCache) document.getElementById('product-grid').innerHTML = '<div style="width:100%; text-align:center; grid-column: 1/-1; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live menu from Supabase...</div>';
             if(!hasPromoCache) document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
 
@@ -791,9 +798,9 @@
                 fetchDataRobust('promos')
             ]);
 
-            // 4. QUIETLY RE-RENDER IF SUCCESSFUL (Content will never disappear)
+            // 4. QUIETLY RE-RENDER IF SUCCESSFUL (Content will never disappear on refresh)
             if (!rMenu.error && rMenu.data) { 
-                menuItems = rMenu.data; 
+                menuItems = rMenu.data.sort((a,b) => a.id - b.id); 
                 localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems)); 
                 renderMenu(); 
             } else if (rMenu.error && !hasMenuCache) {
@@ -801,7 +808,7 @@
             }
             
             if (!rPromos.error && rPromos.data) { 
-                homePromos = rPromos.data; 
+                homePromos = rPromos.data.sort((a,b) => a.id - b.id); 
                 localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos)); 
                 renderHomePromos(); renderDesktopCarousel(); 
             } else if (rPromos.error && !hasPromoCache) {
@@ -839,7 +846,7 @@
         
         function finishLogin() { localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser)); if(currentUser.role === 'Administrator' && currentUser.photo_url) { cachedOwnerAvatar = currentUser.photo_url; } updateSettingsUI(); loadMenuAndPromos(); updateCartView(); refreshData(); switchSettingsNav('accounts'); alert("Logged in successfully!"); }
         
-        // This is the ONLY place session is destroyed
+        // This is the ONLY place session is voluntarily destroyed
         function logout() { localStorage.removeItem('la_prinsesa_session_user'); currentUser = null; location.reload(); }
 
         async function updateProfilePhoto(input) {
@@ -939,7 +946,8 @@
 
         async function updateOrdersView() {
             if (!currentUser || currentUser.role === 'Administrator') return; const list = document.getElementById('orders-list'); 
-            const cachedOrders = localStorage.getItem('la_prinsesa_orders_' + currentUser.uid); if (cachedOrders) { try { renderOrdersToList(JSON.parse(cachedOrders), list); } catch(e){} }
+            const cachedOrders = localStorage.getItem('la_prinsesa_orders_' + currentUser.uid); 
+            if (cachedOrders && cachedOrders.startsWith('[')) { try { renderOrdersToList(JSON.parse(cachedOrders), list); } catch(e){} }
             const rOrders = await fetchDataRobust('orders');
             if (!rOrders.error) { const orders = rOrders.data.filter(o => o.user_uid === currentUser.uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders)); renderOrdersToList(orders, list); } 
             else if (!cachedOrders) { list.innerHTML = `<div class="warning-box"><strong>Fetch Error:</strong> ${rOrders.error}</div>`; }
@@ -1003,7 +1011,7 @@
             if (!list.innerHTML || list.innerHTML.includes('Syncing')) list.innerHTML = '<div style="padding:20px;text-align:center;opacity:0.6;color:var(--dynamic-text-color);">Syncing Database...</div>';
             
             const cacheKey = 'la_prinsesa_admin_overview'; const cachedData = localStorage.getItem(cacheKey); 
-            if(cachedData) { try { const parsed = JSON.parse(cachedData); buildAdminOrdersUI(parsed.users, parsed.allOrders, parsed.allMsgs, list, false); } catch(e){} }
+            if(cachedData && cachedData !== 'null') { try { const parsed = JSON.parse(cachedData); buildAdminOrdersUI(parsed.users, parsed.allOrders, parsed.allMsgs, list, false); } catch(e){} }
             
             const [rUsers, rOrders, rMsgs] = await Promise.all([
                 fetchDataRobust('users'),
@@ -1055,6 +1063,8 @@
             }
 
             grid.innerHTML = addBtnHTML;
+            if(!menuItems || !Array.isArray(menuItems)) menuItems = [];
+            
             menuItems.forEach((m) => {
                 const imgHTML = `<img src="${m.img}" alt="${m.name}">`; const card = document.createElement('div'); card.className = 'menu-card';
                 let editBtnHTML = isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', '${m.id}')">✏️ Edit Item</button>` : '';
@@ -1074,6 +1084,7 @@
             }
             feed.innerHTML = addPromoBtnHTML;
 
+            if(!homePromos || !Array.isArray(homePromos)) homePromos = [];
             homePromos.forEach(p => { const card = document.createElement('div'); card.className = 'promo-card'; card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️ Edit Promo</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button></div>`; feed.appendChild(card); });
         }
 
