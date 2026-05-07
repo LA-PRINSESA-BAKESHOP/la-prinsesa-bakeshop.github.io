@@ -12,9 +12,7 @@
             --glass-bg: var(--theme-base); --header-bg: var(--theme-base); --glass-blur: blur(15px); --apple-glass-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 1px rgba(255,255,255,0.15);
             --base-font-size: 16px; --side-full: 320px; --apple-spring: cubic-bezier(0.25, 1, 0.5, 1); --liquid-ease: cubic-bezier(0.23, 1, 0.32, 1); --dynamic-text-color: #ffffff; --os-green: #2ecc71;
         }
-        body.borders-enabled #sidebar, body.borders-enabled .menu-card, body.borders-enabled .sidebar-btn, body.borders-enabled .os-card, body.borders-enabled .promo-card, body.borders-enabled #settings-hub, body.borders-enabled #details-hub, body.borders-enabled .order-panel, body.borders-enabled .ui-modal-overlay > div, body.borders-enabled .shop-header-container, body.borders-enabled .orders-header-card, body.borders-enabled #admin-user-hub, body.borders-enabled .cart-panel {
-            box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255,255,255,0.4) !important;
-        }
+        body.borders-enabled * { box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255,255,255,0.4) !important; }
         * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.4) transparent; box-sizing: border-box; }
         *::-webkit-scrollbar { width: 6px; height: 6px; display: block; }
         *::-webkit-scrollbar-track { background: transparent; }
@@ -568,8 +566,8 @@
                 <div id="view-updates" class="settings-view">
                     <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.7 - Complete Parse Engine</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Complete, un-cut Javascript file deployed.<br>- Solved Syntax Error crashes preventing UI clicks.<br>- Minified internal spacing for optimized GitHub delivery.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 3.0.0 - Supabase Limit Breaker</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed Integer Overflow: Adding new menus and promos will no longer crash due to massive IDs.<br>- Destroyed the "Ghost Cache": The system will now force a warning box instead of silently displaying old fake cache items if the DB fetch fails.<br>- Removed hardcoded <code>order('id')</code> constraints to prevent fetch crashes.</p>
                     </div>
                 </div>
             </div>
@@ -693,14 +691,13 @@
 
         window.onload = initializeSession; 
 
-        async function fetchDataRobust(tableName, orderCol = 'id') {
+        // REMOVED 'orderCol' requirement completely to prevent "column id does not exist" crashes.
+        async function fetchDataRobust(tableName) {
             try {
-                let query = _db.from(tableName).select('*');
-                if (orderCol) query = query.order(orderCol, { ascending: true });
-                const { data, error } = await query;
-                if (error) { window.lastDbError = error.message; return null; }
-                return data || [];
-            } catch (err) { window.lastDbError = err.message; return null; }
+                const { data, error } = await _db.from(tableName).select('*');
+                if (error) return { data: null, error: error.message };
+                return { data: data || [], error: null };
+            } catch (err) { return { data: null, error: err.message }; }
         }
 
         function handleKeyPress(e, sender) { triggerTypingIndicator(sender); if (e.key === 'Enter') sendChatMessage(sender); }
@@ -749,9 +746,34 @@
         }
 
         async function loadMenuAndPromos() {
-            try { const cachedMenu = localStorage.getItem('la_prinsesa_menu'); if (cachedMenu) { menuItems = JSON.parse(cachedMenu); renderMenu(); } const cachedPromos = localStorage.getItem('la_prinsesa_promos'); if (cachedPromos) { homePromos = JSON.parse(cachedPromos); renderHomePromos(); renderDesktopCarousel(); } } catch(e){}
-            const dbMenu = await fetchDataRobust('menu', 'id'); if (dbMenu !== null) { menuItems = dbMenu; localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems)); renderMenu(); } else { renderMenu(); }
-            const dbPromos = await fetchDataRobust('promos', 'id'); if (dbPromos !== null) { homePromos = dbPromos; localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos)); renderHomePromos(); renderDesktopCarousel(); } else { renderHomePromos(); }
+            let hasMenuCache = false; let hasPromoCache = false;
+            
+            // Try loading ghost cache, but we will OVERWRITE it if Supabase fails
+            try { 
+                const cMenu = localStorage.getItem('la_prinsesa_menu'); 
+                if (cMenu && cMenu !== '[]') { menuItems = JSON.parse(cMenu); renderMenu(); hasMenuCache = true; } 
+                const cPromos = localStorage.getItem('la_prinsesa_promos'); 
+                if (cPromos && cPromos !== '[]') { homePromos = JSON.parse(cPromos); renderHomePromos(); renderDesktopCarousel(); hasPromoCache = true; } 
+            } catch(e){}
+            
+            if(!hasMenuCache) document.getElementById('product-grid').innerHTML = '<div style="width:100%; text-align:center; grid-column: 1/-1; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live menu from Supabase...</div>';
+            if(!hasPromoCache) document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
+
+            const rMenu = await fetchDataRobust('menu');
+            if (rMenu.error) { 
+                // NUKE THE GHOST CACHE SO THEY SEE THE ACTUAL ERROR
+                document.getElementById('product-grid').innerHTML = `<div class="warning-box" style="grid-column:1/-1;"><strong>Menu Fetch Failed:</strong> ${rMenu.error}</div>`; 
+            } else { 
+                menuItems = rMenu.data; localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems)); renderMenu(); 
+            }
+            
+            const rPromos = await fetchDataRobust('promos');
+            if (rPromos.error) { 
+                // NUKE THE GHOST CACHE SO THEY SEE THE ACTUAL ERROR
+                document.getElementById('mobile-promo-feed').innerHTML = `<div class="warning-box" style="width:100%;"><strong>Promo Fetch Failed:</strong> ${rPromos.error}</div>`; 
+            } else { 
+                homePromos = rPromos.data; localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos)); renderHomePromos(); renderDesktopCarousel(); 
+            }
         }
 
         function setupRealtimeSubscriptions() {
@@ -883,8 +905,9 @@
         async function updateOrdersView() {
             if (!currentUser || currentUser.role === 'Administrator') return; const list = document.getElementById('orders-list'); 
             const cachedOrders = localStorage.getItem('la_prinsesa_orders_' + currentUser.uid); if (cachedOrders) { try { renderOrdersToList(JSON.parse(cachedOrders), list); } catch(e){} }
-            const { data: orders } = await _db.from('orders').select('*').eq('user_uid', currentUser.uid).order('order_id', { ascending: false });
-            if (orders) { localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders)); renderOrdersToList(orders, list); } else if (!cachedOrders) { list.innerHTML = '<p style="color:var(--dynamic-text-color);">No orders yet.</p>'; }
+            const rOrders = await fetchDataRobust('orders');
+            if (!rOrders.error) { const orders = rOrders.data.filter(o => o.user_uid === currentUser.uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders)); renderOrdersToList(orders, list); } 
+            else if (!cachedOrders) { list.innerHTML = `<div class="warning-box"><strong>Fetch Error:</strong> ${rOrders.error}</div>`; }
         }
 
         async function cancelOrder(e, id) { e.stopPropagation(); if (!confirm("Cancel this order?")) return; const { error } = await _db.from('orders').update({ status: 'Canceled' }).eq('order_id', id); if (!error) await refreshData(); }
@@ -905,9 +928,9 @@
         async function renderUserChat() {
             if (!currentUser) return; const hist = document.getElementById('chat-history');
             await _db.from('messages').update({ is_read: true }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
-            const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', currentUser.uid).order('created_at', { ascending: true });
+            const rMsgs = await fetchDataRobust('messages');
             hist.innerHTML = `<div class="chat-message-wrapper them"><div class="chat-avatar-container"><img src="${cachedOwnerAvatar}" class="chat-avatar"></div><div class="chat-message">Hello! Welcome to La Prinsesa. How can we help you?</div></div>`;
-            if (msgs) { msgs.forEach(m => { const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentUser.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`); const d = document.createElement('div'); d.className = `chat-message-wrapper ${m.sender === 'user' ? 'me' : 'them'}`; let msgContent = m.message_type === 'image' ? `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}` : m.text_content; d.innerHTML = `<div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div><div class="chat-message">${msgContent}</div>`; hist.appendChild(d); }); }
+            if (!rMsgs.error) { const msgs = rMsgs.data.filter(m => m.user_uid === currentUser.uid).sort((a,b) => new Date(a.created_at) - new Date(b.created_at)); msgs.forEach(m => { const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentUser.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`); const d = document.createElement('div'); d.className = `chat-message-wrapper ${m.sender === 'user' ? 'me' : 'them'}`; let msgContent = m.message_type === 'image' ? `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}` : m.text_content; d.innerHTML = `<div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div><div class="chat-message">${msgContent}</div>`; hist.appendChild(d); }); }
             hist.scrollTop = hist.scrollHeight; updateUserBadges();
         }
 
@@ -915,9 +938,11 @@
         function closeMessaging() { document.getElementById('messaging-overlay').classList.remove('active'); }
         async function updateUserBadges() { if (!currentUser) return; const { data, count } = await _db.from('messages').select('message_id', { count: 'exact' }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false); const unread = count || 0; document.querySelectorAll('#desk-badge-chat, #mob-badge-chat, #inline-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; }); }
 
-        function buildAdminOrdersUI(users, allOrders, allMsgs, list) {
-            list.innerHTML = ''; let hasRecords = false; if (window.lastDbError) { list.innerHTML += `<div class="warning-box" style="margin-bottom:15px;"><strong>Database Error:</strong> ${window.lastDbError}. Please check your Supabase Key and RLS Policies.</div>`; }
-            const uniqueUsersMap = new Map(); if (users && Array.isArray(users)) { users.forEach(u => { if(!u || u.role === 'Administrator') return; let key = String(u.fullname || u.username || u.uid || 'Unknown').toLowerCase().trim(); if(!uniqueUsersMap.has(key)) { uniqueUsersMap.set(key, u); } }); }
+        function buildAdminOrdersUI(users, allOrders, allMsgs, list, hasErrors) {
+            let hasRecords = false; 
+            const uniqueUsersMap = new Map(); 
+            if (users && Array.isArray(users)) { users.forEach(u => { if(!u || u.role === 'Administrator') return; let key = String(u.fullname || u.username || u.uid || 'Unknown').toLowerCase().trim(); if(!uniqueUsersMap.has(key)) { uniqueUsersMap.set(key, u); } }); }
+            
             const knownUids = Array.from(uniqueUsersMap.values()).map(u => u.uid);
             Array.from(uniqueUsersMap.values()).forEach(u => {
                 const userOrders = (allOrders || []).filter(o => o.user_uid === u.uid); const userMsgs = (allMsgs || []).filter(m => m.user_uid === u.uid);
@@ -927,17 +952,39 @@
                     row.innerHTML = `<div style="display:flex; flex-direction:column; min-width: 0;"><h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.fullname || 'Unknown Customer'}</h3><small style="color:var(--dynamic-text-color); opacity: 0.8;">@${u.username || 'unregistered'}</small></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink: 0;">${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}${(unreadCount === 0 && pendingCount === 0) ? `<span style="font-size:12px; color:var(--dynamic-text-color); opacity:0.6;">No pending tasks</span>` : ''}</div>`; list.appendChild(row);
                 }
             });
+            
             const guestOrders = (allOrders || []).filter(o => !knownUids.includes(o.user_uid));
             if(guestOrders.length > 0) { hasRecords = true; const pendingCount = guestOrders.filter(o => o.status === 'Pending').length; const row = document.createElement('div'); row.className = 'admin-user-row'; row.onclick = () => openAdminUserModal("GUEST", "Guest Customer", null, null); row.innerHTML = `<div style="display:flex; flex-direction:column; min-width: 0;"><h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none;">Guest Customer</h3><small style="color:var(--dynamic-text-color); opacity: 0.8;">Unregistered</small></div><div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink: 0;">${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}</div>`; list.appendChild(row); }
-            if(!hasRecords && !window.lastDbError) list.innerHTML = '<p style="color:var(--dynamic-text-color);">No customer records yet.</p>';
+            
+            if(!hasRecords && !hasErrors) { 
+                list.innerHTML += `<div style="text-align:center; padding: 40px 15px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.2);"><span style="font-size: 2.5em;">📭</span><br><h3 style="color:var(--dynamic-text-color); margin: 10px 0 5px 0;">No Active Customers</h3><p style="color:var(--dynamic-text-color); opacity: 0.7; font-size: 13px; margin:0;">When customers place orders or send messages, they will appear here.</p></div>`; 
+            }
+            
             let totalUnread = (allMsgs || []).filter(m => m.sender === 'user' && !m.is_read).length; let totalPending = (allOrders || []).filter(o => o.status === 'Pending').length; const count = totalUnread + totalPending; document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => { b.innerText = count; b.style.display = count > 0 ? 'flex' : 'none'; });
         }
 
         async function renderAdminOrders() {
-            const list = document.getElementById('admin-orders-list'); if (!list.innerHTML) list.innerHTML = '<p style="color:var(--dynamic-text-color); opacity:0.6;">Syncing secure operations...</p>';
-            const cacheKey = 'la_prinsesa_admin_overview'; const cachedData = localStorage.getItem(cacheKey); if(cachedData) { try { const parsed = JSON.parse(cachedData); buildAdminOrdersUI(parsed.users, parsed.allOrders, parsed.allMsgs, list); } catch(e){} }
-            const users = await fetchDataRobust('users', 'uid'); const allOrders = await fetchDataRobust('orders', 'order_id'); const allMsgs = await fetchDataRobust('messages', 'created_at');
-            if (users !== null || allOrders !== null || allMsgs !== null) { localStorage.setItem(cacheKey, JSON.stringify({users: users||[], allOrders: allOrders||[], allMsgs: allMsgs||[]})); buildAdminOrdersUI(users||[], allOrders||[], allMsgs||[], list); } else if (window.lastDbError) { list.innerHTML = `<div class="warning-box"><strong>Database Sync Failed:</strong> ${window.lastDbError}<br>Check Supabase API keys and RLS policies.</div>`; }
+            const list = document.getElementById('admin-orders-list'); 
+            if (!list.innerHTML || list.innerHTML.includes('Syncing')) list.innerHTML = '<div style="padding:20px;text-align:center;opacity:0.6;color:var(--dynamic-text-color);">Syncing Database...</div>';
+            
+            const cacheKey = 'la_prinsesa_admin_overview'; const cachedData = localStorage.getItem(cacheKey); 
+            if(cachedData) { try { const parsed = JSON.parse(cachedData); buildAdminOrdersUI(parsed.users, parsed.allOrders, parsed.allMsgs, list, false); } catch(e){} }
+            
+            const rUsers = await fetchDataRobust('users'); const rOrders = await fetchDataRobust('orders'); const rMsgs = await fetchDataRobust('messages');
+            
+            let errs = [];
+            if(rUsers.error) errs.push('Users Table: ' + rUsers.error);
+            if(rOrders.error) errs.push('Orders Table: ' + rOrders.error);
+            if(rMsgs.error) errs.push('Messages Table: ' + rMsgs.error);
+
+            if (errs.length > 0) { 
+                list.innerHTML = `<div class="warning-box" style="margin-bottom:15px; border-left: 4px solid #ff4d4d; font-size:13px; padding:15px;"><strong>Database Connection Blocked</strong><br><br>${errs.join('<br>')}<br><br><em>Fix: Go to Supabase Dashboard &rarr; Table Editor &rarr; Ensure tables exist exactly as named and RLS is fully disabled.</em></div>`; 
+            } else {
+                list.innerHTML = ''; 
+                localStorage.setItem(cacheKey, JSON.stringify({users: rUsers.data, allOrders: rOrders.data, allMsgs: rMsgs.data})); 
+            }
+
+            buildAdminOrdersUI(rUsers.data||[], rOrders.data||[], rMsgs.data||[], list, errs.length > 0);
         }
 
         async function openAdminUserModal(uid, fullname, phone, photo_url) { currentAdminViewingUid = uid; currentAdminViewingPhoto = photo_url; document.getElementById('admin-user-title').innerText = `Managing: ${fullname}`; document.getElementById('admin-user-phone').innerHTML = phone ? `CUSTOMER NUMBER<br>#${phone}` : `CUSTOMER NUMBER<br>#N/A`; document.getElementById('admin-user-overlay').classList.add('active'); await renderAdminUserModal(uid, false); }
@@ -946,13 +993,13 @@
         async function renderAdminUserModal(uid, isPartialRefresh = false) {
             const ordersDiv = document.getElementById('admin-user-orders'); const hist = document.getElementById('admin-chat-history'); 
             if(!isPartialRefresh) { ordersDiv.innerHTML = ''; hist.innerHTML = ''; }
-            const { data: userOrders } = await _db.from('orders').select('*').eq('user_uid', uid).order('order_id', { ascending: false });
+            const rOrders = await fetchDataRobust('orders');
             if(!isPartialRefresh) {
-                if(!userOrders || userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders placed.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>${o.status === 'Pending' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button><button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button></div>` : ''}<div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div></div>`; }); }
+                if(rOrders.error || !rOrders.data) { ordersDiv.innerHTML = `<div class="warning-box">Failed to load: ${rOrders.error}</div>`; } else { const userOrders = rOrders.data.filter(o => o.user_uid === uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); if(userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders placed.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>${o.status === 'Pending' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button><button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button></div>` : ''}<div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div></div>`; }); } }
             }
             await _db.from('messages').update({ is_read: true }).eq('user_uid', uid).eq('sender', 'user').eq('is_read', false);
-            const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', uid).order('created_at', { ascending: true });
-            if (msgs) { hist.innerHTML = ''; msgs.forEach(m => { const d = document.createElement('div'); d.className = `chat-message-wrapper ${m.sender === 'owner' ? 'me' : 'them'}`; const currentName = document.getElementById('admin-user-title').innerText.replace('Managing: ', ''); const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentAdminViewingPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=880e4f&color=fff`); let msgContent = m.message_type === 'image' ? `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}` : m.text_content; d.innerHTML = `<div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div><div class="chat-message">${msgContent}</div>`; hist.appendChild(d); }); }
+            const rMsgs = await fetchDataRobust('messages');
+            if (!rMsgs.error && rMsgs.data) { hist.innerHTML = ''; const msgs = rMsgs.data.filter(m => m.user_uid === uid).sort((a,b) => new Date(a.created_at) - new Date(b.created_at)); msgs.forEach(m => { const d = document.createElement('div'); d.className = `chat-message-wrapper ${m.sender === 'owner' ? 'me' : 'them'}`; const currentName = document.getElementById('admin-user-title').innerText.replace('Managing: ', ''); const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentAdminViewingPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=880e4f&color=fff`); let msgContent = m.message_type === 'image' ? `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}` : m.text_content; d.innerHTML = `<div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div><div class="chat-message">${msgContent}</div>`; hist.appendChild(d); }); }
             hist.scrollTop = hist.scrollHeight;
         }
 
@@ -960,10 +1007,15 @@
         function renderDesktopCarousel() { const track = document.getElementById('desktop-carousel-track'); if (!track) return; track.innerHTML = ''; homePromos.forEach(p => { const slide = document.createElement('div'); slide.className = 'desktop-carousel-slide'; slide.innerHTML = `<img src="${p.img}" alt="${p.title}"><div class="desktop-carousel-text" style="color: #fff;">${p.title} &bull; ${p.desc}</div>`; track.appendChild(slide); }); }
 
         function renderMenu() {
-            const grid = document.getElementById('product-grid'); grid.innerHTML = '';
-            if (window.lastDbError && menuItems.length === 0) { grid.innerHTML = `<div class="warning-box" style="grid-column: 1/-1;"><strong>Database Sync Failed:</strong> ${window.lastDbError}</div>`; }
+            const grid = document.getElementById('product-grid'); 
             const isAdmin = currentUser && currentUser.role === 'Administrator';
-            if (isAdmin) { const addBtn = document.createElement('div'); addBtn.className = 'menu-card admin-add-card'; addBtn.style.minHeight = '200px'; addBtn.onclick = () => openAdminEdit('menu', 'new'); addBtn.innerHTML = '<div style="font-size:2em; margin-bottom:10px;">+</div><h3 style="margin:0; font-size:16px;">Add Menu</h3>'; grid.appendChild(addBtn); }
+            
+            let addBtnHTML = '';
+            if (isAdmin) {
+                addBtnHTML = `<div class="menu-card admin-add-card" style="min-height:200px;" onclick="openAdminEdit('menu', 'new')"><div style="font-size:2em; margin-bottom:10px;">+</div><h3 style="margin:0; font-size:16px;">Add Menu</h3></div>`; 
+            }
+
+            grid.innerHTML = addBtnHTML;
             menuItems.forEach((m) => {
                 const imgHTML = `<img src="${m.img}" alt="${m.name}">`; const card = document.createElement('div'); card.className = 'menu-card';
                 let editBtnHTML = isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', '${m.id}')">✏️ Edit Item</button>` : '';
@@ -972,9 +1024,8 @@
         }
 
         function renderHomePromos() {
-            const feed = document.getElementById('mobile-promo-feed'); feed.innerHTML = '';
-            if (window.lastDbError && homePromos.length === 0) { feed.innerHTML = `<div class="warning-box" style="width:100%;"><strong>Database Sync Failed:</strong> ${window.lastDbError}</div>`; }
-            const isAdmin = currentUser && currentUser.role === 'Administrator'; document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'inline-block' : 'none');
+            const feed = document.getElementById('mobile-promo-feed'); 
+            feed.innerHTML = ''; const isAdmin = currentUser && currentUser.role === 'Administrator'; document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'inline-block' : 'none');
             homePromos.forEach(p => { const card = document.createElement('div'); card.className = 'promo-card'; card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️ Edit Promo</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button></div>`; feed.appendChild(card); });
         }
 
@@ -1024,7 +1075,28 @@
         async function saveAdminEdit() {
             const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value; const name = document.getElementById('admin-edit-name').value; const desc = document.getElementById('admin-edit-desc').value; 
             let img = document.getElementById('admin-edit-img-url').value; const base64Img = document.getElementById('admin-edit-img-base64').value; if (base64Img) { img = base64Img; }
-            if (type === 'menu') { const toppingsStr = JSON.stringify(currentAdminToppings); if (id === 'new') { const newItem = { id: Date.now(), name: name, price: desc, img: img, toppings: toppingsStr }; const { error } = await _db.from('menu').insert([newItem]); if (error) alert("Error saving menu: " + error.message); } else { const { error } = await _db.from('menu').update({ name: name, price: desc, img: img, toppings: toppingsStr }).eq('id', id); if (error) alert("Error updating menu: " + error.message); } } else if (type === 'home') { if (id === 'new') { const newPromo = { id: Date.now(), title: name, desc: desc, img: img }; const { error } = await _db.from('promos').insert([newPromo]); if (error) alert("Error saving promo: " + error.message); } else { const { error } = await _db.from('promos').update({ title: name, desc: desc, img: img }).eq('id', id); if (error) alert("Error updating promo: " + error.message); } }
+            if (type === 'menu') { 
+                const toppingsStr = JSON.stringify(currentAdminToppings); 
+                if (id === 'new') { 
+                    // REMOVED 'id: Date.now()' - Let Supabase handle the integer IDs automatically to prevent numeric overflow crashes
+                    const newItem = { name: name, price: desc, img: img, toppings: toppingsStr }; 
+                    const { error } = await _db.from('menu').insert([newItem]); 
+                    if (error) alert("Error saving menu: " + error.message); 
+                } else { 
+                    const { error } = await _db.from('menu').update({ name: name, price: desc, img: img, toppings: toppingsStr }).eq('id', id); 
+                    if (error) alert("Error updating menu: " + error.message); 
+                } 
+            } else if (type === 'home') { 
+                if (id === 'new') { 
+                    // REMOVED 'id: Date.now()' 
+                    const newPromo = { title: name, desc: desc, img: img }; 
+                    const { error } = await _db.from('promos').insert([newPromo]); 
+                    if (error) alert("Error saving promo: " + error.message); 
+                } else { 
+                    const { error } = await _db.from('promos').update({ title: name, desc: desc, img: img }).eq('id', id); 
+                    if (error) alert("Error updating promo: " + error.message); 
+                } 
+            }
             closeAdminEdit(); loadMenuAndPromos(); 
         }
 
