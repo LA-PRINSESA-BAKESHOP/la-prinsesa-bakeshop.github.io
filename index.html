@@ -56,15 +56,24 @@
             .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; }
             .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
             .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
-            #admin-user-hub, #admin-edit-hub, #details-hub, #settings-hub, #receipt-hub { height: 90vh !important; max-height: 90vh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; overflow-y: auto !important; display: block !important; }
-            #admin-edit-hub.canva-theme, #details-hub.canva-theme { display: block !important; overflow-y: auto !important; height: auto !important; max-height: 90vh !important; padding-bottom: 50px !important; -webkit-overflow-scrolling: touch; }
-            .admin-left-col, .admin-right-col { display: block !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 20px !important; }
-            .admin-canva-chat-box { height: 350px !important; margin-bottom: 15px !important; }
-            #admin-user-orders { height: auto !important; max-height: none !important; overflow-y: visible !important; display: flex !important; flex-direction: column !important; }
+            
+            /* PERFECT MOBILE MODAL SCROLL FIX */
+            #admin-user-hub, #admin-edit-hub, #details-hub, #settings-hub, #receipt-hub { 
+                height: 90vh !important; max-height: 90vh !important; width: 95vw !important; max-width: 500px !important; 
+                margin: auto !important; border-radius: 16px !important; padding: 20px !important; 
+                display: flex !important; flex-direction: column !important; overflow-y: auto !important; 
+                -webkit-overflow-scrolling: touch; padding-bottom: 30px !important;
+            }
+            .admin-left-col, .admin-right-col { 
+                display: flex !important; flex-direction: column !important; width: 100% !important; 
+                height: auto !important; overflow: visible !important; margin-bottom: 20px !important; flex: none !important;
+            }
+            .admin-canva-chat-box { min-height: 250px !important; height: 250px !important; margin-bottom: 15px !important; flex: none !important; }
+            #admin-user-orders { min-height: 200px !important; height: auto !important; overflow-y: visible !important; display: flex !important; flex-direction: column !important; flex: none !important;}
             .admin-canva-order-card { min-width: 100% !important; max-width: 100% !important; }
             .admin-divider { display: none !important; }
-            .canva-details-body { display: block !important; overflow: visible !important; height: auto !important; margin-top: 20px !important; }
-            .canva-details-left, .canva-details-right { display: block !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 25px !important; }
+            .canva-details-body { display: flex !important; flex-direction: column !important; overflow: visible !important; height: auto !important; margin-top: 20px !important; }
+            .canva-details-left, .canva-details-right { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 25px !important; }
             .canva-details-image-wrap { height: 250px !important; min-height: 250px !important; margin-bottom: 15px !important; }
             .mobile-settings-header { display: block !important; text-align: center; color: var(--dynamic-text-color); font-size: 16px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; text-shadow: none; position: relative; width: 100%; margin-top: -10px; }
             .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 0 !important; min-width: 0 !important; display: flex !important; margin-bottom: 15px !important;}
@@ -133,12 +142,12 @@
         .ui-modal-overlay.active { display: flex; }
         #messaging-hub, #about-hub, #receipt-hub, #credentials-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: 85vh; max-height: 700px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; transition: background 0.3s ease; }
         .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--theme-accent); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
-        .digital-receipt-wrapper * { text-shadow: none !important; }
+        .digital-receipt-wrapper * { text-shadow: none !important; color: #000 !important; }
         .receipt-header-logo { width: 45px; height: 45px; margin: 0 auto 10px auto; display: flex; justify-content: center; align-items: center; background: #fff; border-radius: 50%; border: 2px solid var(--theme-accent); }
         .receipt-header-logo svg { width: 30px; }
-        .receipt-title { font-size: 15px; font-weight: bold; margin: 0 0 10px 0; color: var(--theme-text-dark); }
+        .receipt-title { font-size: 15px; font-weight: bold; margin: 0 0 10px 0; color: #000; }
         .receipt-divider { border-top: 1px dashed #ccc; margin: 10px 0; }
-        .receipt-detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; text-align: left;}
+        .receipt-detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; text-align: left; color:#000;}
         .receipt-qr-box { margin: 15px auto 10px auto; width: 100px; height: 100px; background: #f9f9f9; padding: 8px; border: 1px solid #eee; }
         .receipt-action-row { display: flex; gap: 10px; justify-content: center; flex-shrink:0; }
         .mobile-settings-header { display: none; } 
@@ -275,7 +284,7 @@
         <button type="button" class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu')"><span class="icon">📜</span><span class="text">Menu</span></button>
         <button type="button" class="sidebar-btn user-only-nav" id="desk-nav-cart" onclick="switchMainView('cart')"><span class="icon">🛒</span><span class="text">Cart</span><div id="desk-badge-cart" class="nav-badge" style="display:none;">0</div></button>
         <button type="button" class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')"><span class="icon">📦</span><span class="text">Orders</span><div id="desk-badge-orders" class="nav-badge" style="display:none;">0</div></button>
-        <button type="button" class="sidebar-btn user-only-nav" onclick="openMessaging()"><span class="icon">💬</span><span class="text">Messages</span><div id="desk-badge-chat" class="nav-badge" style="display:none;">0</div></button>
+        <button type="button" class="sidebar-btn user-only-nav" onclick="openMessaging()"><span class="icon">💬</span><span class="text">Message</span><div id="desk-badge-chat" class="nav-badge" style="display:none;">0</div></button>
         <button type="button" class="sidebar-btn" onclick="openAbout()"><span class="icon">ℹ️</span><span class="text">About Us</span></button>
         <button type="button" class="sidebar-btn" onclick="openSettings()"><span class="icon">⚙️</span><span class="text">Settings & Auth</span></button>
     </div>
@@ -318,7 +327,7 @@
                 <p id="orders-view-desc" style="color: var(--dynamic-text-color); opacity: 0.9; margin: 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p>
             </div>
             <button type="button" class="os-btn-primary user-only-nav mobile-only-flex" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: bold; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="openMessaging()">
-                💬 Message Owner
+                💬 Message
                 <div id="inline-badge-chat" class="nav-badge" style="display:none; position:relative; top:0; right:0; margin-left:10px;">0</div>
             </button>
             <div id="orders-list"></div>
@@ -566,8 +575,8 @@
                 <div id="view-updates" class="settings-view">
                     <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 3.1.0 - Ghost Exorcism</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Removed `localStorage` for Menu & Promos entirely. The system now perfectly reflects ONLY what is in the live database.<br>- Fixed CSS class conflicts that caused the "Add Promo" button to stay invisible for administrators.<br>- Safe Boot Initialization: Ensures data is rendered after auth state is verified.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 4.0.0 - Clean Boot Execution</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed the HTML file loop crash.<br>- Implemented vertical native scrolling on mobile Admin pages.<br>- Repaired the Admin Order fetching loop.</p>
                     </div>
                 </div>
             </div>
@@ -713,10 +722,6 @@
         }
 
         async function initializeSession() {
-            // Nuke the ghost cache immediately upon loading the site.
-            localStorage.removeItem('la_prinsesa_menu');
-            localStorage.removeItem('la_prinsesa_promos');
-
             _db.from('users').select('photo_url').eq('role', 'Administrator').limit(1).single().then(res => { if(res.data && res.data.photo_url) cachedOwnerAvatar = res.data.photo_url; }).catch(e => {});
             const savedUser = localStorage.getItem('la_prinsesa_session_user');
             if (savedUser) { try { currentUser = JSON.parse(savedUser); const c = localStorage.getItem('la_prinsesa_cart_' + currentUser.uid); if (c) cartItems = JSON.parse(c); } catch(e) { currentUser = null; } }
@@ -725,7 +730,6 @@
             if (savedTheme) { try { const parsed = JSON.parse(savedTheme); applyTheme(parsed.type, parsed.color, parsed.accentHex, parsed.baseRgba, parsed.textDark, parsed.bgLight, parsed.btnHover, parsed.dynamicText || (parsed.type === 'white-cupcake' ? '#333333' : '#ffffff'), false); } catch(e) { applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff', false); }
             } else { applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff', false); }
 
-            // MUST update UI first so buttons render correctly before data attempts to map
             updateSettingsUI(); 
             switchMainView('home'); 
 
@@ -746,7 +750,7 @@
         }
 
         function toggleAboutEdit(editMode) {
-            if (editMode) { document.getElementById('about-display-mode').style.display = 'none'; document.getElementById('about-edit-mode').style.display = 'block'; document.getElementById('about-desc-input').value = storeInfo.description || ""; document.getElementById('about-address-input').value = storeInfo.address || ""; document.getElementById('about-phone-input').value = storeInfo.phone || ""; document.getElementById('about-email-input').value = storeInfo.email || "";
+            if (editMode) { document.getElementById('about-display-mode').style.display = 'none'; document.getElementById('about-edit-mode').style.display = 'block'; document.getElementById('about-desc-input').value = storeInfo.description || ""; document.getElementById('about-address-input').value = storeInfo.address || ""; document.getElementById('about-phone-input').value = storeInfo.phone || "N/A"; document.getElementById('about-email-input').value = storeInfo.email || "";
             } else { document.getElementById('about-display-mode').style.display = 'block'; document.getElementById('about-edit-mode').style.display = 'none'; }
         }
 
@@ -757,10 +761,6 @@
         }
 
         async function loadMenuAndPromos() {
-            // Show explicit fetching messages to prove ghost is gone
-            document.getElementById('product-grid').innerHTML = '<div style="width:100%; text-align:center; grid-column: 1/-1; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live menu from Supabase...</div>';
-            document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
-
             const rMenu = await fetchDataRobust('menu');
             if (rMenu.error) { 
                 document.getElementById('product-grid').innerHTML = `<div class="warning-box" style="grid-column:1/-1;"><strong>Menu Fetch Failed:</strong> ${rMenu.error}</div>`; 
@@ -967,9 +967,6 @@
             const list = document.getElementById('admin-orders-list'); 
             if (!list.innerHTML || list.innerHTML.includes('Syncing')) list.innerHTML = '<div style="padding:20px;text-align:center;opacity:0.6;color:var(--dynamic-text-color);">Syncing Database...</div>';
             
-            const cacheKey = 'la_prinsesa_admin_overview'; const cachedData = localStorage.getItem(cacheKey); 
-            if(cachedData) { try { const parsed = JSON.parse(cachedData); buildAdminOrdersUI(parsed.users, parsed.allOrders, parsed.allMsgs, list, false); } catch(e){} }
-            
             const rUsers = await fetchDataRobust('users'); const rOrders = await fetchDataRobust('orders'); const rMsgs = await fetchDataRobust('messages');
             
             let errs = [];
@@ -981,7 +978,6 @@
                 list.innerHTML = `<div class="warning-box" style="margin-bottom:15px; border-left: 4px solid #ff4d4d; font-size:13px; padding:15px;"><strong>Database Connection Blocked</strong><br><br>${errs.join('<br>')}<br><br><em>Fix: Go to Supabase Dashboard &rarr; Table Editor &rarr; Ensure tables exist exactly as named and RLS is fully disabled.</em></div>`; 
             } else {
                 list.innerHTML = ''; 
-                localStorage.setItem(cacheKey, JSON.stringify({users: rUsers.data, allOrders: rOrders.data, allMsgs: rMsgs.data})); 
             }
 
             buildAdminOrdersUI(rUsers.data||[], rOrders.data||[], rMsgs.data||[], list, errs.length > 0);
