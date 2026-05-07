@@ -62,6 +62,8 @@
             opacity: 0.08; pointer-events: none; z-index: -1; mix-blend-mode: overlay; transition: 0.3s;
         }
 
+        .mobile-only-flex { display: none !important; }
+
         @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
             body { display: grid; grid-template-columns: var(--side-full) 1fr; align-items: stretch; }
             #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 2000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); transition: background 0.3s ease; }
@@ -86,6 +88,8 @@
             #sidebar { display: none; } 
             
             #main-content { flex: 1; padding: 10px 15px; height: auto; overflow-y: auto; overflow-x: hidden; }
+
+            .mobile-only-flex { display: flex !important; align-items: center; justify-content: center; }
 
             /* SCROLLABLE MOBILE BOTTOM NAV FIX */
             #bottom-nav { 
@@ -125,15 +129,16 @@
             .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
             .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
 
-            /* PERFECT MESSAGING HUB FIX */
+            /* ADMIN USER HUB MOBILE LAYOUT */
             #admin-user-hub {
                 flex-direction: column !important;
                 height: 95vh !important; max-height: 95vh !important;
                 width: 95vw !important; max-width: 450px !important;
                 margin: auto; border-radius: 16px !important; padding: 15px !important;
+                overflow-y: auto !important;
             }
-            .admin-left-col { flex: 1.5 !important; }
-            .admin-right-col { flex: 1 !important; }
+            .admin-left-col { flex: 1 0 auto !important; min-height: 350px !important; }
+            .admin-right-col { flex: 1 0 auto !important; min-height: 250px !important; }
 
             #settings-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
             #admin-edit-hub { flex-direction: column !important; height: 90vh !important; max-height: 90vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; overflow-y: auto !important; }
@@ -168,6 +173,7 @@
             position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); color: var(--dynamic-text-color); padding: 15px 18px; border-radius: 12px; 
             cursor: pointer; text-align: left; font-size: 16px; font-weight: 500; transition: all 0.2s ease; margin-bottom: 8px;
+            width: 100%; border: none;
         }
         .sidebar-btn:hover { background: rgba(255, 255, 255, 0.15); }
         .sidebar-btn.active { background: var(--theme-accent); font-weight: bold; border-color: rgba(255, 255, 255, 0.3); color: white; }
@@ -230,11 +236,11 @@
         
         .order-panel, .cart-panel { flex-shrink: 0; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .order-panel:hover, .cart-panel:hover { border-color: var(--theme-accent); }
-        .order-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; flex: 1;}
-        .order-info h3 { margin: 0 0 5px 0; font-size: 16px; text-shadow: none; display: flex; align-items: center; gap: 10px;}
+        .order-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; flex: 1; overflow: hidden;}
+        .order-info h3 { margin: 0 0 5px 0; font-size: 16px; text-shadow: none; display: flex; align-items: center; gap: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
         .order-info p { margin: 0 0 5px 0; font-weight: bold; font-size: 14px;}
         .order-info small { font-size: 12px; }
-        .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .order-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
 
         .order-img-thumb { width: 45px; height: 45px; border-radius: 10px; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5em; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; overflow:hidden;}
         .order-img-thumb img { width: 100%; height: 100%; object-fit: cover; }
@@ -269,7 +275,7 @@
         #settings-hub { display: flex; flex-direction: row; width: 900px; height: 550px; max-width: 95vw; background: rgba(0, 0, 0, 0.25) !important; backdrop-filter: blur(25px) saturate(150%) !important; border-radius: 24px; box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); overflow: visible; position: relative; box-sizing: border-box; }
         .settings-sidebar { width: 240px; min-width: 240px; background: rgba(255, 255, 255, 0.03); border-right: 1px solid rgba(255, 255, 255, 0.08); padding: 25px 15px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; overflow-y: auto; }
         .settings-sidebar h3 { color: var(--dynamic-text-color); font-size: 13px; letter-spacing: 1px; margin: 0 0 25px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; display: flex; align-items: center;}
-        .settings-tab-btn { background: transparent; color: var(--dynamic-text-color); opacity: 0.8; border: 1px solid transparent; text-align: left; padding: 10px 12px; border-radius: 12px; cursor: pointer; font-size: 13px; transition: all 0.2s ease; }
+        .settings-tab-btn { background: transparent; color: var(--dynamic-text-color); opacity: 0.8; border: 1px solid transparent; text-align: left; padding: 10px 12px; border-radius: 12px; cursor: pointer; font-size: 13px; transition: all 0.2s ease; width: 100%;}
         .settings-tab-btn.active { border-color: rgba(255, 255, 255, 0.3); opacity: 1; font-weight: bold; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
         .settings-tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); opacity: 1; }
         .settings-content { flex: 1; padding: 30px 40px 40px 40px; position: relative; display: flex; flex-direction: column; align-items: flex-start; overflow-y: auto; overflow-x: hidden; width: 100%; scroll-behavior: smooth; box-sizing: border-box; text-align: left; }
@@ -291,7 +297,7 @@
 
         .os-btn-row { display: flex; gap: 10px; margin-bottom: 15px; width: 100%; flex-wrap: wrap; }
         .os-btn { flex: 1; padding: 10px 15px; border-radius: 12px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid transparent; text-align: center; min-width: 100px; display: inline-block; }
-        .os-btn-primary { background: rgba(255,255,255,0.9); color: black; box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
+        .os-btn-primary { background: rgba(255,255,255,0.9); color: black; box-shadow: 0 4px 15px rgba(255,255,255,0.3); border: none;}
         .os-btn-primary:hover { background: #ffffff; }
         .os-btn-secondary { background: rgba(255,255,255,0.08); color: var(--dynamic-text-color); border: 1px solid rgba(255,255,255,0.15); }
         .os-btn-secondary:hover { background: rgba(255,255,255,0.15); }
@@ -352,12 +358,12 @@
         .contact-item { display: flex; align-items: flex-start; gap: 10px; }
         .warning-box { background: rgba(255, 60, 60, 0.15); border: 1px solid #ff4d4d; color: #ffcccc; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; line-height: 1.4; }
 
-        /* CANVA CONCEPT UI INTEGRATION: ADMIN USER HUB */
+        /* CANVA CONCEPT UI INTEGRATION: ADMIN USER HUB (REBUILT FOR DESKTOP ROW & MOBILE SCROLLABLE COLUMN) */
         #admin-user-hub { 
             background: var(--glass-bg) !important;
             backdrop-filter: var(--glass-blur) !important;
             display: flex !important;
-            flex-direction: row !important;
+            flex-direction: row !important; /* Keep Desktop Split */
             max-width: 850px !important;
             height: 550px !important;
             max-height: 90vh !important;
@@ -367,9 +373,8 @@
             gap: 20px;
             box-shadow: var(--apple-glass-shadow) !important;
             position: relative !important; 
-            overflow: hidden !important; 
+            overflow: visible !important; 
             transition: background 0.3s ease;
-            box-sizing: border-box !important;
         }
 
         .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; overflow:hidden; min-height:0;}
@@ -379,7 +384,7 @@
         
         .admin-canva-chat-box {
             flex: 1 1 auto; background: rgba(0,0,0,0.15) !important;
-            border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; min-height: 0;
+            border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; min-height: 150px;
             transition: background 0.3s ease;
         }
 
@@ -388,8 +393,8 @@
         .admin-canva-input { background: rgba(0,0,0,0.2) !important; border-radius: 25px; border: 1px solid rgba(255,255,255,0.15); padding: 15px 25px; color: var(--dynamic-text-color); font-size: 15px; outline: none; width: 100%; box-sizing: border-box; flex-shrink:0; transition: background 0.3s ease;}
         .admin-canva-input::placeholder { color: var(--dynamic-text-color); opacity: 0.7; }
         
-        .admin-canva-btn-row { display: flex; gap: 10px; flex-shrink:0;}
-        .admin-canva-btn { background: var(--theme-accent); color: white; border: none; border-radius: 25px; padding: 12px; flex: 1; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
+        .admin-canva-btn-row { display: flex; gap: 10px; flex-shrink:0; margin-top: 5px;}
+        .admin-canva-btn { background: var(--theme-accent); color: white; border: none; border-radius: 25px; padding: 12px; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
         .admin-canva-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px);}
         
         .admin-canva-close {
@@ -402,9 +407,9 @@
         }
         .admin-canva-close:hover { transform: scale(1.1); background: var(--theme-btn-hover) !important; }
 
-        .admin-canva-order-card { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: var(--dynamic-text-color) !important; position: relative; margin-bottom: 10px; align-items: center; flex-shrink: 0; transition: background 0.3s ease;}
-        .admin-canva-order-img { width: 65px; height: 65px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;}
-        .admin-canva-order-status { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.8); color: #000; padding: 4px 12px; border-radius: 15px; font-size: 10px; font-weight: 900; }
+        .admin-canva-order-card { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: var(--dynamic-text-color) !important; position: relative; margin-bottom: 5px; align-items: center; flex-shrink: 0; transition: background 0.3s ease;}
+        .admin-canva-order-img { width: 50px; height: 50px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;}
+        .admin-canva-order-status { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.8); color: #000; padding: 4px 10px; border-radius: 15px; font-size: 9px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
 
         /* CANVA CONCEPT UI INTEGRATION: DETAILS HUB & ADMIN EDIT HUB */
         #details-hub.canva-theme, #admin-edit-hub.canva-theme {
@@ -451,7 +456,7 @@
         .wizard-step.active { display: block; }
 
         /* Quantity Adjuster Styling */
-        .qty-btn { background:transparent; border:none; padding:10px 15px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:18px;}
+        .qty-btn { background:transparent; border: none; padding:10px 15px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:18px;}
         .qty-btn:hover { background: rgba(0,0,0,0.05); }
 
     </style>
@@ -500,24 +505,24 @@
             </svg>
         </div>
         
-        <button class="sidebar-btn active" id="desk-nav-home" onclick="switchMainView('home')"><span class="icon">🏠</span><span class="text">Home</span></button>
-        <button class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu')"><span class="icon">📜</span><span class="text">Menu</span></button>
+        <button type="button" class="sidebar-btn active" id="desk-nav-home" onclick="switchMainView('home')"><span class="icon">🏠</span><span class="text">Home</span></button>
+        <button type="button" class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu')"><span class="icon">📜</span><span class="text">Menu</span></button>
         
-        <button class="sidebar-btn user-only-nav" id="desk-nav-cart" onclick="switchMainView('cart')">
+        <button type="button" class="sidebar-btn user-only-nav" id="desk-nav-cart" onclick="switchMainView('cart')">
             <span class="icon">🛒</span><span class="text">Cart</span>
             <div id="desk-badge-cart" class="nav-badge" style="display:none;">0</div>
         </button>
 
-        <button class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')">
+        <button type="button" class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')">
             <span class="icon">📦</span><span class="text">Orders</span>
             <div id="desk-badge-orders" class="nav-badge" style="display:none;">0</div>
         </button>
-        <button class="sidebar-btn user-only-nav" onclick="openMessaging()">
+        <button type="button" class="sidebar-btn user-only-nav" onclick="openMessaging()">
             <span class="icon">💬</span><span class="text">Messages</span>
             <div id="desk-badge-chat" class="nav-badge" style="display:none;">0</div>
         </button>
-        <button class="sidebar-btn" onclick="openAbout()"><span class="icon">ℹ️</span><span class="text">About Us</span></button>
-        <button class="sidebar-btn" onclick="openSettings()"><span class="icon">⚙️</span><span class="text">Settings & Auth</span></button>
+        <button type="button" class="sidebar-btn" onclick="openAbout()"><span class="icon">ℹ️</span><span class="text">About Us</span></button>
+        <button type="button" class="sidebar-btn" onclick="openSettings()"><span class="icon">⚙️</span><span class="text">Settings & Auth</span></button>
     </div>
 
     <div id="main-content">
@@ -548,7 +553,7 @@
         <hr class="shop-divider">
         
         <div id="home-view" class="view-section active">
-            <button class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px; width: 100%; background: var(--theme-accent); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor:pointer;" onclick="openAdminEdit('home', 'new')">✏️ Add New Promo</button>
+            <button type="button" class="os-btn-primary admin-only" style="display:none; margin-bottom: 15px; width: 100%; background: var(--theme-accent); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor:pointer;" onclick="openAdminEdit('home', 'new')">✏️ Add New Promo</button>
 
             <div class="desktop-carousel-container">
                 <div class="desktop-carousel-viewport">
@@ -585,6 +590,12 @@
                 <h2 id="orders-view-title" style="margin: 0 0 5px 0; color: var(--dynamic-text-color);">Your Order History</h2>
                 <p id="orders-view-desc" style="color: var(--dynamic-text-color); opacity: 0.9; margin: 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p>
             </div>
+
+            <button type="button" class="os-btn-primary user-only-nav mobile-only-flex" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: bold; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="openMessaging()">
+                💬 Message Owner
+                <div id="inline-badge-chat" class="nav-badge" style="display:none; position:relative; top:0; right:0; margin-left:10px;">0</div>
+            </button>
+
             <div id="orders-list"></div>
             <div id="admin-orders-list" style="display:none;"></div>
         </div>
@@ -605,10 +616,6 @@
             <span>📦</span><span class="nav-text">Orders</span>
             <div id="mob-badge-orders" class="nav-badge" style="display:none;">0</div>
         </div>
-        <div class="bnav-item user-only-nav" onclick="openMessaging()">
-            <span>💬</span><span class="nav-text">Messages</span>
-            <div id="mob-badge-chat" class="nav-badge" style="display:none;">0</div>
-        </div>
         <div class="bnav-item" onclick="openAbout()">
             <span>ℹ️</span><span class="nav-text">About Us</span>
         </div>
@@ -620,7 +627,7 @@
     <div class="ui-modal-overlay" id="messaging-overlay">
         <div id="messaging-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
-            <button class="close-btn" onclick="closeMessaging()">×</button>
+            <button type="button" class="close-btn" onclick="closeMessaging()">×</button>
             <h2 class="modal-title" style="margin-bottom: 5px; color: var(--dynamic-text-color); flex-shrink: 0;">Messages</h2>
             <p id="customer-view-owner-phone" style="text-align:center; color: var(--dynamic-text-color); font-size: 14px; margin-top: 0; margin-bottom: 15px; font-weight: bold; flex-shrink: 0;">LA PRINSESA BAKESHOP NUMBER<br>#Loading...</p>
             
@@ -630,27 +637,27 @@
                 <label class="os-btn os-btn-secondary" style="margin-bottom:0; text-align:center;">📷 Send Photo
                     <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'user')">
                 </label>
-                <button class="submit-btn" style="width: 100%; color: white;" onclick="sendChatMessage('user')">Send</button>
+                <button type="button" class="submit-btn" style="width: 100%; color: white;" onclick="sendChatMessage('user')">Send</button>
             </div>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="admin-user-overlay">
         <div id="admin-user-hub">
-            <button class="admin-canva-close" onclick="closeAdminUserModal()">×</button>
+            <button type="button" class="admin-canva-close" onclick="closeAdminUserModal()">×</button>
             
             <div class="admin-left-col">
                 <h2 class="admin-canva-header" style="margin-bottom: 0;">Messages</h2>
-                <div id="admin-user-phone" style="color: var(--dynamic-text-color); opacity:0.8; font-size: 14px; margin-bottom: 10px; font-weight: bold;">CUSTOMER NUMBER<br>#N/A</div>
+                <div id="admin-user-phone" style="color: var(--dynamic-text-color); opacity:0.8; font-size: 14px; margin-bottom: 10px; font-weight: bold; flex-shrink:0;">CUSTOMER NUMBER<br>#N/A</div>
                 
                 <div class="admin-canva-chat-box chat-history" id="admin-chat-history"></div>
-                <input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')">
+                
                 <div class="admin-canva-btn-row">
-                    <label class="admin-canva-btn" style="display:flex; align-items:center; justify-content:center; margin:0; color: white;">
-                        📷 SEND PHOTO
-                        <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')">
+                    <input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')">
+                    <label class="admin-canva-btn" style="display:flex; align-items:center; justify-content:center; margin:0; color: white; width:auto; padding: 12px 15px; flex:none;">
+                        📷 <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')">
                     </label>
-                    <button class="admin-canva-btn" style="color: white;" onclick="sendChatMessage('owner')">SEND</button>
+                    <button type="button" class="admin-canva-btn" style="color: white; flex:none; width:auto; padding: 12px 20px;" onclick="sendChatMessage('owner')">SEND</button>
                 </div>
             </div>
 
@@ -658,7 +665,7 @@
 
             <div class="admin-right-col">
                 <h2 class="admin-canva-header" id="admin-user-title">Managing: USER</h2>
-                <p style="margin:0; font-size: 16px; color: var(--dynamic-text-color); font-weight: 500;">Active Orders</p>
+                <p style="margin:10px 0 5px 0; font-size: 16px; color: var(--dynamic-text-color); font-weight: 500; flex-shrink:0;">Active Orders</p>
                 <div id="admin-user-orders" style="flex: 1; overflow-y: auto; padding-right: 5px; display:flex; flex-direction:column;"></div>
             </div>
         </div>
@@ -666,7 +673,7 @@
 
     <div class="ui-modal-overlay" id="admin-edit-overlay">
         <div id="admin-edit-hub" class="canva-theme">
-            <button class="admin-canva-close" onclick="closeAdminEdit()">×</button>
+            <button type="button" class="admin-canva-close" onclick="closeAdminEdit()">×</button>
             
             <div class="canva-details-top">
                 <h2 class="canva-details-title" id="admin-edit-title-display">Edit Menu Item</h2>
@@ -703,13 +710,13 @@
                             <input type="text" id="new-topping-name" class="canva-input-field" placeholder="Topping Name" style="padding:10px; margin-bottom:10px;">
                             <label style="font-size:12px; font-weight:bold; color:var(--dynamic-text-color);">Topping Photo:</label>
                             <input type="file" id="new-topping-file" class="canva-input-field" accept="image/*" style="padding:10px; margin-bottom:10px;">
-                            <button class="canva-details-btn secondary" style="width:100%; padding:10px; color: var(--dynamic-text-color);" onclick="addNewAdminTopping()">+ Add Topping</button>
+                            <button type="button" class="canva-details-btn secondary" style="width:100%; padding:10px; color: var(--dynamic-text-color);" onclick="addNewAdminTopping()">+ Add Topping</button>
                         </div>
                     </div>
 
                     <div style="display:flex; gap:10px; margin-top:20px;">
-                        <button class="canva-details-btn" style="flex:2; color: white;" onclick="saveAdminEdit()">Save Changes</button>
-                        <button class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" id="admin-delete-btn" onclick="deleteAdminEdit()">Delete</button>
+                        <button type="button" class="canva-details-btn" style="flex:2; color: white;" onclick="saveAdminEdit()">Save Changes</button>
+                        <button type="button" class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" id="admin-delete-btn" onclick="deleteAdminEdit()">Delete</button>
                     </div>
                 </div>
             </div>
@@ -719,7 +726,7 @@
     <div class="ui-modal-overlay" id="cart-checkout-overlay">
         <div id="messaging-hub" style="max-width: 480px;">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
-            <button class="close-btn" onclick="closeCartCheckout()">×</button>
+            <button type="button" class="close-btn" onclick="closeCartCheckout()">×</button>
             <h2 class="modal-title" id="cart-co-title" style="color: var(--dynamic-text-color); flex-shrink: 0;">Checkout Item</h2>
             <div style="display: flex; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; align-items: center; flex-shrink: 0;">
                 <div class="order-img-thumb" id="cart-co-img" style="width: 70px; height: 70px; font-size: 2.5em;"></div>
@@ -740,8 +747,8 @@
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; margin-top: 10px;">
-                <button class="submit-btn" style="color: white;" onclick="checkoutCartItem()">🛍️ Buy Now</button>
-                <button class="os-btn os-btn-secondary" onclick="closeCartCheckout()">Cancel</button>
+                <button type="button" class="submit-btn" style="color: white;" onclick="checkoutCartItem()">🛍️ Buy Now</button>
+                <button type="button" class="os-btn os-btn-secondary" onclick="closeCartCheckout()">Cancel</button>
             </div>
         </div>
     </div>
@@ -749,7 +756,7 @@
     <div class="ui-modal-overlay" id="about-overlay">
         <div id="about-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
-            <button class="close-btn" onclick="closeAbout()">×</button>
+            <button type="button" class="close-btn" onclick="closeAbout()">×</button>
             <h2 class="modal-title" style="color: var(--dynamic-text-color);">About Us</h2>
             
             <div id="about-display-mode">
@@ -762,7 +769,7 @@
                     <div class="contact-item"><strong>📞 Phone:</strong> <span id="about-phone-display">+63 912 345 6789</span></div>
                     <div class="contact-item"><strong>✉️ Email:</strong> <span id="about-email-display">laprinsesadecupcake@gmail.com</span></div>
                 </div>
-                <button id="btn-edit-about" class="os-btn-primary admin-only" style="display:none; margin-top:15px; width:100%;" onclick="toggleAboutEdit(true)">✏️ Edit About Info</button>
+                <button type="button" id="btn-edit-about" class="os-btn-primary admin-only" style="display:none; margin-top:15px; width:100%;" onclick="toggleAboutEdit(true)">✏️ Edit About Info</button>
             </div>
 
             <div id="about-edit-mode" style="display:none;">
@@ -776,8 +783,8 @@
                 <input type="text" id="about-email-input" class="input-field">
                 
                 <div style="display:flex; gap:10px; margin-top:10px;">
-                    <button class="submit-btn" style="flex:1; color: white;" onclick="saveAboutInfo()">Save</button>
-                    <button class="os-btn os-btn-secondary" style="flex:1;" onclick="toggleAboutEdit(false)">Cancel</button>
+                    <button type="button" class="submit-btn" style="flex:1; color: white;" onclick="saveAboutInfo()">Save</button>
+                    <button type="button" class="os-btn os-btn-secondary" style="flex:1;" onclick="toggleAboutEdit(false)">Cancel</button>
                 </div>
             </div>
         </div>
@@ -786,13 +793,13 @@
     <div class="ui-modal-overlay" id="settings-overlay">
         <div id="settings-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
-            <button class="settings-close-btn" onclick="closeSettings()">×</button>
+            <button type="button" class="settings-close-btn" onclick="closeSettings()">×</button>
             <div class="settings-sidebar">
                 <h3 style="color: var(--dynamic-text-color);">LA PRINSESA BAKESHOP</h3>
-                <button id="nav-accounts" class="settings-tab-btn active" onclick="switchSettingsNav('accounts')">Accounts & Control</button>
-                <button id="nav-personalization" class="settings-tab-btn" onclick="switchSettingsNav('personalization')">Personalization</button>
-                <button id="nav-guides" class="settings-tab-btn" onclick="switchSettingsNav('guides')">Guides</button>
-                <button id="nav-updates" class="settings-tab-btn" onclick="switchSettingsNav('updates')">Updates</button>
+                <button type="button" id="nav-accounts" class="settings-tab-btn active" onclick="switchSettingsNav('accounts')">Accounts & Control</button>
+                <button type="button" id="nav-personalization" class="settings-tab-btn" onclick="switchSettingsNav('personalization')">Personalization</button>
+                <button type="button" id="nav-guides" class="settings-tab-btn" onclick="switchSettingsNav('guides')">Guides</button>
+                <button type="button" id="nav-updates" class="settings-tab-btn" onclick="switchSettingsNav('updates')">Updates</button>
             </div>
 
             <div class="settings-content">
@@ -814,8 +821,8 @@
                             <p id="profile-details" style="color: var(--dynamic-text-color); opacity: 0.8; font-size: 13px; margin-bottom: 25px; line-height: 1.6;"></p>
                             
                             <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">✏️ Edit Profile / Credentials</button>
-                                <button class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button>
+                                <button type="button" class="os-btn os-btn-secondary" onclick="openChangeCredentials()">✏️ Edit Profile / Credentials</button>
+                                <button type="button" class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button>
                             </div>
                         </div>
                     </div>
@@ -823,8 +830,8 @@
                     <div id="logged-out-view" class="auth-wrapper">
                         <div class="os-card" style="padding: 25px; margin-bottom: 0;">
                             <div class="auth-nav">
-                                <button id="btn-auth-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-                                <button id="btn-auth-create" class="auth-tab" onclick="switchAuthTab('create')">Register Account</button>
+                                <button type="button" id="btn-auth-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                                <button type="button" id="btn-auth-create" class="auth-tab" onclick="switchAuthTab('create')">Register Account</button>
                             </div>
 
                             <div id="auth-pane-login" class="auth-pane active">
@@ -834,7 +841,7 @@
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Password</label>
                                 <input type="password" id="login-password" class="input-field" placeholder="Enter your password" onkeydown="if(event.key==='Enter') validateLogin()">
                                 
-                                <button class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateLogin()">Secure Login</button>
+                                <button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateLogin()">Secure Login</button>
                             </div>
 
                             <div id="auth-pane-create" class="auth-pane">
@@ -848,7 +855,7 @@
                                 <input type="text" id="create-username" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Create Password</label>
                                 <input type="password" id="create-password" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()">
-                                <button class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateCreate()">Register Account</button>
+                                <button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateCreate()">Register Account</button>
                             </div>
                         </div>
                         <div class="anonymous-text-block" style="color: var(--dynamic-text-color); margin-top:15px; opacity: 0.8; font-size:13px; text-align:center;">
@@ -908,12 +915,8 @@
                 <div id="view-updates" class="settings-view">
                     <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.0 - UX Polishing</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed cart quantity stacking issues.<br>- Removed duplicate users in Admin operations view.<br>- Deepened default Theme to match Canva aesthetics.<br>- Ensured Messaging photos and items aren't squashed.<br>- Enhanced mobile scrollable navigations.</p>
-                    </div>
-                    <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.3.2 - Security & Anon Mode</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Menu and Home items now display reliably without auth.<br>- Intercepted unauthenticated users attempting to access Menu directly.<br>- Better formatting for Mobile Modal components.<br>- Resolved user state caching issues upon login/logout.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.1 - Seamless Stability</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed cart quantity naming bugs.<br>- Admin user list fully de-duplicated.<br>- Resolved refresh-on-close issues.<br>- Enhanced mobile Admin Order View.</p>
                     </div>
                 </div>
             </div>
@@ -922,7 +925,7 @@
 
     <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 3100;">
         <div id="credentials-hub">
-            <button class="close-btn" onclick="closeChangeCredentials()">×</button>
+            <button type="button" class="close-btn" onclick="closeChangeCredentials()">×</button>
             <h2 class="modal-title" style="font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; color: var(--dynamic-text-color);">Update Credentials</h2>
             <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">New Username (Leave blank to keep current):</label>
             <input type="text" id="update-username" class="input-field" placeholder="Enter new username" onkeydown="if(event.key==='Enter') saveCredentials()">
@@ -930,13 +933,13 @@
             <input type="password" id="update-password" class="input-field" placeholder="Enter new password" onkeydown="if(event.key==='Enter') saveCredentials()">
             <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">New Phone Number (Leave blank to keep current):</label>
             <input type="text" id="update-phone" class="input-field" placeholder="Enter new phone number" onkeydown="if(event.key==='Enter') saveCredentials()">
-            <button class="submit-btn" style="margin-top: 15px; color: white;" onclick="saveCredentials()">Save Changes</button>
+            <button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="saveCredentials()">Save Changes</button>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="details-overlay">
         <div id="details-hub" class="canva-theme">
-            <button class="admin-canva-close" onclick="closeDetails()" style="z-index: 10;">×</button>
+            <button type="button" class="admin-canva-close" onclick="closeDetails()" style="z-index: 10;">×</button>
             
             <div class="canva-details-top">
                 <h2 class="canva-details-title" id="details-title">FOOD NAME LABEL HERE</h2>
@@ -948,8 +951,8 @@
                     <div class="canva-details-image-wrap" id="details-image-container">
                     </div>
                     <div style="display:flex; gap:10px; margin-top: 10px;" id="canva-left-buttons">
-                        <button class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" onclick="prevWStep()" id="btn-go-back">GO BACK</button>
-                        <button class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" onclick="nextWStep()" id="btn-next-step">NEXT: REVIEW</button>
+                        <button type="button" class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" onclick="prevWStep()" id="btn-go-back">GO BACK</button>
+                        <button type="button" class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" onclick="nextWStep()" id="btn-next-step">NEXT: REVIEW</button>
                     </div>
                 </div>
 
@@ -966,9 +969,9 @@
                             <div style="flex:0.7;">
                                 <h3 style="color:var(--dynamic-text-color); font-size:18px; margin-top:0;">Quantity:</h3>
                                 <div style="display:flex; align-items:center; background:rgba(255,255,255,0.4); border-radius:15px; overflow:hidden;">
-                                    <button class="qty-btn" onclick="adjQty(-1)">-</button>
+                                    <button type="button" class="qty-btn" onclick="adjQty(-1)">-</button>
                                     <input type="number" id="order-quantity" value="1" min="1" max="99" style="width:100%; border:none; background:transparent; text-align:center; font-weight:bold; color:var(--dynamic-text-color); outline:none; font-size:16px;" readonly>
-                                    <button class="qty-btn" onclick="adjQty(1)">+</button>
+                                    <button type="button" class="qty-btn" onclick="adjQty(1)">+</button>
                                 </div>
                             </div>
                         </div>
@@ -987,11 +990,11 @@
                         <h3 style="color:var(--dynamic-text-color); text-align:center; margin: 30px 0 20px 0; font-size: 20px;">Ready to complete order?</h3>
                         
                         <div style="display:flex; gap:15px; justify-content:center;" id="auth-order-actions">
-                            <button class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('buy')">Buy Now</button>
-                            <button class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('cart')">Add to Cart</button>
+                            <button type="button" class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('buy')">Buy Now</button>
+                            <button type="button" class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('cart')">Add to Cart</button>
                         </div>
                         <div style="display:none; gap:15px; justify-content:center;" id="anon-order-actions">
-                            <button class="canva-details-btn" style="flex:1; color: white; background: var(--theme-accent);" onclick="promptLoginFromOrder()">Login to Order</button>
+                            <button type="button" class="canva-details-btn" style="flex:1; color: white; background: var(--theme-accent);" onclick="promptLoginFromOrder()">Login to Order</button>
                         </div>
                     </div>
                 </div>
@@ -1001,7 +1004,7 @@
 
     <div class="ui-modal-overlay" id="receipt-overlay">
         <div id="receipt-hub" style="text-align: center; max-width: 480px;">
-            <button class="close-btn" onclick="closeReceipt()">×</button>
+            <button type="button" class="close-btn" onclick="closeReceipt()">×</button>
             <h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2>
             
             <div class="digital-receipt-wrapper" id="printable-receipt-area">
@@ -1043,8 +1046,8 @@
             </div>
 
             <div class="receipt-action-row">
-                <button class="os-btn-primary" onclick="window.print()">🖨️ Print</button>
-                <button class="os-btn os-btn-secondary" onclick="downloadReceipt()">📥 Download</button>
+                <button type="button" class="os-btn-primary" onclick="window.print()">🖨️ Print</button>
+                <button type="button" class="os-btn os-btn-secondary" onclick="downloadReceipt()">📥 Download</button>
             </div>
         </div>
     </div>
@@ -1120,7 +1123,6 @@
         }
 
         async function initializeSession() {
-            // Attempt to retrieve owner photo silently
             _db.from('users').select('photo_url').eq('role', 'Administrator').limit(1).single().then(res => {
                 if(res.data && res.data.photo_url) cachedOwnerAvatar = res.data.photo_url;
             }).catch(e => {});
@@ -1506,7 +1508,6 @@
         async function processOrder(type) {
             const qty = document.getElementById('order-quantity').value;
             
-            // Generate parsed toppings string
             const selectedToppingsArr = Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value);
             const toppingsJSONString = JSON.stringify(selectedToppingsArr);
 
@@ -1519,10 +1520,14 @@
             const pickupDate = document.getElementById('order-date').value;
             const pickupTime = document.getElementById('order-time').value;
 
+            // Preserve single quantity name
+            const baseItemName = currentItemToOrder;
+            const finalItemName = `${qty}x ${baseItemName}`;
+
             const orderObj = {
                 order_id: 'ORD-' + Date.now(),
                 user_uid: currentUser ? currentUser.uid : "GUEST",
-                item_name: `${qty}x ${currentItemToOrder}`,
+                item_name: finalItemName,
                 price: totalPriceStr,
                 pickup_date: pickupDate,
                 pickup_time: pickupTime,
@@ -1540,18 +1545,16 @@
                 showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr }); 
                 await refreshData();
             } else {
-                // Determine existing identical cart items for quantity merging
                 const existingIdx = cartItems.findIndex(c => {
                     const match = c.item.match(/^(\d+)x (.*)$/);
-                    const baseItemName = match ? match[2] : c.item;
-                    return baseItemName === currentItemToOrder && 
+                    const cBaseItemName = match ? match[2] : c.item;
+                    return cBaseItemName === currentItemToOrder && 
                            JSON.stringify(c.toppings) === toppingsJSONString &&
                            c.date === pickupDate &&
                            c.time === pickupTime;
                 });
 
                 if (existingIdx >= 0) {
-                    // Update Quantity logic
                     const match = cartItems[existingIdx].item.match(/^(\d+)x (.*)$/);
                     let oldQty = match ? parseInt(match[1]) : 1;
                     let newQty = oldQty + parseInt(qty);
@@ -1588,8 +1591,8 @@
                         ${cItem.toppings.length ? `<small style="color: var(--theme-accent); display:block; font-weight:bold;">+ ${cItem.toppings.join(', ')}</small>` : ''}
                     </div>
                     <div class="order-actions">
-                        <button class="os-btn-primary" style="padding: 6px 12px; font-size: 13px; border-radius: 12px; background: var(--theme-accent); color: white;" onclick="openCartCheckout(${index})">Checkout</button>
-                        <button class="cancel-btn" onclick="removeFromCart(${index})">Remove</button>
+                        <button type="button" class="os-btn-primary" style="padding: 6px 12px; font-size: 13px; border-radius: 12px; background: var(--theme-accent); color: white;" onclick="openCartCheckout(${index})">Checkout</button>
+                        <button type="button" class="cancel-btn" onclick="removeFromCart(${index})">Remove</button>
                     </div>
                 `;
                 list.appendChild(p);
@@ -1658,7 +1661,7 @@
                     <img src="${qrUrl}" class="qr-thumb" alt="QR" />
                     <div class="order-actions" style="margin-left:15px;">
                         <span class="status-badge status-${o.status}">${o.status}</span>
-                        <button class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}')">Cancel</button>
+                        <button type="button" class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}')">Cancel</button>
                     </div>
                 `;
                 list.appendChild(p);
@@ -1695,7 +1698,6 @@
             if(error) return alert("Error sending message: " + error.message);
             if(input && !error) input.value = "";
             
-            // Immediate visual sync
             if (senderType === 'user') {
                 await renderUserChat();
             } else {
@@ -1754,7 +1756,7 @@
             if (!currentUser) return;
             const { data, count } = await _db.from('messages').select('message_id', { count: 'exact' }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
             const unread = count || 0;
-            document.querySelectorAll('#desk-badge-chat, #mob-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
+            document.querySelectorAll('#desk-badge-chat, #mob-badge-chat, #inline-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
         }
 
         async function renderAdminOrders() {
@@ -1770,8 +1772,9 @@
             if (users) {
                 users.forEach(u => {
                     if(u.role === 'Administrator') return;
-                    if(!uniqueUsersMap.has(u.username)) {
-                        uniqueUsersMap.set(u.username, u);
+                    let key = u.fullname.toLowerCase().trim();
+                    if(!uniqueUsersMap.has(key)) {
+                        uniqueUsersMap.set(key, u);
                     }
                 });
             }
@@ -1837,7 +1840,7 @@
             await renderAdminUserModal(uid, false);
         }
 
-        function closeAdminUserModal() { document.getElementById('admin-user-overlay').classList.remove('active'); currentAdminViewingUid = null; refreshData(); }
+        function closeAdminUserModal() { document.getElementById('admin-user-overlay').classList.remove('active'); currentAdminViewingUid = null; }
 
         async function renderAdminUserModal(uid, isPartialRefresh = false) {
             const ordersDiv = document.getElementById('admin-user-orders'); 
@@ -1858,20 +1861,22 @@
                         let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
 
                         ordersDiv.innerHTML += `
-                            <div class="admin-canva-order-card">
-                               <img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}">
-                               <div style="flex:1;">
-                                   <h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color);">${o.item_name}</h4>
-                                   <p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p>
-                                   <p style="margin:0 0 5px 0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
-                                   <p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p>
-                                   ${o.status === 'Pending' ? `
-                                   <div style="display:flex; gap:5px; margin-top:10px;">
-                                       <button class="os-btn os-btn-danger" style="padding:4px 8px; font-size:10px; width:auto; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button>
-                                       <button class="os-btn-primary" style="padding: 4px 8px; font-size: 10px; border-radius: 12px; background: var(--theme-accent); color: white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button>
-                                   </div>` : ''}
+                            <div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;">
+                               <div style="display:flex; gap:10px; width:100%;">
+                                   <img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}">
+                                   <div style="flex:1; overflow:hidden;">
+                                       <h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4>
+                                       <p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p>
+                                       <p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p>
+                                   </div>
                                </div>
-                               <div class="admin-canva-order-status">${o.status}</div>
+                               <p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
+                               ${o.status === 'Pending' ? `
+                               <div style="display:flex; gap:5px; margin-top:auto; width: 100%;">
+                                   <button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button>
+                                   <button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button>
+                               </div>` : ''}
+                               <div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div>
                             </div>
                         `;
                     });
@@ -1939,7 +1944,7 @@
                 const imgHTML = `<img src="${m.img}" alt="${m.name}">`;
                 const card = document.createElement('div'); card.className = 'menu-card';
                 
-                let editBtnHTML = isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️ Edit Item</button>` : '';
+                let editBtnHTML = isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️ Edit Item</button>` : '';
 
                 card.innerHTML = `
                     ${editBtnHTML}
@@ -1960,11 +1965,11 @@
             homePromos.forEach(p => {
                 const card = document.createElement('div'); card.className = 'promo-card';
                 card.innerHTML = `
-                    ${isAdmin ? `<button class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️ Edit Promo</button>` : ''}
+                    ${isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️ Edit Promo</button>` : ''}
                     <img class="promo-image" src="${p.img}">
                     <div class="promo-details">
                         <h3>${p.title}</h3><p>${p.desc}</p>
-                        <button class="promo-action" onclick="switchMainView('menu')">View Menu →</button>
+                        <button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button>
                     </div>
                 `;
                 feed.appendChild(card);
@@ -2061,7 +2066,7 @@
             currentAdminToppings.forEach((t, index) => {
                 grid.innerHTML += `
                     <div class="canva-topping-content" style="position:relative; background: rgba(0,0,0,0.2);">
-                        <button style="position:absolute; top:-5px; right:-5px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" onclick="removeAdminTopping(${index})">×</button>
+                        <button type="button" style="position:absolute; top:-5px; right:-5px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" onclick="removeAdminTopping(${index})">×</button>
                         <div class="canva-topping-img-box"><img src="${t.img}" style="width:100%;height:100%;object-fit:cover;"></div>
                         <div class="canva-topping-label">${t.name}</div>
                     </div>
