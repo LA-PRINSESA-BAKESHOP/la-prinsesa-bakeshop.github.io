@@ -139,73 +139,67 @@
             /* PERFECT MOBILE MODAL SQUASH FIX (FORCING SCROLL)         */
             /* ======================================================== */
             #admin-user-hub, #admin-edit-hub, #details-hub, #settings-hub, #receipt-hub {
-                flex-direction: column !important;
-                display: flex !important;
-                height: 85vh !important; 
-                max-height: 85vh !important;
+                height: 90vh !important; 
+                max-height: 90vh !important;
                 width: 95vw !important; max-width: 500px !important;
-                margin: auto; border-radius: 16px !important; padding: 20px !important;
+                margin: auto !important; border-radius: 16px !important; padding: 20px !important;
                 overflow-y: auto !important;
-                justify-content: flex-start !important;
+                display: block !important; /* Block prevents flex shrinking */
             }
 
-            /* ADMIN USER MANAGER MOBILE STACK & SCROLL FIX */
+            /* ADMIN USER MANAGER MOBILE SCROLL FIX */
             .admin-left-col, .admin-right-col {
-                flex: 0 0 auto !important; /* Prevents squashing completely */
+                display: block !important;
                 width: 100% !important;
                 height: auto !important;
-                min-height: min-content !important;
-                display: flex !important;
-                flex-direction: column !important;
                 overflow: visible !important;
+                margin-bottom: 20px !important;
             }
             .admin-canva-chat-box {
                 height: 350px !important;
-                flex: 0 0 auto !important;
                 margin-bottom: 15px !important;
             }
             #admin-user-orders {
                 height: auto !important;
-                max-height: 350px !important;
-                flex: 0 0 auto !important;
-                overflow-y: auto !important;
+                max-height: none !important;
+                overflow-y: visible !important;
                 display: flex !important;
                 flex-direction: column !important; 
             }
             .admin-canva-order-card {
                 min-width: 100% !important;
                 max-width: 100% !important;
-                flex: 0 0 auto !important;
             }
             .admin-divider { display: none !important; }
 
-            /* DETAILS AND ADMIN EDIT MOBILE STACK & SCROLL FIX */
+            /* DETAILS AND ADMIN EDIT MOBILE SCROLL FIX */
             .canva-details-body {
-                flex-direction: column !important;
-                gap: 20px !important;
+                display: block !important;
                 overflow: visible !important;
                 height: auto !important;
+                margin-top: 20px !important;
             }
             .canva-details-left, .canva-details-right {
-                flex: 0 0 auto !important; /* Prevents squashing completely */
+                display: block !important;
                 width: 100% !important;
                 height: auto !important;
                 overflow: visible !important;
+                margin-bottom: 25px !important;
             }
             .canva-details-image-wrap {
-                height: 160px !important;
-                min-height: 160px !important;
-                flex: 0 0 auto !important;
+                height: 250px !important;
+                min-height: 250px !important;
+                margin-bottom: 15px !important;
             }
 
-            .mobile-settings-header { display: block !important; text-align: center; color: var(--dynamic-text-color); font-size: 16px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; text-shadow: none; position: absolute; top: -30px; left: 0; right: 0; }
-            .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 15px !important; min-width: 0 !important; flex-shrink: 0; background: transparent !important; }
+            .mobile-settings-header { display: block !important; text-align: center; color: var(--dynamic-text-color); font-size: 16px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; text-shadow: none; position: relative; width: 100%; margin-top: -10px; }
+            .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 0 !important; min-width: 0 !important; display: flex !important; margin-bottom: 15px !important;}
             .settings-sidebar h3 { display: none !important; }
-            .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; color: var(--dynamic-text-color) !important; opacity: 0.8; }
+            .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; color: var(--dynamic-text-color) !important; opacity: 0.8; width: auto !important;}
             .settings-tab-btn.active { opacity: 1; font-weight: bold; }
-            .settings-content { padding: 15px !important; overflow-x: hidden; flex: 0 0 auto !important; height: auto !important; }
+            .settings-content { padding: 0 !important; overflow: visible !important; display: block !important; height: auto !important; }
             .theme-preview-box { grid-column: span 1 !important; }
-            .os-card { padding: 15px !important; margin-bottom: 15px !important; flex-shrink: 0 !important;}
+            .os-card { padding: 15px !important; margin-bottom: 15px !important; }
         }
 
         .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
@@ -474,7 +468,7 @@
         .canva-details-top { display: flex; flex-direction: column; align-items: flex-start; }
         .canva-details-title { font-size: 24px; font-weight: 800; color: var(--dynamic-text-color) !important; text-transform: uppercase; margin:0; text-shadow:none; }
         .canva-details-price { font-size: 18px; font-weight: bold; color: var(--dynamic-text-color) !important; margin-top:5px; text-shadow:none;}
-        .canva-details-body { display: flex; gap: 30px; color: var(--dynamic-text-color); flex-direction: row; }
+        .canva-details-body { display: flex; gap: 30px; color: var(--dynamic-text-color); flex-direction: row; overflow: hidden;}
         .canva-details-left { flex: 1; display: flex; flex-direction: column; gap: 15px; }
         .canva-details-right { flex: 1.2; display: flex; flex-direction: column; overflow-y:auto; padding-right:5px;}
         .canva-details-image-wrap { width: 100%; height: 250px; border-radius: 30px; overflow: hidden; background: rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; display: flex; align-items: center; justify-content: center;}
@@ -723,7 +717,7 @@
                 <h2 class="canva-details-title" id="admin-edit-title-display">Edit Menu Item</h2>
             </div>
             
-            <div class="canva-details-body" style="margin-top: 10px; overflow:hidden;">
+            <div class="canva-details-body" style="margin-top: 10px;">
                 <div class="canva-details-left">
                     <div class="canva-details-image-wrap" id="admin-preview-box">
                         <img id="admin-edit-img-preview" src="" style="display:none;">
@@ -980,6 +974,121 @@
             <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">New Phone Number (Leave blank to keep current):</label>
             <input type="text" id="update-phone" class="input-field" placeholder="Enter new phone number" onkeydown="if(event.key==='Enter') saveCredentials()">
             <button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="saveCredentials()">Save Changes</button>
+        </div>
+    </div>
+
+    <div class="ui-modal-overlay" id="details-overlay">
+        <div id="details-hub" class="canva-theme">
+            <button type="button" class="admin-canva-close" onclick="closeDetails()" style="z-index: 10;">×</button>
+            
+            <div class="canva-details-top">
+                <h2 class="canva-details-title" id="details-title">FOOD NAME LABEL HERE</h2>
+                <p class="canva-details-price" id="details-price">PRICE: PRICE HERE</p>
+            </div>
+            
+            <div class="canva-details-body">
+                <div class="canva-details-left">
+                    <div class="canva-details-image-wrap" id="details-image-container">
+                    </div>
+                    <div style="display:flex; gap:10px; margin-top: 10px;" id="canva-left-buttons">
+                        <button type="button" class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" onclick="prevWStep()" id="btn-go-back">GO BACK</button>
+                        <button type="button" class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" onclick="nextWStep()" id="btn-next-step">NEXT: REVIEW</button>
+                    </div>
+                </div>
+
+                <div class="canva-details-right">
+                    <div id="wizard-step-1" class="wizard-step active">
+                        <h3 style="color:var(--dynamic-text-color); font-size:18px; margin-top:0;">Select Pickup/Delivery Date:</h3>
+                        <input type="date" id="order-date" class="canva-input-field">
+                        
+                        <div style="display:flex; justify-content: space-between; gap: 15px; margin-top: 15px;">
+                            <div style="flex:1;">
+                                <h3 style="color:var(--dynamic-text-color); font-size:18px; margin-top:0;">Select Time:</h3>
+                                <input type="time" id="order-time" class="canva-input-field" style="margin-bottom:0;">
+                            </div>
+                            <div style="flex:0.7;">
+                                <h3 style="color:var(--dynamic-text-color); font-size:18px; margin-top:0;">Quantity:</h3>
+                                <div style="display:flex; align-items:center; background:rgba(255,255,255,0.4); border-radius:15px; overflow:hidden;">
+                                    <button type="button" class="qty-btn" onclick="adjQty(-1)">-</button>
+                                    <input type="number" id="order-quantity" value="1" min="1" max="99" style="width:100%; border:none; background:transparent; text-align:center; font-weight:bold; color:var(--dynamic-text-color); outline:none; font-size:16px;" readonly>
+                                    <button type="button" class="qty-btn" onclick="adjQty(1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-2" class="wizard-step">
+                        <h3 style="color:var(--dynamic-text-color); font-size:18px; margin-top:0;">Customize Your Order:</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;" id="wizard-toppings-grid">
+                            </div>
+                    </div>
+
+                    <div id="wizard-step-3" class="wizard-step">
+                        <div class="canva-warning-box" id="auth-warning-box">
+                            ⚠️ <strong>Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.
+                        </div>
+                        <h3 style="color:var(--dynamic-text-color); text-align:center; margin: 30px 0 20px 0; font-size: 20px;">Ready to complete order?</h3>
+                        
+                        <div style="display:flex; gap:15px; justify-content:center;" id="auth-order-actions">
+                            <button type="button" class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('buy')">Buy Now</button>
+                            <button type="button" class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('cart')">Add to Cart</button>
+                        </div>
+                        <div style="display:none; gap:15px; justify-content:center;" id="anon-order-actions">
+                            <button type="button" class="canva-details-btn" style="flex:1; color: white; background: var(--theme-accent);" onclick="promptLoginFromOrder()">Login to Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-modal-overlay" id="receipt-overlay">
+        <div id="receipt-hub" style="text-align: center; max-width: 480px;">
+            <button type="button" class="close-btn" onclick="closeReceipt()">×</button>
+            <h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2>
+            
+            <div class="digital-receipt-wrapper" id="printable-receipt-area">
+                <div class="receipt-header-logo">
+                    <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <defs><linearGradient id="gGold" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700" /><stop offset="100%" stop-color="#B8860B" /></linearGradient></defs>
+                        <path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Z" fill="url(#gGold)" />
+                        <circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FF1493" stroke-width="4" />
+                        <path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                        <path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/>
+                        <path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="receipt-title">LA PRINSESA BAKESHOP</div>
+                <div style="font-size: 10px; margin-bottom: 10px;" id="receipt-store-address">Caloocan, Metro Manila<br>TIN: 000-123-456-000</div>
+                <div class="receipt-divider"></div>
+                
+                <div class="receipt-detail-row"><span>Date:</span> <span id="receipt-datetime-print"></span></div>
+                <div class="receipt-detail-row"><span>Ref#:</span> <span id="receipt-id-print"></span></div>
+                <div class="receipt-detail-row"><span>Cashier:</span> <span>SYSTEM</span></div>
+                
+                <div class="receipt-divider"></div>
+                <div class="receipt-detail-row" style="font-weight: bold; font-size: 13px;">
+                    <span id="receipt-item-print"></span> <span id="receipt-price-print"></span>
+                </div>
+                <div id="receipt-toppings-print" style="text-align: left; font-size: 11px; margin-left: 10px; color: #555;"></div>
+                
+                <div class="receipt-divider"></div>
+                <div class="receipt-detail-row" style="font-size: 14px; font-weight: bold;">
+                    <span>TOTAL</span> <span id="receipt-total-print"></span>
+                </div>
+                <div class="receipt-divider"></div>
+
+                <div style="font-size: 9px; margin-bottom: 10px;">Scan this QR code upon pickup.</div>
+                <div class="receipt-qr-box">
+                    <img id="receipt-qr" src="" alt="QR Code" width="100%" height="100%">
+                </div>
+                <div style="font-size: 8px; margin-top: 10px;">VALID FOR 5 YEARS FROM DATE OF ISSUE.</div>
+            </div>
+
+            <div class="receipt-action-row">
+                <button type="button" class="os-btn-primary" onclick="window.print()">🖨️ Print</button>
+                <button type="button" class="os-btn os-btn-secondary" onclick="downloadReceipt()">📥 Download</button>
+            </div>
         </div>
     </div>
 
@@ -1469,6 +1578,7 @@
             const pickupDate = document.getElementById('order-date').value;
             const pickupTime = document.getElementById('order-time').value;
 
+            // Preserve single quantity name
             const baseItemName = currentItemToOrder;
             const finalItemName = `${qty}x ${baseItemName}`;
 
@@ -1486,12 +1596,21 @@
 
             if (type === 'buy') {
                 if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
-                const { error } = await _db.from('orders').insert([orderObj]);
-                if (error) return alert("Error sending order: " + error.message);
+                
+                // Optimistic Cache Insert for INSTANT speed
+                let cached = JSON.parse(localStorage.getItem('la_prinsesa_orders_' + currentUser.uid) || '[]');
+                cached.unshift(orderObj);
+                localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(cached));
                 
                 closeDetails(); switchMainView('orders');
                 showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr }); 
-                await refreshData();
+                updateOrdersView();
+
+                // Background Sync
+                _db.from('orders').insert([orderObj]).then(({error}) => {
+                    if (error) alert("Error sending order: " + error.message);
+                    refreshData();
+                });
             } else {
                 const existingIdx = cartItems.findIndex(c => {
                     const match = c.item.match(/^(\d+)x (.*)$/);
@@ -1582,14 +1701,9 @@
             await refreshData();
         }
 
-        async function updateOrdersView() {
-            if (!currentUser || currentUser.role === 'Administrator') return;
-            
-            const list = document.getElementById('orders-list'); list.innerHTML = '';
-            const { data: orders } = await _db.from('orders').select('*').eq('user_uid', currentUser.uid).order('order_id', { ascending: false });
-            
-            if (!orders || orders.length === 0) { list.innerHTML = '<p style="color:var(--dynamic-text-color);">No orders yet.</p>'; return; }
-
+        function renderOrdersToList(orders, listElement) {
+            listElement.innerHTML = '';
+            if (!orders || orders.length === 0) { listElement.innerHTML = '<p style="color:var(--dynamic-text-color);">No orders yet.</p>'; return; }
             orders.forEach(o => {
                 const thumbHTML = `<img src="${o.image_url}" alt="${o.item_name}">`;
                 let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){}
@@ -1612,8 +1726,28 @@
                         <button type="button" class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}')">Cancel</button>
                     </div>
                 `;
-                list.appendChild(p);
+                listElement.appendChild(p);
             });
+        }
+
+        async function updateOrdersView() {
+            if (!currentUser || currentUser.role === 'Administrator') return;
+            const list = document.getElementById('orders-list'); 
+            
+            // Fast load from cache
+            const cachedOrders = localStorage.getItem('la_prinsesa_orders_' + currentUser.uid);
+            if (cachedOrders) {
+                try { renderOrdersToList(JSON.parse(cachedOrders), list); } catch(e){}
+            }
+
+            // Sync from network
+            const { data: orders } = await _db.from('orders').select('*').eq('user_uid', currentUser.uid).order('order_id', { ascending: false });
+            if (orders) {
+                localStorage.setItem('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders));
+                renderOrdersToList(orders, list);
+            } else if (!cachedOrders) {
+                list.innerHTML = '<p style="color:var(--dynamic-text-color);">No orders yet.</p>';
+            }
         }
 
         async function cancelOrder(e, id) {
@@ -1642,15 +1776,27 @@
                 image_url: imgBase64 || ''
             };
 
-            const { error } = await _db.from('messages').insert([chatObj]);
-            if(error) return alert("Error sending message: " + error.message);
-            if(input && !error) input.value = "";
+            // OPTIMISTIC UI RENDER
+            const hist = document.getElementById(senderType === 'user' ? 'chat-history' : 'admin-chat-history');
+            const optimisticMsg = document.createElement('div');
+            optimisticMsg.className = `chat-message-wrapper me`;
             
-            if (senderType === 'user') {
-                await renderUserChat();
-            } else {
-                await renderAdminUserModal(currentAdminViewingUid, true);
-            }
+            const avatarSrc = senderType === 'owner' ? cachedOwnerAvatar : (currentUser?.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser?.fullname || 'User')}&background=880e4f&color=fff`);
+            let msgContent = imgBase64 ? `<img src="${imgBase64}" class="chat-img"><br>${msg}` : msg;
+            
+            optimisticMsg.innerHTML = `
+                <div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div>
+                <div class="chat-message" style="opacity:0.8;">${msgContent}</div>
+            `;
+            if (hist) { hist.appendChild(optimisticMsg); hist.scrollTop = hist.scrollHeight; }
+            if (input) input.value = "";
+
+            // Background insert
+            _db.from('messages').insert([chatObj]).then(({error}) => {
+                if(error) alert("Error sending message: " + error.message);
+                if (senderType === 'user') renderUserChat();
+                else renderAdminUserModal(currentAdminViewingUid, true);
+            });
         }
 
         function handleImageChatUpload(input, senderType) {
@@ -1707,13 +1853,8 @@
             document.querySelectorAll('#desk-badge-chat, #mob-badge-chat, #inline-badge-chat').forEach(b => { b.innerText = unread; b.style.display = unread > 0 ? 'flex' : 'none'; });
         }
 
-        async function renderAdminOrders() {
-            const list = document.getElementById('admin-orders-list'); list.innerHTML = '';
-            
-            const { data: users } = await _db.from('users').select('*');
-            const { data: allOrders } = await _db.from('orders').select('*');
-            const { data: allMsgs } = await _db.from('messages').select('*');
-            
+        function buildAdminOrdersUI(users, allOrders, allMsgs, list) {
+            list.innerHTML = '';
             let hasRecords = false;
 
             const uniqueUsersMap = new Map();
@@ -1777,6 +1918,32 @@
             let totalPending = allOrders ? allOrders.filter(o => o.status === 'Pending').length : 0;
             const count = totalUnread + totalPending;
             document.querySelectorAll('#desk-badge-orders, #mob-badge-orders').forEach(b => { b.innerText = count; b.style.display = count > 0 ? 'flex' : 'none'; });
+        }
+
+        async function renderAdminOrders() {
+            const list = document.getElementById('admin-orders-list');
+            
+            // Fast cache load
+            const cacheKey = 'la_prinsesa_admin_overview';
+            const cachedData = localStorage.getItem(cacheKey);
+            if(cachedData) {
+                try {
+                    const parsed = JSON.parse(cachedData);
+                    buildAdminOrdersUI(parsed.users, parsed.allOrders, parsed.allMsgs, list);
+                } catch(e){}
+            }
+
+            // Sync from network
+            const [{ data: users }, { data: allOrders }, { data: allMsgs }] = await Promise.all([
+                _db.from('users').select('*'),
+                _db.from('orders').select('*'),
+                _db.from('messages').select('*')
+            ]);
+
+            if (users || allOrders || allMsgs) {
+                localStorage.setItem(cacheKey, JSON.stringify({users: users||[], allOrders: allOrders||[], allMsgs: allMsgs||[]}));
+                buildAdminOrdersUI(users||[], allOrders||[], allMsgs||[], list);
+            }
         }
 
         async function openAdminUserModal(uid, fullname, phone, photo_url) {
@@ -2137,7 +2304,7 @@
             }
 
             closeAdminEdit();
-            await loadMenuAndPromos(); 
+            loadMenuAndPromos(); 
         }
 
         async function deleteAdminEdit() {
@@ -2154,7 +2321,7 @@
             }
 
             closeAdminEdit();
-            await loadMenuAndPromos(); 
+            loadMenuAndPromos(); 
         }
 
         function applyTheme(type, color, accentHex, baseRgba, textDark, bgLight, btnHover, dynamicText = '#ffffff', save = true) {
