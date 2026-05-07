@@ -965,8 +965,8 @@
                 <div id="view-updates" class="settings-view">
                     <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.5 - The Network Engine Upgrade</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Null-safe Order Parsing: Fixed fatal Javascript crash occurring when fetching users without a name.<br>- Absolute Database Sync: Rebuilt load operations to explicitly await live network data rather than getting trapped by empty local caches.<br>- Perfected Scroll Rules: Mobile edit panel UI padding enforced seamlessly while protecting desktop view.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.6 - Database Diagnostic Engine</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Removed initialization delays. The app now paints instantly and syncs quietly in the background.<br>- Implemented direct UI network alerts. If Supabase fails to connect due to your API Key or RLS rules, you will now see an explicit error message instead of an invisible layout.<br>- Safeguarded null arrays to guarantee full parsing of empty/new database instances.</p>
                     </div>
                 </div>
             </div>
@@ -1140,14 +1140,20 @@
         // ----------------------------------------------------
         async function fetchDataRobust(tableName, orderCol = 'id') {
             try {
-                const { data, error } = await _db.from(tableName).select('*').order(orderCol, { ascending: true });
+                let query = _db.from(tableName).select('*');
+                if (orderCol) {
+                    query = query.order(orderCol, { ascending: true });
+                }
+                const { data, error } = await query;
                 if (error) {
-                    console.error(`DB Fetch Error [${tableName}]:`, error);
+                    console.error(`DB Fetch Error [${tableName}]:`, error.message);
+                    window.lastDbError = error.message;
                     return null;
                 }
                 return data || [];
             } catch (err) {
-                console.error(`Network Crash [${tableName}]:`, err);
+                console.error(`Network Crash [${tableName}]:`, err.message);
+                window.lastDbError = err.message;
                 return null;
             }
         }
@@ -1218,15 +1224,15 @@
                 applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff', false);
             }
 
-            // Sync
+            // Sync completely unblocked so UI stays fast
             loadStoreInfo();
-            await loadMenuAndPromos();
+            loadMenuAndPromos(); // Notice NO AWAIT, prevents empty UI hang!
             
             updateSettingsUI(); 
             switchMainView('home'); 
             updateCartView();
             
-            refreshData();
+            refreshData(); // Notice NO AWAIT, allows UI to function locally immediately
             setupRealtimeSubscriptions();
         }
 
@@ -1305,6 +1311,9 @@
                 menuItems = dbMenu;
                 localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
                 renderMenu();
+            } else {
+                // If it fails, refresh the UI anyway to show diagnostic errors
+                renderMenu(); 
             }
 
             const dbPromos = await fetchDataRobust('promos', 'id');
@@ -1313,6 +1322,8 @@
                 localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
                 renderHomePromos();
                 renderDesktopCarousel();
+            } else {
+                renderHomePromos();
             }
         }
 
@@ -1867,12 +1878,17 @@
             list.innerHTML = '';
             let hasRecords = false;
 
+            // Check if there was a DB Fetch Error logged previously
+            if (window.lastDbError) {
+                list.innerHTML += `<div class="warning-box" style="margin-bottom:15px;"><strong>Database Error:</strong> ${window.lastDbError}. Please check your Supabase Key and RLS Policies.</div>`;
+            }
+
             const uniqueUsersMap = new Map();
             if (users && Array.isArray(users)) {
                 users.forEach(u => {
                     if(!u || u.role === 'Administrator') return;
                     // Extreme null safety to prevent the blank screen crash
-                    let key = (u.fullname || u.username || u.uid || 'Unknown').toLowerCase().trim();
+                    let key = String(u.fullname || u.username || u.uid || 'Unknown').toLowerCase().trim();
                     if(!uniqueUsersMap.has(key)) {
                         uniqueUsersMap.set(key, u);
                     }
@@ -1925,7 +1941,7 @@
                 list.appendChild(row);
             }
 
-            if(!hasRecords) list.innerHTML = '<p style="color:var(--dynamic-text-color);">No customer records yet.</p>';
+            if(!hasRecords && !window.lastDbError) list.innerHTML = '<p style="color:var(--dynamic-text-color);">No customer records yet.</p>';
             
             let totalUnread = (allMsgs || []).filter(m => m.sender === 'user' && !m.is_read).length;
             let totalPending = (allOrders || []).filter(o => o.status === 'Pending').length;
@@ -1935,7 +1951,8 @@
 
         async function renderAdminOrders() {
             const list = document.getElementById('admin-orders-list');
-            
+            if (!list.innerHTML) list.innerHTML = '<p style="color:var(--dynamic-text-color); opacity:0.6;">Syncing secure operations...</p>';
+
             const cacheKey = 'la_prinsesa_admin_overview';
             const cachedData = localStorage.getItem(cacheKey);
             if(cachedData) {
@@ -1954,6 +1971,8 @@
             if (users !== null || allOrders !== null || allMsgs !== null) {
                 localStorage.setItem(cacheKey, JSON.stringify({users: users||[], allOrders: allOrders||[], allMsgs: allMsgs||[]}));
                 buildAdminOrdersUI(users||[], allOrders||[], allMsgs||[], list);
+            } else if (window.lastDbError) {
+                list.innerHTML = `<div class="warning-box"><strong>Database Sync Failed:</strong> ${window.lastDbError}<br>Check Supabase API keys and RLS policies.</div>`;
             }
         }
 
@@ -2054,7 +2073,13 @@
         }
 
         function renderMenu() {
-            const grid = document.getElementById('product-grid'); grid.innerHTML = '';
+            const grid = document.getElementById('product-grid'); 
+            grid.innerHTML = '';
+            
+            if (window.lastDbError && menuItems.length === 0) {
+                 grid.innerHTML = `<div class="warning-box" style="grid-column: 1/-1;"><strong>Database Sync Failed:</strong> ${window.lastDbError}</div>`;
+            }
+
             const isAdmin = currentUser && currentUser.role === 'Administrator';
 
             if (isAdmin) {
@@ -2084,7 +2109,13 @@
         }
 
         function renderHomePromos() {
-            const feed = document.getElementById('mobile-promo-feed'); feed.innerHTML = '';
+            const feed = document.getElementById('mobile-promo-feed'); 
+            feed.innerHTML = '';
+
+            if (window.lastDbError && homePromos.length === 0) {
+                 feed.innerHTML = `<div class="warning-box" style="width:100%;"><strong>Database Sync Failed:</strong> ${window.lastDbError}</div>`;
+            }
+
             const isAdmin = currentUser && currentUser.role === 'Administrator';
             document.querySelectorAll('.admin-only').forEach(el => el.style.display = isAdmin ? 'inline-block' : 'none');
 
@@ -2368,24 +2399,4 @@
         }
         function closeReceipt() { document.getElementById('receipt-overlay').classList.remove('active'); }
         function downloadReceipt() {
-            const rId = document.getElementById('receipt-id-print').innerText;
-            const rItem = document.getElementById('receipt-item-print').innerText;
-            const rDate = document.getElementById('receipt-datetime-print').innerText;
-            const rTot = document.getElementById('receipt-total-print').innerText;
-            const receiptContent = `LA PRINSESA BAKESHOP\n\nDate: ${rDate}\nRef#: ${rId}\n-----------------------\nItem: ${rItem}\nTotal: ${rTot}\n-----------------------\nThank you!`;
-            const blob = new Blob([receiptContent], { type: 'text/plain' }); const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', `Receipt_${rId}.txt`);
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        }
-        
-        function openAbout() { document.getElementById('about-overlay').classList.add('active'); toggleAboutEdit(false); }
-        function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
-        function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
-        function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
-        function switchSettingsNav(navId) { document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('nav-' + navId).classList.add('active'); document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active')); document.getElementById('view-' + navId).classList.add('active'); document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'}); }
-        function openGuide(title, desc) { alert(title + '\n\n' + desc); }
-        function switchAuthTab(tabId) { document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active')); document.getElementById('auth-pane-' + tabId).classList.add('active'); document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active')); document.getElementById('btn-auth-' + tabId).classList.add('active'); }
-
-    </script>
-</body>
-</html>
+            const rId = document.getElementById('receipt-id-print
