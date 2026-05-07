@@ -147,6 +147,15 @@
                 display: block !important; /* Block prevents flex shrinking */
             }
 
+            /* FORCE SCROLL ON CANVA THEMED MODALS FOR MOBILE */
+            #admin-edit-hub.canva-theme, #details-hub.canva-theme {
+                display: block !important;
+                overflow-y: auto !important;
+                height: auto !important;
+                max-height: 90vh !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
             /* ADMIN USER MANAGER MOBILE SCROLL FIX */
             .admin-left-col, .admin-right-col {
                 display: block !important;
@@ -478,7 +487,7 @@
         .canva-details-btn.secondary { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); }
         .canva-details-btn.secondary:hover { background: rgba(0,0,0,0.8); }
         
-        .canva-input-field { background: rgba(255,255,255, 0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 15px; padding: 15px; width: 100%; color: var(--dynamic-text-color); font-size: 14px; box-sizing: border-box; margin-bottom: 10px; font-weight: bold;}
+        .canva-input-field { background: rgba(255,255,255, 0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 15px; padding: 15px; width: 100%; color: var(--dynamic-text-color); font-size: 14px; box-sizing: border-box; margin-bottom: 15px; font-weight: bold;}
         .canva-input-field:focus { outline: 2px solid var(--theme-accent); background: rgba(255,255,255,0.25); }
         
         .canva-warning-box { background: rgba(255,255,255,0.15); color: var(--dynamic-text-color) !important; border: 1px solid rgba(255,255,255,0.3); padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.4; text-align: left; font-weight: 500;}
@@ -735,7 +744,7 @@
                     <label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Name / Title:</label>
                     <input type="text" id="admin-edit-name" class="canva-input-field">
                     
-                    <label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Price:</label>
+                    <label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Price or Description:</label>
                     <input type="text" id="admin-edit-desc" class="canva-input-field">
                     
                     <div id="admin-toppings-section">
@@ -1284,16 +1293,16 @@
             }
 
             // Sync from Database in Background
-            _db.from('menu').select('*').then(({data, error}) => {
-                if (!error && data && data.length > 0) {
+            _db.from('menu').select('*').order('id', { ascending: true }).then(({data, error}) => {
+                if (!error && data) {
                     menuItems = data;
                     localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
                     renderMenu();
                 }
             });
 
-            _db.from('promos').select('*').then(({data, error}) => {
-                if (!error && data && data.length > 0) {
+            _db.from('promos').select('*').order('id', { ascending: true }).then(({data, error}) => {
+                if (!error && data) {
                     homePromos = data;
                     localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
                     renderHomePromos();
@@ -1868,6 +1877,8 @@
                 });
             }
 
+            const knownUids = Array.from(uniqueUsersMap.values()).map(u => u.uid);
+
             Array.from(uniqueUsersMap.values()).forEach(u => {
                 const userOrders = allOrders ? allOrders.filter(o => o.user_uid === u.uid) : [];
                 const userMsgs = allMsgs ? allMsgs.filter(m => m.user_uid === u.uid) : [];
@@ -1894,7 +1905,7 @@
                 }
             });
             
-            const guestOrders = allOrders ? allOrders.filter(o => o.user_uid === "GUEST") : [];
+            const guestOrders = allOrders ? allOrders.filter(o => !knownUids.includes(o.user_uid)) : [];
             if(guestOrders.length > 0) {
                 hasRecords = true;
                 const pendingCount = guestOrders.filter(o => o.status === 'Pending').length;
@@ -1936,7 +1947,7 @@
             // Sync from network
             const [{ data: users }, { data: allOrders }, { data: allMsgs }] = await Promise.all([
                 _db.from('users').select('*'),
-                _db.from('orders').select('*'),
+                _db.from('orders').select('*').order('order_id', { ascending: false }),
                 _db.from('messages').select('*')
             ]);
 
@@ -2059,7 +2070,7 @@
                 const imgHTML = `<img src="${m.img}" alt="${m.name}">`;
                 const card = document.createElement('div'); card.className = 'menu-card';
                 
-                let editBtnHTML = isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', ${m.id})">✏️ Edit Item</button>` : '';
+                let editBtnHTML = isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', '${m.id}')">✏️ Edit Item</button>` : '';
 
                 card.innerHTML = `
                     ${editBtnHTML}
@@ -2080,7 +2091,7 @@
             homePromos.forEach(p => {
                 const card = document.createElement('div'); card.className = 'promo-card';
                 card.innerHTML = `
-                    ${isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', ${p.id})">✏️ Edit Promo</button>` : ''}
+                    ${isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️ Edit Promo</button>` : ''}
                     <img class="promo-image" src="${p.img}">
                     <div class="promo-details">
                         <h3>${p.title}</h3><p>${p.desc}</p>
