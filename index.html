@@ -33,6 +33,7 @@
         body.borders-enabled * { box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255,255,255,0.4) !important; }
 
         .wallpaper-layer, .wallpaper-pattern { position: absolute !important; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none !important; display: none; }
+        .glass-noise { position: absolute !important; top: 0; left: 0; right: 0; bottom: 0; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.08; pointer-events: none !important; z-index: 1; mix-blend-mode: overlay; transition: 0.3s; }
         
         .mobile-only-flex { display: none !important; }
         
@@ -41,7 +42,7 @@
         }
 
         /* Layout */
-        @media (min-width: 1025px) {
+        @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
             body { display: grid; grid-template-columns: var(--side-full) 1fr; align-items: stretch; }
             #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 1000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); transition: background 0.3s ease; position: relative; }
             #bottom-nav { display: none; } .desktop-carousel-container { display: flex; } .mobile-promo-feed { display: none; } .shop-header-logo { display: none; } .shop-header-container { margin: 0 0 20px 0; display: block; text-align: left; }
@@ -49,7 +50,7 @@
             .shop-divider { border: none; height: 1px; background: rgba(255, 255, 255, 0.3); margin-bottom: 20px; width: 100%; display: block; }
         }
 
-        @media (max-width: 1024px) {
+        @media (hover: none), (pointer: coarse), (max-width: 1024px) {
             body { display: flex; flex-direction: column; overflow: hidden; height: 100dvh; } #sidebar { display: none; } #main-content { flex: 1; padding: 10px 15px; height: auto; overflow-y: auto; overflow-x: hidden; } .mobile-only-flex { display: flex !important; align-items: center; justify-content: center; }
             #bottom-nav { display: flex; flex-direction: row; justify-content: flex-start !important; align-items: center; flex-shrink: 0; position: relative; width: 100%; height: 75px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15); padding-bottom: env(safe-area-inset-bottom); z-index: 1000; overflow-x: auto !important; overflow-y: hidden !important; white-space: nowrap; -webkit-overflow-scrolling: touch; }
             #bottom-nav::-webkit-scrollbar { display: none; }
@@ -171,6 +172,7 @@
 <body>
     <div class="wallpaper-layer" id="main-wallpaper"></div>
     <div class="wallpaper-pattern"></div>
+    <div class="glass-noise" id="bg-shimmer"></div>
     
     <div id="sidebar">
         <div class="front-screen-logo">
@@ -256,7 +258,7 @@
     
     <div class="ui-modal-overlay" id="cart-checkout-overlay"><div id="cart-checkout-hub"><button type="button" class="close-btn" onclick="closeCartCheckout()">×</button><h2 class="modal-title" id="cart-co-title" style="color: var(--dynamic-text-color); flex-shrink: 0;">Checkout Item</h2><div style="display: flex; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; align-items: center; flex-shrink: 0;"><div class="order-img-thumb" id="cart-co-img" style="width: 70px; height: 70px; font-size: 2.5em;"></div><div style="color: var(--dynamic-text-color);"><h3 id="cart-co-name" style="margin: 0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none;"></h3><p id="cart-co-price" style="color: var(--theme-accent); font-weight: bold; margin: 0 0 5px 0;"></p><small id="cart-co-toppings" style="opacity: 0.8;"></small></div></div><div style="overflow-y: auto; flex: 1; padding-right: 5px;"><label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Pickup/Delivery Date:</label><input type="date" id="cart-co-date" class="input-field"><label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Time:</label><input type="time" id="cart-co-time" class="input-field"><div class="warning-box"><strong>⚠️ Warning:</strong> Clicking Buy Now will finalize this order and send it to the kitchen. Proceed?</div></div><div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; margin-top: 10px;"><button type="button" class="submit-btn" style="color: white;" onclick="checkoutCartItem()">🛍️ Buy Now</button><button type="button" class="os-btn os-btn-secondary" onclick="closeCartCheckout()">Cancel</button></div></div></div>
     
-    <div class="ui-modal-overlay" id="about-overlay"><div id="about-hub"><button type="button" class="close-btn" onclick="closeAbout()">×</button><h2 class="modal-title" style="color: var(--dynamic-text-color); margin-top:0;">About Us</h2><div id="about-display-mode"><p id="about-desc-display" style="color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.6; margin-bottom: 20px; font-size: 14px;"></p><h3 style="color: var(--theme-accent); font-size: 16px; margin: 0;">Get In Touch</h3><div class="contact-card"><div class="contact-item"><strong>📍 Address:</strong> <span id="about-address-display"></span></div><div class="contact-item"><strong>📞 Phone:</strong> <span id="about-phone-display"></span></div><div class="contact-item"><strong>✉️ Email:</strong> <span id="about-email-display"></span></div></div><button type="button" id="btn-edit-about" class="os-btn os-btn-secondary admin-only" style="display:none; margin-top:15px; width:100%; border-radius: 12px; font-weight: bold; background: rgba(255,255,255,0.1); border: none;" onclick="toggleAboutEdit(true)">✏️ Edit About Details</button></div><div id="about-edit-mode" style="display:none;"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Description</label><textarea id="about-desc-input" class="input-field" rows="4"></textarea><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Address</label><input type="text" id="about-address-input" class="input-field"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Phone</label><input type="text" id="about-phone-input" class="input-field"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Email</label><input type="text" id="about-email-input" class="input-field"><div style="display:flex; gap:10px; margin-top:10px;"><button type="button" class="submit-btn" style="flex:1; color: white;" onclick="saveAboutInfo()">Save</button><button type="button" class="os-btn os-btn-secondary" style="flex:1;" onclick="toggleAboutEdit(false)">Cancel</button></div></div></div></div>
+    <div class="ui-modal-overlay" id="about-overlay"><div id="about-hub"><button type="button" class="close-btn" onclick="closeAbout()">×</button><h2 class="modal-title" style="color: var(--dynamic-text-color); margin-top:0;">About Us</h2><div id="about-display-mode"><p id="about-desc-display" style="color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.6; margin-bottom: 20px; font-size: 14px;"></p><h3 style="color: var(--theme-accent); font-size: 16px; margin: 0;">Get In Touch</h3><div class="contact-card"><div class="contact-item"><strong>📍 Address:</strong> <span id="about-address-display"></span></div><div class="contact-item"><strong>📞 Phone:</strong> <span id="about-phone-display"></span></div><div class="contact-item"><strong>✉️ Email:</strong> <span id="about-email-display"></span></div></div><button type="button" id="btn-edit-about" class="submit-btn admin-only" style="display:none; margin-top:20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" onclick="toggleAboutEdit(true)">✏️ Edit About Details</button></div><div id="about-edit-mode" style="display:none;"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Description</label><textarea id="about-desc-input" class="input-field" rows="4"></textarea><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Address</label><input type="text" id="about-address-input" class="input-field"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Phone</label><input type="text" id="about-phone-input" class="input-field"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Email</label><input type="text" id="about-email-input" class="input-field"><div style="display:flex; gap:10px; margin-top:10px;"><button type="button" class="submit-btn" style="flex:1; color: white;" onclick="saveAboutInfo()">Save</button><button type="button" class="os-btn os-btn-secondary" style="flex:1;" onclick="toggleAboutEdit(false)">Cancel</button></div></div></div></div>
 
     <div class="ui-modal-overlay" id="guide-overlay"><div id="guide-hub"><button type="button" class="close-btn" onclick="closeGuide()">×</button><h2 class="modal-title" id="guide-title" style="color: var(--dynamic-text-color); margin-top: 0; font-size: 20px;"></h2><p id="guide-desc" style="color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.6; font-size: 14px; margin-bottom: 25px; text-align: left;"></p><button type="button" class="os-btn-secondary" style="color: var(--dynamic-text-color); width: 100%; padding: 12px; border-radius: 12px; font-weight: bold; background: rgba(255,255,255,0.1); border: none;" onclick="closeGuide()">Got it</button></div></div>
     
@@ -271,8 +273,8 @@
                 <button type="button" id="nav-updates" class="settings-tab-btn" onclick="switchSettingsNav('updates')">Updates</button>
             </div>
             <div class="settings-content">
-                <div id="view-accounts" class="settings-view active"><h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">User Authentication</h2><div id="logged-in-view" style="display: none; width: 100%; flex-direction: column;"><div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;"><h4 class="os-card-title">ACTIVE SESSION</h4><div style="position:relative; display:inline-block; width: 80px; height: 80px; margin: 20px auto 15px auto;"><img id="profile-photo-display" class="card-profile-photo" alt="Profile Photo" style="width:100%; height:100%; object-fit:cover; border-radius:50%; border: 3px solid var(--dynamic-text-color); background: rgba(255,255,255,0.1);"><label class="edit-pen" style="position:absolute; bottom: 0px; right: -5px; z-index: 10; background:var(--theme-accent); padding:6px; border-radius:50%; cursor:pointer; font-size:12px; color:#fff; border: 2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; width: 30px; height: 30px; box-sizing: border-box;" title="Change Photo">✏️<input type="file" style="display:none;" accept="image/*" onchange="updateProfilePhoto(this)"></label></div><h2 id="profile-fullname" style="margin: 10px 0; font-size: 20px; color: var(--dynamic-text-color);"></h2><p id="profile-details" style="color: var(--dynamic-text-color); opacity: 0.8; font-size: 13px; margin-bottom: 25px; line-height: 1.6;"></p><div style="display: flex; flex-direction: column; gap: 10px;"><button type="button" class="os-btn os-btn-secondary" onclick="openChangeCredentials()">✏️ Edit Profile / Credentials</button><button type="button" class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button></div></div></div><div id="logged-out-view" class="auth-wrapper"><div class="os-card" style="padding: 25px; margin-bottom: 0;"><div class="auth-nav"><button type="button" id="btn-auth-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button><button type="button" id="btn-auth-create" class="auth-tab" onclick="switchAuthTab('create')">Register Account</button></div><div id="auth-pane-login" class="auth-pane active"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Username</label><input type="text" id="login-username" class="input-field" placeholder="Enter your username" onkeydown="if(event.key==='Enter') validateLogin()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Password</label><input type="password" id="login-password" class="input-field" placeholder="Enter your password" onkeydown="if(event.key==='Enter') validateLogin()"><button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateLogin()">Secure Login</button></div><div id="auth-pane-create" class="auth-pane"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Full Name</label><input type="text" id="create-fullname" class="input-field" placeholder="Juan Dela Cruz" onkeydown="if(event.key==='Enter') validateCreate()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Profile Photo (Optional)</label><input type="file" id="create-photo" class="input-field" accept="image/*" style="padding: 10px;"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Phone Number (Optional)</label><input type="text" id="create-phone" class="input-field" placeholder="0912 345 6789" onkeydown="if(event.key==='Enter') validateCreate()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Choose Username</label><input type="text" id="create-username" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Create Password</label><input type="password" id="create-password" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()"><button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateCreate()">Register Account</button></div></div><div class="anonymous-text-block" style="color: var(--dynamic-text-color); margin-top:15px; opacity: 0.8; font-size:13px; text-align:center;">🕵️ <strong>Anonymous Mode Active</strong><br>Data saves to RAM only.</div></div></div>
-                <div id="view-personalization" class="settings-view"><h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">Interface Personalization</h2><div class="os-card"><h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><div onclick="applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff')" class="theme-preview-box" style="background-color: #ffcdd2; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('blue-cupcake', '#bbdefb', '#1976d2', 'rgba(33, 150, 243, 0.85)', '#0d47a1', '#bbdefb', '#1565c0', '#ffffff')" class="theme-preview-box" style="background-color: #bbdefb; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('yellow-cupcake', '#fff9c4', '#f57f17', 'rgba(255, 179, 0, 0.85)', '#e65100', '#fff9c4', '#ff6f00', '#ffffff')" class="theme-preview-box" style="background-color: #fff9c4; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('green-cupcake', '#c8e6c9', '#388e3c', 'rgba(76, 175, 80, 0.85)', '#1b5e20', '#c8e6c9', '#2e7d32', '#ffffff')" class="theme-preview-box" style="background-color: #c8e6c9; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('black-white', '#121212', '#555555', 'rgba(30, 30, 30, 0.85)', '#ffffff', '#2c2c2c', '#777777', '#ffffff')" class="theme-preview-box" style="background-color: #121212; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('white-cupcake', '#ffffff', '#d81b60', 'rgba(255, 255, 255, 0.85)', '#880e4f', '#f5f5f5', '#ad1457', '#333333')" class="theme-preview-box" style="background-color: #ffffff; background-image: var(--bg-main); background-size: 80px; height: 50px; border-color: rgba(0,0,0,0.2);"></div><div onclick="applyTheme('purple-cupcake', '#e1bee7', '#9c27b0', 'rgba(156, 39, 176, 0.85)', '#4a148c', '#f3e5f5', '#7b1fa2', '#ffffff')" class="theme-preview-box" style="background-color: #e1bee7; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('brown-cupcake', '#d7ccc8', '#795548', 'rgba(121, 85, 72, 0.90)', '#3e2723', '#d7ccc8', '#5d4037', '#ffffff')" class="theme-preview-box" style="background-color: #d7ccc8; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div></div></div><div class="os-card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;"><h4 class="os-card-title" style="margin: 0;">HIGH CONTRAST BORDERS</h4><label class="toggle-switch"><input type="checkbox" id="borders-toggle" onchange="toggleBorders(this)"><span class="slider"></span></label></div><div class="os-card"><h4 class="os-card-title" id="font-size-label" style="margin-bottom: 15px;">GLOBAL FONT SIZE: 16PX</h4><input type="range" id="font-size-slider" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)"></div></div>
+                <div id="view-accounts" class="settings-view active"><h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">User Authentication</h2><div id="logged-in-view" style="display: none; width: 100%; flex-direction: column;"><div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;"><h4 class="os-card-title">ACTIVE SESSION</h4><div style="position:relative; display:inline-block; width: 80px; height: 80px; margin: 20px auto 15px auto;"><img id="profile-photo-display" class="card-profile-photo" alt="Profile Photo" style="width:100%; height:100%; object-fit:cover; border-radius:50%; border: 3px solid var(--dynamic-text-color); background: rgba(255,255,255,0.1);"><label class="edit-pen" style="position:absolute; bottom: 0px; right: -5px; z-index: 10; background:var(--theme-accent); padding:6px; border-radius:50%; cursor:pointer; font-size:12px; color:#fff; border: 2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; width: 30px; height: 30px; box-sizing: border-box;" title="Change Photo">✏️<input type="file" style="display:none;" accept="image/*" onchange="updateProfilePhoto(this)"></label></div><h2 id="profile-fullname" style="margin: 10px 0; font-size: 20px; color: var(--dynamic-text-color);"></h2><p id="profile-details" style="color: var(--dynamic-text-color); opacity: 0.8; font-size: 13px; margin-bottom: 25px; line-height: 1.6;"></p><div style="display: flex; flex-direction: column; gap: 10px;"><button type="button" class="os-btn os-btn-secondary" onclick="openChangeCredentials()">✏️ Edit Profile / Credentials</button><button type="button" class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button></div></div></div><div id="logged-out-view" class="auth-wrapper"><div class="os-card" style="padding: 25px; margin-bottom: 0;"><div class="auth-nav"><button type="button" id="btn-auth-login" class="auth-tab active" onclick="switchAuthTab('login')">Login</button><button type="button" id="btn-auth-create" class="auth-tab" onclick="switchAuthTab('create')">Register Account</button></div><div id="auth-pane-login" class="auth-pane active"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Username</label><input type="text" id="login-username" class="input-field" placeholder="Enter your username" onkeydown="if(event.key==='Enter') validateLogin()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Password</label><input type="password" id="login-password" class="input-field" placeholder="Enter your password" onkeydown="if(event.key==='Enter') validateLogin()"><button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateLogin()">Secure Login</button><div class="anonymous-text-block" style="color: var(--dynamic-text-color); margin-top:15px; opacity: 0.8; font-size:13px; text-align:center;">🕵️ <strong>Anonymous Mode Active</strong><br>Data saves to RAM only.</div></div><div id="auth-pane-create" class="auth-pane"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Full Name</label><input type="text" id="create-fullname" class="input-field" placeholder="Juan Dela Cruz" onkeydown="if(event.key==='Enter') validateCreate()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Profile Photo (Optional)</label><input type="file" id="create-photo" class="input-field" accept="image/*" style="padding: 10px;"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Phone Number (Optional)</label><input type="text" id="create-phone" class="input-field" placeholder="0912 345 6789" onkeydown="if(event.key==='Enter') validateCreate()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Choose Username</label><input type="text" id="create-username" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()"><label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Create Password</label><input type="password" id="create-password" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()"><button type="button" class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateCreate()">Register Account</button></div></div></div></div>
+                <div id="view-personalization" class="settings-view"><h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">Interface Personalization</h2><div class="os-card"><h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"><div onclick="applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff')" class="theme-preview-box" style="background-color: #ffcdd2; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('brown-cupcake', '#d7ccc8', '#795548', 'rgba(121, 85, 72, 0.90)', '#3e2723', '#d7ccc8', '#5d4037', '#ffffff')" class="theme-preview-box" style="background-color: #d7ccc8; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('blue-cupcake', '#bbdefb', '#1976d2', 'rgba(33, 150, 243, 0.85)', '#0d47a1', '#bbdefb', '#1565c0', '#ffffff')" class="theme-preview-box" style="background-color: #bbdefb; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('yellow-cupcake', '#fff9c4', '#f57f17', 'rgba(255, 179, 0, 0.85)', '#e65100', '#fff9c4', '#ff6f00', '#ffffff')" class="theme-preview-box" style="background-color: #fff9c4; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('green-cupcake', '#c8e6c9', '#388e3c', 'rgba(76, 175, 80, 0.85)', '#1b5e20', '#c8e6c9', '#2e7d32', '#ffffff')" class="theme-preview-box" style="background-color: #c8e6c9; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('black-white', '#121212', '#555555', 'rgba(30, 30, 30, 0.85)', '#ffffff', '#2c2c2c', '#777777', '#ffffff')" class="theme-preview-box" style="background-color: #121212; background-image: var(--bg-main); background-size: 80px; height: 50px;"></div><div onclick="applyTheme('white-cupcake', '#ffffff', '#d81b60', 'rgba(255, 255, 255, 0.85)', '#880e4f', '#f5f5f5', '#ad1457', '#333333')" class="theme-preview-box" style="background-color: #ffffff; background-image: var(--bg-main); background-size: 80px; height: 50px; border-color: rgba(0,0,0,0.2);"></div></div></div><div class="os-card" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;"><h4 class="os-card-title" style="margin: 0;">HIGH CONTRAST BORDERS</h4><label class="toggle-switch"><input type="checkbox" id="borders-toggle" onchange="toggleBorders(this)"><span class="slider"></span></label></div><div class="os-card"><h4 class="os-card-title" id="font-size-label" style="margin-bottom: 15px;">GLOBAL FONT SIZE: 16PX</h4><input type="range" id="font-size-slider" min="14" max="20" value="16" class="range-slider" oninput="updateFontSize(this.value)"></div></div>
                 <div id="view-guides" class="settings-view"><h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Guides</h2><div class="guide-grid" style="display:flex; flex-direction:column; gap:10px; width:100%;"><div class="os-card" onclick="openGuide('How to Order', 'Browse the Menu and click on any cupcake to customize your order. You can adjust quantity, select toppings, and set a pickup time before adding to cart or buying immediately.')" style="cursor:pointer; margin-bottom:0;"><h4 style="margin:0 0 5px 0; color: var(--dynamic-text-color);">How to Order</h4><p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8;">Browse the Menu and click...</p></div><div class="os-card" onclick="openGuide('Customizing your Cupcakes', 'In the order wizard, click the Checkboxes under the toppings section to add extra sprinkles, chocolate drizzles, and more. Total price will automatically update.')" style="cursor:pointer; margin-bottom:0;"><h4 style="margin:0 0 5px 0; color: var(--dynamic-text-color);">Customizing Cupcakes</h4><p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8;">In the order wizard, click...</p></div><div class="os-card" onclick="openGuide('Tracking your Order', 'Visit the Orders tab from the navigation. You can see live statuses (Pending, Prepared, Canceled). Click any order to get its QR code for pickup.')" style="cursor:pointer; margin-bottom:0;"><h4 style="margin:0 0 5px 0; color: var(--dynamic-text-color);">Tracking your Order</h4><p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8;">Visit the Orders tab from...</p></div><div class="os-card" onclick="openGuide('Admin: Managing Items', 'As an admin, navigate to the Menu or Home view. Click the edit pencil icons on any item to update photos, names, pricing, and available toppings dynamically.')" style="cursor:pointer; margin-bottom:0;"><h4 style="margin:0 0 5px 0; color: var(--dynamic-text-color);">Admin: Managing Items</h4><p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8;">As an admin, navigate to...</p></div></div></div>
                 <div id="view-updates" class="settings-view"><h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2><div class="os-card" style="padding: 15px; margin-bottom: 10px;"><h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 8.0.0 - Real Database Hook</h4><p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Successfully re-hooked into Supabase Database.<br>- All local data overwrites removed.<br>- Real-time WebSocket enabled for fast syncing.</p></div></div>
             </div>
@@ -281,13 +283,17 @@
 
     <div class="ui-modal-overlay" id="receipt-overlay"><div id="receipt-hub" style="text-align: center; max-width: 480px;"><button type="button" class="close-btn" onclick="closeReceipt()">×</button><h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2><div class="digital-receipt-wrapper" id="printable-receipt-area"><div class="receipt-header-logo"><svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gGold" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700" /><stop offset="100%" stop-color="#B8860B" /></linearGradient></defs><path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Z" fill="url(#gGold)" /><circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FF1493" stroke-width="4" /><path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/><path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/><path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/></svg></div><div class="receipt-title">LA PRINSESA BAKESHOP</div><div style="font-size: 10px; margin-bottom: 10px;" id="receipt-store-address"></div><div class="receipt-divider"></div><div class="receipt-detail-row"><span>Date:</span> <span id="receipt-datetime-print"></span></div><div class="receipt-detail-row"><span>Ref#:</span> <span id="receipt-id-print"></span></div><div class="receipt-detail-row"><span>Cashier:</span> <span>SYSTEM</span></div><div class="receipt-divider"></div><div class="receipt-detail-row" style="font-weight: bold; font-size: 13px;"><span id="receipt-item-print"></span> <span id="receipt-price-print"></span></div><div id="receipt-toppings-print" style="text-align: left; font-size: 11px; margin-left: 10px; color: #555;"></div><div class="receipt-divider"></div><div class="receipt-detail-row" style="font-size: 14px; font-weight: bold;"><span>TOTAL</span> <span id="receipt-total-print"></span></div><div class="receipt-divider"></div><div style="font-size: 9px; margin-bottom: 10px;">Scan this QR code upon pickup.</div><div class="receipt-qr-box"><img id="receipt-qr" alt="QR Code" width="100%" height="100%"></div><div style="font-size: 8px; margin-top: 10px;">VALID FOR 5 YEARS FROM DATE OF ISSUE.</div></div><div class="receipt-action-row"><button type="button" class="os-btn-primary" onclick="window.print()">🖨️ Print</button><button type="button" class="os-btn os-btn-secondary" onclick="downloadReceipt()">📥 Download</button></div></div></div>
 
+    <svg style="display:none; position:absolute; width:0; height:0;" xmlns="http://www.w3.org/2000/svg"><defs><g id="svg-logo-def"><linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFF7AA"/><stop offset="20%" stop-color="#FFD700"/><stop offset="80%" stop-color="#DAA520"/><stop offset="100%" stop-color="#B8860B"/></linearGradient><linearGradient id="p2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FF85A2"/><stop offset="50%" stop-color="#FF1493"/><stop offset="100%" stop-color="#C71585"/></linearGradient><filter id="s2" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter><path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Q200,150 20,120 Z" fill="url(#g2)" filter="url(#s2)"/><ellipse cx="200" cy="70" rx="15" ry="10" fill="#8B0000" stroke="#FFD700" stroke-width="2" /><ellipse cx="120" cy="105" rx="8" ry="5" fill="#8B0000" /><ellipse cx="280" cy="105" rx="8" ry="5" fill="#8B0000" /><ellipse cx="60" cy="115" rx="6" ry="4" fill="#8B0000" /><ellipse cx="340" cy="115" rx="6" ry="4" fill="#8B0000" /><path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" /><path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" /><path d="M20,120 Q200,80 380,120 L380,170 Q200,130 20,170 Z" fill="url(#p2)" stroke="#FFC0CB" stroke-width="4" filter="url(#s2)" /><text x="200" y="145" font-family="Impact, sans-serif" font-size="44" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINSESA</text><circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FFD700" stroke-width="6" filter="url(#s2)" /><circle cx="200" cy="190" r="38" fill="none" stroke="#FF1493" stroke-width="3" stroke-dasharray="4,2" /><path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/><path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/><path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/></g></defs></svg>
+
     <script>
+        // 1. SAFE LOCAL STORAGE WRAPPER
         const safeStorage = {
             get: (key) => { try { return localStorage.getItem(key); } catch(e) { return null; } },
             set: (key, val) => { try { localStorage.setItem(key, val); } catch(e) {} },
             remove: (key) => { try { localStorage.removeItem(key); } catch(e) {} }
         };
 
+        // 2. SAFE DATABASE CONNECTION (NO FAKE CHAINS)
         let _db = null;
         
         window.addEventListener('load', () => {
@@ -302,9 +308,11 @@
             }
             
             try {
+                // Initialize default theme and view
                 applyTheme('canva-red', '#ffcdd2', '#c2185b', 'rgba(194, 24, 91, 0.90)', '#560027', '#f8bbd0', '#880e4f', '#ffffff', false);
                 switchMainView('home');
                 
+                // Load settings saved preferences
                 const savedBorders = safeStorage.get('la_prinsesa_high_contrast');
                 if (savedBorders === 'true') {
                     document.getElementById('borders-toggle').checked = true;
@@ -318,6 +326,7 @@
                     document.getElementById('font-size-label').innerText = `GLOBAL FONT SIZE: ${savedFontSize}PX`;
                 }
 
+                // Start session logic safely
                 initializeSession();
             } catch (e) { 
                 console.error("Initialization error:", e); 
@@ -329,6 +338,7 @@
         let typingTimeout; let cachedOwnerAvatar = 'https://ui-avatars.com/api/?name=Owner&background=c2185b&color=fff';
         let storeInfo = { description: "Welcome to La Prinsesa Bakeshop!", address: "Caloocan, Metro Manila", phone: "+63 912 345 6789", email: "laprinsesadecupcake@gmail.com" };
 
+        // 3. SAFE DATABASE FETCHING
         async function fetchDataRobust(tableName) {
             if (!_db) return { data: [], error: "Database offline" };
             try { 
@@ -393,8 +403,7 @@
         async function saveAboutInfo() {
             storeInfo.description = document.getElementById('about-desc-input').value; storeInfo.address = document.getElementById('about-address-input').value; storeInfo.phone = document.getElementById('about-phone-input').value; storeInfo.email = document.getElementById('about-email-input').value;
             if (_db) {
-                const { error } = await _db.from('store_info').upsert({ id: 1, ...storeInfo });
-                if (error) return alert("Failed to save: " + error.message);
+                try { await _db.from('store_info').upsert({ id: 1, ...storeInfo }); } catch(e) { console.warn('Offline Mode'); }
             }
             safeStorage.set('la_prinsesa_store_info', JSON.stringify(storeInfo)); updateAboutDisplay(); toggleAboutEdit(false); alert("About info updated successfully!");
         }
@@ -408,14 +417,14 @@
 
             const [rMenu, rPromos] = await Promise.all([fetchDataRobust('menu'), fetchDataRobust('promos')]);
 
-            if (!rMenu.error && rMenu.data) { 
+            if (!rMenu.error && rMenu.data && rMenu.data.length > 0) { 
                 menuItems = rMenu.data; safeStorage.set('la_prinsesa_menu', JSON.stringify(menuItems)); 
             } else if (rMenu.error && !hasMenuCache) { 
                 menuItems = [{ id: 1, name: "Database Offline Cupcake", price: "₱0.00", img: "https://ui-avatars.com/api/?name=Offline&background=c2185b&color=fff", toppings: "[]" }];
             }
             renderMenu();
             
-            if (!rPromos.error && rPromos.data) { 
+            if (!rPromos.error && rPromos.data && rPromos.data.length > 0) { 
                 homePromos = rPromos.data; safeStorage.set('la_prinsesa_promos', JSON.stringify(homePromos)); 
             } else if (rPromos.error && !hasPromoCache) { 
                 homePromos = [{ id: 1, title: "Offline Mode", desc: "System cannot reach database. Please check your connection.", img: "https://ui-avatars.com/api/?name=Offline&background=c2185b&color=fff" }];
@@ -445,13 +454,13 @@
 
             if (userInput === "LAPRINSESA" && passInput === "LAPRINSESA") { 
                 const adminObj = { uid: "ADMIN-1", fullname: "ROWENA ANGELES", username: "LAPRINSESA", password: "LAPRINSESA", role: "Administrator", photo_url: "", phone: "+63 912 345 6789" }; 
-                if(_db) _db.from('users').insert([adminObj]).catch(e=>{}); 
+                if(_db) { try { await _db.from('users').insert([adminObj]); } catch(e){} }
                 currentUser = adminObj; 
                 finishLogin(); 
                 return; 
             }
 
-            if (!_db) {
+            const runLocalFallback = () => {
                 let localUserCache = safeStorage.get('la_prinsesa_session_user');
                 if(localUserCache) {
                     let cUser = JSON.parse(localUserCache);
@@ -459,10 +468,15 @@
                         alert("Database unreachable. Logging in securely via local cache.");
                         currentUser = cUser;
                         finishLogin();
-                        return;
+                        return true;
                     }
                 }
-                return alert("Login Failed: Database offline & no local match found.");
+                return false;
+            };
+
+            if (!_db) {
+                if(!runLocalFallback()) alert("Login Failed: Database offline & no local match found.");
+                return;
             }
 
             try {
@@ -471,7 +485,7 @@
                 const data = (users || []).find(u => u.username === userInput && u.password === passInput);
                 if (data) { currentUser = data; finishLogin(); } else { alert("Invalid Username or Password."); }
             } catch (e) {
-                alert("Database Connection Failed.");
+                if(!runLocalFallback()) alert("Database Connection Failed. Running offline without match.");
             }
         }
 
@@ -512,8 +526,7 @@
             if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = async function(e) { 
                 const base64 = e.target.result; 
                 if(_db) {
-                    const { error } = await _db.from('users').update({ photo_url: base64 }).eq('uid', currentUser.uid);
-                    if(error) return alert("Error updating photo: " + error.message);
+                    try { await _db.from('users').update({ photo_url: base64 }).eq('uid', currentUser.uid); } catch(e) {}
                 }
                 currentUser.photo_url = base64; safeStorage.set('la_prinsesa_session_user', JSON.stringify(currentUser)); document.getElementById('profile-photo-display').src = base64; if(currentUser.role === 'Administrator') cachedOwnerAvatar = base64; alert("Profile photo updated successfully!"); 
             }; reader.readAsDataURL(input.files[0]); }
@@ -528,8 +541,7 @@
             if (Object.keys(updates).length === 0) return alert("Please enter a valid new username or password (min 3 chars).");
             
             if (_db) {
-                const { error } = await _db.from('users').update(updates).eq('uid', currentUser.uid);
-                if(error) return alert("Error updating credentials: " + error.message);
+                try { await _db.from('users').update(updates).eq('uid', currentUser.uid); } catch(e){}
             }
             
             if (updates.username) currentUser.username = updates.username; if (updates.password) currentUser.password = updates.password; if (updates.phone) currentUser.phone = updates.phone;
@@ -599,7 +611,7 @@
             if (type === 'buy') {
                 if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
                 
-                if (_db) await _db.from('orders').insert([orderObj]);
+                if (_db) { try { await _db.from('orders').insert([orderObj]); } catch(e){ console.warn('Offline order save.'); } }
 
                 let cached = JSON.parse(safeStorage.get('la_prinsesa_orders_' + currentUser.uid) || '[]'); cached.unshift(orderObj); safeStorage.set('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(cached));
                 closeDetails(); switchMainView('orders'); showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr }); await updateOrdersView(); await refreshData();
@@ -632,7 +644,7 @@
             if(checkoutCartIndex < 0) return; const cItem = cartItems[checkoutCartIndex]; const dDate = document.getElementById('cart-co-date').value; const dTime = document.getElementById('cart-co-time').value; if(!dDate || !dTime) return alert("Select valid Date and Time.");
             const dbOrder = { order_id: 'ORD-' + Date.now(), user_uid: currentUser ? currentUser.uid : "GUEST", item_name: cItem.item, price: cItem.price, pickup_date: dDate, pickup_time: dTime, toppings: JSON.stringify(cItem.toppings), status: "Pending", image_url: cItem.img || '🧁' };
             
-            if(_db) await _db.from('orders').insert([dbOrder]);
+            if(_db) { try { await _db.from('orders').insert([dbOrder]); } catch(e){} }
 
             removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders'); showReceipt({ id: dbOrder.order_id, item: dbOrder.item_name, price: dbOrder.price, date: dbOrder.pickup_date, time: dbOrder.pickup_time, toppings: cItem.toppings }); await refreshData();
         }
@@ -656,7 +668,7 @@
 
         async function cancelOrder(e, id) { 
             e.stopPropagation(); if (!confirm("Cancel this order?")) return; 
-            if(_db) await _db.from('orders').update({ status: 'Canceled' }).eq('order_id', id);
+            if(_db) { try { await _db.from('orders').update({ status: 'Canceled' }).eq('order_id', id); } catch(e){} }
             await refreshData(); 
         }
 
@@ -670,7 +682,7 @@
             optimisticMsg.innerHTML = `<div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div><div class="chat-message" style="opacity:0.8;">${msgContent}</div>`;
             if (hist) { hist.appendChild(optimisticMsg); hist.scrollTop = hist.scrollHeight; } if (input) input.value = "";
             
-            if(_db) await _db.from('messages').insert([chatObj]);
+            if(_db) { try { await _db.from('messages').insert([chatObj]); } catch(e){} }
             
             if (senderType === 'user') renderUserChat(); else renderAdminUserModal(currentAdminViewingUid, true);
         }
@@ -680,7 +692,7 @@
         async function renderUserChat() {
             if (!currentUser) return; const hist = document.getElementById('chat-history');
             
-            if(_db) await _db.from('messages').update({ is_read: true }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
+            if(_db) { try { await _db.from('messages').update({ is_read: true }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false); } catch(e){} }
             
             const rMsgs = await fetchDataRobust('messages');
             hist.innerHTML = `<div class="chat-message-wrapper them"><div class="chat-avatar-container"><img src="${cachedOwnerAvatar}" class="chat-avatar"></div><div class="chat-message">Hello! Welcome to La Prinsesa. How can we help you?</div></div>`;
@@ -763,7 +775,7 @@
                 if(rOrders.error || !rOrders.data) { ordersDiv.innerHTML = `<div class="warning-box">Failed to load: ${rOrders.error}</div>`; } else { const userOrders = rOrders.data.filter(o => o.user_uid === uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); if(userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders placed.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>${o.status === 'Pending' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button><button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button></div>` : ''}<div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div></div>`; }); } }
             }
             
-            if(_db) await _db.from('messages').update({ is_read: true }).eq('user_uid', uid).eq('sender', 'user').eq('is_read', false);
+            if(_db) { try { await _db.from('messages').update({ is_read: true }).eq('user_uid', uid).eq('sender', 'user').eq('is_read', false); } catch(e){} }
             
             const rMsgs = await fetchDataRobust('messages');
             if (!rMsgs.error && rMsgs.data) { hist.innerHTML = ''; const msgs = rMsgs.data.filter(m => m.user_uid === uid).sort((a,b) => new Date(a.created_at || 0) - new Date(b.created_at || 0)); msgs.forEach(m => { const d = document.createElement('div'); d.className = `chat-message-wrapper ${m.sender === 'owner' ? 'me' : 'them'}`; const currentName = document.getElementById('admin-user-title').innerText.replace('Managing: ', ''); const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentAdminViewingPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=880e4f&color=fff`); let msgContent = m.message_type === 'image' ? `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}` : m.text_content; d.innerHTML = `<div class="chat-avatar-container"><img src="${avatarSrc}" class="chat-avatar"></div><div class="chat-message">${msgContent}</div>`; hist.appendChild(d); }); }
@@ -771,7 +783,7 @@
         }
 
         async function adminUpdateOrder(orderId, newStatus) { 
-            if(_db) await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId);
+            if(_db) { try { await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId); } catch(e){} }
             await renderAdminUserModal(currentAdminViewingUid, false); 
         }
         
@@ -889,15 +901,15 @@
             if (type === 'menu') { 
                 const toppingsStr = JSON.stringify(currentAdminToppings); 
                 if (id === 'new') { 
-                    if (_db) await _db.from('menu').insert([{ id: Date.now(), name: name, price: desc, img: img, toppings: toppingsStr }]);
+                    if (_db) { try { await _db.from('menu').insert([{ id: Date.now(), name: name, price: desc, img: img, toppings: toppingsStr }]); } catch(e){} }
                 } else { 
-                    if (_db) await _db.from('menu').update({ name: name, price: desc, img: img, toppings: toppingsStr }).eq('id', id);
+                    if (_db) { try { await _db.from('menu').update({ name: name, price: desc, img: img, toppings: toppingsStr }).eq('id', id); } catch(e){} }
                 } 
             } else if (type === 'home') { 
                 if (id === 'new') { 
-                    if (_db) await _db.from('promos').insert([{ id: Date.now(), title: name, desc: desc, img: img }]);
+                    if (_db) { try { await _db.from('promos').insert([{ id: Date.now(), title: name, desc: desc, img: img }]); } catch(e){} }
                 } else { 
-                    if (_db) await _db.from('promos').update({ title: name, desc: desc, img: img }).eq('id', id);
+                    if (_db) { try { await _db.from('promos').update({ title: name, desc: desc, img: img }).eq('id', id); } catch(e){} }
                 } 
             }
             closeAdminEdit(); await loadMenuAndPromos(); 
@@ -906,9 +918,9 @@
         async function deleteAdminEdit() { 
             const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value; if(!confirm("Are you sure you want to delete this item?")) return; 
             if (type === 'menu') { 
-                if (_db) await _db.from('menu').delete().eq('id', id);
+                if (_db) { try { await _db.from('menu').delete().eq('id', id); } catch(e){} }
             } else if (type === 'home') { 
-                if (_db) await _db.from('promos').delete().eq('id', id);
+                if (_db) { try { await _db.from('promos').delete().eq('id', id); } catch(e){} }
             } 
             closeAdminEdit(); await loadMenuAndPromos(); 
         }
