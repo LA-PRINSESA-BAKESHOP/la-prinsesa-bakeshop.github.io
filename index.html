@@ -9,7 +9,7 @@
     
     <style>
         :root {
-            /* Theme Variables - Defaults to Pink */
+            /* Theme Variables - Defaults to Canva Red/Pink */
             --theme-accent: #d81b60;
             --theme-base: rgba(233, 30, 99, 0.85);
             --theme-text-dark: #880e4f;
@@ -87,13 +87,16 @@
             
             #main-content { flex: 1; padding: 10px 15px; height: auto; overflow-y: auto; overflow-x: hidden; }
 
+            /* SCROLLABLE MOBILE BOTTOM NAV FIX */
             #bottom-nav { 
-                display: flex; flex-direction: row; justify-content: space-around; align-items: center; 
-                flex-shrink: 0; position: relative; width: 100%; height: 70px; 
+                display: flex; flex-direction: row; justify-content: flex-start !important; align-items: center; 
+                flex-shrink: 0; position: relative; width: 100%; height: 75px; 
                 background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15);
                 padding-bottom: env(safe-area-inset-bottom); z-index: 2000; transition: background 0.3s ease;
+                overflow-x: auto !important; overflow-y: hidden !important; white-space: nowrap; -webkit-overflow-scrolling: touch;
             }
-            .bnav-item { flex: 1; text-align: center; color: var(--dynamic-text-color); opacity: 0.6; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative;}
+            #bottom-nav::-webkit-scrollbar { display: none; }
+            .bnav-item { flex: 0 0 auto !important; min-width: 75px; text-align: center; color: var(--dynamic-text-color); opacity: 0.6; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative; padding: 0 10px;}
             .bnav-item span { font-size: 20px; display: block; margin-bottom: 2px; }
             .bnav-item.active { color: var(--theme-accent); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
             
@@ -122,7 +125,18 @@
             .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;}
             .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
 
-            #settings-hub, #messaging-hub, #admin-edit-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
+            /* PERFECT MESSAGING HUB FIX */
+            #admin-user-hub {
+                flex-direction: column !important;
+                height: 95vh !important; max-height: 95vh !important;
+                width: 95vw !important; max-width: 450px !important;
+                margin: auto; border-radius: 16px !important; padding: 15px !important;
+            }
+            .admin-left-col { flex: 1.5 !important; }
+            .admin-right-col { flex: 1 !important; }
+
+            #settings-hub { flex-direction: column !important; height: 400px !important; max-height: 85vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; }
+            #admin-edit-hub { flex-direction: column !important; height: 90vh !important; max-height: 90vh !important; width: 90vw !important; max-width: 400px !important; margin: auto; border-radius: 16px !important; overflow-y: auto !important; }
             #receipt-hub { max-height: 90vh !important; width: 95vw !important; border-radius: 16px !important; padding: 20px !important;}
 
             .mobile-settings-header { display: block !important; text-align: center; color: var(--dynamic-text-color); font-size: 16px; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; text-shadow: none; position: absolute; top: -30px; left: 0; right: 0; }
@@ -132,25 +146,19 @@
             .settings-tab-btn.active { opacity: 1; font-weight: bold; }
             .settings-content { padding: 15px !important; overflow-x: hidden; flex: 1; }
             .theme-preview-box { grid-column: span 1 !important; }
-            .os-card { padding: 15px !important; margin-bottom: 15px !important;}
-
-            #admin-user-hub {
-                flex-direction: column !important;
-                height: 85vh !important;
-                max-width: 90vw !important;
-                overflow-y: auto !important;
-                padding: 20px !important;
-            }
+            .os-card { padding: 15px !important; margin-bottom: 15px !important; flex-shrink: 0 !important;}
+            
             .admin-divider { display: none !important; }
             
-            #details-hub.canva-theme, #admin-edit-hub.canva-theme {
+            #details-hub.canva-theme {
                 flex-direction: column !important;
                 padding: 20px !important;
                 height: 85vh !important;
                 max-width: 90vw !important;
                 overflow-y: auto !important;
             }
-            .canva-details-body { flex-direction: column !important; gap: 20px !important; }
+            .canva-details-body { flex-direction: column !important; gap: 20px !important; overflow: visible !important;}
+            .canva-details-right { overflow-y: visible !important; }
         }
 
         .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; }
@@ -177,7 +185,7 @@
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15);
             box-shadow: var(--apple-glass-shadow); display: flex; transition: background 0.3s ease;
         }
-        .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; }
+        .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; border-radius: 20px; }
         .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; }
         .desktop-carousel-slide { flex: 0 0 100%; position: relative; }
         .desktop-carousel-slide img { width: 100%; height: 300px; object-fit: cover; display: block; }
@@ -188,7 +196,7 @@
         #product-search::placeholder { color: var(--dynamic-text-color); opacity: 0.6; }
 
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; width: 100%; }
-        .menu-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease, background 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        .menu-card { flex-shrink: 0; position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; box-shadow: var(--apple-glass-shadow); transition: border-color 0.3s ease, background 0.3s ease; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
         .menu-card:hover { border-color: var(--theme-accent); }
         .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--theme-accent); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; overflow: hidden; transition: border-top-color 0.3s ease;}
         .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
@@ -209,7 +217,7 @@
         .menu-price-pill::before { content: '🔒'; font-size: 12px; opacity: 0.7;}
         .menu-item-title { margin: 0; font-size: 1.1em; font-weight: 800; color: var(--dynamic-text-color); text-shadow: none; line-height: 1.4; }
 
-        .promo-card { position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; }
+        .promo-card { flex-shrink: 0; position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; }
         .promo-image { width: 100%; height: 160px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .promo-details { padding: 15px; }
         .promo-details h3 { margin: 0 0 8px 0; font-size: 16px; color: var(--dynamic-text-color); text-shadow: none; }
@@ -217,10 +225,10 @@
         .promo-action { display: inline-block; padding: 8px 15px; background: var(--theme-accent); color: white; font-weight: bold; border-radius: 10px; font-size: 13px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s ease;}
         .promo-action:hover { background: var(--theme-btn-hover); }
 
-        .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
         #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 800px; }
         
-        .order-panel, .cart-panel { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
+        .order-panel, .cart-panel { flex-shrink: 0; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .order-panel:hover, .cart-panel:hover { border-color: var(--theme-accent); }
         .order-info { display: flex; flex-direction: column; align-items: flex-start; text-align: left; flex: 1;}
         .order-info h3 { margin: 0 0 5px 0; font-size: 16px; text-shadow: none; display: flex; align-items: center; gap: 10px;}
@@ -232,13 +240,19 @@
         .order-img-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .qr-thumb { width: 45px; height: 45px; background: white; padding: 2px; border-radius: 8px; flex-shrink: 0; }
 
-        .admin-user-row { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
+        .admin-user-row { flex-shrink: 0; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 16px; border: 1px solid rgba(255,255,255,0.15); padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--apple-glass-shadow); cursor: pointer; transition: 0.2s; }
         .admin-user-row:hover { border-color: var(--theme-accent); }
 
         .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 15px; box-sizing: border-box; }
         .ui-modal-overlay.active { display: flex; }
         
-        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; height: auto; max-height: 90vh; overflow-y: auto; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; transition: background 0.3s ease; }
+        /* PERFECT MESSAGING HUB FIX */
+        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub { 
+            background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); 
+            width: 100%; max-width: 480px; height: 85vh; max-height: 700px;
+            display: flex; flex-direction: column; overflow: hidden;
+            border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; transition: background 0.3s ease; 
+        }
 
         .digital-receipt-wrapper { background: #fff; color: #000; padding: 20px; border-radius: 12px; text-align: center; font-family: monospace; position: relative; margin-bottom: 15px; border-top: 8px solid var(--theme-accent); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
         .digital-receipt-wrapper * { text-shadow: none !important; }
@@ -249,12 +263,12 @@
         .receipt-detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; text-align: left;}
         .receipt-qr-box { margin: 15px auto 10px auto; width: 100px; height: 100px; background: #f9f9f9; padding: 8px; border: 1px solid #eee; }
         
-        .receipt-action-row { display: flex; gap: 10px; justify-content: center; }
+        .receipt-action-row { display: flex; gap: 10px; justify-content: center; flex-shrink:0; }
 
         .mobile-settings-header { display: none; } 
         #settings-hub { display: flex; flex-direction: row; width: 900px; height: 550px; max-width: 95vw; background: rgba(0, 0, 0, 0.25) !important; backdrop-filter: blur(25px) saturate(150%) !important; border-radius: 24px; box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); overflow: visible; position: relative; box-sizing: border-box; }
         .settings-sidebar { width: 240px; min-width: 240px; background: rgba(255, 255, 255, 0.03); border-right: 1px solid rgba(255, 255, 255, 0.08); padding: 25px 15px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; overflow-y: auto; }
-        .settings-sidebar h3 { color: #fff; font-size: 13px; letter-spacing: 1px; margin: 0 0 25px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; display: flex; align-items: center;}
+        .settings-sidebar h3 { color: var(--dynamic-text-color); font-size: 13px; letter-spacing: 1px; margin: 0 0 25px 0; text-shadow: 0 2px 5px rgba(0,0,0,0.5); font-weight: 800; display: flex; align-items: center;}
         .settings-tab-btn { background: transparent; color: var(--dynamic-text-color); opacity: 0.8; border: 1px solid transparent; text-align: left; padding: 10px 12px; border-radius: 12px; cursor: pointer; font-size: 13px; transition: all 0.2s ease; }
         .settings-tab-btn.active { border-color: rgba(255, 255, 255, 0.3); opacity: 1; font-weight: bold; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
         .settings-tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.05); opacity: 1; }
@@ -262,7 +276,7 @@
         .settings-view { display: none; width: 100%; flex-direction: column; align-items: flex-start; animation: fadeIn 0.4s var(--liquid-ease); }
         .settings-view.active { display: flex; }
 
-        .os-card { background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 600px; margin-bottom: 20px; box-sizing: border-box; text-align: left; height: auto; }
+        .os-card { background: rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 600px; margin-bottom: 20px; box-sizing: border-box; text-align: left; height: auto; flex-shrink: 0; }
         .os-card-title { font-size: 11px; letter-spacing: 1px; color: var(--dynamic-text-color); opacity: 0.8; text-transform: uppercase; margin: 0 0 15px 0; font-weight: 700; width: 100%;}
         .active-session-card { border-color: rgba(46, 204, 113, 0.4); background: rgba(46, 204, 113, 0.05); text-align: center; margin: 0 auto 20px auto; }
         .active-session-card .os-card-title { color: var(--os-green); text-align: center;}
@@ -298,7 +312,7 @@
         .theme-preview-box { border: 2px solid rgba(255,255,255,0.2); transition: transform 0.3s var(--apple-spring), border-color 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 12px; cursor: pointer; overflow: hidden; }
         .theme-preview-box:hover { border-color: rgba(255,255,255,1); }
 
-        .auth-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; }
+        .auth-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; flex-shrink: 0; }
         .auth-tab { flex: 1; text-align: center; padding: 12px 5px; font-size: 14px; font-weight: bold; color: var(--dynamic-text-color); opacity: 0.6; background: transparent; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; }
         .auth-tab.active { color: var(--dynamic-text-color); opacity: 1; border-bottom: 3px solid var(--theme-accent); text-shadow: 0 0 10px var(--theme-accent); }
         .auth-pane { display: none; width: 100%; animation: fadeIn 0.3s ease; text-align: left; }
@@ -306,7 +320,7 @@
 
         .input-field { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: var(--dynamic-text-color); font-size: 13px; transition: 0.3s; box-sizing: border-box; }
         .input-field:focus { outline: none; border-color: var(--theme-accent); background: rgba(255,255,255,0.15); box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
-        .submit-btn { width: 100%; background: var(--theme-accent); color: white; border: 1px solid transparent; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        .submit-btn { width: 100%; background: var(--theme-accent); color: white; border: 1px solid transparent; padding: 12px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.3s ease; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); flex-shrink: 0; }
         .submit-btn:hover { background: var(--theme-btn-hover); }
 
         .card-profile-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0; display: block; }
@@ -314,14 +328,15 @@
         .status-Pending { background: rgba(255, 165, 0, 0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.5); }
         .status-Prepared { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46,204,113,0.5); }
         .status-Canceled { background: rgba(255, 69, 0, 0.2); color: #ff6b6b; border: 1px solid rgba(255,107,107,0.5); }
-        .cancel-btn { background: rgba(255, 77, 77, 0.1); color: #ffcccc; border: 1px solid rgba(255,77,77,0.5); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight:bold; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px); }
+        .cancel-btn { background: rgba(255, 77, 77, 0.1); color: #ffcccc; border: 1px solid rgba(255,77,77,0.5); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight:bold; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px); flex-shrink: 0; }
         .cancel-btn:hover { background: rgba(255, 77, 77, 0.4); color: white; }
         .cancel-btn.disabled { opacity: 0.5; pointer-events: none; cursor: not-allowed; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .chat-history { flex: 1; background: rgba(0,0,0,0.15) !important; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .chat-message-wrapper { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 5px; width: 100%;}
+        /* PERFECT MESSAGING HUB FIX */
+        .chat-history { flex: 1 1 auto; background: rgba(0,0,0,0.15) !important; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 15px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+        .chat-message-wrapper { display: flex; align-items: flex-end; gap: 8px; margin-bottom: 5px; width: 100%; flex-shrink: 0;}
         .chat-message-wrapper.me { flex-direction: row-reverse; }
         .chat-avatar-container { position: relative; width: 32px; height: 32px; flex-shrink: 0; }
         .chat-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #fff; border: 2px solid transparent; }
@@ -329,7 +344,7 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
         .chat-message { padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 13px; line-height: 1.4; word-wrap: break-word; }
-        .chat-message-wrapper.them .chat-message { background: rgba(255, 255, 255, 0.15); color: var(--dynamic-text-color); border: 1px solid rgba(255,255,255,0.2); border-bottom-left-radius: 4px; }
+        .chat-message-wrapper.them .chat-message { background: rgba(0,0,0,0.2); color: var(--dynamic-text-color); border: 1px solid rgba(255,255,255,0.1); border-bottom-left-radius: 4px; }
         .chat-message-wrapper.me .chat-message { background: var(--theme-accent); color: white; border-bottom-right-radius: 4px; transition: background 0.3s ease;}
         .chat-img { max-width: 100%; border-radius: 8px; margin-top: 5px; }
         
@@ -352,17 +367,18 @@
             gap: 20px;
             box-shadow: var(--apple-glass-shadow) !important;
             position: relative !important; 
-            overflow: visible !important; 
+            overflow: hidden !important; 
             transition: background 0.3s ease;
+            box-sizing: border-box !important;
         }
 
-        .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; overflow:hidden;}
-        .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-        .admin-divider { width: 3px; background: white; border-radius: 2px; opacity: 0.8;}
-        .admin-canva-header { font-size: 20px; color: var(--dynamic-text-color) !important; margin: 0; font-weight: 500; text-shadow: none; transition: color 0.3s ease;}
+        .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; overflow:hidden; min-height:0;}
+        .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; min-height:0;}
+        .admin-divider { width: 3px; background: var(--dynamic-text-color); border-radius: 2px; opacity: 0.3; flex-shrink: 0;}
+        .admin-canva-header { font-size: 20px; color: var(--dynamic-text-color) !important; margin: 0; font-weight: 500; text-shadow: none; transition: color 0.3s ease; flex-shrink: 0;}
         
         .admin-canva-chat-box {
-            flex: 1; background: rgba(0,0,0,0.15) !important;
+            flex: 1 1 auto; background: rgba(0,0,0,0.15) !important;
             border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; min-height: 0;
             transition: background 0.3s ease;
         }
@@ -412,7 +428,8 @@
         .canva-details-body { display: flex; gap: 30px; color: var(--dynamic-text-color); }
         .canva-details-left { flex: 1; display: flex; flex-direction: column; gap: 15px; }
         .canva-details-right { flex: 1.2; display: flex; flex-direction: column; overflow-y:auto; padding-right:5px;}
-        .canva-details-image-wrap { width: 100%; aspect-ratio: 1; border-radius: 30px; overflow: hidden; background: rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; min-height: 250px;}
+        .canva-details-image-wrap { width: 100%; height: 250px; border-radius: 30px; overflow: hidden; background: rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; display: flex; align-items: center; justify-content: center;}
+        .canva-details-image-wrap img { width: 100%; height: 100%; object-fit: cover; }
         .canva-details-btn { background: var(--theme-accent); color: white; border: none; padding: 15px; border-radius: 25px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);}
         .canva-details-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px); }
         .canva-details-btn.secondary { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); }
@@ -526,7 +543,7 @@
                     <path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/>
                 </svg>
             </div>
-            <h1 class="shop-header-title">LA PRINSESA BAKESHOP</h1>
+            <h1 class="shop-header-title" style="color: white;">LA PRINSESA BAKESHOP</h1>
         </div>
         <hr class="shop-divider">
         
@@ -592,25 +609,28 @@
             <span>💬</span><span class="nav-text">Messages</span>
             <div id="mob-badge-chat" class="nav-badge" style="display:none;">0</div>
         </div>
+        <div class="bnav-item" onclick="openAbout()">
+            <span>ℹ️</span><span class="nav-text">About Us</span>
+        </div>
         <div class="bnav-item" onclick="openSettings()">
             <span>⚙️</span><span class="nav-text">More</span>
         </div>
     </div>
 
     <div class="ui-modal-overlay" id="messaging-overlay">
-        <div id="messaging-hub" style="display:flex; flex-direction: column;">
+        <div id="messaging-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeMessaging()">×</button>
-            <h2 class="modal-title" style="margin-bottom: 5px;">Messages</h2>
-            <p id="customer-view-owner-phone" style="text-align:center; color: var(--dynamic-text-color); font-size: 14px; margin-top: 0; margin-bottom: 15px; font-weight: bold;">LA PRINSESA BAKESHOP NUMBER<br>#Loading...</p>
+            <h2 class="modal-title" style="margin-bottom: 5px; color: var(--dynamic-text-color); flex-shrink: 0;">Messages</h2>
+            <p id="customer-view-owner-phone" style="text-align:center; color: var(--dynamic-text-color); font-size: 14px; margin-top: 0; margin-bottom: 15px; font-weight: bold; flex-shrink: 0;">LA PRINSESA BAKESHOP NUMBER<br>#Loading...</p>
             
             <div class="chat-history" id="chat-history"></div>
-            <div style="display:flex;gap:10px; flex-direction: column; flex-shrink:0;">
+            <div style="display:flex; gap:10px; flex-direction: column; flex-shrink:0;">
                 <input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'user')">
                 <label class="os-btn os-btn-secondary" style="margin-bottom:0; text-align:center;">📷 Send Photo
                     <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'user')">
                 </label>
-                <button class="submit-btn" style="width: 100%;" onclick="sendChatMessage('user')">Send</button>
+                <button class="submit-btn" style="width: 100%; color: white;" onclick="sendChatMessage('user')">Send</button>
             </div>
         </div>
     </div>
@@ -626,11 +646,11 @@
                 <div class="admin-canva-chat-box chat-history" id="admin-chat-history"></div>
                 <input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')">
                 <div class="admin-canva-btn-row">
-                    <label class="admin-canva-btn" style="display:flex; align-items:center; justify-content:center; margin:0;">
+                    <label class="admin-canva-btn" style="display:flex; align-items:center; justify-content:center; margin:0; color: white;">
                         📷 SEND PHOTO
                         <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')">
                     </label>
-                    <button class="admin-canva-btn" onclick="sendChatMessage('owner')">SEND</button>
+                    <button class="admin-canva-btn" style="color: white;" onclick="sendChatMessage('owner')">SEND</button>
                 </div>
             </div>
 
@@ -644,7 +664,6 @@
         </div>
     </div>
 
-    <!-- ADMIN EDIT HUB REBUILT FOR CANVA THEME -->
     <div class="ui-modal-overlay" id="admin-edit-overlay">
         <div id="admin-edit-hub" class="canva-theme">
             <button class="admin-canva-close" onclick="closeAdminEdit()">×</button>
@@ -655,8 +674,8 @@
             
             <div class="canva-details-body" style="margin-top: 10px; overflow:hidden;">
                 <div class="canva-details-left" style="flex:1;">
-                    <div class="canva-details-image-wrap" id="admin-preview-box" style="display:flex; align-items:center; justify-content:center; min-height:300px;">
-                        <img id="admin-edit-img-preview" src="" style="width:100%;height:100%;object-fit:cover;display:none;">
+                    <div class="canva-details-image-wrap" id="admin-preview-box">
+                        <img id="admin-edit-img-preview" src="" style="display:none;">
                     </div>
                     <label style="font-size:13px; font-weight:bold; color:var(--dynamic-text-color); margin-top:10px; display:block;">Change Item Photo:</label>
                     <input type="file" id="admin-edit-img-file" class="canva-input-field" accept="image/*" onchange="handleAdminImageUpload(this)">
@@ -674,12 +693,10 @@
                     <label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Price:</label>
                     <input type="text" id="admin-edit-desc" class="canva-input-field">
                     
-                    <!-- ADMIN TOPPINGS SECTION -->
                     <div id="admin-toppings-section">
                         <label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Available Toppings:</label>
                         <div id="admin-toppings-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:15px; margin-top:5px;">
-                            <!-- Dynamically generated topping cards -->
-                        </div>
+                            </div>
                         
                         <div style="background: rgba(255,255,255, 0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);">
                             <label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px; margin-bottom:10px; display:block;">Add New Topping:</label>
@@ -691,7 +708,7 @@
                     </div>
 
                     <div style="display:flex; gap:10px; margin-top:20px;">
-                        <button class="canva-details-btn" style="flex:2;" onclick="saveAdminEdit()">Save Changes</button>
+                        <button class="canva-details-btn" style="flex:2; color: white;" onclick="saveAdminEdit()">Save Changes</button>
                         <button class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" id="admin-delete-btn" onclick="deleteAdminEdit()">Delete</button>
                     </div>
                 </div>
@@ -703,25 +720,27 @@
         <div id="messaging-hub" style="max-width: 480px;">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeCartCheckout()">×</button>
-            <h2 class="modal-title" id="cart-co-title">Checkout Item</h2>
-            <div style="display: flex; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; align-items: center;">
+            <h2 class="modal-title" id="cart-co-title" style="color: var(--dynamic-text-color); flex-shrink: 0;">Checkout Item</h2>
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; align-items: center; flex-shrink: 0;">
                 <div class="order-img-thumb" id="cart-co-img" style="width: 70px; height: 70px; font-size: 2.5em;"></div>
                 <div style="color: var(--dynamic-text-color);">
-                    <h3 id="cart-co-name" style="margin: 0 0 5px 0;"></h3>
+                    <h3 id="cart-co-name" style="margin: 0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none;"></h3>
                     <p id="cart-co-price" style="color: var(--theme-accent); font-weight: bold; margin: 0 0 5px 0;"></p>
                     <small id="cart-co-toppings" style="opacity: 0.8;"></small>
                 </div>
             </div>
             
-            <label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Pickup/Delivery Date:</label>
-            <input type="date" id="cart-co-date" class="input-field">
-            <label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Time:</label>
-            <input type="time" id="cart-co-time" class="input-field">
+            <div style="overflow-y: auto; flex: 1; padding-right: 5px;">
+                <label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Pickup/Delivery Date:</label>
+                <input type="date" id="cart-co-date" class="input-field">
+                <label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Time:</label>
+                <input type="time" id="cart-co-time" class="input-field">
+                
+                <div class="warning-box"><strong>⚠️ Warning:</strong> Clicking Buy Now will finalize this order and send it to the kitchen. Proceed?</div>
+            </div>
             
-            <div class="warning-box"><strong>⚠️ Warning:</strong> Clicking Buy Now will finalize this order and send it to the kitchen. Proceed?</div>
-            
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button class="submit-btn" onclick="checkoutCartItem()">🛍️ Buy Now</button>
+            <div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; margin-top: 10px;">
+                <button class="submit-btn" style="color: white;" onclick="checkoutCartItem()">🛍️ Buy Now</button>
                 <button class="os-btn os-btn-secondary" onclick="closeCartCheckout()">Cancel</button>
             </div>
         </div>
@@ -731,7 +750,7 @@
         <div id="about-hub">
             <div class="mobile-settings-header">LA PRINSESA BAKESHOP</div>
             <button class="close-btn" onclick="closeAbout()">×</button>
-            <h2 class="modal-title">About Us</h2>
+            <h2 class="modal-title" style="color: var(--dynamic-text-color);">About Us</h2>
             
             <div id="about-display-mode">
                 <p id="about-desc-display" style="color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.6; margin-bottom: 20px; font-size: 14px;">
@@ -757,7 +776,7 @@
                 <input type="text" id="about-email-input" class="input-field">
                 
                 <div style="display:flex; gap:10px; margin-top:10px;">
-                    <button class="submit-btn" style="flex:1;" onclick="saveAboutInfo()">Save</button>
+                    <button class="submit-btn" style="flex:1; color: white;" onclick="saveAboutInfo()">Save</button>
                     <button class="os-btn os-btn-secondary" style="flex:1;" onclick="toggleAboutEdit(false)">Cancel</button>
                 </div>
             </div>
@@ -778,16 +797,15 @@
 
             <div class="settings-content">
                 <div id="view-accounts" class="settings-view active">
-                    <h2 class="modal-title" style="width:100%;">User Authentication</h2>
+                    <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">User Authentication</h2>
 
                     <div id="logged-in-view" style="display: none; width: 100%; flex-direction: column;">
                         <div class="os-card active-session-card" style="text-align: center; margin: 0 auto 20px auto;">
                             <h4 class="os-card-title">ACTIVE SESSION</h4>
                             
-                            <!-- Profile picture box layout modified to host the edit pen gracefully -->
-                            <div style="position:relative; display:flex; justify-content:center; align-items:center; width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 50%; background: rgba(255,255,255,0.1); border: 3px solid #fff;">
-                                <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="width:100%; height:100%; object-fit:cover; border:none; margin:0; display:block;">
-                                <label class="edit-pen" style="position:absolute; bottom:-5px; right:-5px; background:var(--theme-accent); padding:6px; border-radius:50%; cursor:pointer; font-size:12px; color:#fff; border: 2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; width: 30px; height: 30px; box-sizing: border-box;" title="Change Photo">
+                            <div style="position:relative; display:inline-block; width: 80px; height: 80px; margin: 20px auto 15px auto;">
+                                <img id="profile-photo-display" class="card-profile-photo" src="" alt="Profile Photo" style="width:100%; height:100%; object-fit:cover; border-radius:50%; border: 3px solid var(--dynamic-text-color); background: rgba(255,255,255,0.1);">
+                                <label class="edit-pen" style="position:absolute; bottom: 0px; right: -5px; z-index: 10; background:var(--theme-accent); padding:6px; border-radius:50%; cursor:pointer; font-size:12px; color:#fff; border: 2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center; width: 30px; height: 30px; box-sizing: border-box;" title="Change Photo">
                                     ✏️<input type="file" style="display:none;" accept="image/*" onchange="updateProfilePhoto(this)">
                                 </label>
                             </div>
@@ -796,7 +814,7 @@
                             <p id="profile-details" style="color: var(--dynamic-text-color); opacity: 0.8; font-size: 13px; margin-bottom: 25px; line-height: 1.6;"></p>
                             
                             <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">Change Password / Phone</button>
+                                <button class="os-btn os-btn-secondary" onclick="openChangeCredentials()">✏️ Edit Profile / Credentials</button>
                                 <button class="os-btn os-btn-danger" onclick="logout()">Secure Logout</button>
                             </div>
                         </div>
@@ -811,26 +829,26 @@
 
                             <div id="auth-pane-login" class="auth-pane active">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Username</label>
-                                <input type="text" id="login-username" class="input-field" placeholder="Enter your username">
+                                <input type="text" id="login-username" class="input-field" placeholder="Enter your username" onkeydown="if(event.key==='Enter') validateLogin()">
                                 
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Password</label>
-                                <input type="password" id="login-password" class="input-field" placeholder="Enter your password">
+                                <input type="password" id="login-password" class="input-field" placeholder="Enter your password" onkeydown="if(event.key==='Enter') validateLogin()">
                                 
-                                <button class="submit-btn" style="margin-top: 15px;" onclick="validateLogin()">Secure Login</button>
+                                <button class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateLogin()">Secure Login</button>
                             </div>
 
                             <div id="auth-pane-create" class="auth-pane">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Full Name</label>
-                                <input type="text" id="create-fullname" class="input-field" placeholder="Juan Dela Cruz">
+                                <input type="text" id="create-fullname" class="input-field" placeholder="Juan Dela Cruz" onkeydown="if(event.key==='Enter') validateCreate()">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Profile Photo (Optional)</label>
                                 <input type="file" id="create-photo" class="input-field" accept="image/*" style="padding: 10px;">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Phone Number (Optional)</label>
-                                <input type="text" id="create-phone" class="input-field" placeholder="0912 345 6789">
+                                <input type="text" id="create-phone" class="input-field" placeholder="0912 345 6789" onkeydown="if(event.key==='Enter') validateCreate()">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Choose Username</label>
-                                <input type="text" id="create-username" class="input-field" placeholder="Min 3 chars">
+                                <input type="text" id="create-username" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()">
                                 <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color); opacity: 0.8;">Create Password</label>
-                                <input type="password" id="create-password" class="input-field" placeholder="Min 3 chars">
-                                <button class="submit-btn" style="margin-top: 15px;" onclick="validateCreate()">Register Account</button>
+                                <input type="password" id="create-password" class="input-field" placeholder="Min 3 chars" onkeydown="if(event.key==='Enter') validateCreate()">
+                                <button class="submit-btn" style="margin-top: 15px; color: white;" onclick="validateCreate()">Register Account</button>
                             </div>
                         </div>
                         <div class="anonymous-text-block" style="color: var(--dynamic-text-color); margin-top:15px; opacity: 0.8; font-size:13px; text-align:center;">
@@ -840,7 +858,7 @@
                 </div>
 
                 <div id="view-personalization" class="settings-view">
-                    <h2 class="modal-title" style="width:100%;">Interface Personalization</h2>
+                    <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">Interface Personalization</h2>
                     <div class="os-card">
                         <h4 class="os-card-title">ATMOSPHERE / BACKGROUND</h4>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -870,7 +888,7 @@
                 </div>
 
                 <div id="view-guides" class="settings-view">
-                    <h2 class="modal-title" style="width:100%;">System Guides</h2>
+                    <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Guides</h2>
                     <div class="guide-grid" style="display:flex; flex-direction:column; gap:10px; width:100%;">
                         <div class="os-card" onclick="openGuide('How to Order', 'Browse the Menu and click on any cupcake to customize your order. You can adjust quantity, select toppings, and set a pickup time before adding to cart or buying immediately.')" style="cursor:pointer; margin-bottom:0;">
                             <h4 style="margin:0 0 5px 0; color: var(--dynamic-text-color);">How to Order</h4><p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8;">Browse the Menu and click...</p>
@@ -888,14 +906,14 @@
                 </div>
 
                 <div id="view-updates" class="settings-view">
-                    <h2 class="modal-title" style="width:100%;">System Updates</h2>
+                    <h2 class="modal-title" style="width:100%; color: var(--dynamic-text-color);">System Updates</h2>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.3.0 - UI Polishing</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed Profile Edit pen layering for easier tap access.<br>- Admin User Manager dynamically themes according to wallpaper.<br>- Chat logic respects proper profile photos globally.<br>- Improved White theme text legibility across all components.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.4.0 - UX Polishing</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Fixed cart quantity stacking issues.<br>- Removed duplicate users in Admin operations view.<br>- Deepened default Theme to match Canva aesthetics.<br>- Ensured Messaging photos and items aren't squashed.<br>- Enhanced mobile scrollable navigations.</p>
                     </div>
                     <div class="os-card" style="padding: 15px; margin-bottom: 10px;">
-                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.2.0 - Theme & Profiles Engine</h4>
-                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Dynamic UI coloring matching your chosen theme.<br>- Upload and update user profile photos via account panel.<br>- Added new White Theme.<br>- Added live updates for Admin About section.</p>
+                        <h4 style="margin:0 0 5px 0; font-size:14px; color: var(--dynamic-text-color);">Version 2.3.2 - Security & Anon Mode</h4>
+                        <p style="margin:0; font-size:12px; color:var(--dynamic-text-color); opacity:0.8; line-height: 1.5;">- Menu and Home items now display reliably without auth.<br>- Intercepted unauthenticated users attempting to access Menu directly.<br>- Better formatting for Mobile Modal components.<br>- Resolved user state caching issues upon login/logout.</p>
                     </div>
                 </div>
             </div>
@@ -905,14 +923,14 @@
     <div class="ui-modal-overlay" id="credentials-overlay" style="z-index: 3100;">
         <div id="credentials-hub">
             <button class="close-btn" onclick="closeChangeCredentials()">×</button>
-            <h2 class="modal-title" style="font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">Update Credentials</h2>
+            <h2 class="modal-title" style="font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; color: var(--dynamic-text-color);">Update Credentials</h2>
             <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">New Username (Leave blank to keep current):</label>
-            <input type="text" id="update-username" class="input-field" placeholder="Enter new username">
+            <input type="text" id="update-username" class="input-field" placeholder="Enter new username" onkeydown="if(event.key==='Enter') saveCredentials()">
             <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">New Password (Leave blank to keep current):</label>
-            <input type="password" id="update-password" class="input-field" placeholder="Enter new password">
+            <input type="password" id="update-password" class="input-field" placeholder="Enter new password" onkeydown="if(event.key==='Enter') saveCredentials()">
             <label style="font-size: 12px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">New Phone Number (Leave blank to keep current):</label>
-            <input type="text" id="update-phone" class="input-field" placeholder="Enter new phone number">
-            <button class="submit-btn" style="margin-top: 15px;" onclick="saveCredentials()">Save Changes</button>
+            <input type="text" id="update-phone" class="input-field" placeholder="Enter new phone number" onkeydown="if(event.key==='Enter') saveCredentials()">
+            <button class="submit-btn" style="margin-top: 15px; color: white;" onclick="saveCredentials()">Save Changes</button>
         </div>
     </div>
 
@@ -959,18 +977,21 @@
                     <div id="wizard-step-2" class="wizard-step">
                         <h3 style="color:var(--dynamic-text-color); font-size:18px; margin-top:0;">Customize Your Order:</h3>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;" id="wizard-toppings-grid">
-                            <!-- Injected dynamically based on available toppings -->
-                        </div>
+                            </div>
                     </div>
 
                     <div id="wizard-step-3" class="wizard-step">
-                        <div class="canva-warning-box">
+                        <div class="canva-warning-box" id="auth-warning-box">
                             ⚠️ <strong>Warning:</strong> Buying directly skips the cart and sends the order immediately. Ensure dates are correct.
                         </div>
                         <h3 style="color:var(--dynamic-text-color); text-align:center; margin: 30px 0 20px 0; font-size: 20px;">Ready to complete order?</h3>
-                        <div style="display:flex; gap:15px; justify-content:center;">
-                            <button class="canva-details-btn" style="flex:1;" onclick="processOrder('buy')">Buy Now</button>
-                            <button class="canva-details-btn" style="flex:1;" onclick="processOrder('cart')">Add to Cart</button>
+                        
+                        <div style="display:flex; gap:15px; justify-content:center;" id="auth-order-actions">
+                            <button class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('buy')">Buy Now</button>
+                            <button class="canva-details-btn" style="flex:1; color: white;" onclick="processOrder('cart')">Add to Cart</button>
+                        </div>
+                        <div style="display:none; gap:15px; justify-content:center;" id="anon-order-actions">
+                            <button class="canva-details-btn" style="flex:1; color: white; background: var(--theme-accent);" onclick="promptLoginFromOrder()">Login to Order</button>
                         </div>
                     </div>
                 </div>
@@ -981,7 +1002,7 @@
     <div class="ui-modal-overlay" id="receipt-overlay">
         <div id="receipt-hub" style="text-align: center; max-width: 480px;">
             <button class="close-btn" onclick="closeReceipt()">×</button>
-            <h2 class="modal-title">Digital Receipt</h2>
+            <h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2>
             
             <div class="digital-receipt-wrapper" id="printable-receipt-area">
                 <div class="receipt-header-logo">
@@ -1041,7 +1062,7 @@
         let currentImgToOrder = "";
         let currentItemToppings = [];
         let currentAdminViewingUid = null;
-        let currentAdminViewingPhoto = null; // Store user photo for admin viewing
+        let currentAdminViewingPhoto = null; 
         let checkoutCartIndex = -1;
         
         let menuItems = [];
@@ -1050,6 +1071,7 @@
         let currentAdminToppings = [];
 
         let typingTimeout;
+        let cachedOwnerAvatar = 'https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff';
 
         let storeInfo = {
             description: "Welcome to La Prinsesa Bakeshop! We have been crafting delicious, homemade cupcakes and pastries with royal care and dedication since 2016. Every bite is baked with love to make your special moments even sweeter.",
@@ -1077,10 +1099,10 @@
             if(!typingIndicator) {
                  const avatarSrc = isUserView ? 
                     (currentUser?.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser?.fullname || 'User')}&background=880e4f&color=fff`) :
-                    'https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff';
+                    cachedOwnerAvatar;
                     
                  typingIndicator = document.createElement('div');
-                 typingIndicator.className = `chat-message-wrapper me typing-bubble`; // 'me' because it triggers on current active input
+                 typingIndicator.className = `chat-message-wrapper me typing-bubble`; 
                  typingIndicator.innerHTML = `
                      <div class="chat-avatar-container is-typing"><img src="${avatarSrc}" class="chat-avatar"></div>
                      <div class="chat-message" style="opacity: 0.5;">Typing...</div>
@@ -1098,19 +1120,30 @@
         }
 
         async function initializeSession() {
-            _db.auth.signInAnonymously().catch(e => console.warn(e));
+            // Attempt to retrieve owner photo silently
+            _db.from('users').select('photo_url').eq('role', 'Administrator').limit(1).single().then(res => {
+                if(res.data && res.data.photo_url) cachedOwnerAvatar = res.data.photo_url;
+            }).catch(e => {});
 
             const savedUser = localStorage.getItem('la_prinsesa_session_user');
             if (savedUser) { 
-                currentUser = JSON.parse(savedUser); 
-                const c = localStorage.getItem('la_prinsesa_cart_' + currentUser.uid);
-                if (c) cartItems = JSON.parse(c);
+                try {
+                    currentUser = JSON.parse(savedUser); 
+                    const c = localStorage.getItem('la_prinsesa_cart_' + currentUser.uid);
+                    if (c) cartItems = JSON.parse(c);
+                } catch(e) { currentUser = null; }
             }
             
             const savedTheme = localStorage.getItem('la_prinsesa_theme');
             if (savedTheme) {
-                const parsed = JSON.parse(savedTheme);
-                applyTheme(parsed.type, parsed.color, parsed.accentHex, parsed.baseRgba, parsed.textDark, parsed.bgLight, parsed.btnHover, parsed.dynamicText || '#ffffff', false);
+                try {
+                    const parsed = JSON.parse(savedTheme);
+                    applyTheme(parsed.type, parsed.color, parsed.accentHex, parsed.baseRgba, parsed.textDark, parsed.bgLight, parsed.btnHover, parsed.dynamicText || (parsed.type === 'white-cupcake' ? '#333333' : '#ffffff'), false);
+                } catch(e) {
+                    applyTheme('pink-cupcake', '#f8bbd0', '#d81b60', 'rgba(233, 30, 99, 0.85)', '#880e4f', '#f8bbd0', '#ad1457', '#ffffff', false);
+                }
+            } else {
+                applyTheme('pink-cupcake', '#f8bbd0', '#d81b60', 'rgba(233, 30, 99, 0.85)', '#880e4f', '#f8bbd0', '#ad1457', '#ffffff', false);
             }
 
             await loadStoreInfo();
@@ -1175,22 +1208,30 @@
         }
 
         async function loadMenuAndPromos() {
-            const { data: menuData, error: menuErr } = await _db.from('menu').select('*');
-            if (!menuErr && menuData && menuData.length > 0) {
-                menuItems = menuData;
-                localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
-            } else {
+            try {
+                const { data: menuData, error: menuErr } = await _db.from('menu').select('*');
+                if (!menuErr && menuData && menuData.length > 0) {
+                    menuItems = menuData;
+                    localStorage.setItem('la_prinsesa_menu', JSON.stringify(menuItems));
+                } else {
+                    throw new Error("Fallback");
+                }
+            } catch(e) {
                 menuItems = JSON.parse(localStorage.getItem('la_prinsesa_menu')) || [
                     { id: 1, name: 'Red Velvet Royal', price: '₱120.00', img: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?q=80&w=1600&auto=format&fit=crop', toppings: '[{"name":"Extra Sprinkles", "img":"https://images.unsplash.com/photo-1517260739337-6799d239ce83?q=80&w=200&auto=format&fit=crop"}, {"name":"Choco Drizzle", "img":"https://images.unsplash.com/photo-1540331547168-8b6310f62d5c?q=80&w=200&auto=format&fit=crop"}]' },
                     { id: 2, name: 'Dark Chocolate Crown', price: '₱140.00', img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1600&auto=format&fit=crop', toppings: '[{"name":"Edible Pearls", "img":"https://images.unsplash.com/photo-1514845555173-0fb6fc91d2c6?q=80&w=200&auto=format&fit=crop"}]' }
                 ];
             }
 
-            const { data: promoData, error: promoErr } = await _db.from('promos').select('*');
-            if (!promoErr && promoData && promoData.length > 0) {
-                homePromos = promoData;
-                localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
-            } else {
+            try {
+                const { data: promoData, error: promoErr } = await _db.from('promos').select('*');
+                if (!promoErr && promoData && promoData.length > 0) {
+                    homePromos = promoData;
+                    localStorage.setItem('la_prinsesa_promos', JSON.stringify(homePromos));
+                } else {
+                    throw new Error("Fallback");
+                }
+            } catch(e) {
                 homePromos = JSON.parse(localStorage.getItem('la_prinsesa_promos')) || [
                     { id: 1, title: 'Treat Yourself, Princess! 🍓', desc: 'End the day with a golden bite. The classic Strawberry Princess is now 20% off all weekend. Claim now via Dine-In, Take Out, or Delivery.', img: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?q=80&w=1600&auto=format&fit=crop' }
                 ];
@@ -1288,11 +1329,21 @@
         
         function finishLogin() {
             localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
-            alert("Logged in successfully!"); location.reload();
+            if(currentUser.role === 'Administrator' && currentUser.photo_url) {
+                cachedOwnerAvatar = currentUser.photo_url;
+            }
+            updateSettingsUI();
+            renderMenu();
+            renderHomePromos();
+            updateCartView();
+            refreshData();
+            switchSettingsNav('accounts');
+            alert("Logged in successfully!");
         }
 
         function logout() { 
             localStorage.removeItem('la_prinsesa_session_user'); 
+            currentUser = null;
             location.reload(); 
         }
 
@@ -1306,6 +1357,7 @@
                         currentUser.photo_url = base64;
                         localStorage.setItem('la_prinsesa_session_user', JSON.stringify(currentUser));
                         document.getElementById('profile-photo-display').src = base64;
+                        if(currentUser.role === 'Administrator') cachedOwnerAvatar = base64;
                         alert("Profile photo updated successfully!");
                     } else {
                         alert("Error updating photo: " + error.message);
@@ -1370,6 +1422,16 @@
             } else if(currentWStepNum === 3) {
                 btnBack.style.display = 'block';
                 btnNext.style.display = 'none';
+                
+                if (currentUser) {
+                    document.getElementById('auth-order-actions').style.display = 'flex';
+                    document.getElementById('anon-order-actions').style.display = 'none';
+                    document.getElementById('auth-warning-box').style.display = 'block';
+                } else {
+                    document.getElementById('auth-order-actions').style.display = 'none';
+                    document.getElementById('anon-order-actions').style.display = 'flex';
+                    document.getElementById('auth-warning-box').style.display = 'none';
+                }
             }
         }
 
@@ -1385,6 +1447,13 @@
                 currentWStepNum--;
                 updateDetailsWizardUI();
             }
+        }
+
+        function promptLoginFromOrder() {
+            closeDetails();
+            alert("Please login first to start customizing and ordering items.");
+            openSettings();
+            switchSettingsNav('accounts');
         }
 
         function openDetails(item, price, img, toppingsJSON) {
@@ -1436,7 +1505,10 @@
 
         async function processOrder(type) {
             const qty = document.getElementById('order-quantity').value;
-            const finalItemName = `${qty}x ${currentItemToOrder}`;
+            
+            // Generate parsed toppings string
+            const selectedToppingsArr = Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value);
+            const toppingsJSONString = JSON.stringify(selectedToppingsArr);
 
             let numPrice = parseFloat(currentPriceToOrder.replace(/[^0-9.-]+/g,""));
             let totalPriceStr = currentPriceToOrder;
@@ -1444,14 +1516,17 @@
                 totalPriceStr = "₱" + (numPrice * parseInt(qty)).toFixed(2);
             }
 
+            const pickupDate = document.getElementById('order-date').value;
+            const pickupTime = document.getElementById('order-time').value;
+
             const orderObj = {
                 order_id: 'ORD-' + Date.now(),
                 user_uid: currentUser ? currentUser.uid : "GUEST",
-                item_name: finalItemName,
+                item_name: `${qty}x ${currentItemToOrder}`,
                 price: totalPriceStr,
-                pickup_date: document.getElementById('order-date').value,
-                pickup_time: document.getElementById('order-time').value,
-                toppings: JSON.stringify(Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value)),
+                pickup_date: pickupDate,
+                pickup_time: pickupTime,
+                toppings: toppingsJSONString,
                 status: "Pending",
                 image_url: currentImgToOrder
             };
@@ -1462,14 +1537,37 @@
                 if (error) return alert("Error sending order: " + error.message);
                 
                 closeDetails(); switchMainView('orders');
-                showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: JSON.parse(orderObj.toppings) }); 
+                showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr }); 
                 await refreshData();
             } else {
-                cartItems.push({
-                    id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, 
-                    date: orderObj.pickup_date, time: orderObj.pickup_time, 
-                    toppings: JSON.parse(orderObj.toppings), img: orderObj.image_url
+                // Determine existing identical cart items for quantity merging
+                const existingIdx = cartItems.findIndex(c => {
+                    const match = c.item.match(/^(\d+)x (.*)$/);
+                    const baseItemName = match ? match[2] : c.item;
+                    return baseItemName === currentItemToOrder && 
+                           JSON.stringify(c.toppings) === toppingsJSONString &&
+                           c.date === pickupDate &&
+                           c.time === pickupTime;
                 });
+
+                if (existingIdx >= 0) {
+                    // Update Quantity logic
+                    const match = cartItems[existingIdx].item.match(/^(\d+)x (.*)$/);
+                    let oldQty = match ? parseInt(match[1]) : 1;
+                    let newQty = oldQty + parseInt(qty);
+                    
+                    cartItems[existingIdx].item = `${newQty}x ${currentItemToOrder}`;
+                    if(!isNaN(numPrice)) {
+                        cartItems[existingIdx].price = "₱" + (numPrice * newQty).toFixed(2);
+                    }
+                } else {
+                    cartItems.push({
+                        id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, 
+                        date: orderObj.pickup_date, time: orderObj.pickup_time, 
+                        toppings: selectedToppingsArr, img: orderObj.image_url
+                    });
+                }
+                
                 if (currentUser) localStorage.setItem('la_prinsesa_cart_' + currentUser.uid, JSON.stringify(cartItems));
                 updateCartView(); closeDetails(); alert("Added to cart!");
             }
@@ -1596,6 +1694,13 @@
             const { error } = await _db.from('messages').insert([chatObj]);
             if(error) return alert("Error sending message: " + error.message);
             if(input && !error) input.value = "";
+            
+            // Immediate visual sync
+            if (senderType === 'user') {
+                await renderUserChat();
+            } else {
+                await renderAdminUserModal(currentAdminViewingUid, true);
+            }
         }
 
         function handleImageChatUpload(input, senderType) {
@@ -1614,12 +1719,10 @@
             await _db.from('messages').update({ is_read: true }).eq('user_uid', currentUser.uid).eq('sender', 'owner').eq('is_read', false);
             const { data: msgs } = await _db.from('messages').select('*').eq('user_uid', currentUser.uid).order('created_at', { ascending: true });
             
-            hist.innerHTML = '<div class="chat-message-wrapper them"><div class="chat-avatar-container"><img src="https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff" class="chat-avatar"></div><div class="chat-message">Hello! Welcome to La Prinsesa. How can we help you?</div></div>';
+            hist.innerHTML = `<div class="chat-message-wrapper them"><div class="chat-avatar-container"><img src="${cachedOwnerAvatar}" class="chat-avatar"></div><div class="chat-message">Hello! Welcome to La Prinsesa. How can we help you?</div></div>`;
             if (msgs) {
                 msgs.forEach(m => {
-                    const avatarSrc = m.sender === 'owner' ? 
-                        'https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff' : 
-                        (currentUser.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`);
+                    const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentUser.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`);
                     
                     const d = document.createElement('div'); 
                     d.className = `chat-message-wrapper ${m.sender === 'user' ? 'me' : 'them'}`;
@@ -1663,35 +1766,41 @@
             
             let hasRecords = false;
 
+            const uniqueUsersMap = new Map();
             if (users) {
                 users.forEach(u => {
                     if(u.role === 'Administrator') return;
-                    
-                    const userOrders = allOrders ? allOrders.filter(o => o.user_uid === u.uid) : [];
-                    const userMsgs = allMsgs ? allMsgs.filter(m => m.user_uid === u.uid) : [];
-                    
-                    if(userOrders.length > 0 || userMsgs.length > 0) {
-                        hasRecords = true;
-                        const pendingCount = userOrders.filter(o => o.status === 'Pending').length;
-                        const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.is_read).length;
-
-                        const row = document.createElement('div'); row.className = 'admin-user-row';
-                        row.onclick = () => openAdminUserModal(u.uid, u.fullname, u.phone, u.photo_url);
-                        row.innerHTML = `
-                            <div style="display:flex; flex-direction:column;">
-                                <h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none;">${u.fullname}</h3>
-                                <small style="color:var(--dynamic-text-color); opacity: 0.8;">@${u.username}</small>
-                            </div>
-                            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-                                ${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}
-                                ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
-                                ${(unreadCount === 0 && pendingCount === 0) ? `<span style="font-size:12px; color:var(--dynamic-text-color); opacity:0.6;">No pending tasks</span>` : ''}
-                            </div>
-                        `;
-                        list.appendChild(row);
+                    if(!uniqueUsersMap.has(u.username)) {
+                        uniqueUsersMap.set(u.username, u);
                     }
                 });
             }
+
+            Array.from(uniqueUsersMap.values()).forEach(u => {
+                const userOrders = allOrders ? allOrders.filter(o => o.user_uid === u.uid) : [];
+                const userMsgs = allMsgs ? allMsgs.filter(m => m.user_uid === u.uid) : [];
+                
+                if(userOrders.length > 0 || userMsgs.length > 0) {
+                    hasRecords = true;
+                    const pendingCount = userOrders.filter(o => o.status === 'Pending').length;
+                    const unreadCount = userMsgs.filter(m => m.sender === 'user' && !m.is_read).length;
+
+                    const row = document.createElement('div'); row.className = 'admin-user-row';
+                    row.onclick = () => openAdminUserModal(u.uid, u.fullname, u.phone, u.photo_url);
+                    row.innerHTML = `
+                        <div style="display:flex; flex-direction:column; min-width: 0;">
+                            <h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${u.fullname}</h3>
+                            <small style="color:var(--dynamic-text-color); opacity: 0.8;">@${u.username}</small>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink: 0;">
+                            ${unreadCount > 0 ? `<span class="user-badge">${unreadCount} Unread Msg</span>` : ''}
+                            ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
+                            ${(unreadCount === 0 && pendingCount === 0) ? `<span style="font-size:12px; color:var(--dynamic-text-color); opacity:0.6;">No pending tasks</span>` : ''}
+                        </div>
+                    `;
+                    list.appendChild(row);
+                }
+            });
             
             const guestOrders = allOrders ? allOrders.filter(o => o.user_uid === "GUEST") : [];
             if(guestOrders.length > 0) {
@@ -1700,11 +1809,11 @@
                 const row = document.createElement('div'); row.className = 'admin-user-row';
                 row.onclick = () => openAdminUserModal("GUEST", "Guest Customer", null, null);
                 row.innerHTML = `
-                    <div style="display:flex; flex-direction:column;">
+                    <div style="display:flex; flex-direction:column; min-width: 0;">
                         <h3 style="margin:0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none;">Guest Customer</h3>
                         <small style="color:var(--dynamic-text-color); opacity: 0.8;">Unregistered</small>
                     </div>
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink: 0;">
                         ${pendingCount > 0 ? `<span class="user-badge order-badge">${pendingCount} Pending Order</span>` : ''}
                     </div>
                 `;
@@ -1779,9 +1888,7 @@
                     d.className = `chat-message-wrapper ${m.sender === 'owner' ? 'me' : 'them'}`;
                     
                     const currentName = document.getElementById('admin-user-title').innerText.replace('Managing: ', '');
-                    const avatarSrc = m.sender === 'owner' ? 
-                        'https://ui-avatars.com/api/?name=Owner&background=d81b60&color=fff' : 
-                        (currentAdminViewingPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=880e4f&color=fff`);
+                    const avatarSrc = m.sender === 'owner' ? cachedOwnerAvatar : (currentAdminViewingPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=880e4f&color=fff`);
                     
                     let msgContent = m.message_type === 'image' ? `<img src="${m.image_url}" class="chat-img"><br>${m.text_content}` : m.text_content;
                     
