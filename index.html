@@ -33,16 +33,15 @@
         body.borders-enabled * { box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255,255,255,0.4) !important; }
 
         .wallpaper-layer, .wallpaper-pattern { position: absolute !important; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none !important; display: none; }
-        .glass-noise { position: absolute !important; top: 0; left: 0; right: 0; bottom: 0; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.08; pointer-events: none !important; z-index: 1; mix-blend-mode: overlay; transition: 0.3s; }
         
         .mobile-only-flex { display: none !important; }
         
-        button, .sidebar-btn, .bnav-item, .promo-action, .os-btn, .os-btn-primary, .os-btn-secondary, .os-btn-danger, .submit-btn, .cancel-btn, input, textarea { 
-            pointer-events: auto !important; position: relative; cursor: pointer; 
+        button, .sidebar-btn, .bnav-item, .promo-action, .os-btn, .os-btn-primary, .os-btn-secondary, .os-btn-danger, .submit-btn, .cancel-btn, input, textarea, .menu-card, .promo-card, .order-panel, .cart-panel, .theme-preview-box, .admin-user-row { 
+            pointer-events: auto !important; position: relative; cursor: pointer; z-index: 100;
         }
 
         /* Layout */
-        @media (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+        @media (min-width: 1025px) {
             body { display: grid; grid-template-columns: var(--side-full) 1fr; align-items: stretch; }
             #sidebar { display: flex; flex-direction: column; padding: 20px; z-index: 1000; overflow-y: auto; flex-shrink: 0; width: var(--side-full); background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border-right: 1px solid rgba(255,255,255,0.15); transition: background 0.3s ease; position: relative; }
             #bottom-nav { display: none; } .desktop-carousel-container { display: flex; } .mobile-promo-feed { display: none; } .shop-header-logo { display: none; } .shop-header-container { margin: 0 0 20px 0; display: block; text-align: left; }
@@ -50,20 +49,19 @@
             .shop-divider { border: none; height: 1px; background: rgba(255, 255, 255, 0.3); margin-bottom: 20px; width: 100%; display: block; }
         }
 
-        @media (hover: none), (pointer: coarse), (max-width: 1024px) {
+        @media (max-width: 1024px) {
             body { display: flex; flex-direction: column; overflow: hidden; height: 100dvh; } #sidebar { display: none; } #main-content { flex: 1; padding: 10px 15px; height: auto; overflow-y: auto; overflow-x: hidden; } .mobile-only-flex { display: flex !important; align-items: center; justify-content: center; }
-            #bottom-nav { display: flex; flex-direction: row; justify-content: flex-start !important; align-items: center; flex-shrink: 0; position: relative; width: 100%; height: 75px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15); padding-bottom: env(safe-area-inset-bottom); z-index: 1000; overflow-x: auto !important; overflow-y: hidden !important; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+            #bottom-nav { display: flex; flex-direction: row; justify-content: flex-start !important; align-items: center; flex-shrink: 0; position: relative; width: 100%; height: 75px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-top: 1px solid rgba(255, 255, 255, 0.15); padding-bottom: env(safe-area-inset-bottom); z-index: 1000; overflow-x: auto !important; overflow-y: hidden !important; white-space: nowrap; -webkit-overflow-scrolling: touch; pointer-events: auto;}
             #bottom-nav::-webkit-scrollbar { display: none; }
             .bnav-item { flex: 0 0 auto !important; min-width: 75px; text-align: center; color: var(--dynamic-text-color); opacity: 0.6; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative; padding: 0 10px;} .bnav-item span { font-size: 20px; display: block; margin-bottom: 2px; } .bnav-item.active { color: var(--theme-accent); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
             .shop-header-container { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 15px; padding: 8px 12px; margin: 0 0 15px 0; border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .shop-header-logo { width: 35px; flex-shrink: 0; } .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); } .shop-header-title { font-size: 1.2rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; } .shop-divider { display: none; }
             .desktop-carousel-container { display: none !important; } .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 500px; margin: 0 auto; }
             .menu-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; } .menu-card { padding: 10px 6px !important; border-radius: 12px !important; background: rgba(255, 255, 255, 0.95) !important; color: #333 !important; border: 1px solid rgba(0,0,0,0.05) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; } .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; } .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; } .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;} .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
             
-            /* Responsive fixes for heights to remove empty bottom space */
             #admin-user-hub, #admin-edit-hub, #details-hub, #settings-hub { height: 90vh !important; max-height: 90vh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
             #about-hub, #guide-hub, #receipt-hub, #cart-checkout-hub { height: auto !important; max-height: 90vh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
 
-            .admin-left-col, .admin-right-col { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 20px !important; flex: none !important; } .admin-canva-chat-box { min-height: 250px !important; height: 250px !important; margin-bottom: 15px !important; flex: none !important; } #admin-user-orders { min-height: 200px !important; height: auto !important; overflow-y: visible !important; display: flex !important; flex-direction: column !important; flex: none !important;} .admin-canva-order-card { min-width: 100% !important; max-width: 100% !important; } .admin-divider { display: none !important; } .canva-details-body { display: flex !important; flex-direction: column !important; overflow: visible !important; height: auto !important; margin-top: 20px !important; } .canva-details-left, .canva-details-right { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 25px !important; } .canva-details-image-wrap { height: 250px !important; min-height: 250px !important; margin-bottom: 15px !important; } .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 0 !important; min-width: 0 !important; display: flex !important; margin-bottom: 15px !important;} .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; color: var(--dynamic-text-color) !important; opacity: 0.8; width: auto !important;} .settings-tab-btn.active { opacity: 1; font-weight: bold; } .settings-content { padding: 0 !important; overflow: visible !important; display: block !important; height: auto !important; } .theme-preview-box { grid-column: span 1 !important; } .os-card { padding: 15px !important; margin-bottom: 15px !important; }
+            .admin-left-col, .admin-right-col { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 20px !important; flex: none !important; } .admin-canva-chat-box { min-height: 250px !important; height: 250px !important; margin-bottom: 15px !important; flex: none !important; } #admin-user-orders { min-height: 200px !important; height: auto !important; overflow-y: visible !important; display: flex !important; flex-direction: column !important; flex: none !important;} .admin-canva-order-card { min-width: 100% !important; max-width: 100% !important; } .admin-divider { display: none !important; } .canva-details-body { display: flex !important; flex-direction: column !important; overflow: visible !important; height: auto !important; margin-top: 10px !important; } .canva-details-left { width: 100% !important; flex: none !important; } .canva-details-right { width: 100% !important; padding: 0 !important; flex: none !important; margin-top: 10px !important; } #details-image-container { width: 100% !important; height: auto !important; aspect-ratio: 1 / 1 !important; min-height: unset !important; } .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 0 !important; min-width: 0 !important; display: flex !important; margin-bottom: 15px !important;} .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; color: var(--dynamic-text-color) !important; opacity: 0.8; width: auto !important;} .settings-tab-btn.active { opacity: 1; font-weight: bold; } .settings-content { padding: 0 !important; overflow: visible !important; display: block !important; height: auto !important; } .theme-preview-box { grid-column: span 1 !important; } .os-card { padding: 15px !important; margin-bottom: 15px !important; }
         }
 
         .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; pointer-events: none; } 
@@ -76,7 +74,7 @@
         .nav-badge { position: absolute; top: 5px; right: 5px; background: #ff3b30; color: white; border-radius: 50%; font-size: 10px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); } 
         .user-badge { display: inline-flex; align-items: center; justify-content: center; background: #ff3b30; color: white; border-radius: 10px; padding: 2px 8px; font-size: 11px; font-weight: bold; margin-left: 10px; } .order-badge { background: #ff9500; } 
         
-        #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; z-index: 10; scroll-behavior: smooth; padding: 15px 30px; } 
+        #main-content { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; z-index: 10; scroll-behavior: smooth; padding: 15px 30px; pointer-events: auto;} 
         
         .view-section { display: none; animation: fadeIn 0.4s var(--liquid-ease); width: 100%; } 
         .view-section.active { display: block; } 
@@ -85,7 +83,6 @@
         .ui-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 99999 !important; padding: 15px; box-sizing: border-box; } 
         .ui-modal-overlay.active { display: flex; } 
         
-        /* Explicitly fixing Heights for modals */
         #messaging-hub { height: 85vh; max-height: 700px; }
         #about-hub, #receipt-hub, #credentials-hub, #cart-checkout-hub, #guide-hub { height: auto; max-height: 85vh; }
 
@@ -153,9 +150,44 @@
         
         #admin-user-hub { background: var(--glass-bg) !important; backdrop-filter: var(--glass-blur) !important; display: flex !important; flex-direction: row; max-width: 850px !important; height: 550px !important; max-height: 90vh !important; border-radius: 30px !important; padding: 30px !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; gap: 20px; box-shadow: var(--apple-glass-shadow) !important; position: relative !important; overflow: visible !important; transition: background 0.3s ease; } .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; overflow:hidden; min-height:0;} .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; min-height:0;} .admin-divider { width: 3px; background: var(--dynamic-text-color); border-radius: 2px; opacity: 0.3; flex-shrink: 0;} .admin-canva-header { font-size: 20px; color: var(--dynamic-text-color) !important; margin: 0; font-weight: 500; text-shadow: none; transition: color 0.3s ease; flex-shrink: 0;} .admin-canva-chat-box { flex: 1 1 auto; background: rgba(0,0,0,0.15) !important; border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; min-height: 150px; transition: background 0.3s ease; } #admin-chat-history .chat-img { max-width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; } .admin-canva-input { background: rgba(0,0,0,0.2) !important; border-radius: 25px; border: 1px solid rgba(255,255,255,0.15); padding: 15px 25px; color: var(--dynamic-text-color); font-size: 15px; outline: none; width: 100%; box-sizing: border-box; flex-shrink:0; transition: background 0.3s ease;} .admin-canva-input::placeholder { color: var(--dynamic-text-color); opacity: 0.7; } .admin-canva-btn-row { display: flex; gap: 10px; flex-shrink:0; margin-top: 5px;} .admin-canva-btn { background: var(--theme-accent); color: white; border: none; border-radius: 25px; padding: 12px; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);} .admin-canva-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px);} .admin-canva-close { position: absolute !important; top: 15px !important; right: 15px !important; background: var(--theme-accent) !important; color: white !important; border: 2px solid white !important; width: 35px !important; height: 35px !important; border-radius: 50% !important; font-weight: bold !important; font-size: 18px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; z-index: 100 !important; transition: 0.2s !important; padding: 0 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.3); } .admin-canva-close:hover { transform: scale(1.1); background: var(--theme-btn-hover) !important; } .admin-canva-order-card { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: var(--dynamic-text-color) !important; position: relative; margin-bottom: 5px; align-items: center; flex-shrink: 0; transition: background 0.3s ease;} .admin-canva-order-img { width: 50px; height: 50px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;} .admin-canva-order-status { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.8); color: #000; padding: 4px 10px; border-radius: 15px; font-size: 9px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.2);} #admin-user-orders { flex: 1; overflow-y: auto; display:flex; flex-direction:column; }
         
-        #details-hub.canva-theme, #admin-edit-hub.canva-theme { background: var(--glass-bg) !important; backdrop-filter: var(--glass-blur) !important; border-radius: 30px !important; padding: 30px !important; border: 1px solid rgba(255,255,255,0.2) !important; box-shadow: var(--apple-glass-shadow) !important; display: flex !important; flex-direction: column !important; gap: 20px; max-width: 850px !important; position: relative !important; overflow: visible !important; transition: background 0.3s ease; } .canva-details-top { display: flex; flex-direction: column; align-items: flex-start; } .canva-details-title { font-size: 24px; font-weight: 800; color: var(--dynamic-text-color) !important; text-transform: uppercase; margin:0; text-shadow:none; } .canva-details-price { font-size: 18px; font-weight: bold; color: var(--dynamic-text-color) !important; margin-top:5px; text-shadow:none;} .canva-details-body { display: flex; gap: 30px; color: var(--dynamic-text-color); flex-direction: row; overflow: hidden;} .canva-details-left { flex: 1; display: flex; flex-direction: column; gap: 15px; } .canva-details-right { flex: 1.2; display: flex; flex-direction: column; overflow-y:auto; padding-right:5px;} .canva-details-image-wrap { width: 100%; height: 250px; border-radius: 30px; overflow: hidden; background: rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; display: flex; align-items: center; justify-content: center;} .canva-details-image-wrap img { width: 100%; height: 100%; object-fit: cover; } .canva-details-btn { background: var(--theme-accent); color: white; border: none; padding: 15px; border-radius: 25px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);} .canva-details-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px); } .canva-details-btn.secondary { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); } .canva-details-btn.secondary:hover { background: rgba(0,0,0,0.8); } .canva-input-field { background: rgba(255,255,255, 0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 15px; padding: 15px; width: 100%; color: var(--dynamic-text-color); font-size: 14px; box-sizing: border-box; margin-bottom: 15px; font-weight: bold;} .canva-input-field:focus { outline: 2px solid var(--theme-accent); background: rgba(255,255,255,0.25); } .canva-warning-box { background: rgba(255,255,255,0.15); color: var(--dynamic-text-color) !important; border: 1px solid rgba(255,255,255,0.3); padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.4; text-align: left; font-weight: 500;} .canva-topping-content { background: rgba(0,0,0,0.2); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; align-items: center; border: 3px solid transparent; transition: 0.2s; position:relative;} .topping-check:checked + .canva-topping-content { border-color: #fff; background: var(--theme-accent); } .canva-topping-img-box { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.2); border-radius: 10px; margin-bottom: 8px; overflow:hidden;} .canva-topping-label { color: var(--dynamic-text-color); font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; text-align:center;} 
-        .photo-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 1; transition: opacity 0.3s ease-in-out; } 
-        .wizard-step { display: none; animation: fadeIn 0.3s ease; } .wizard-step.active { display: block; } .qty-btn { background:transparent; border: none; padding:10px 15px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:18px;} .qty-btn:hover { background: rgba(0,0,0,0.05); }
+        #admin-edit-hub.canva-theme { background: var(--glass-bg) !important; backdrop-filter: var(--glass-blur) !important; border-radius: 30px !important; padding: 30px !important; border: 1px solid rgba(255,255,255,0.2) !important; box-shadow: var(--apple-glass-shadow) !important; display: flex !important; flex-direction: column !important; gap: 20px; max-width: 850px !important; position: relative !important; overflow: visible !important; transition: background 0.3s ease; } 
+
+        .canva-details-image-wrap { width: 100%; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 20px rgba(0,0,0,0.1); position:relative; display: flex; align-items: center; justify-content: center; flex: none; }
+
+        /* Specific Modal Overrides to match Canva Concept */
+        #details-hub.canva-theme {
+            background: #C2185B !important; 
+            backdrop-filter: none !important;
+            border-radius: 20px !important;
+            padding: 30px !important;
+            border: none !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 20px;
+            max-width: 900px !important;
+            width: 95vw !important;
+            max-height: 90vh !important;
+            overflow-y: auto !important;
+            position: relative !important;
+            margin: auto;
+            transition: background 0.3s ease;
+        }
+        
+        .topping-check:checked + .canva-topping-content {
+            border-color: #fff !important;
+            background: #e96b95 !important;
+        }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator,
+        input[type="time"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        .canva-details-top { display: flex; flex-direction: column; align-items: flex-start; } .canva-details-title { font-size: 24px; font-weight: 800; color: var(--dynamic-text-color) !important; text-transform: uppercase; margin:0; text-shadow:none; } .canva-details-price { font-size: 18px; font-weight: bold; color: var(--dynamic-text-color) !important; margin-top:5px; text-shadow:none;} 
+        .canva-details-btn { background: var(--theme-accent); color: white; border: none; padding: 15px; border-radius: 25px; font-weight: bold; cursor: pointer; text-align: center; font-size: 14px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);} .canva-details-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px); } .canva-details-btn.secondary { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); } .canva-details-btn.secondary:hover { background: rgba(0,0,0,0.8); } .canva-input-field { background: rgba(255,255,255, 0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 15px; padding: 15px; width: 100%; color: var(--dynamic-text-color); font-size: 14px; box-sizing: border-box; margin-bottom: 15px; font-weight: bold;} .canva-input-field:focus { outline: 2px solid var(--theme-accent); background: rgba(255,255,255,0.25); } .canva-warning-box { background: rgba(255,255,255,0.15); color: var(--dynamic-text-color) !important; border: 1px solid rgba(255,255,255,0.3); padding: 15px; border-radius: 15px; font-size: 13px; line-height: 1.4; text-align: left; font-weight: 500;} 
+        .qty-btn { background:transparent; border: none; padding:10px 15px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:18px;} .qty-btn:hover { background: rgba(0,0,0,0.05); }
 
         .auth-nav { display: flex; width: 100%; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; flex-shrink: 0; } .auth-tab { flex: 1; text-align: center; padding: 12px 5px; font-size: 14px; font-weight: bold; color: var(--dynamic-text-color); opacity: 0.6; background: transparent; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; } .auth-tab.active { color: var(--dynamic-text-color); opacity: 1; border-bottom: 3px solid var(--theme-accent); text-shadow: 0 0 10px var(--theme-accent); } .auth-pane { display: none; width: 100%; animation: fadeIn 0.3s ease; text-align: left; } .auth-pane.active { display: block; }
 
@@ -172,7 +204,6 @@
 <body>
     <div class="wallpaper-layer" id="main-wallpaper"></div>
     <div class="wallpaper-pattern"></div>
-    <div class="glass-noise" id="bg-shimmer"></div>
     
     <div id="sidebar">
         <div class="front-screen-logo">
@@ -235,7 +266,7 @@
         
         <div id="orders-view" class="view-section">
             <div class="orders-header-card"><h2 id="orders-view-title" style="margin: 0 0 5px 0; color: var(--dynamic-text-color);">Your Order History</h2><p id="orders-view-desc" style="color: var(--dynamic-text-color); opacity: 0.9; margin: 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p></div>
-            <button type="button" class="os-btn-primary user-only-nav mobile-only-flex" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: bold; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="openMessaging()">💬 Message Owner<div id="inline-badge-chat" class="nav-badge" style="display:none; position:relative; top:0; right:0; margin-left:10px;">0</div></button>
+            <button type="button" class="os-btn-primary user-only-nav mobile-only-flex" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: bold; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="openMessaging()">💬 Message<div id="inline-badge-chat" class="nav-badge" style="display:none; position:relative; top:0; right:0; margin-left:10px;">0</div></button>
             <div id="orders-list"></div>
             <div id="admin-orders-list" style="display:none;"></div>
         </div>
@@ -255,6 +286,58 @@
     <div class="ui-modal-overlay" id="admin-user-overlay"><div id="admin-user-hub"><button type="button" class="admin-canva-close" onclick="closeAdminUserModal()">×</button><div class="admin-left-col"><h2 class="admin-canva-header" style="margin-bottom: 0;">Messages</h2><div id="admin-user-phone" style="color: var(--dynamic-text-color); opacity:0.8; font-size: 14px; margin-bottom: 10px; font-weight: bold; flex-shrink:0;">CUSTOMER NUMBER<br>#N/A</div><div class="admin-canva-chat-box chat-history" id="admin-chat-history"></div><div class="admin-canva-btn-row"><input type="text" id="admin-chat-text-input" class="admin-canva-input" placeholder="Type Message To User" onkeypress="handleKeyPress(event, 'owner')"><label class="admin-canva-btn" style="display:flex; align-items:center; justify-content:center; margin:0; color: white; width:auto; padding: 12px 15px; flex:none;">📷 <input type="file" id="admin-chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'owner')"></label><button type="button" class="admin-canva-btn" style="color: white; flex:none; width:auto; padding: 12px 20px;" onclick="sendChatMessage('owner')">SEND</button></div></div><div class="admin-divider"></div><div class="admin-right-col"><h2 class="admin-canva-header" id="admin-user-title">Managing: USER</h2><p style="margin:10px 0 5px 0; font-size: 16px; color: var(--dynamic-text-color); font-weight: 500; flex-shrink:0;">Active Orders</p><div id="admin-user-orders"></div></div></div></div>
     
     <div class="ui-modal-overlay" id="admin-edit-overlay"><div id="admin-edit-hub" class="canva-theme"><button type="button" class="admin-canva-close" onclick="closeAdminEdit()">×</button><div class="canva-details-top"><h2 class="canva-details-title" id="admin-edit-title-display">Edit Menu Item</h2></div><div class="canva-details-body" style="margin-top: 10px;"><div class="canva-details-left"><div class="canva-details-image-wrap" id="admin-preview-box"><img id="admin-edit-img-preview" alt="Preview" style="display:none; width: 100%; height: 100%; object-fit: cover;"></div><label style="font-size:13px; font-weight:bold; color:var(--dynamic-text-color); margin-top:10px; display:block;">Change Item Photo:</label><input type="file" id="admin-edit-img-file" class="canva-input-field" accept="image/*" onchange="handleAdminImageUpload(this)"><input type="hidden" id="admin-edit-img-base64"><input type="hidden" id="admin-edit-img-url"></div><div class="canva-details-right"><input type="hidden" id="admin-edit-id"><input type="hidden" id="admin-edit-type"><label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Name / Title:</label><input type="text" id="admin-edit-name" class="canva-input-field"><label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Price or Description:</label><input type="text" id="admin-edit-desc" class="canva-input-field"><div id="admin-toppings-section"><label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px;">Available Toppings:</label><div id="admin-toppings-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:15px; margin-top:5px;"></div><div style="background: rgba(255,255,255, 0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);"><label style="font-weight:bold; color:var(--dynamic-text-color); font-size:14px; margin-bottom:10px; display:block;">Add New Topping:</label><input type="text" id="new-topping-name" class="canva-input-field" placeholder="Topping Name" style="padding:10px; margin-bottom:10px;"><label style="font-size:12px; font-weight:bold; color:var(--dynamic-text-color);">Topping Photo:</label><input type="file" id="new-topping-file" class="canva-input-field" accept="image/*" style="padding:10px; margin-bottom:10px;"><button type="button" class="canva-details-btn secondary" style="width:100%; padding:10px; color: var(--dynamic-text-color);" onclick="addNewAdminTopping()">+ Add Topping</button></div></div><div style="display:flex; gap:10px; margin-top:20px;"><button type="button" class="canva-details-btn" style="flex:2; color: white;" onclick="saveAdminEdit()">Save Changes</button><button type="button" class="canva-details-btn secondary" style="flex:1; color: var(--dynamic-text-color);" id="admin-delete-btn" onclick="deleteAdminEdit()">Delete</button></div></div></div></div></div>
+    
+    <div class="ui-modal-overlay" id="details-overlay">
+        <div id="details-hub" class="canva-theme">
+            <button type="button" class="admin-canva-close" onclick="closeDetails()" style="z-index: 10; top: 15px; right: 15px; background: transparent !important; border: 2px solid white !important; color: white !important; width: 35px; height: 35px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; padding: 0;">×</button>
+            <div class="canva-details-body" style="display: flex; gap: 30px; margin-top: 0;">
+                <div class="canva-details-left" style="flex: 1; display: flex; flex-direction: column;">
+                    <h2 class="canva-details-title" id="details-title" style="font-size: 32px; font-weight: 900; color: white !important; margin: 0 0 5px 0;">DARK FOREST</h2>
+                    <p class="canva-details-price" id="details-price" style="font-size: 20px; font-weight: bold; color: white !important; margin: 0 0 20px 0;">₱500.00</p>
+                    <div class="canva-details-image-wrap" id="details-image-container" style="width: 100%; aspect-ratio: 1 / 1; border-radius: 20px; overflow: hidden; margin-bottom: 0; flex: none;">
+                        </div>
+                    <button type="button" style="background: transparent; border: none; color: white; font-weight: bold; font-size: 14px; margin-top: 15px; width: 100%; cursor: pointer;" onclick="closeDetails()">← Go Back</button>
+                </div>
+                <div class="canva-details-right" style="flex: 1.2; padding: 0; display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h3 style="color:white; font-size:18px; margin:0; font-weight: 800;">Select your Quantity:</h3>
+                        <div style="display:flex; align-items:center; background:#D84B7B; border-radius:25px; overflow:hidden; padding: 2px 10px;">
+                            <button type="button" class="qty-btn" style="padding: 5px 15px; font-size: 20px; color: white;" onclick="adjQty(-1)">-</button>
+                            <input type="number" id="order-quantity" value="1" min="1" max="99" style="width:40px; border:none; background:transparent; text-align:center; font-weight:bold; color:white; outline:none; font-size:18px;" readonly>
+                            <button type="button" class="qty-btn" style="padding: 5px 15px; font-size: 20px; color: white;" onclick="adjQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="color:white; font-size:18px; margin:0 0 15px 0; font-weight: 800;">Available Toppings:</h3>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;" id="wizard-toppings-grid"></div>
+                    </div>
+
+                    <div>
+                        <h3 style="color:white; font-size:18px; margin:0 0 15px 0; font-weight: 800;">Pickup/Delivery Details:</h3>
+                        <div style="display:flex; gap:15px;">
+                            <input type="date" id="order-date" class="canva-input-field" style="margin-bottom:0; flex:1; background: #D84B7B !important; border-radius: 12px; border: none; color: white !important; padding: 15px;">
+                            <input type="time" id="order-time" class="canva-input-field" style="margin-bottom:0; flex:1; background: #D84B7B !important; border-radius: 12px; border: none; color: white !important; padding: 15px;">
+                        </div>
+                    </div>
+
+                    <div style="background: #7A0F3D; border-radius: 15px; padding: 20px; display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+                        <h3 style="color:white; font-size:20px; margin:0; font-weight: 800;">Total Payment:</h3>
+                        <span id="details-total-price" style="font-size: 32px; font-weight: 900; color: white; text-shadow: none;">₱0.00</span>
+                    </div>
+
+                    <div style="display:flex; gap:15px; justify-content:center; margin-top: 10px;" id="auth-order-actions">
+                        <button type="button" class="submit-btn" style="flex:1; color: white; font-size: 16px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); box-shadow: none;" onclick="processOrder('cart')">Add to Cart</button>
+                        <button type="button" class="submit-btn" style="flex:1; color: #C2185B; background: white; font-size: 16px; border-radius: 12px; box-shadow: none;" onclick="processOrder('buy')">Buy Now</button>
+                    </div>
+                    <div style="display:none; gap:15px; justify-content:center; margin-top: 10px;" id="anon-order-actions">
+                        <button type="button" class="submit-btn" style="width:100%; color: #C2185B; background: white; border-radius: 12px;" onclick="promptLoginFromOrder()">Login to Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="ui-modal-overlay" id="cart-checkout-overlay"><div id="cart-checkout-hub"><button type="button" class="close-btn" onclick="closeCartCheckout()">×</button><h2 class="modal-title" id="cart-co-title" style="color: var(--dynamic-text-color); flex-shrink: 0;">Checkout Item</h2><div style="display: flex; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; align-items: center; flex-shrink: 0;"><div class="order-img-thumb" id="cart-co-img" style="width: 70px; height: 70px; font-size: 2.5em;"></div><div style="color: var(--dynamic-text-color);"><h3 id="cart-co-name" style="margin: 0 0 5px 0; color: var(--dynamic-text-color); text-shadow:none;"></h3><p id="cart-co-price" style="color: var(--theme-accent); font-weight: bold; margin: 0 0 5px 0;"></p><small id="cart-co-toppings" style="opacity: 0.8;"></small></div></div><div style="overflow-y: auto; flex: 1; padding-right: 5px;"><label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Pickup/Delivery Date:</label><input type="date" id="cart-co-date" class="input-field"><label style="font-size: 13px; margin-bottom: 5px; display: block; color: var(--dynamic-text-color);">Change Time:</label><input type="time" id="cart-co-time" class="input-field"><div class="warning-box"><strong>⚠️ Warning:</strong> Clicking Buy Now will finalize this order and send it to the kitchen. Proceed?</div></div><div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; margin-top: 10px;"><button type="button" class="submit-btn" style="color: white;" onclick="checkoutCartItem()">🛍️ Buy Now</button><button type="button" class="os-btn os-btn-secondary" onclick="closeCartCheckout()">Cancel</button></div></div></div>
     
@@ -419,10 +502,13 @@
 
             if (!rMenu.error && rMenu.data && rMenu.data.length > 0) { 
                 menuItems = rMenu.data; safeStorage.set('la_prinsesa_menu', JSON.stringify(menuItems)); 
+                renderMenu();
             } else if (rMenu.error && !hasMenuCache) { 
-                menuItems = [{ id: 1, name: "Database Offline Cupcake", price: "₱0.00", img: "https://ui-avatars.com/api/?name=Offline&background=c2185b&color=fff", toppings: "[]" }];
+                menuItems = []; 
+                renderMenu();
+            } else {
+                renderMenu();
             }
-            renderMenu();
             
             if (!rPromos.error && rPromos.data && rPromos.data.length > 0) { 
                 homePromos = rPromos.data; safeStorage.set('la_prinsesa_promos', JSON.stringify(homePromos)); 
@@ -465,7 +551,6 @@
                 if(localUserCache) {
                     let cUser = JSON.parse(localUserCache);
                     if(cUser.username === userInput && cUser.password === passInput) {
-                        alert("Database unreachable. Logging in securely via local cache.");
                         currentUser = cUser;
                         finishLogin();
                         return true;
@@ -483,7 +568,12 @@
                 const { data: users, error } = await _db.from('users').select('*');
                 if (error) throw error;
                 const data = (users || []).find(u => u.username === userInput && u.password === passInput);
-                if (data) { currentUser = data; finishLogin(); } else { alert("Invalid Username or Password."); }
+                if (data) { 
+                    currentUser = data; 
+                    finishLogin(); 
+                } else { 
+                    if(!runLocalFallback()) alert("Invalid Username or Password."); 
+                }
             } catch (e) {
                 if(!runLocalFallback()) alert("Database Connection Failed. Running offline without match.");
             }
@@ -511,7 +601,7 @@
                     const { error: insertErr } = await _db.from('users').insert([newUser]);
                     if(insertErr) throw insertErr;
                 } catch (e) {
-                    alert("Warning: Database offline. Registered locally to device cache.");
+                    console.warn("DB offline insert bypass.");
                 }
             }
 
@@ -563,18 +653,22 @@
             safeStorage.set('la_prinsesa_font_size', val);
         }
 
-        function adjQty(delta) { const input = document.getElementById('order-quantity'); let val = parseInt(input.value) + delta; if(val < 1) val = 1; if(val > 99) val = 99; input.value = val; }
-
-        function updateDetailsWizardUI() {
-            document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active')); document.getElementById(`wizard-step-${currentWStepNum}`).classList.add('active');
-            const btnBack = document.getElementById('btn-go-back'); const btnNext = document.getElementById('btn-next-step');
-            if(currentWStepNum === 1) { btnBack.style.display = 'none'; btnNext.style.display = 'block'; btnNext.innerText = 'NEXT: TOPPINGS';
-            } else if(currentWStepNum === 2) { btnBack.style.display = 'block'; btnNext.style.display = 'block'; btnNext.innerText = 'NEXT: REVIEW';
-            } else if(currentWStepNum === 3) { btnBack.style.display = 'block'; btnNext.style.display = 'none'; if (currentUser) { document.getElementById('auth-order-actions').style.display = 'flex'; document.getElementById('anon-order-actions').style.display = 'none'; document.getElementById('auth-warning-box').style.display = 'block'; } else { document.getElementById('auth-order-actions').style.display = 'none'; document.getElementById('anon-order-actions').style.display = 'flex'; document.getElementById('auth-warning-box').style.display = 'none'; } }
+        function adjQty(delta) { 
+            const input = document.getElementById('order-quantity'); 
+            let val = parseInt(input.value) + delta; 
+            if(val < 1) val = 1; 
+            if(val > 99) val = 99; 
+            input.value = val; 
+            updateTotal();
         }
 
-        function nextWStep() { if(currentWStepNum < 3) { currentWStepNum++; updateDetailsWizardUI(); } }
-        function prevWStep() { if(currentWStepNum > 1) { currentWStepNum--; updateDetailsWizardUI(); } }
+        function updateTotal() {
+            let numPrice = parseFloat(currentPriceToOrder.replace(/[^0-9.-]+/g,""));
+            if(isNaN(numPrice)) numPrice = 0;
+            let qty = parseInt(document.getElementById('order-quantity').value) || 1;
+            document.getElementById('details-total-price').innerText = '₱' + (numPrice * qty).toFixed(2);
+        }
+
         function promptLoginFromOrder() { closeDetails(); alert("Please login first to start customizing and ordering items."); openSettings(); switchSettingsNav('accounts'); }
 
         function openGuide(title, desc) { 
@@ -592,11 +686,31 @@
             if(!Array.isArray(currentItemToppings)) currentItemToppings = [];
             
             document.getElementById('details-title').innerText = item; document.getElementById('details-price').innerText = price;
-            const imgContainer = document.getElementById('details-image-container'); imgContainer.innerHTML = `<img src="${currentImgToOrder}" alt="${item}" class="photo-layer base-cupcake-photo" id="cupcake-base-layer">`;
+            const imgContainer = document.getElementById('details-image-container'); imgContainer.innerHTML = `<img src="${currentImgToOrder}" alt="${item}" class="photo-layer base-cupcake-photo" id="cupcake-base-layer" style="width: 100%; height: 100%; object-fit: cover; object-position: center; border-radius: 20px; display: block;">`;
+            
             const grid = document.getElementById('wizard-toppings-grid'); grid.innerHTML = '';
-            if(currentItemToppings.length === 0) { grid.innerHTML = '<p style="color:var(--dynamic-text-color); font-weight:bold;">No extra toppings available for this item.</p>'; } else { currentItemToppings.forEach(t => { let tName = typeof t === 'string' ? t : t.name; let tImg = typeof t === 'string' ? 'https://via.placeholder.com/200' : t.img; grid.innerHTML += `<label style="cursor:pointer;"><input type="checkbox" class="topping-check" value="${tName}" style="display:none;"><div class="canva-topping-content"><div class="canva-topping-img-box"><img src="${tImg}" style="width:100%;height:100%;object-fit:cover;"></div><div class="canva-topping-label">${tName}</div></div></label>`; }); }
+            if(currentItemToppings.length === 0) { 
+                grid.innerHTML = '<p style="color:white; font-weight:bold; font-size:12px; grid-column:1/-1;">No extra toppings available.</p>'; 
+            } else { 
+                currentItemToppings.forEach(t => { 
+                    let tName = typeof t === 'string' ? t : t.name; let tImg = typeof t === 'string' ? 'https://via.placeholder.com/200' : t.img; 
+                    grid.innerHTML += `<label style="cursor:pointer;"><input type="checkbox" class="topping-check" value="${tName}" style="display:none;" onchange="updateTotal()"><div class="canva-topping-content" style="background: #D84B7B; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; align-items: center; border: 2px solid transparent; transition: 0.2s;"><div class="canva-topping-img-box" style="width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden; margin-bottom: 8px;"><img src="${tImg}" style="width:100%; height:100%; object-fit:cover;"></div><div class="canva-topping-label" style="font-size: 9px; color: white; text-align: center; font-weight: 800; line-height: 1.2;">${tName.toUpperCase()}</div></div></label>`; 
+                }); 
+            }
+            
             const now = new Date(); document.getElementById('order-date').value = now.toISOString().split('T')[0]; document.getElementById('order-time').value = now.toTimeString().substring(0, 5); document.getElementById('order-quantity').value = 1;
-            currentWStepNum = 1; updateDetailsWizardUI(); document.getElementById('details-overlay').classList.add('active');
+            
+            updateTotal();
+
+            if (currentUser) { 
+                document.getElementById('auth-order-actions').style.display = 'flex'; 
+                document.getElementById('anon-order-actions').style.display = 'none'; 
+            } else { 
+                document.getElementById('auth-order-actions').style.display = 'none'; 
+                document.getElementById('anon-order-actions').style.display = 'flex'; 
+            }
+
+            document.getElementById('details-overlay').classList.add('active');
         }
 
         function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
