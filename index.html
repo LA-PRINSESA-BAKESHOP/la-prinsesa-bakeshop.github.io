@@ -56,7 +56,7 @@
             #bottom-nav::-webkit-scrollbar { display: none; }
             .bnav-item { flex: 0 0 auto !important; min-width: 75px; text-align: center; color: var(--dynamic-text-color); opacity: 0.6; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative; padding: 0 10px;} .bnav-item span { font-size: 20px; display: block; margin-bottom: 2px; } .bnav-item.active { color: var(--theme-accent); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
             .shop-header-container { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 15px; padding: 8px 12px; margin: 0 0 15px 0; border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .shop-header-logo { width: 35px; flex-shrink: 0; } .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); } .shop-header-title { font-size: 1.2rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; } .shop-divider { display: none; }
-            .desktop-carousel-container { display: none !important; } .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 500px; margin: 0 auto; }
+            .desktop-carousel-container { display: none !important; } .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 600px; margin: 0 auto; }
             .menu-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; } .menu-card { padding: 10px 6px !important; border-radius: 12px !important; background: rgba(255, 255, 255, 0.95) !important; color: #333 !important; border: 1px solid rgba(0,0,0,0.05) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; } .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; } .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; } .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;} .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
             
             #admin-user-hub, #settings-hub { height: 90dvh !important; max-height: 90dvh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
@@ -131,9 +131,9 @@
         .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--theme-accent); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; overflow: hidden; transition: border-top-color 0.3s ease;} .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; } 
         .menu-price-pill { background: rgba(0,0,0,0.6); color: white; padding: 6px 18px; border-radius: 20px; font-size: 14px; font-weight: 800; z-index: 2; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); } .menu-price-pill::before { content: '🔒'; font-size: 12px; opacity: 0.7;} .menu-item-title { margin: 0; font-size: 1.1em; font-weight: 800; color: var(--dynamic-text-color); text-shadow: none; line-height: 1.4; } 
 
-        .desktop-carousel-container { width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); box-shadow: var(--apple-glass-shadow); display: flex; transition: background 0.3s ease; } .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; border-radius: 20px; } .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; } .desktop-carousel-slide { flex: 0 0 100%; position: relative; } .desktop-carousel-slide img { width: 100%; height: 300px; object-fit: cover; display: block; } .desktop-carousel-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 15px 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; font-weight: bold; font-size: 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.9); } 
+        .desktop-carousel-container { width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); box-shadow: var(--apple-glass-shadow); display: flex; transition: background 0.3s ease; } .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; border-radius: 20px; } .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; flex-direction: column; gap: 15px;} .desktop-carousel-slide { width: 100%; position: relative; border-radius: 20px; overflow: hidden; } .desktop-carousel-slide img { width: 100%; height: 350px; object-fit: cover; display: block; } .desktop-carousel-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; } 
 
-        .promo-card { flex-shrink: 0; position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .promo-image { width: 100%; height: 160px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); } .promo-details { padding: 15px; } .promo-details h3 { margin: 0 0 8px 0; font-size: 16px; color: var(--dynamic-text-color); text-shadow: none; } .promo-details p { margin: 0 0 15px 0; font-size: 13px; color: var(--dynamic-text-color); opacity: 0.85; line-height: 1.5; } .promo-action { display: inline-block; padding: 8px 15px; background: var(--theme-accent); color: white; font-weight: bold; border-radius: 10px; font-size: 13px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s ease;} .promo-action:hover { background: var(--theme-btn-hover); }
+        .promo-card { flex-shrink: 0; position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .promo-image { width: 100%; height: 200px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); } .promo-details { padding: 15px; display: flex; flex-direction: column; } .promo-details h3 { margin: 0 0 8px 0; font-size: 18px; color: var(--dynamic-text-color); text-shadow: none; font-weight: 900; text-transform: uppercase; } .promo-details p { margin: 0 0 15px 0; font-size: 14px; color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.5; } .promo-action { display: inline-block; padding: 10px 20px; background: var(--theme-accent); color: white; font-weight: bold; border-radius: 12px; font-size: 14px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s ease; align-self: flex-start;} .promo-action:hover { background: var(--theme-btn-hover); }
 
         .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; } 
         #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 800px; } 
@@ -188,7 +188,7 @@
 
         /* Admin UI */
         .admin-edit-btn { position: absolute; top: 10px; right: 10px; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 6px 12px; cursor: pointer; z-index: 10; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-size: 12px; font-weight: 700; transition: 0.2s; } .admin-edit-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px); border-color: white;} 
-        .admin-edit-promo-btn { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; width: 32px; height: 32px; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 10; font-size: 14px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3); } .admin-edit-promo-btn:hover { background: var(--theme-accent); transform: scale(1.1); }
+        .admin-edit-promo-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 50%; width: 36px; height: 36px; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 100; font-size: 16px; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); } .admin-edit-promo-btn:hover { background: var(--theme-accent); transform: scale(1.1); border-color: white; }
         .admin-add-card { background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; flex-direction: column; color: var(--dynamic-text-color); opacity: 0.8; cursor: pointer; transition: 0.3s; border-radius: 20px;} .admin-add-card:hover { background: rgba(255,255,255,0.2); opacity: 1; }
         
         #admin-user-hub { background: var(--glass-bg) !important; backdrop-filter: var(--glass-blur) !important; display: flex !important; flex-direction: row; max-width: 850px !important; height: 550px !important; max-height: 90vh !important; border-radius: 30px !important; padding: 30px !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; gap: 20px; box-shadow: var(--apple-glass-shadow) !important; position: relative !important; overflow: visible !important; transition: background 0.3s ease; } .admin-left-col { flex: 1.1; display: flex; flex-direction: column; gap: 15px; overflow:hidden; min-height:0;} .admin-right-col { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow: hidden; min-height:0;} .admin-divider { width: 3px; background: var(--dynamic-text-color); border-radius: 2px; opacity: 0.3; flex-shrink: 0;} .admin-canva-header { font-size: 20px; color: var(--dynamic-text-color) !important; margin: 0; font-weight: 500; text-shadow: none; transition: color 0.3s ease; flex-shrink: 0;} .admin-canva-chat-box { flex: 1 1 auto; background: rgba(0,0,0,0.15) !important; border-radius: 25px; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; min-height: 150px; transition: background 0.3s ease; } #admin-chat-history .chat-img { max-width: 100%; max-height: 140px; object-fit: cover; border-radius: 12px; } .admin-canva-input { background: rgba(0,0,0,0.2) !important; border-radius: 25px; border: 1px solid rgba(255,255,255,0.15); padding: 15px 25px; color: var(--dynamic-text-color); font-size: 15px; outline: none; width: 100%; box-sizing: border-box; flex-shrink:0; transition: background 0.3s ease;} .admin-canva-input::placeholder { color: var(--dynamic-text-color); opacity: 0.7; } .admin-canva-btn-row { display: flex; gap: 10px; flex-shrink:0; margin-top: 5px;} .admin-canva-btn { background: var(--theme-accent); color: white; border: none; border-radius: 25px; padding: 12px; font-weight: bold; cursor: pointer; text-align: center; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);} .admin-canva-btn:hover { background: var(--theme-btn-hover); transform: translateY(-2px);} .admin-canva-close { position: absolute !important; top: 15px !important; right: 15px !important; background: var(--theme-accent) !important; color: white !important; border: 2px solid white !important; width: 35px !important; height: 35px !important; border-radius: 50% !important; font-weight: bold !important; font-size: 18px !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; z-index: 100 !important; transition: 0.2s !important; padding: 0 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.3); } .admin-canva-close:hover { transform: scale(1.1); background: var(--theme-btn-hover) !important; } .admin-canva-order-card { background: rgba(0,0,0,0.2) !important; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 15px; display: flex; gap: 15px; color: var(--dynamic-text-color) !important; position: relative; margin-bottom: 5px; align-items: center; flex-shrink: 0; transition: background 0.3s ease;} .admin-canva-order-img { width: 50px; height: 50px; border-radius: 12px; background: white; object-fit: cover; flex-shrink: 0;} .admin-canva-order-status { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.8); color: #000; padding: 4px 10px; border-radius: 15px; font-size: 9px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.2);} #admin-user-orders { flex: 1; overflow-y: auto; display:flex; flex-direction:column; }
@@ -429,10 +429,10 @@
                 <path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/>
             </svg>
         </div>
-        <button type="button" class="sidebar-btn active" id="desk-nav-home" onclick="switchMainView('home', this)"><span class="icon">🏠</span><span class="text">Home</span></button>
-        <button type="button" class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu', this)"><span class="icon">📜</span><span class="text">Menu</span></button>
-        <button type="button" class="sidebar-btn user-only-nav" id="desk-nav-cart" onclick="switchMainView('cart', this)"><span class="icon">🛒</span><span class="text">Cart</span><div id="desk-badge-cart" class="nav-badge" style="display:none;">0</div></button>
-        <button type="button" class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders', this)"><span class="icon">📦</span><span class="text">Orders</span><div id="desk-badge-orders" class="nav-badge" style="display:none;">0</div></button>
+        <button type="button" class="sidebar-btn active" id="desk-nav-home" onclick="switchMainView('home')"><span class="icon">🏠</span><span class="text">Home</span></button>
+        <button type="button" class="sidebar-btn" id="desk-nav-menu" onclick="switchMainView('menu')"><span class="icon">📜</span><span class="text">Menu</span></button>
+        <button type="button" class="sidebar-btn user-only-nav" id="desk-nav-cart" onclick="switchMainView('cart')"><span class="icon">🛒</span><span class="text">Cart</span><div id="desk-badge-cart" class="nav-badge" style="display:none;">0</div></button>
+        <button type="button" class="sidebar-btn" id="desk-nav-orders" onclick="switchMainView('orders')"><span class="icon">📦</span><span class="text">Orders</span><div id="desk-badge-orders" class="nav-badge" style="display:none;">0</div></button>
         <button type="button" class="sidebar-btn user-only-nav" onclick="openMessaging()"><span class="icon">💬</span><span class="text">Message</span><div id="desk-badge-chat" class="nav-badge" style="display:none;">0</div></button>
         <button type="button" class="sidebar-btn" onclick="openAbout()"><span class="icon">ℹ️</span><span class="text">About Us</span></button>
         <button type="button" class="sidebar-btn" onclick="openSettings()"><span class="icon">⚙️</span><span class="text">Settings & Auth</span></button>
@@ -475,10 +475,10 @@
     </div>
     
     <div id="bottom-nav">
-        <div class="bnav-item active" id="mob-nav-home" onclick="switchMainView('home', this)"><span>🏠</span><span class="nav-text">Home</span></div>
-        <div class="bnav-item" id="mob-nav-menu" onclick="switchMainView('menu', this)"><span>📜</span><span class="nav-text">Menu</span></div>
-        <div class="bnav-item user-only-nav" id="mob-nav-cart" onclick="switchMainView('cart', this)"><span>🛒</span><span class="nav-text">Cart</span><div id="mob-badge-cart" class="nav-badge" style="display:none;">0</div></div>
-        <div class="bnav-item" id="mob-nav-orders" onclick="switchMainView('orders', this)"><span>📦</span><span class="nav-text">Orders</span><div id="mob-badge-orders" class="nav-badge" style="display:none;">0</div></div>
+        <div class="bnav-item active" id="mob-nav-home" onclick="switchMainView('home')"><span>🏠</span><span class="nav-text">Home</span></div>
+        <div class="bnav-item" id="mob-nav-menu" onclick="switchMainView('menu')"><span>📜</span><span class="nav-text">Menu</span></div>
+        <div class="bnav-item user-only-nav" id="mob-nav-cart" onclick="switchMainView('cart')"><span>🛒</span><span class="nav-text">Cart</span><div id="mob-badge-cart" class="nav-badge" style="display:none;">0</div></div>
+        <div class="bnav-item" id="mob-nav-orders" onclick="switchMainView('orders')"><span>📦</span><span class="nav-text">Orders</span><div id="mob-badge-orders" class="nav-badge" style="display:none;">0</div></div>
         <div class="bnav-item" onclick="openAbout()"><span>ℹ️</span><span class="nav-text">About Us</span></div>
         <div class="bnav-item" onclick="openSettings()"><span>⚙️</span><span class="nav-text">More</span></div>
     </div>
@@ -876,7 +876,11 @@
             try { const cMenu = safeStorage.get('la_prinsesa_menu'); if (cMenu && cMenu !== '[]') { menuItems = JSON.parse(cMenu); renderMenu(); hasMenuCache = true; } const cPromos = safeStorage.get('la_prinsesa_promos'); if (cPromos && cPromos !== '[]') { homePromos = JSON.parse(cPromos); renderHomePromos(); renderDesktopCarousel(); hasPromoCache = true; } } catch(e){}
             
             if(!hasMenuCache) document.getElementById('product-grid').innerHTML = '<div style="width:100%; text-align:center; grid-column: 1/-1; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live menu...</div>';
-            if(!hasPromoCache) document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
+            if(!hasPromoCache) {
+                 document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
+                 const track = document.getElementById('desktop-carousel-track');
+                 if(track) track.innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
+            }
 
             const [rMenu, rPromos] = await Promise.all([fetchDataRobust('menu'), fetchDataRobust('promos')]);
 
@@ -1508,7 +1512,34 @@
             await renderAdminOrders();
         }
         
-        function renderDesktopCarousel() { const track = document.getElementById('desktop-carousel-track'); if (!track) return; track.innerHTML = ''; const isAdmin = currentUser && currentUser.role === 'Administrator'; homePromos.forEach(p => { const slide = document.createElement('div'); slide.className = 'desktop-carousel-slide'; slide.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img src="${p.img}" alt="${p.title}"><div class="desktop-carousel-text" style="color: #fff;">${p.title} &bull; ${p.desc}</div>`; track.appendChild(slide); }); }
+        function renderDesktopCarousel() { 
+            const track = document.getElementById('desktop-carousel-track'); 
+            if (!track) return; 
+            track.innerHTML = ''; 
+            
+            const isAdmin = currentUser && currentUser.role === 'Administrator'; 
+            if (homePromos.length === 0) {
+                 track.innerHTML = '<div style="width:100%; text-align:center; padding: 40px; color:var(--dynamic-text-color); opacity: 0.6;">No active promos at the moment.</div>';
+                 return;
+            }
+
+            homePromos.forEach(p => { 
+                const slide = document.createElement('div'); 
+                slide.className = 'desktop-carousel-slide'; 
+                slide.innerHTML = `
+                    ${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex; position: absolute; top:10px; right:10px; z-index: 100;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}
+                    <img src="${p.img}" alt="${p.title}">
+                    <div class="desktop-carousel-text" style="color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: left;">
+                            <div style="font-size: 18px; font-weight: 900; text-transform: uppercase;">${p.title}</div>
+                            <div style="font-size: 14px; font-weight: normal; opacity: 0.9;">${p.desc}</div>
+                        </div>
+                        <button type="button" class="promo-action" style="margin-left: 15px;" onclick="switchMainView('menu')">View Menu →</button>
+                    </div>
+                `; 
+                track.appendChild(slide); 
+            }); 
+        }
 
         function renderMenu() {
             const grid = document.getElementById('product-grid'); 
@@ -1544,10 +1575,15 @@
                 addPromoBtn.style.display = isAdmin ? 'block' : 'none';
             }
 
+            if (homePromos.length === 0 && !isAdmin) {
+                feed.innerHTML = '<div style="width:100%; text-align:center; padding: 40px; color:var(--dynamic-text-color); opacity: 0.6;">No active promos at the moment.</div>';
+                return;
+            }
+
             homePromos.forEach(p => { 
                 const card = document.createElement('div'); 
                 card.className = 'promo-card'; 
-                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu', this)">View Menu →</button></div>`; 
+                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button></div>`; 
                 feed.appendChild(card); 
             });
         }
@@ -1560,22 +1596,10 @@
             document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active')); 
             document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active')); 
             
-            if (element && element.classList) {
-                element.classList.add('active');
-                let isDesktop = element.classList.contains('sidebar-btn');
-                if (isDesktop) {
-                    let mNav = document.getElementById('mob-nav-' + viewName);
-                    if (mNav) mNav.classList.add('active');
-                } else {
-                    let dNav = document.getElementById('desk-nav-' + viewName);
-                    if (dNav) dNav.classList.add('active');
-                }
-            } else {
-                let dNav = document.getElementById('desk-nav-' + viewName);
-                let mNav = document.getElementById('mob-nav-' + viewName);
-                if (dNav) dNav.classList.add('active');
-                if (mNav) mNav.classList.add('active');
-            }
+            let dNav = document.getElementById('desk-nav-' + viewName);
+            let mNav = document.getElementById('mob-nav-' + viewName);
+            if (dNav) dNav.classList.add('active');
+            if (mNav) mNav.classList.add('active');
         }
 
         function updateSettingsUI() {
@@ -1583,10 +1607,10 @@
                 document.getElementById('logged-out-view').style.display = 'none'; document.getElementById('logged-in-view').style.display = 'flex'; 
                 if (currentUser.photo_url) { document.getElementById('profile-photo-display').src = currentUser.photo_url; } else { document.getElementById('profile-photo-display').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`; }
                 document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname}`; document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'}`;
-                if (currentUser.role === 'Administrator') { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none'); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block'); document.getElementById('orders-view-title').innerText = "Store Operations"; document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'flex'; document.getElementById('orders-list').style.display = 'none'; document.getElementById('admin-scan-btn').style.display = 'block';
-                } else { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none';}
+                if (currentUser.role === 'Administrator') { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none'); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block'); document.getElementById('orders-view-title').innerText = "Store Operations"; document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'flex'; document.getElementById('orders-list').style.display = 'none'; document.getElementById('admin-scan-btn').style.display = 'block'; document.getElementById('past-orders-toggle-btn').style.display = 'none';
+                } else { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none'; document.getElementById('past-orders-toggle-btn').style.display = 'block'; }
             } else {
-                document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none';
+                document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none'; document.getElementById('past-orders-toggle-btn').style.display = 'block';
             }
         }
 
@@ -1694,14 +1718,22 @@
             if (type === 'menu') { 
                 const toppingsStr = JSON.stringify(currentAdminToppings); 
                 if (id === 'new') { 
-                    if (_db) { try { await _db.from('menu').insert([{ id: Date.now(), name: name, price: desc, img: img, toppings: toppingsStr }]); } catch(e){} }
+                    const newItem = { id: Date.now(), name: name, price: desc, img: img, toppings: toppingsStr };
+                    menuItems.push(newItem); renderMenu(); // Optimistic UI
+                    if (_db) { try { await _db.from('menu').insert([newItem]); } catch(e){} }
                 } else { 
+                    const mIdx = menuItems.findIndex(m => m.id == id);
+                    if(mIdx > -1) { menuItems[mIdx] = { ...menuItems[mIdx], name: name, price: desc, img: img, toppings: toppingsStr }; renderMenu(); }
                     if (_db) { try { await _db.from('menu').update({ name: name, price: desc, img: img, toppings: toppingsStr }).eq('id', id); } catch(e){} }
                 } 
             } else if (type === 'home') { 
                 if (id === 'new') { 
-                    if (_db) { try { await _db.from('promos').insert([{ id: Date.now(), title: name, desc: desc, img: img }]); } catch(e){} }
+                    const newPromo = { id: Date.now(), title: name, desc: desc, img: img };
+                    homePromos.push(newPromo); renderHomePromos(); renderDesktopCarousel(); // Optimistic UI
+                    if (_db) { try { await _db.from('promos').insert([newPromo]); } catch(e){} }
                 } else { 
+                    const pIdx = homePromos.findIndex(p => p.id == id);
+                    if(pIdx > -1) { homePromos[pIdx] = { ...homePromos[pIdx], title: name, desc: desc, img: img }; renderHomePromos(); renderDesktopCarousel(); }
                     if (_db) { try { await _db.from('promos').update({ title: name, desc: desc, img: img }).eq('id', id); } catch(e){} }
                 } 
             }
@@ -1711,8 +1743,10 @@
         async function deleteAdminEdit() { 
             const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value; if(!confirm("Are you sure you want to delete this item?")) return; 
             if (type === 'menu') { 
+                menuItems = menuItems.filter(m => m.id != id); renderMenu(); // Optimistic UI
                 if (_db) { try { await _db.from('menu').delete().eq('id', id); } catch(e){} }
             } else if (type === 'home') { 
+                homePromos = homePromos.filter(p => p.id != id); renderHomePromos(); renderDesktopCarousel(); // Optimistic UI
                 if (_db) { try { await _db.from('promos').delete().eq('id', id); } catch(e){} }
             } 
             closeAdminEdit(); await loadMenuAndPromos(); 
