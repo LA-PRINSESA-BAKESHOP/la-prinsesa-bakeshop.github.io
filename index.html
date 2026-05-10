@@ -56,7 +56,7 @@
             #bottom-nav::-webkit-scrollbar { display: none; }
             .bnav-item { flex: 0 0 auto !important; min-width: 75px; text-align: center; color: var(--dynamic-text-color); opacity: 0.6; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.3s; position: relative; padding: 0 10px;} .bnav-item span { font-size: 20px; display: block; margin-bottom: 2px; } .bnav-item.active { color: var(--theme-accent); opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
             .shop-header-container { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 15px; padding: 8px 12px; margin: 0 0 15px 0; border: 1px solid rgba(255,255,255,0.2); box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .shop-header-logo { width: 35px; flex-shrink: 0; } .shop-header-logo svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); } .shop-header-title { font-size: 1.2rem; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); margin: 0; letter-spacing: 0.5px; } .shop-divider { display: none; }
-            .desktop-carousel-container { display: none !important; } .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 600px; margin: 0 auto; }
+            .desktop-carousel-container { display: none !important; } .mobile-promo-feed { display: flex !important; flex-direction: column; width: 100%; max-width: 100%; margin: 0 auto; }
             .menu-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; } .menu-card { padding: 10px 6px !important; border-radius: 12px !important; background: rgba(255, 255, 255, 0.95) !important; color: #333 !important; border: 1px solid rgba(0,0,0,0.05) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; } .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; } .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; } .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;} .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
             
             #admin-user-hub, #settings-hub { height: 90dvh !important; max-height: 90dvh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
@@ -98,6 +98,13 @@
             }
         }
 
+        /* Large devices specifically TVs/Large monitors */
+        @media (min-width: 1800px) {
+             .desktop-carousel-slide img {
+                  height: 500px !important;
+             }
+        }
+
         .front-screen-logo { width: 100%; margin-bottom: 30px; display: flex; justify-content: center; align-items: center; pointer-events: none; } 
         .front-screen-logo svg { width: 100%; height: auto; max-width: 240px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); } 
         
@@ -131,9 +138,9 @@
         .menu-image-preview { width: 100%; height: 120px; border-radius: 16px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-top: 4px solid var(--theme-accent); margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.6); font-size: 3em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1; overflow: hidden; transition: border-top-color 0.3s ease;} .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; } 
         .menu-price-pill { background: rgba(0,0,0,0.6); color: white; padding: 6px 18px; border-radius: 20px; font-size: 14px; font-weight: 800; z-index: 2; border: 1px solid rgba(255,255,255,0.15); margin-bottom: 15px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); } .menu-price-pill::before { content: '🔒'; font-size: 12px; opacity: 0.7;} .menu-item-title { margin: 0; font-size: 1.1em; font-weight: 800; color: var(--dynamic-text-color); text-shadow: none; line-height: 1.4; } 
 
-        .desktop-carousel-container { width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); box-shadow: var(--apple-glass-shadow); display: flex; transition: background 0.3s ease; } .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; border-radius: 20px; } .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; flex-direction: column; gap: 15px;} .desktop-carousel-slide { width: 100%; position: relative; border-radius: 20px; overflow: hidden; } .desktop-carousel-slide img { width: 100%; height: 350px; object-fit: cover; display: block; } .desktop-carousel-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; } 
+        .desktop-carousel-container { width: 100%; max-width: 100%; margin-bottom: 20px; border-radius: 20px; overflow: hidden; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); box-shadow: var(--apple-glass-shadow); display: flex; transition: background 0.3s ease; } .desktop-carousel-viewport { width: 100%; position: relative; overflow: hidden; border-radius: 20px; } .desktop-carousel-track { display: flex; width: 100%; transition: transform 0.5s ease; flex-direction: column; gap: 15px;} .desktop-carousel-slide { width: 100%; position: relative; border-radius: 20px; overflow: hidden; } .desktop-carousel-slide img { width: 100%; height: 350px; object-fit: cover; display: block; } .desktop-carousel-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; display: flex; justify-content: space-between; align-items: center;} 
 
-        .promo-card { flex-shrink: 0; position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .promo-image { width: 100%; height: 200px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); } .promo-details { padding: 15px; display: flex; flex-direction: column; } .promo-details h3 { margin: 0 0 8px 0; font-size: 18px; color: var(--dynamic-text-color); text-shadow: none; font-weight: 900; text-transform: uppercase; } .promo-details p { margin: 0 0 15px 0; font-size: 14px; color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.5; } .promo-action { display: inline-block; padding: 10px 20px; background: var(--theme-accent); color: white; font-weight: bold; border-radius: 12px; font-size: 14px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s ease; align-self: flex-start;} .promo-action:hover { background: var(--theme-btn-hover); }
+        .promo-card { flex-shrink: 0; position: relative; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; margin-bottom: 20px; box-shadow: var(--apple-glass-shadow); transition: background 0.3s ease; } .promo-image { width: 100%; height: 250px; object-fit: cover; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); } .promo-details { padding: 15px; display: flex; justify-content: space-between; align-items: center; } .promo-text-wrap {flex: 1;} .promo-details h3 { margin: 0 0 5px 0; font-size: 18px; color: var(--dynamic-text-color); text-shadow: none; font-weight: 900; text-transform: uppercase; } .promo-details p { margin: 0; font-size: 14px; color: var(--dynamic-text-color); opacity: 0.9; line-height: 1.5; } .promo-action { display: inline-block; padding: 10px 20px; background: var(--theme-accent); color: white; font-weight: bold; border-radius: 12px; font-size: 14px; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: background 0.3s ease; flex-shrink: 0; margin-left: 15px;} .promo-action:hover { background: var(--theme-btn-hover); }
 
         .orders-header-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 15px; border-radius: 16px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; } 
         #orders-list, #admin-orders-list, #cart-list { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 800px; } 
@@ -766,6 +773,9 @@
                     document.getElementById('font-size-label').innerText = `GLOBAL FONT SIZE: ${savedFontSize}PX`;
                 }
 
+                // Clean local cache of ghost promos on start
+                safeStorage.remove('la_prinsesa_promos');
+
                 // Start session logic safely
                 initializeSession();
             } catch (e) { 
@@ -872,15 +882,14 @@
         }
 
         async function loadMenuAndPromos() {
-            let hasMenuCache = false; let hasPromoCache = false;
-            try { const cMenu = safeStorage.get('la_prinsesa_menu'); if (cMenu && cMenu !== '[]') { menuItems = JSON.parse(cMenu); renderMenu(); hasMenuCache = true; } const cPromos = safeStorage.get('la_prinsesa_promos'); if (cPromos && cPromos !== '[]') { homePromos = JSON.parse(cPromos); renderHomePromos(); renderDesktopCarousel(); hasPromoCache = true; } } catch(e){}
+            let hasMenuCache = false;
+            try { const cMenu = safeStorage.get('la_prinsesa_menu'); if (cMenu && cMenu !== '[]') { menuItems = JSON.parse(cMenu); renderMenu(); hasMenuCache = true; } } catch(e){}
             
             if(!hasMenuCache) document.getElementById('product-grid').innerHTML = '<div style="width:100%; text-align:center; grid-column: 1/-1; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live menu...</div>';
-            if(!hasPromoCache) {
-                 document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
-                 const track = document.getElementById('desktop-carousel-track');
-                 if(track) track.innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
-            }
+            
+            document.getElementById('mobile-promo-feed').innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
+            const track = document.getElementById('desktop-carousel-track');
+            if(track) track.innerHTML = '<div style="width:100%; text-align:center; padding:20px; color:var(--dynamic-text-color); opacity:0.7;">📡 Fetching live promos...</div>';
 
             const [rMenu, rPromos] = await Promise.all([fetchDataRobust('menu'), fetchDataRobust('promos')]);
 
@@ -901,7 +910,7 @@
                 homePromos = rPromos.data; safeStorage.set('la_prinsesa_promos', JSON.stringify(homePromos)); 
             } else if (!rPromos.error && (!rPromos.data || rPromos.data.length === 0)) {
                 homePromos = []; safeStorage.set('la_prinsesa_promos', '[]');
-            } else if (rPromos.error && !hasPromoCache) { 
+            } else {
                 homePromos = [{ id: 1, title: "Offline Mode", desc: "System cannot reach database. Please check your connection.", img: "https://ui-avatars.com/api/?name=Offline&background=c2185b&color=fff" }];
             }
             renderHomePromos(); 
@@ -1583,7 +1592,7 @@
             homePromos.forEach(p => { 
                 const card = document.createElement('div'); 
                 card.className = 'promo-card'; 
-                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button></div>`; 
+                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><div class="promo-text-wrap"><h3>${p.title}</h3><p>${p.desc}</p></div><button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button></div>`; 
                 feed.appendChild(card); 
             });
         }
