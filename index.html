@@ -669,7 +669,12 @@
     <div class="ui-modal-overlay" id="receipt-overlay">
         <div id="receipt-hub" style="text-align: center; max-width: 480px;">
             <button type="button" class="close-btn" onclick="closeReceipt()">×</button>
-            <h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2>
+            <h2 class="modal-title" style="color: var(--dynamic-text-color); margin-bottom: 5px;">HERE'S YOUR RECEIPT</h2>
+            
+            <div style="font-size: 11px; text-transform: uppercase; margin-bottom: 15px; font-weight: bold; color: var(--dynamic-text-color); opacity: 0.9; display: flex; align-items: center; justify-content: center;">
+                READY FOR PICKUP 
+                <span id="receipt-ready-indicator" style="display:inline-block; width:10px; height:10px; border-radius:50%; background-color:gray; margin-left:8px; transition:0.3s;"></span>
+            </div>
             
             <div class="digital-receipt-wrapper" id="printable-receipt-area">
                 <div class="receipt-header-logo">
@@ -699,7 +704,6 @@
 
                 <div class="receipt-divider"></div>
                 <div id="qr-scan-label" style="font-size: 13px; font-weight: bold; margin: 15px 0 5px 0;">QR Code</div>
-                <div id="pickup-delivery-label" style="font-size: 15px; font-weight: 900; color: var(--theme-accent); margin-bottom: 15px;">PICKUP / DELIVERY ONLY</div>
                 
                 <div class="receipt-qr-box" style="width: 200px; height: 200px; margin: 0 auto; padding: 10px; background: white; border: 2px dashed #ccc; border-radius: 12px;">
                     <img id="receipt-qr" alt="QR Code" width="100%" height="100%">
@@ -769,6 +773,27 @@
         let storeInfo = { description: "Welcome to La Prinsesa Bakeshop!", address: "Caloocan, Metro Manila", phone: "+63 912 345 6789", email: "laprinsesadecupcake@gmail.com" };
 
         let html5QrCode = null; // Variable for the scanner
+
+        // Start Global Countdown for Admin Take Buttons
+        setInterval(() => {
+            document.querySelectorAll('.admin-take-btn').forEach(btn => {
+                const orderId = btn.getAttribute('data-order-id');
+                const acceptedAtStr = safeStorage.get('accepted_time_' + orderId);
+                if (acceptedAtStr) {
+                    const acceptedAt = parseInt(acceptedAtStr);
+                    const elapsed = Math.floor((Date.now() - acceptedAt) / 1000);
+                    const totalCountdown = 120; // 2 minutes
+                    if (elapsed < totalCountdown) {
+                        const remaining = totalCountdown - elapsed;
+                        const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
+                        const secs = String(remaining % 60).padStart(2, '0');
+                        btn.innerText = `TAKE (${mins}:${secs})`;
+                    } else {
+                        btn.innerText = `TAKE`;
+                    }
+                }
+            });
+        }, 1000);
 
         // 3. SAFE DATABASE FETCHING
         async function fetchDataRobust(tableName) {
@@ -1142,7 +1167,7 @@
                 if (_db) { try { await _db.from('orders').insert([orderObj]); } catch(e){ console.warn('Offline order save.'); } }
 
                 let cached = JSON.parse(safeStorage.get('la_prinsesa_orders_' + currentUser.uid) || '[]'); cached.unshift(orderObj); safeStorage.set('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(cached));
-                closeDetails(); switchMainView('orders'); showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr }); await updateOrdersView(); await refreshData();
+                closeDetails(); switchMainView('orders'); showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr, status: orderObj.status }); await updateOrdersView(); await refreshData();
             } else {
                 const existingIdx = cartItems.findIndex(c => { const match = c.item.match(/^(\d+)x (.*)$/); const cBaseItemName = match ? match[2] : c.item; return cBaseItemName === currentItemToOrder && JSON.stringify(c.toppings) === toppingsJSONString && c.date === pickupDate && c.time === pickupTime; });
                 if (existingIdx >= 0) { const match = cartItems[existingIdx].item.match(/^(\d+)x (.*)$/); let oldQty = match ? parseInt(match[1]) : 1; let newQty = oldQty + parseInt(qty); cartItems[existingIdx].item = `${newQty}x ${currentItemToOrder}`; if(!isNaN(numPrice)) { cartItems[existingIdx].price = "₱" + ((numPrice + extraToppingsPrice) * newQty).toFixed(2); } } else { cartItems.push({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr, img: orderObj.image_url }); }
@@ -1243,14 +1268,14 @@
             
             if(_db) { try { await _db.from('orders').insert([dbOrder]); } catch(e){} }
 
-            removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders'); showReceipt({ id: dbOrder.order_id, item: dbOrder.item_name, price: dbOrder.price, date: dbOrder.pickup_date, time: dbOrder.pickup_time, toppings: cItem.toppings }); await refreshData();
+            removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders'); showReceipt({ id: dbOrder.order_id, item: dbOrder.item_name, price: dbOrder.price, date: dbOrder.pickup_date, time: dbOrder.pickup_time, toppings: cItem.toppings, status: dbOrder.status }); await refreshData();
         }
 
         function renderOrdersToList(orders, listElement) {
             listElement.innerHTML = ''; if (!orders || orders.length === 0) { listElement.innerHTML = '<p style="color:var(--dynamic-text-color);">No orders yet.</p>'; return; }
             orders.forEach(o => {
                 const thumbHTML = `<img src="${o.image_url}" alt="${o.item_name}">`; let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.order_id)}`; const canCancel = (o.status === 'Pending') ? true : false;
-                const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt({ id: o.order_id, item: o.item_name, price: o.price, date: o.pickup_date, time: o.pickup_time, toppings: tops });
+                const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt({ id: o.order_id, item: o.item_name, price: o.price, date: o.pickup_date, time: o.pickup_time, toppings: tops, status: o.status });
                 p.innerHTML = `<div class="order-img-thumb">${thumbHTML}</div><div class="order-info" style="margin-left: 15px; color: var(--dynamic-text-color);"><h3 style="color: var(--dynamic-text-color); text-shadow:none;">${o.item_name}</h3><p style="color: var(--dynamic-text-color);">${o.price}</p><small style="color: var(--dynamic-text-color); opacity:0.8;">${o.pickup_date} | ${o.pickup_time}</small>${tops.length ? `<small style="color: var(--theme-accent); display:block; margin-top:5px; font-weight:bold;">+ ${tops.join(', ')}</small>` : ''}</div><img src="${qrUrl}" class="qr-thumb" alt="QR" /><div class="order-actions" style="margin-left:15px;"><span class="status-badge status-${o.status}">${o.status}</span><button type="button" class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}', this)">Cancel</button></div>`; listElement.appendChild(p);
             });
         }
@@ -1388,7 +1413,13 @@
             if(!isPartialRefresh) { ordersDiv.innerHTML = ''; hist.innerHTML = ''; }
             const rOrders = await fetchDataRobust('orders');
             if(!isPartialRefresh) {
-                if(rOrders.error || !rOrders.data) { ordersDiv.innerHTML = `<div class="warning-box">Failed to load: ${rOrders.error}</div>`; } else { const userOrders = rOrders.data.filter(o => o.user_uid === uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); if(userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders placed.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>${o.status === 'Pending' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button><button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button></div>` : ''}<div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div></div>`; }); } }
+                if(rOrders.error || !rOrders.data) { ordersDiv.innerHTML = `<div class="warning-box">Failed to load: ${rOrders.error}</div>`; } else { const userOrders = rOrders.data.filter(o => o.user_uid === uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); if(userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders placed.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} 
+                    
+                    ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
+                        ${o.status === 'Pending' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button><button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button></div>` : ''}
+                        ${o.status === 'Prepared' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn-primary admin-take-btn" data-order-id="${o.order_id}" style="padding:6px; font-size:11px; border-radius:12px; background:var(--os-green); color:white; width:100%; font-weight:bold;" onclick="adminTakeOrder('${o.order_id}')">TAKE</button></div>` : ''}
+                        <div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div></div>`; }); } 
+            }
             }
             
             if(_db) { try { await _db.from('messages').update({ is_read: true }).eq('user_uid', uid).eq('sender', 'user').eq('is_read', false); } catch(e){} }
@@ -1402,9 +1433,21 @@
             if(newStatus === 'Canceled') {
                 if(!confirm("Warning: Rejecting this order is irreversible and will completely remove it from the system. Proceed?")) return;
                 if(_db) { try { await _db.from('orders').delete().eq('order_id', orderId); } catch(e){} }
+            } else if (newStatus === 'Prepared') {
+                if(_db) { try { await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId); } catch(e){} }
+                safeStorage.set('accepted_time_' + orderId, Date.now().toString());
             } else {
                 if(_db) { try { await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId); } catch(e){} }
             }
+            await renderAdminUserModal(currentAdminViewingUid, false); 
+            await renderAdminOrders();
+        }
+
+        async function adminTakeOrder(orderId) {
+            if(!confirm("Warning: Make sure the order is ready and the customer is here to take it. Proceed?")) return;
+            
+            if(_db) { try { await _db.from('orders').delete().eq('order_id', orderId); } catch(e){} }
+            safeStorage.remove('accepted_time_' + orderId);
             await renderAdminUserModal(currentAdminViewingUid, false); 
             await renderAdminOrders();
         }
@@ -1635,22 +1678,26 @@
             document.getElementById('receipt-toppings-print').innerText = o.toppings && o.toppings.length ? `+ ${o.toppings.join(', ')}` : "";
             
             const detailsSection = document.getElementById('receipt-full-details');
-            const pickupLabel = document.getElementById('pickup-delivery-label');
             const qrLabel = document.getElementById('qr-scan-label');
+            
+            // Setup the indicator logic
+            const indicator = document.getElementById('receipt-ready-indicator');
+            if (o.status === 'Prepared') {
+                indicator.style.backgroundColor = '#2ecc71';
+                indicator.style.boxShadow = '0 0 10px #2ecc71';
+            } else {
+                indicator.style.backgroundColor = 'gray';
+                indicator.style.boxShadow = 'none';
+            }
 
             if (isScanned) {
-                // Admin viewing scanned receipt: show full details
                 detailsSection.style.display = 'block';
-                pickupLabel.style.display = 'none';
                 qrLabel.innerText = "Scanned Order Verified";
             } else {
-                // Customer viewing regular receipt: hide details, show only pickup label and QR
                 detailsSection.style.display = 'none';
-                pickupLabel.style.display = 'block';
                 qrLabel.innerText = "QR Code";
             }
             
-            // Just the ID for scanning
             const qrData = o.id; 
             document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`; 
             
@@ -1730,7 +1777,8 @@
                     price: o.price, 
                     date: o.pickup_date, 
                     time: o.pickup_time, 
-                    toppings: tops 
+                    toppings: tops,
+                    status: o.status
                 }, true); 
                 
             } catch(err) {
