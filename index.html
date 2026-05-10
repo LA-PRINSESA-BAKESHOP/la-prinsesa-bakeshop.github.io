@@ -168,7 +168,11 @@
         /* Profile & Status */
         .card-profile-photo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin: 0; display: block; } 
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; margin-bottom: 5px; backdrop-filter: blur(5px); } 
-        .status-Pending { background: rgba(255, 165, 0, 0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.5); } .status-Prepared { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46,204,113,0.5); } .status-Canceled { background: rgba(255, 69, 0, 0.2); color: #ff6b6b; border: 1px solid rgba(255,107,107,0.5); } 
+        .status-Pending { background: rgba(255, 165, 0, 0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.5); } 
+        .status-Prepared { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46,204,113,0.5); } 
+        .status-Canceled { background: rgba(255, 69, 0, 0.2); color: #ff6b6b; border: 1px solid rgba(255,107,107,0.5); } 
+        .status-Take-Order { background: rgba(52, 152, 219, 0.2); color: #64b5f6; border: 1px solid rgba(52, 152, 219, 0.5); } 
+        .status-Completed { background: rgba(155, 89, 182, 0.2); color: #ce93d8; border: 1px solid rgba(155, 89, 182, 0.5); }
         .cancel-btn { background: rgba(255, 77, 77, 0.1); color: #ffcccc; border: 1px solid rgba(255,77,77,0.5); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight:bold; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(5px); flex-shrink: 0; } .cancel-btn:hover { background: rgba(255, 77, 77, 0.4); color: white; } .cancel-btn.disabled { opacity: 0.5; pointer-events: none; cursor: not-allowed; } 
 
         /* Chat System */
@@ -461,6 +465,7 @@
             <div class="orders-header-card">
                 <h2 id="orders-view-title" style="margin: 0 0 5px 0; color: var(--dynamic-text-color);">Your Order History</h2>
                 <p id="orders-view-desc" style="color: var(--dynamic-text-color); opacity: 0.9; margin: 0 0 10px 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p>
+                <button type="button" id="past-orders-toggle-btn" class="os-btn-secondary" style="padding: 8px 15px; font-size:12px; border-radius:12px; font-weight:bold; margin-bottom:10px; width:100%; border:1px solid rgba(255,255,255,0.3);" onclick="togglePastOrders()"><span id="past-orders-icon">🕒</span> <span id="past-orders-btn-text">View Past Orders</span></button>
                 <button type="button" class="os-btn-primary admin-only" id="admin-scan-btn" style="display:none; width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: bold; background: var(--os-green); color: white; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" onclick="startScanner()">📷 Scan Customer Receipt</button>
             </div>
             <button type="button" class="os-btn-primary user-only-nav mobile-only-flex" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: bold; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="openMessaging()">💬 Message<div id="inline-badge-chat" class="nav-badge" style="display:none; position:relative; top:0; right:0; margin-left:10px;">0</div></button>
@@ -729,6 +734,7 @@
 
         // 2. SAFE DATABASE CONNECTION (NO FAKE CHAINS)
         let _db = null;
+        let showingPastOrders = false;
         
         window.addEventListener('load', () => {
             try {
@@ -877,6 +883,9 @@
             if (!rMenu.error && rMenu.data && rMenu.data.length > 0) { 
                 menuItems = rMenu.data; safeStorage.set('la_prinsesa_menu', JSON.stringify(menuItems)); 
                 renderMenu();
+            } else if (!rMenu.error && (!rMenu.data || rMenu.data.length === 0)) {
+                menuItems = []; safeStorage.set('la_prinsesa_menu', '[]');
+                renderMenu();
             } else if (rMenu.error && !hasMenuCache) { 
                 menuItems = []; 
                 renderMenu();
@@ -886,6 +895,8 @@
             
             if (!rPromos.error && rPromos.data && rPromos.data.length > 0) { 
                 homePromos = rPromos.data; safeStorage.set('la_prinsesa_promos', JSON.stringify(homePromos)); 
+            } else if (!rPromos.error && (!rPromos.data || rPromos.data.length === 0)) {
+                homePromos = []; safeStorage.set('la_prinsesa_promos', '[]');
             } else if (rPromos.error && !hasPromoCache) { 
                 homePromos = [{ id: 1, title: "Offline Mode", desc: "System cannot reach database. Please check your connection.", img: "https://ui-avatars.com/api/?name=Offline&background=c2185b&color=fff" }];
             }
@@ -903,6 +914,13 @@
                   .on('postgres_changes', { event: '*', schema: 'public', table: 'promos' }, payload => { loadMenuAndPromos(); })
                   .subscribe();
             } catch(e) {}
+        }
+
+        function togglePastOrders() {
+            showingPastOrders = !showingPastOrders;
+            document.getElementById('past-orders-icon').innerText = showingPastOrders ? '🔙' : '🕒';
+            document.getElementById('past-orders-btn-text').innerText = showingPastOrders ? 'Back to Active Orders' : 'View Past Orders';
+            refreshData();
         }
 
         async function refreshData() { if (!currentUser) return; if (currentUser.role === 'Administrator') { await renderAdminOrders(); if (currentAdminViewingUid && document.getElementById('admin-user-overlay').classList.contains('active')) { await renderAdminUserModal(currentAdminViewingUid, true); } } else { await updateOrdersView(); await updateUserBadges(); } }
@@ -1276,16 +1294,39 @@
             orders.forEach(o => {
                 const thumbHTML = `<img src="${o.image_url}" alt="${o.item_name}">`; let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.order_id)}`; const canCancel = (o.status === 'Pending') ? true : false;
                 const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt({ id: o.order_id, item: o.item_name, price: o.price, date: o.pickup_date, time: o.pickup_time, toppings: tops, status: o.status });
-                p.innerHTML = `<div class="order-img-thumb">${thumbHTML}</div><div class="order-info" style="margin-left: 15px; color: var(--dynamic-text-color);"><h3 style="color: var(--dynamic-text-color); text-shadow:none;">${o.item_name}</h3><p style="color: var(--dynamic-text-color);">${o.price}</p><small style="color: var(--dynamic-text-color); opacity:0.8;">${o.pickup_date} | ${o.pickup_time}</small>${tops.length ? `<small style="color: var(--theme-accent); display:block; margin-top:5px; font-weight:bold;">+ ${tops.join(', ')}</small>` : ''}</div><img src="${qrUrl}" class="qr-thumb" alt="QR" /><div class="order-actions" style="margin-left:15px;"><span class="status-badge status-${o.status}">${o.status}</span><button type="button" class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}', this)">Cancel</button></div>`; listElement.appendChild(p);
+                p.innerHTML = `<div class="order-img-thumb">${thumbHTML}</div><div class="order-info" style="margin-left: 15px; color: var(--dynamic-text-color);"><h3 style="color: var(--dynamic-text-color); text-shadow:none;">${o.item_name}</h3><p style="color: var(--dynamic-text-color);">${o.price}</p><small style="color: var(--dynamic-text-color); opacity:0.8;">${o.pickup_date} | ${o.pickup_time}</small>${tops.length ? `<small style="color: var(--theme-accent); display:block; margin-top:5px; font-weight:bold;">+ ${tops.join(', ')}</small>` : ''}</div><img src="${qrUrl}" class="qr-thumb" alt="QR" /><div class="order-actions" style="margin-left:15px;"><span class="status-badge status-${o.status.replace(/\s+/g, '-')}">${o.status}</span>${canCancel ? `<button type="button" class="cancel-btn" onclick="cancelOrder(event, '${o.order_id}', this)">Cancel</button>` : ''}</div>`; listElement.appendChild(p);
             });
         }
 
         async function updateOrdersView() {
             if (!currentUser || currentUser.role === 'Administrator') return; const list = document.getElementById('orders-list'); 
-            const cachedOrders = safeStorage.get('la_prinsesa_orders_' + currentUser.uid); if (cachedOrders) { try { renderOrdersToList(JSON.parse(cachedOrders), list); } catch(e){} }
             const rOrders = await fetchDataRobust('orders');
-            if (!rOrders.error) { const orders = rOrders.data.filter(o => o.user_uid === currentUser.uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); safeStorage.set('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders)); renderOrdersToList(orders, list); } 
-            else if (!cachedOrders) { list.innerHTML = `<div class="warning-box"><strong>Fetch Error:</strong> ${rOrders.error}</div>`; }
+            if (!rOrders.error) { 
+                let orders = rOrders.data.filter(o => o.user_uid === currentUser.uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); 
+                safeStorage.set('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(orders)); 
+                if(showingPastOrders) {
+                    orders = orders.filter(o => o.status === 'Completed' || o.status === 'Canceled');
+                } else {
+                    orders = orders.filter(o => o.status !== 'Completed' && o.status !== 'Canceled');
+                }
+                renderOrdersToList(orders, list); 
+            } 
+            else {
+                const cachedOrders = safeStorage.get('la_prinsesa_orders_' + currentUser.uid); 
+                if (cachedOrders) { 
+                    try { 
+                        let parsed = JSON.parse(cachedOrders);
+                        if(showingPastOrders) {
+                            parsed = parsed.filter(o => o.status === 'Completed' || o.status === 'Canceled');
+                        } else {
+                            parsed = parsed.filter(o => o.status !== 'Completed' && o.status !== 'Canceled');
+                        }
+                        renderOrdersToList(parsed, list); 
+                    } catch(e){} 
+                } else {
+                    list.innerHTML = `<div class="warning-box"><strong>Fetch Error:</strong> ${rOrders.error}</div>`; 
+                }
+            }
         }
 
         async function cancelOrder(e, id, btnElement) { 
@@ -1399,7 +1440,15 @@
                 safeStorage.set(cacheKey, JSON.stringify({users: rUsers.data, allOrders: rOrders.data, allMsgs: rMsgs.data})); 
             }
 
-            buildAdminOrdersUI(rUsers.data||[], rOrders.data||[], rMsgs.data||[], list, errs.length > 0);
+            const baseOrders = rOrders.data || [];
+            let displayOrders = baseOrders;
+            if (showingPastOrders) {
+                displayOrders = baseOrders.filter(o => o.status === 'Completed' || o.status === 'Canceled');
+            } else {
+                displayOrders = baseOrders.filter(o => o.status !== 'Completed' && o.status !== 'Canceled');
+            }
+
+            buildAdminOrdersUI(rUsers.data||[], displayOrders, rMsgs.data||[], list, errs.length > 0);
             
             const scanBtn = document.getElementById('admin-scan-btn');
             if (scanBtn) scanBtn.style.display = 'block';
@@ -1413,9 +1462,16 @@
             if(!isPartialRefresh) { ordersDiv.innerHTML = ''; hist.innerHTML = ''; }
             const rOrders = await fetchDataRobust('orders');
             if(!isPartialRefresh) {
-                if(rOrders.error || !rOrders.data) { ordersDiv.innerHTML = `<div class="warning-box">Failed to load: ${rOrders.error}</div>`; } else { const userOrders = rOrders.data.filter(o => o.user_uid === uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); if(userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders placed.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} 
+                if(rOrders.error || !rOrders.data) { ordersDiv.innerHTML = `<div class="warning-box">Failed to load: ${rOrders.error}</div>`; } else { 
+                    let userOrders = rOrders.data.filter(o => o.user_uid === uid).sort((a,b) => b.order_id.localeCompare(a.order_id)); 
+                    if (showingPastOrders) {
+                        userOrders = userOrders.filter(o => o.status === 'Completed' || o.status === 'Canceled');
+                    } else {
+                        userOrders = userOrders.filter(o => o.status !== 'Completed' && o.status !== 'Canceled');
+                    }
+                    if(userOrders.length === 0) { ordersDiv.innerHTML = '<p style="font-size:13px; color:var(--dynamic-text-color); opacity:0.6;">No orders found in this category.</p>'; } else { userOrders.forEach(o => { let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} 
                     
-                    ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time} ${tops.length ? `| +${tops.join(', ')}` : ''}</p>
+                    ordersDiv.innerHTML += `<div class="admin-canva-order-card" style="min-width: 260px; max-width: 260px; flex-direction: column; align-items: flex-start; gap: 10px;"><div style="display:flex; gap:10px; width:100%;"><img src="${o.image_url}" class="admin-canva-order-img" alt="${o.item_name}"><div style="flex:1; overflow:hidden;"><h4 style="margin:0 0 5px 0; font-size: 14px; color: var(--dynamic-text-color); white-space:nowrap; text-overflow:ellipsis; overflow:hidden;">${o.item_name}</h4><p style="margin:0 0 5px 0; font-size: 12px; color: var(--dynamic-text-color);"><b>${o.price}</b></p><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.6;">ID: ${o.order_id}</p></div></div><div style="width:100%;"><p style="margin:0; font-size:10px; color:var(--dynamic-text-color); opacity:0.8; white-space:normal;">${o.pickup_date} | ${o.pickup_time}</p>${tops.length ? `<p style="margin:4px 0 0 0; font-size:11px; color:var(--dynamic-text-color); font-weight:bold;"><span style="color:var(--theme-accent);">TOPPINGS:</span> ${tops.join(', ')}</p>` : ''}</div>
                         ${o.status === 'Pending' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn os-btn-danger" style="padding:6px; font-size:11px; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Canceled')">Reject</button><button type="button" class="os-btn-primary" style="padding:6px; font-size:11px; border-radius:12px; background:var(--theme-accent); color:white; flex:1;" onclick="adminUpdateOrder('${o.order_id}', 'Prepared')">Accept</button></div>` : ''}
                         ${o.status === 'Prepared' ? `<div style="display:flex; gap:5px; margin-top:auto; width: 100%;"><button type="button" class="os-btn-primary admin-take-btn" data-order-id="${o.order_id}" style="padding:6px; font-size:11px; border-radius:12px; background:var(--os-green); color:white; width:100%; font-weight:bold;" onclick="adminTakeOrder('${o.order_id}')">TAKE</button></div>` : ''}
                         <div class="admin-canva-order-status" style="top:5px; right:5px;">${o.status}</div></div>`; }); } 
@@ -1431,8 +1487,8 @@
 
         async function adminUpdateOrder(orderId, newStatus) { 
             if(newStatus === 'Canceled') {
-                if(!confirm("Warning: Rejecting this order is irreversible and will completely remove it from the system. Proceed?")) return;
-                if(_db) { try { await _db.from('orders').delete().eq('order_id', orderId); } catch(e){} }
+                if(!confirm("Warning: Reject this order? It will be moved to Past Orders.")) return;
+                if(_db) { try { await _db.from('orders').update({ status: 'Canceled' }).eq('order_id', orderId); } catch(e){} }
             } else if (newStatus === 'Prepared') {
                 if(_db) { try { await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId); } catch(e){} }
                 safeStorage.set('accepted_time_' + orderId, Date.now().toString());
@@ -1444,15 +1500,15 @@
         }
 
         async function adminTakeOrder(orderId) {
-            if(!confirm("Warning: Make sure the order is ready and the customer is here to take it. Proceed?")) return;
+            if(!confirm("Are you sure you want to change this order status to 'Take Order'?")) return;
             
-            if(_db) { try { await _db.from('orders').delete().eq('order_id', orderId); } catch(e){} }
+            if(_db) { try { await _db.from('orders').update({ status: 'Take Order' }).eq('order_id', orderId); } catch(e){} }
             safeStorage.remove('accepted_time_' + orderId);
             await renderAdminUserModal(currentAdminViewingUid, false); 
             await renderAdminOrders();
         }
         
-        function renderDesktopCarousel() { const track = document.getElementById('desktop-carousel-track'); if (!track) return; track.innerHTML = ''; homePromos.forEach(p => { const slide = document.createElement('div'); slide.className = 'desktop-carousel-slide'; slide.innerHTML = `<img src="${p.img}" alt="${p.title}"><div class="desktop-carousel-text" style="color: #fff;">${p.title} &bull; ${p.desc}</div>`; track.appendChild(slide); }); }
+        function renderDesktopCarousel() { const track = document.getElementById('desktop-carousel-track'); if (!track) return; track.innerHTML = ''; const isAdmin = currentUser && currentUser.role === 'Administrator'; homePromos.forEach(p => { const slide = document.createElement('div'); slide.className = 'desktop-carousel-slide'; slide.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img src="${p.img}" alt="${p.title}"><div class="desktop-carousel-text" style="color: #fff;">${p.title} &bull; ${p.desc}</div>`; track.appendChild(slide); }); }
 
         function renderMenu() {
             const grid = document.getElementById('product-grid'); 
@@ -1491,7 +1547,7 @@
             homePromos.forEach(p => { 
                 const card = document.createElement('div'); 
                 card.className = 'promo-card'; 
-                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu', this)">View Menu →</button></div>`; 
+                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><h3>${p.title}</h3><p>${p.desc}</p><button type="button" class="promo-action" onclick="switchMainView('menu', this)">View Menu →</button></div>`; 
                 feed.appendChild(card); 
             });
         }
@@ -1769,6 +1825,13 @@
                 const o = data[0];
                 let tops = []; 
                 try { tops = JSON.parse(o.toppings); } catch(e){}
+                
+                // Mark as completed since it was scanned
+                if (o.status !== 'Completed') {
+                    try { await _db.from('orders').update({ status: 'Completed' }).eq('order_id', scannedOrderId); } catch(e){}
+                    o.status = 'Completed';
+                    refreshData(); // trigger background UI refresh
+                }
                 
                 // PASS TRUE TO SHOW FULL DETAILS FOR ADMIN SCAN
                 showReceipt({ 
