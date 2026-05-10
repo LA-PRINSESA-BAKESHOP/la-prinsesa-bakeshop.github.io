@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LA PRINSESA BAKESHOP</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
     <style>
         :root { 
@@ -59,7 +60,7 @@
             .menu-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; } .menu-card { padding: 10px 6px !important; border-radius: 12px !important; background: rgba(255, 255, 255, 0.95) !important; color: #333 !important; border: 1px solid rgba(0,0,0,0.05) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: flex-start !important; } .menu-card h3 { font-size: 0.85em !important; color: #333 !important; text-shadow: none !important; margin-top: auto !important; text-align: center !important; font-weight: 700 !important; line-height: 1.2 !important; } .menu-price-pill { font-size: 10px !important; padding: 3px 8px !important; background: rgba(0,0,0,0.05) !important; color: #555 !important; border: 1px solid rgba(0,0,0,0.1) !important; box-shadow: none !important; margin-bottom: 8px !important; } .menu-image-preview { height: 70px !important; font-size: 2.5em !important; margin-bottom: 6px !important; background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; background-image: radial-gradient(circle at bottom, rgba(0, 0, 0, 0.05) 0%, transparent 70%) !important; overflow: hidden; display: flex; align-items: center; justify-content: center;} .menu-image-preview img { width: 100%; height: 100%; object-fit: cover; }
             
             #admin-user-hub, #settings-hub { height: 90dvh !important; max-height: 90dvh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
-            #about-hub, #guide-hub, #receipt-hub, #cart-checkout-hub { height: auto !important; max-height: 90dvh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
+            #about-hub, #guide-hub, #receipt-hub, #cart-checkout-hub, #scanner-hub { height: auto !important; max-height: 90dvh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
 
             .admin-left-col, .admin-right-col { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 20px !important; flex: none !important; } .admin-canva-chat-box { min-height: 250px !important; height: 250px !important; margin-bottom: 15px !important; flex: none !important; } #admin-user-orders { min-height: 200px !important; height: auto !important; overflow-y: visible !important; display: flex !important; flex-direction: column !important; flex: none !important;} .admin-canva-order-card { min-width: 100% !important; max-width: 100% !important; } .admin-divider { display: none !important; } .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 0 !important; min-width: 0 !important; display: flex !important; margin-bottom: 15px !important;} .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; color: var(--dynamic-text-color) !important; opacity: 0.8; width: auto !important;} .settings-tab-btn.active { opacity: 1; font-weight: bold; } .settings-content { padding: 0 !important; overflow: visible !important; display: block !important; height: auto !important; } .theme-preview-box { grid-column: span 1 !important; } .os-card { padding: 15px !important; margin-bottom: 15px !important; }
             
@@ -117,9 +118,9 @@
         .ui-modal-overlay.active { display: flex; } 
         
         #messaging-hub { height: 85vh; max-height: 700px; }
-        #about-hub, #receipt-hub, #credentials-hub, #cart-checkout-hub, #guide-hub { height: auto; max-height: 85vh; }
+        #about-hub, #receipt-hub, #credentials-hub, #cart-checkout-hub, #guide-hub, #scanner-hub { height: auto; max-height: 85vh; }
 
-        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #cart-checkout-hub, #guide-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; transition: background 0.3s ease; } 
+        #messaging-hub, #about-hub, #receipt-hub, #credentials-hub, #cart-checkout-hub, #guide-hub, #scanner-hub { background: var(--glass-bg); backdrop-filter: var(--glass-blur); box-shadow: var(--apple-glass-shadow); border: 1px solid rgba(255, 255, 255, 0.2); width: 100%; max-width: 480px; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; padding: 25px; position: relative; box-sizing: border-box; transition: background 0.3s ease; } 
 
         .search-container { margin-bottom: 15px; } 
         #product-search { font-size: 15px; padding: 12px 20px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: var(--apple-glass-shadow); width: 100%; border-radius: 12px; color: var(--dynamic-text-color); transition: 0.3s; } #product-search::placeholder { color: var(--dynamic-text-color); opacity: 0.6; } 
@@ -333,7 +334,8 @@
         
         .canva-input-field { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 12px 15px; width: 100%; color: var(--dynamic-text-color); font-size: 14px; box-sizing: border-box; margin-bottom: 15px; font-weight: bold; outline:none;} 
         .canva-input-field:focus { outline: 2px solid var(--theme-accent); background: rgba(255,255,255,0.25); }
-        .qty-btn { background:transparent; border: none; padding:8px 12px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:18px;} .qty-btn:hover { background: rgba(255,255,255,0.1); }
+        .qty-btn { background:transparent; border: none; padding:0; margin:0; width: 40px; height: 40px; color:var(--dynamic-text-color); font-weight:bold; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center;} .qty-btn:hover { background: rgba(255,255,255,0.1); }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         .pen-upload-btn {
             position: absolute;
@@ -456,7 +458,11 @@
         </div>
         
         <div id="orders-view" class="view-section">
-            <div class="orders-header-card"><h2 id="orders-view-title" style="margin: 0 0 5px 0; color: var(--dynamic-text-color);">Your Order History</h2><p id="orders-view-desc" style="color: var(--dynamic-text-color); opacity: 0.9; margin: 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p></div>
+            <div class="orders-header-card">
+                <h2 id="orders-view-title" style="margin: 0 0 5px 0; color: var(--dynamic-text-color);">Your Order History</h2>
+                <p id="orders-view-desc" style="color: var(--dynamic-text-color); opacity: 0.9; margin: 0 0 10px 0; font-size: 14px;">Click on any past order below to retrieve its QR Receipt.</p>
+                <button type="button" class="os-btn-primary admin-only" id="admin-scan-btn" style="display:none; width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: bold; background: var(--os-green); color: white; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" onclick="startScanner()">📷 Scan Customer Receipt</button>
+            </div>
             <button type="button" class="os-btn-primary user-only-nav mobile-only-flex" style="width: 100%; margin-bottom: 15px; padding: 15px; border-radius: 16px; font-size: 16px; font-weight: bold; background: var(--theme-base); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="openMessaging()">💬 Message<div id="inline-badge-chat" class="nav-badge" style="display:none; position:relative; top:0; right:0; margin-left:10px;">0</div></button>
             <div id="orders-list"></div>
             <div id="admin-orders-list" style="display:none;"></div>
@@ -470,6 +476,15 @@
         <div class="bnav-item" id="mob-nav-orders" onclick="switchMainView('orders', this)"><span>📦</span><span class="nav-text">Orders</span><div id="mob-badge-orders" class="nav-badge" style="display:none;">0</div></div>
         <div class="bnav-item" onclick="openAbout()"><span>ℹ️</span><span class="nav-text">About Us</span></div>
         <div class="bnav-item" onclick="openSettings()"><span>⚙️</span><span class="nav-text">More</span></div>
+    </div>
+
+    <div class="ui-modal-overlay" id="scanner-overlay">
+        <div id="scanner-hub">
+            <button type="button" class="close-btn" onclick="stopScanner()">×</button>
+            <h2 class="modal-title" style="color: var(--dynamic-text-color); margin-top: 0; margin-bottom: 15px;">Scan Receipt</h2>
+            <div id="reader" style="width: 100%; border-radius: 16px; overflow: hidden; border: 2px dashed rgba(255,255,255,0.3);"></div>
+            <p style="color: var(--dynamic-text-color); font-size: 13px; opacity: 0.8; margin-top: 15px; text-align: center;">Point your camera at the customer's QR code to verify the order.</p>
+        </div>
     </div>
 
     <div class="ui-modal-overlay" id="messaging-overlay"><div id="messaging-hub"><button type="button" class="close-btn" onclick="closeMessaging()">×</button><h2 class="modal-title" style="margin-bottom: 5px; color: var(--dynamic-text-color); flex-shrink: 0;">Messages</h2><p id="customer-view-owner-phone" style="text-align:center; color: var(--dynamic-text-color); font-size: 14px; margin-top: 0; margin-bottom: 15px; font-weight: bold; flex-shrink: 0;">LA PRINSESA BAKESHOP NUMBER<br>#Loading...</p><div class="chat-history" id="chat-history"></div><div style="display:flex; gap:10px; flex-direction: column; flex-shrink:0;"><input type="text" id="chat-text-input" class="input-field" placeholder="Type your message..." style="margin:0;flex:1;" onkeypress="handleKeyPress(event, 'user')"><label class="os-btn os-btn-secondary" style="margin-bottom:0; text-align:center;">📷 Send Photo<input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="handleImageChatUpload(this, 'user')"></label><button type="button" class="submit-btn" style="width: 100%; color: white;" onclick="sendChatMessage('user')">Send</button></div></div></div>
@@ -598,10 +613,10 @@
 
                     <div style="width:100%; text-align:left; margin-bottom:15px; flex-shrink:0;">
                         <label style="color:var(--dynamic-text-color); font-weight:bold; font-size:14px;">Select Quantity:</label>
-                        <div style="display:flex; align-items:center; background:rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius:12px; overflow:hidden; width:max-content; margin-top:5px;">
-                            <button type="button" class="qty-btn" onclick="adjQty(-1)">-</button>
-                            <input type="number" id="order-quantity" value="1" min="1" max="99" style="width:40px; border:none; background:transparent; text-align:center; font-weight:bold; color:var(--dynamic-text-color); outline:none; font-size:16px;" readonly>
-                            <button type="button" class="qty-btn" onclick="adjQty(1)">+</button>
+                        <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius:12px; overflow:hidden; width:120px; height:40px; margin-top:5px;">
+                            <button type="button" class="qty-btn" style="flex:1; display:flex; align-items:center; justify-content:center; padding:0; margin:0;" onclick="adjQty(-1)">-</button>
+                            <input type="text" inputmode="numeric" id="order-quantity" value="1" style="flex:1; width:40px; height:40px; border:none; background:transparent; text-align:center; font-weight:bold; color:var(--dynamic-text-color); outline:none; font-size:16px; padding:0; margin:0;" readonly>
+                            <button type="button" class="qty-btn" style="flex:1; display:flex; align-items:center; justify-content:center; padding:0; margin:0;" onclick="adjQty(1)">+</button>
                         </div>
                     </div>
                     
@@ -651,7 +666,52 @@
         </div>
     </div>
 
-    <div class="ui-modal-overlay" id="receipt-overlay"><div id="receipt-hub" style="text-align: center; max-width: 480px;"><button type="button" class="close-btn" onclick="closeReceipt()">×</button><h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2><div class="digital-receipt-wrapper" id="printable-receipt-area"><div class="receipt-header-logo"><svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gGold" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700" /><stop offset="100%" stop-color="#B8860B" /></linearGradient></defs><path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Z" fill="url(#gGold)" /><circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FF1493" stroke-width="4" /><path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/><path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/><path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/></svg></div><div class="receipt-title">LA PRINSESA BAKESHOP</div><div style="font-size: 10px; margin-bottom: 10px;" id="receipt-store-address"></div><div class="receipt-divider"></div><div class="receipt-detail-row"><span>Date:</span> <span id="receipt-datetime-print"></span></div><div class="receipt-detail-row"><span>Ref#:</span> <span id="receipt-id-print"></span></div><div class="receipt-detail-row"><span>Cashier:</span> <span>SYSTEM</span></div><div class="receipt-divider"></div><div class="receipt-detail-row" style="font-weight: bold; font-size: 13px;"><span id="receipt-item-print"></span> <span id="receipt-price-print"></span></div><div id="receipt-toppings-print" style="text-align: left; font-size: 11px; margin-left: 10px; color: #555;"></div><div class="receipt-divider"></div><div class="receipt-detail-row" style="font-size: 14px; font-weight: bold;"><span>TOTAL</span> <span id="receipt-total-print"></span></div><div class="receipt-divider"></div><div style="font-size: 9px; margin-bottom: 10px;">Scan this QR code upon pickup.</div><div class="receipt-qr-box"><img id="receipt-qr" alt="QR Code" width="100%" height="100%"></div><div style="font-size: 8px; margin-top: 10px;">VALID FOR 5 YEARS FROM DATE OF ISSUE.</div></div><div class="receipt-action-row"><button type="button" class="os-btn-primary" onclick="window.print()">🖨️ Print</button><button type="button" class="os-btn os-btn-secondary" onclick="downloadReceipt()">📥 Download</button></div></div></div>
+    <div class="ui-modal-overlay" id="receipt-overlay">
+        <div id="receipt-hub" style="text-align: center; max-width: 480px;">
+            <button type="button" class="close-btn" onclick="closeReceipt()">×</button>
+            <h2 class="modal-title" style="color: var(--dynamic-text-color);">Digital Receipt</h2>
+            
+            <div class="digital-receipt-wrapper" id="printable-receipt-area">
+                <div class="receipt-header-logo">
+                    <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                        <defs><linearGradient id="gGold" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFD700" /><stop offset="100%" stop-color="#B8860B" /></linearGradient></defs>
+                        <path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Z" fill="url(#gGold)" />
+                        <circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FF1493" stroke-width="4" />
+                        <path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/>
+                        <path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/>
+                        <path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="receipt-title">LA PRINSESA BAKESHOP</div>
+                <div style="font-size: 10px; margin-bottom: 10px;" id="receipt-store-address"></div>
+                
+                <div id="receipt-full-details">
+                    <div class="receipt-divider"></div>
+                    <div class="receipt-detail-row"><span>Date:</span> <span id="receipt-datetime-print"></span></div>
+                    <div class="receipt-detail-row"><span>Ref#:</span> <span id="receipt-id-print"></span></div>
+                    <div class="receipt-detail-row"><span>Cashier:</span> <span>SYSTEM</span></div>
+                    <div class="receipt-divider"></div>
+                    <div class="receipt-detail-row" style="font-weight: bold; font-size: 13px;"><span id="receipt-item-print"></span> <span id="receipt-price-print"></span></div>
+                    <div id="receipt-toppings-print" style="text-align: left; font-size: 11px; margin-left: 10px; color: #555;"></div>
+                    <div class="receipt-divider"></div>
+                    <div class="receipt-detail-row" style="font-size: 14px; font-weight: bold;"><span>TOTAL</span> <span id="receipt-total-print"></span></div>
+                </div>
+
+                <div class="receipt-divider"></div>
+                <div id="qr-scan-label" style="font-size: 13px; font-weight: bold; margin: 15px 0 5px 0;">QR Code</div>
+                <div id="pickup-delivery-label" style="font-size: 15px; font-weight: 900; color: var(--theme-accent); margin-bottom: 15px;">PICKUP / DELIVERY ONLY</div>
+                
+                <div class="receipt-qr-box" style="width: 200px; height: 200px; margin: 0 auto; padding: 10px; background: white; border: 2px dashed #ccc; border-radius: 12px;">
+                    <img id="receipt-qr" alt="QR Code" width="100%" height="100%">
+                </div>
+                <div style="font-size: 8px; margin-top: 15px;">VALID FOR 5 YEARS FROM DATE OF ISSUE.</div>
+            </div>
+            <div class="receipt-action-row">
+                <button type="button" class="os-btn-primary" onclick="window.print()">🖨️ Print</button>
+                <button type="button" class="os-btn os-btn-secondary" onclick="downloadReceipt()">📥 Download</button>
+            </div>
+        </div>
+    </div>
 
     <svg style="display:none; position:absolute; width:0; height:0;" xmlns="http://www.w3.org/2000/svg"><defs><g id="svg-logo-def"><linearGradient id="g2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FFF7AA"/><stop offset="20%" stop-color="#FFD700"/><stop offset="80%" stop-color="#DAA520"/><stop offset="100%" stop-color="#B8860B"/></linearGradient><linearGradient id="p2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FF85A2"/><stop offset="50%" stop-color="#FF1493"/><stop offset="100%" stop-color="#C71585"/></linearGradient><filter id="s2" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.5"/></filter><path d="M20,120 L50,40 L120,90 L200,20 L280,90 L350,40 L380,120 Q200,150 20,120 Z" fill="url(#g2)" filter="url(#s2)"/><ellipse cx="200" cy="70" rx="15" ry="10" fill="#8B0000" stroke="#FFD700" stroke-width="2" /><ellipse cx="120" cy="105" rx="8" ry="5" fill="#8B0000" /><ellipse cx="280" cy="105" rx="8" ry="5" fill="#8B0000" /><ellipse cx="60" cy="115" rx="6" ry="4" fill="#8B0000" /><ellipse cx="340" cy="115" rx="6" ry="4" fill="#8B0000" /><path d="M10,130 L10,170 L50,150 Z" fill="#FF85A2" /><path d="M390,130 L390,170 L350,150 Z" fill="#FF85A2" /><path d="M20,120 Q200,80 380,120 L380,170 Q200,130 20,170 Z" fill="url(#p2)" stroke="#FFC0CB" stroke-width="4" filter="url(#s2)" /><text x="200" y="145" font-family="Impact, sans-serif" font-size="44" font-weight="900" fill="#FF1493" stroke="#000000" stroke-width="2" text-anchor="middle" transform="rotate(-3, 200, 145)" letter-spacing="1">LA PRINSESA</text><circle cx="200" cy="190" r="45" fill="#FFF" stroke="#FFD700" stroke-width="6" filter="url(#s2)" /><circle cx="200" cy="190" r="38" fill="none" stroke="#FF1493" stroke-width="3" stroke-dasharray="4,2" /><path d="M185,200 L215,200 L210,215 L190,215 Z" fill="#D3D3D3" stroke="#000" stroke-width="1"/><path d="M182,200 C182,185 218,185 218,200 Z" fill="#FFB6C1" stroke="#000" stroke-width="1"/><path d="M193,185 L200,175 L207,185 Z" fill="#FFD700" stroke="#000" stroke-width="1"/></g></defs></svg>
 
@@ -707,6 +767,8 @@
         let menuItems = []; let homePromos = []; let currentWStepNum = 1; let currentAdminToppings = [];
         let typingTimeout; let cachedOwnerAvatar = 'https://ui-avatars.com/api/?name=Owner&background=c2185b&color=fff';
         let storeInfo = { description: "Welcome to La Prinsesa Bakeshop!", address: "Caloocan, Metro Manila", phone: "+63 912 345 6789", email: "laprinsesadecupcake@gmail.com" };
+
+        let html5QrCode = null; // Variable for the scanner
 
         // 3. SAFE DATABASE FETCHING
         async function fetchDataRobust(tableName) {
@@ -995,7 +1057,44 @@
                 }); 
             }
             
-            const now = new Date(); document.getElementById('order-date').value = now.toISOString().split('T')[0]; document.getElementById('order-time').value = now.toTimeString().substring(0, 5); document.getElementById('order-quantity').value = 1;
+            const orderDate = document.getElementById('order-date');
+            const orderTime = document.getElementById('order-time');
+            
+            const now = new Date(); 
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+            
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${currentHour}:${currentMinute}`;
+            
+            orderDate.min = todayStr;
+            orderDate.value = todayStr; 
+            orderTime.min = currentTimeStr;
+            orderTime.value = currentTimeStr;
+            
+            orderDate.onchange = function() {
+                if (this.value < todayStr) {
+                    this.value = todayStr;
+                }
+                if (this.value === todayStr) {
+                    orderTime.min = currentTimeStr;
+                    if (orderTime.value < currentTimeStr) {
+                        orderTime.value = currentTimeStr;
+                    }
+                } else {
+                    orderTime.removeAttribute('min');
+                }
+            };
+            
+            orderTime.onchange = function() {
+                if (orderDate.value === todayStr && this.value < currentTimeStr) {
+                    alert("Warning: You cannot select a past time for today.");
+                    this.value = currentTimeStr;
+                }
+            };
             
             updateTotal();
 
@@ -1013,12 +1112,27 @@
         function closeDetails() { document.getElementById('details-overlay').classList.remove('active'); }
 
         async function processOrder(type) {
+            const pickupDate = document.getElementById('order-date').value; 
+            const pickupTime = document.getElementById('order-time').value;
+            
+            const now = new Date(); 
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${currentHour}:${currentMinute}`;
+            
+            if(pickupDate < todayStr || (pickupDate === todayStr && pickupTime < currentTimeStr)) {
+                return alert("Invalid Date or Time selected. You cannot select past times.");
+            }
+
             const qty = document.getElementById('order-quantity').value; const selectedToppingsArr = Array.from(document.querySelectorAll('.topping-check:checked')).map(c => c.value); const toppingsJSONString = JSON.stringify(selectedToppingsArr);
             let numPrice = parseFloat(currentPriceToOrder.replace(/[^0-9.-]+/g,"")); 
             let extraToppingsPrice = 0; document.querySelectorAll('.topping-check:checked').forEach(checkbox => { extraToppingsPrice += parseFloat(checkbox.dataset.price || 0); });
             
             let totalPriceStr = currentPriceToOrder; if(!isNaN(numPrice)) { totalPriceStr = "₱" + ((numPrice + extraToppingsPrice) * parseInt(qty)).toFixed(2); }
-            const pickupDate = document.getElementById('order-date').value; const pickupTime = document.getElementById('order-time').value;
             const finalItemName = `${qty}x ${currentItemToOrder}`;
             const orderObj = { order_id: 'ORD-' + Date.now(), user_uid: currentUser ? currentUser.uid : "GUEST", item_name: finalItemName, price: totalPriceStr, pickup_date: pickupDate, pickup_time: pickupTime, toppings: toppingsJSONString, status: "Pending", image_url: currentImgToOrder };
 
@@ -1049,13 +1163,82 @@
 
         function openCartCheckout(index) {
             checkoutCartIndex = index; const cItem = cartItems[index]; const thumbHTML = `<img src="${cItem.img}" alt="${cItem.item}">`;
-            document.getElementById('cart-co-name').innerText = cItem.item; document.getElementById('cart-co-price').innerText = cItem.price; document.getElementById('cart-co-img').innerHTML = thumbHTML; document.getElementById('cart-co-toppings').innerText = cItem.toppings.length ? `Toppings: ${cItem.toppings.join(', ')}` : "No extra toppings"; document.getElementById('cart-co-date').value = cItem.date; document.getElementById('cart-co-time').value = cItem.time; document.getElementById('cart-checkout-overlay').classList.add('active');
+            document.getElementById('cart-co-name').innerText = cItem.item; document.getElementById('cart-co-price').innerText = cItem.price; document.getElementById('cart-co-img').innerHTML = thumbHTML; document.getElementById('cart-co-toppings').innerText = cItem.toppings.length ? `Toppings: ${cItem.toppings.join(', ')}` : "No extra toppings"; 
+            
+            const cartDate = document.getElementById('cart-co-date');
+            const cartTime = document.getElementById('cart-co-time');
+            
+            const now = new Date(); 
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${currentHour}:${currentMinute}`;
+            
+            cartDate.min = todayStr;
+            
+            if(cItem.date < todayStr) { 
+                cartDate.value = todayStr; 
+            } else { 
+                cartDate.value = cItem.date; 
+            }
+            if(cartDate.value === todayStr) {
+                cartTime.min = currentTimeStr;
+                if(cItem.time < currentTimeStr) { 
+                    cartTime.value = currentTimeStr; 
+                } else { 
+                    cartTime.value = cItem.time; 
+                }
+            } else {
+                cartTime.removeAttribute('min');
+                cartTime.value = cItem.time; 
+            }
+            
+            cartDate.onchange = function() {
+                if (this.value < todayStr) {
+                    this.value = todayStr;
+                }
+                if (this.value === todayStr) {
+                    cartTime.min = currentTimeStr;
+                    if (cartTime.value < currentTimeStr) {
+                        cartTime.value = currentTimeStr;
+                    }
+                } else {
+                    cartTime.removeAttribute('min');
+                }
+            };
+            
+            cartTime.onchange = function() {
+                if (cartDate.value === todayStr && this.value < currentTimeStr) {
+                    alert("Warning: You cannot select a past time for today.");
+                    this.value = currentTimeStr;
+                }
+            };
+
+            document.getElementById('cart-checkout-overlay').classList.add('active');
         }
 
         function closeCartCheckout() { document.getElementById('cart-checkout-overlay').classList.remove('active'); checkoutCartIndex = -1; }
 
         async function checkoutCartItem() {
-            if(checkoutCartIndex < 0) return; const cItem = cartItems[checkoutCartIndex]; const dDate = document.getElementById('cart-co-date').value; const dTime = document.getElementById('cart-co-time').value; if(!dDate || !dTime) return alert("Select valid Date and Time.");
+            if(checkoutCartIndex < 0) return; const cItem = cartItems[checkoutCartIndex]; 
+            const dDate = document.getElementById('cart-co-date').value; const dTime = document.getElementById('cart-co-time').value; 
+            
+            const now = new Date(); 
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
+            const currentTimeStr = `${currentHour}:${currentMinute}`;
+
+            if(!dDate || !dTime || dDate < todayStr || (dDate === todayStr && dTime < currentTimeStr)) {
+                return alert("Invalid Date or Time selected. You cannot select past times.");
+            }
+            
             const dbOrder = { order_id: 'ORD-' + Date.now(), user_uid: currentUser ? currentUser.uid : "GUEST", item_name: cItem.item, price: cItem.price, pickup_date: dDate, pickup_time: dTime, toppings: JSON.stringify(cItem.toppings), status: "Pending", image_url: cItem.img || '🧁' };
             
             if(_db) { try { await _db.from('orders').insert([dbOrder]); } catch(e){} }
@@ -1068,7 +1251,7 @@
             orders.forEach(o => {
                 const thumbHTML = `<img src="${o.image_url}" alt="${o.item_name}">`; let tops = []; try { tops = JSON.parse(o.toppings); } catch(e){} const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=50x50&data=${encodeURIComponent(o.order_id)}`; const canCancel = (o.status === 'Pending') ? true : false;
                 const p = document.createElement('div'); p.className = 'order-panel'; p.onclick = () => showReceipt({ id: o.order_id, item: o.item_name, price: o.price, date: o.pickup_date, time: o.pickup_time, toppings: tops });
-                p.innerHTML = `<div class="order-img-thumb">${thumbHTML}</div><div class="order-info" style="margin-left: 15px; color: var(--dynamic-text-color);"><h3 style="color: var(--dynamic-text-color); text-shadow:none;">${o.item_name}</h3><p style="color: var(--dynamic-text-color);">${o.price}</p><small style="color: var(--dynamic-text-color); opacity:0.8;">${o.pickup_date} | ${o.pickup_time}</small>${tops.length ? `<small style="color: var(--theme-accent); display:block; margin-top:5px; font-weight:bold;">+ ${tops.join(', ')}</small>` : ''}</div><img src="${qrUrl}" class="qr-thumb" alt="QR" /><div class="order-actions" style="margin-left:15px;"><span class="status-badge status-${o.status}">${o.status}</span><button type="button" class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}')">Cancel</button></div>`; listElement.appendChild(p);
+                p.innerHTML = `<div class="order-img-thumb">${thumbHTML}</div><div class="order-info" style="margin-left: 15px; color: var(--dynamic-text-color);"><h3 style="color: var(--dynamic-text-color); text-shadow:none;">${o.item_name}</h3><p style="color: var(--dynamic-text-color);">${o.price}</p><small style="color: var(--dynamic-text-color); opacity:0.8;">${o.pickup_date} | ${o.pickup_time}</small>${tops.length ? `<small style="color: var(--theme-accent); display:block; margin-top:5px; font-weight:bold;">+ ${tops.join(', ')}</small>` : ''}</div><img src="${qrUrl}" class="qr-thumb" alt="QR" /><div class="order-actions" style="margin-left:15px;"><span class="status-badge status-${o.status}">${o.status}</span><button type="button" class="cancel-btn ${!canCancel ? 'disabled' : ''}" onclick="cancelOrder(event, '${o.order_id}', this)">Cancel</button></div>`; listElement.appendChild(p);
             });
         }
 
@@ -1080,9 +1263,25 @@
             else if (!cachedOrders) { list.innerHTML = `<div class="warning-box"><strong>Fetch Error:</strong> ${rOrders.error}</div>`; }
         }
 
-        async function cancelOrder(e, id) { 
-            e.stopPropagation(); if (!confirm("Cancel this order?")) return; 
-            if(_db) { try { await _db.from('orders').update({ status: 'Canceled' }).eq('order_id', id); } catch(e){} }
+        async function cancelOrder(e, id, btnElement) { 
+            e.stopPropagation(); 
+            if (!confirm("Warning: Canceling this order is irreversible and will completely remove it from the system. Proceed?")) return; 
+            
+            if(_db) { try { await _db.from('orders').delete().eq('order_id', id); } catch(e){} }
+            if (currentUser) { 
+                let c = safeStorage.get('la_prinsesa_orders_' + currentUser.uid); 
+                if (c) { 
+                    let p = JSON.parse(c).filter(o => o.order_id !== id); 
+                    safeStorage.set('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(p)); 
+                } 
+            }
+            
+            // Instantly remove from view
+            if (btnElement) {
+                const panel = btnElement.closest('.order-panel');
+                if (panel) panel.remove();
+            }
+            
             await refreshData(); 
         }
 
@@ -1176,6 +1375,9 @@
             }
 
             buildAdminOrdersUI(rUsers.data||[], rOrders.data||[], rMsgs.data||[], list, errs.length > 0);
+            
+            const scanBtn = document.getElementById('admin-scan-btn');
+            if (scanBtn) scanBtn.style.display = 'block';
         }
 
         async function openAdminUserModal(uid, fullname, phone, photo_url) { currentAdminViewingUid = uid; currentAdminViewingPhoto = photo_url; document.getElementById('admin-user-title').innerText = `Managing: ${fullname}`; document.getElementById('admin-user-phone').innerHTML = phone ? `CUSTOMER NUMBER<br>#${phone}` : `CUSTOMER NUMBER<br>#N/A`; document.getElementById('admin-user-overlay').classList.add('active'); await renderAdminUserModal(uid, false); }
@@ -1197,8 +1399,14 @@
         }
 
         async function adminUpdateOrder(orderId, newStatus) { 
-            if(_db) { try { await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId); } catch(e){} }
+            if(newStatus === 'Canceled') {
+                if(!confirm("Warning: Rejecting this order is irreversible and will completely remove it from the system. Proceed?")) return;
+                if(_db) { try { await _db.from('orders').delete().eq('order_id', orderId); } catch(e){} }
+            } else {
+                if(_db) { try { await _db.from('orders').update({ status: newStatus }).eq('order_id', orderId); } catch(e){} }
+            }
             await renderAdminUserModal(currentAdminViewingUid, false); 
+            await renderAdminOrders();
         }
         
         function renderDesktopCarousel() { const track = document.getElementById('desktop-carousel-track'); if (!track) return; track.innerHTML = ''; homePromos.forEach(p => { const slide = document.createElement('div'); slide.className = 'desktop-carousel-slide'; slide.innerHTML = `<img src="${p.img}" alt="${p.title}"><div class="desktop-carousel-text" style="color: #fff;">${p.title} &bull; ${p.desc}</div>`; track.appendChild(slide); }); }
@@ -1276,10 +1484,10 @@
                 document.getElementById('logged-out-view').style.display = 'none'; document.getElementById('logged-in-view').style.display = 'flex'; 
                 if (currentUser.photo_url) { document.getElementById('profile-photo-display').src = currentUser.photo_url; } else { document.getElementById('profile-photo-display').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`; }
                 document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname}`; document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'}`;
-                if (currentUser.role === 'Administrator') { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none'); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block'); document.getElementById('orders-view-title').innerText = "Store Operations"; document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'flex'; document.getElementById('orders-list').style.display = 'none';
-                } else { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; }
+                if (currentUser.role === 'Administrator') { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none'); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block'); document.getElementById('orders-view-title').innerText = "Store Operations"; document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'flex'; document.getElementById('orders-list').style.display = 'none'; document.getElementById('admin-scan-btn').style.display = 'block';
+                } else { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none';}
             } else {
-                document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex';
+                document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none';
             }
         }
 
@@ -1417,17 +1625,44 @@
             if (save) safeStorage.set('la_prinsesa_theme', JSON.stringify({ type, color, accentHex, baseRgba, textDark, bgLight, btnHover, dynamicText }));
         }
 
-        function showReceipt(o) {
-            document.getElementById('receipt-id-print').innerText = o.id; document.getElementById('receipt-datetime-print').innerText = `${o.date} ${o.time}`; document.getElementById('receipt-item-print').innerText = o.item; document.getElementById('receipt-price-print').innerText = o.price; document.getElementById('receipt-total-print').innerText = o.price; document.getElementById('receipt-toppings-print').innerText = o.toppings.length ? `+ ${o.toppings.join(', ')}` : "";
-            const webRedirectLink = `https://laprinsesa-os.app/scan?uid=${currentUser ? currentUser.uid : 'GUEST'}&oid=${o.id}`;
-            document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(webRedirectLink)}`; document.getElementById('receipt-overlay').classList.add('active');
+        function showReceipt(o, isScanned = false) {
+            // Populate Details
+            document.getElementById('receipt-id-print').innerText = o.id; 
+            document.getElementById('receipt-datetime-print').innerText = `${o.date} ${o.time}`; 
+            document.getElementById('receipt-item-print').innerText = o.item; 
+            document.getElementById('receipt-price-print').innerText = o.price; 
+            document.getElementById('receipt-total-print').innerText = o.price; 
+            document.getElementById('receipt-toppings-print').innerText = o.toppings && o.toppings.length ? `+ ${o.toppings.join(', ')}` : "";
+            
+            const detailsSection = document.getElementById('receipt-full-details');
+            const pickupLabel = document.getElementById('pickup-delivery-label');
+            const qrLabel = document.getElementById('qr-scan-label');
+
+            if (isScanned) {
+                // Admin viewing scanned receipt: show full details
+                detailsSection.style.display = 'block';
+                pickupLabel.style.display = 'none';
+                qrLabel.innerText = "Scanned Order Verified";
+            } else {
+                // Customer viewing regular receipt: hide details, show only pickup label and QR
+                detailsSection.style.display = 'none';
+                pickupLabel.style.display = 'block';
+                qrLabel.innerText = "QR Code";
+            }
+            
+            // Just the ID for scanning
+            const qrData = o.id; 
+            document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`; 
+            
+            document.getElementById('receipt-overlay').classList.add('active');
         }
         
         function closeReceipt() { document.getElementById('receipt-overlay').classList.remove('active'); }
         
         function downloadReceipt() {
-            const rId = document.getElementById('receipt-id-print').innerText; const rItem = document.getElementById('receipt-item-print').innerText; const rDate = document.getElementById('receipt-datetime-print').innerText; const rTot = document.getElementById('receipt-total-print').innerText;
-            const receiptContent = `LA PRINSESA BAKESHOP\n\nDate: ${rDate}\nRef#: ${rId}\n-----------------------\nItem: ${rItem}\nTotal: ${rTot}\n-----------------------\nThank you!`;
+            const rId = document.getElementById('receipt-id-print').innerText; 
+            const rDate = document.getElementById('receipt-datetime-print').innerText; 
+            const receiptContent = `LA PRINSESA BAKESHOP\n\nDate: ${rDate}\nRef#: ${rId}\n-----------------------\nPlease scan the QR code in the app to view your full order details.\n-----------------------\nThank you!`;
             const blob = new Blob([receiptContent], { type: 'text/plain' }); const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', `Receipt_${rId}.txt`);
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
@@ -1439,6 +1674,70 @@
         function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
         function switchSettingsNav(navId) { document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('nav-' + navId).classList.add('active'); document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active')); document.getElementById('view-' + navId).classList.add('active'); document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'}); }
         function switchAuthTab(tabId) { document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active')); document.getElementById('auth-pane-' + tabId).classList.add('active'); document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active')); document.getElementById('btn-auth-' + tabId).classList.add('active'); }
+
+        // SCANNER FUNCTIONS
+        function startScanner() {
+            document.getElementById('scanner-overlay').classList.add('active');
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader");
+            }
+            
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText, decodedResult) => {
+                    console.log("Scanned ID: ", decodedText);
+                    stopScanner(); 
+                    loadOrderToUI(decodedText); 
+                },
+                (errorMessage) => {
+                    // Ignore background scanning errors
+                }
+            ).catch((err) => {
+                alert("Camera access denied or unavailable. Please ensure permissions are granted.");
+                stopScanner();
+            });
+        }
+
+        function stopScanner() {
+            document.getElementById('scanner-overlay').classList.remove('active');
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                    html5QrCode = null;
+                }).catch(err => console.error("Error stopping scanner:", err));
+            }
+        }
+
+        async function loadOrderToUI(scannedOrderId) {
+            if(!_db) return alert("Database offline. Cannot fetch order details.");
+            
+            try {
+                const { data, error } = await _db.from('orders').select('*').eq('order_id', scannedOrderId).limit(1);
+                
+                if (error || !data || data.length === 0) {
+                    return alert("Order not found in database for ID: " + scannedOrderId);
+                }
+                
+                const o = data[0];
+                let tops = []; 
+                try { tops = JSON.parse(o.toppings); } catch(e){}
+                
+                // PASS TRUE TO SHOW FULL DETAILS FOR ADMIN SCAN
+                showReceipt({ 
+                    id: o.order_id, 
+                    item: o.item_name, 
+                    price: o.price, 
+                    date: o.pickup_date, 
+                    time: o.pickup_time, 
+                    toppings: tops 
+                }, true); 
+                
+            } catch(err) {
+                console.error(err);
+                alert("Error fetching order.");
+            }
+        }
     </script>
 </body>
 </html>
