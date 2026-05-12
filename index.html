@@ -113,47 +113,6 @@
             #about-hub, #guide-hub, #receipt-hub, #cart-checkout-hub, #scanner-hub { height: auto !important; max-height: 90dvh !important; width: 95vw !important; max-width: 500px !important; margin: auto !important; border-radius: 16px !important; padding: 20px !important; display: flex !important; flex-direction: column !important; overflow-y: auto !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch; padding-bottom: 30px !important; }
 
             .admin-left-col, .admin-right-col { display: flex !important; flex-direction: column !important; width: 100% !important; height: auto !important; overflow: visible !important; margin-bottom: 20px !important; flex: none !important; } .admin-canva-chat-box { min-height: 250px !important; height: 250px !important; margin-bottom: 15px !important; flex: none !important; } #admin-user-orders { min-height: 200px !important; height: auto !important; overflow-y: visible !important; display: flex !important; flex-direction: column !important; flex: none !important;} .admin-canva-order-card { min-width: 100% !important; max-width: 100% !important; box-sizing: border-box; } .admin-divider { display: none !important; } .settings-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.2) !important; flex-direction: row !important; overflow-x: auto !important; padding: 10px 0 !important; min-width: 0 !important; display: flex !important; margin-bottom: 15px !important;} .settings-tab-btn { white-space: nowrap; margin-right: 10px; margin-bottom: 0 !important; padding: 8px 12px !important; font-size: 13px !important; color: var(--dynamic-text-color) !important; opacity: 0.8; width: auto !important;} .settings-tab-btn.active { opacity: 1; font-weight: bold; } .settings-content { padding: 0 !important; overflow: visible !important; display: block !important; height: auto !important; } .theme-preview-box { grid-column: span 1 !important; } .os-card { padding: 15px !important; margin-bottom: 15px !important; }
-            
-            /* DYNAMIC DEVICE RESIZING FOR MOBILE & TABLET MODE */
-            #details-hub.canva-theme {
-                flex-direction: column !important;
-                height: 90dvh !important;
-                max-height: 900px !important;
-                width: 90vw !important;
-                padding: 20px !important;
-                overflow-y: auto !important; /* ALLOW SCROLLING */
-                overflow-x: hidden !important;
-            }
-            .canva-details-left {
-                width: 100% !important;
-                max-width: 100% !important;
-                height: auto !important;
-                min-height: auto !important;
-                margin: 0 0 15px 0 !important;
-                flex: none !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            #details-image-container {
-                aspect-ratio: 1 / 1 !important;
-                height: auto !important;
-                width: 100% !important;
-                border-radius: 16px !important;
-            }
-            .canva-details-right {
-                height: auto !important; 
-                width: 100% !important;
-                flex: none !important;
-                display: flex !important;
-                flex-direction: column !important;
-                overflow: visible !important; /* ALLOW SCROLLING */
-                padding-left: 0 !important;
-                padding-bottom: 20px !important;
-            }
-            #admin-edit-hub.canva-theme .canva-details-right {
-                overflow-y: auto !important;
-                padding-bottom: 20px !important;
-            }
         }
 
         /* Large devices specifically TVs/Large monitors */
@@ -275,9 +234,8 @@
             flex-direction: column;
             gap: 20px;
             width: 100%;
-            height: 100%;
-            overflow-y: auto; /* ALLOW SCROLLING globally */
-            overflow-x: hidden;
+            height: auto !important;
+            overflow: visible !important;
             padding-bottom: 0px; 
         }
         #admin-edit-hub .admin-edit-body-flex {
@@ -299,7 +257,10 @@
             max-width: 900px !important;
             width: 95vw !important;
             height: auto !important;
-            max-height: 90dvh !important;
+            max-height: 85dvh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            -webkit-overflow-scrolling: touch;
             transition: background 0.3s ease;
         }
 
@@ -347,16 +308,17 @@
             }
             .canva-details-right {
                 width: 100% !important;
-                flex: 1 !important;
+                flex: none !important;
+                height: auto !important;
                 display: flex !important;
                 flex-direction: column !important;
             }
             #details-hub.canva-theme .canva-details-right {
-                overflow-y: auto !important;
+                overflow-y: visible !important;
                 overflow-x: hidden !important;
             }
             #admin-edit-hub.canva-theme .canva-details-right {
-                overflow-y: auto !important;
+                overflow-y: visible !important;
                 overflow-x: hidden !important;
             }
         }
@@ -1425,12 +1387,9 @@
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
             const todayStr = `${year}-${month}-${day}`;
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const currentTimeStr = `${currentHour}:${currentMinute}`;
             
-            if(pickupDate < todayStr || (pickupDate === todayStr && pickupTime < currentTimeStr)) {
-                return alert("Invalid Date or Time selected. You cannot select past times.");
+            if(pickupDate < todayStr) {
+                return alert("Invalid Date selected. You cannot select past dates.");
             }
 
             const qty = document.getElementById('order-quantity').value; 
@@ -1454,9 +1413,23 @@
             if (type === 'buy') {
                 if(!confirm("Warning: Buying directly sends the order immediately. Proceed?")) return;
                 
-                if (_db) { try { await _db.from('orders').insert([orderObj]); } catch(e){ console.warn('Offline order save.'); } }
+                if (_db) { 
+                    try { 
+                        const { error } = await _db.from('orders').insert([orderObj]); 
+                        if (error) {
+                            alert("Database Connection Failed: " + error.message);
+                            console.error("DB Error:", error);
+                        }
+                    } catch(e) { 
+                        alert("Database Connection Failed: Offline or unreachable.");
+                        console.warn('Offline order save error:', e); 
+                    } 
+                }
 
-                let cached = JSON.parse(safeStorage.get('la_prinsesa_orders_' + currentUser.uid) || '[]'); cached.unshift(orderObj); safeStorage.set('la_prinsesa_orders_' + currentUser.uid, JSON.stringify(cached));
+                let safeUid = currentUser ? currentUser.uid : "GUEST";
+                let cached = JSON.parse(safeStorage.get('la_prinsesa_orders_' + safeUid) || '[]'); 
+                cached.unshift(orderObj); 
+                safeStorage.set('la_prinsesa_orders_' + safeUid, JSON.stringify(cached));
                 closeDetails(); switchMainView('orders'); showReceipt({ id: orderObj.order_id, item: orderObj.item_name, price: orderObj.price, date: orderObj.pickup_date, time: orderObj.pickup_time, toppings: selectedToppingsArr, status: orderObj.status }); await updateOrdersView(); await refreshData();
             } else {
                 const existingIdx = cartItems.findIndex(c => { const match = c.item.match(/^(\d+)x (.*)$/); const cBaseItemName = match ? match[2] : c.item; return cBaseItemName === currentItemToOrder && JSON.stringify(c.toppings) === toppingsJSONString && c.date === pickupDate && c.time === pickupTime; });
@@ -1546,17 +1519,25 @@
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const day = String(now.getDate()).padStart(2, '0');
             const todayStr = `${year}-${month}-${day}`;
-            const currentHour = String(now.getHours()).padStart(2, '0');
-            const currentMinute = String(now.getMinutes()).padStart(2, '0');
-            const currentTimeStr = `${currentHour}:${currentMinute}`;
 
-            if(!dDate || !dTime || dDate < todayStr || (dDate === todayStr && dTime < currentTimeStr)) {
-                return alert("Invalid Date or Time selected. You cannot select past times.");
+            if(!dDate || !dTime || dDate < todayStr) {
+                return alert("Invalid Date selected. You cannot select past dates.");
             }
             
             const dbOrder = { order_id: 'ORD-' + Date.now(), user_uid: currentUser ? currentUser.uid : "GUEST", item_name: cItem.item, price: cItem.price, pickup_date: dDate, pickup_time: dTime, toppings: JSON.stringify(cItem.toppings), status: "Pending", image_url: cItem.img || '🧁' };
             
-            if(_db) { try { await _db.from('orders').insert([dbOrder]); } catch(e){} }
+            if(_db) { 
+                try { 
+                    const { error } = await _db.from('orders').insert([dbOrder]); 
+                    if (error) {
+                        alert("Database Connection Failed: " + error.message);
+                        console.error("DB Error:", error);
+                    }
+                } catch(e) { 
+                    alert("Database Connection Failed: Offline or unreachable.");
+                    console.warn('Offline order save error:', e); 
+                } 
+            }
 
             removeFromCart(checkoutCartIndex); closeCartCheckout(); switchMainView('orders'); showReceipt({ id: dbOrder.order_id, item: dbOrder.item_name, price: dbOrder.price, date: dbOrder.pickup_date, time: dbOrder.pickup_time, toppings: cItem.toppings, status: dbOrder.status }); await refreshData();
         }
@@ -1797,378 +1778,4 @@
                 slide.innerHTML = `
                     ${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex; position: absolute; top:10px; right:10px; z-index: 100;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}
                     <img src="${p.img}" alt="${p.title}">
-                    <div class="desktop-carousel-text" style="color: #fff; display: flex; justify-content: space-between; align-items: center;">
-                        <div style="text-align: left;">
-                            <div style="font-size: 18px; font-weight: 900; text-transform: uppercase;">${p.title}</div>
-                            <div style="font-size: 14px; font-weight: normal; opacity: 0.9;">${p.desc}</div>
-                        </div>
-                        <button type="button" class="promo-action" style="margin-left: 15px;" onclick="switchMainView('menu')">View Menu →</button>
-                    </div>
-                `; 
-                track.appendChild(slide); 
-            }); 
-        }
-
-        function renderMenu() {
-            const grid = document.getElementById('product-grid'); 
-            const isAdmin = currentUser && currentUser.role === 'Administrator';
-            
-            let addBtnHTML = '';
-            if (isAdmin) {
-                addBtnHTML = `<div class="menu-card admin-add-card" style="min-height:200px;" onclick="openAdminEdit('menu', 'new')"><div style="font-size:2em; margin-bottom:10px;">+</div><h3 style="margin:0; font-size:16px;">Add Menu</h3></div>`; 
-            }
-
-            if (menuItems.length === 0 && !isAdmin) {
-                grid.innerHTML = '<div stylewidth:100%; text-align:center; grid-column: 1/-1; padding:20px; font-weight: bold; color:var(--dynamic-text-color); opacity:0.8;">The menu is currently empty. Check back later!</div>';
-                return;
-            }
-
-            grid.innerHTML = addBtnHTML;
-            menuItems.forEach((m) => {
-                const imgHTML = `<img src="${m.img}" alt="${m.name}">`; const card = document.createElement('div'); card.className = 'menu-card';
-                let editBtnHTML = isAdmin ? `<button type="button" class="admin-edit-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('menu', '${m.id}')">✏️ Edit Item</button>` : '';
-                card.innerHTML = `${editBtnHTML}<div class="menu-image-preview">${imgHTML}</div><div class="menu-price-pill">${m.price}</div><h3 class="menu-item-title">${m.name}</h3>`; 
-                card.onclick = () => openDetails(m.name, m.price, m.img, m.toppings); 
-                grid.appendChild(card);
-            });
-        }
-
-        function renderHomePromos() {
-            const feed = document.getElementById('mobile-promo-feed'); 
-            feed.innerHTML = ''; 
-            
-            const isAdmin = currentUser && currentUser.role === 'Administrator'; 
-            const addPromoBtn = document.getElementById('add-promo-btn');
-            if (addPromoBtn) {
-                addPromoBtn.style.display = isAdmin ? 'block' : 'none';
-            }
-
-            if (homePromos.length === 0 && !isAdmin) {
-                feed.innerHTML = '<div style="width:100%; text-align:center; padding: 40px; color:var(--dynamic-text-color); opacity: 0.6;">No active promos at the moment.</div>';
-                return;
-            }
-
-            homePromos.forEach(p => { 
-                const card = document.createElement('div'); 
-                card.className = 'promo-card'; 
-                card.innerHTML = `${isAdmin ? `<button type="button" class="admin-edit-promo-btn" style="display:flex;" onclick="event.stopPropagation(); openAdminEdit('home', '${p.id}')">✏️</button>` : ''}<img class="promo-image" src="${p.img}"><div class="promo-details"><div class="promo-text-wrap"><h3>${p.title}</h3><p>${p.desc}</p></div><button type="button" class="promo-action" onclick="switchMainView('menu')">View Menu →</button></div>`; 
-                feed.appendChild(card); 
-            });
-        }
-
-        function switchMainView(viewName, element = null) {
-            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active')); 
-            let viewSec = document.getElementById(viewName + '-view');
-            if (viewSec) viewSec.classList.add('active');
-            
-            document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active')); 
-            document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active')); 
-            
-            let dNav = document.getElementById('desk-nav-' + viewName);
-            let mNav = document.getElementById('mob-nav-' + viewName);
-            if (dNav) dNav.classList.add('active');
-            if (mNav) mNav.classList.add('active');
-        }
-
-        function updateSettingsUI() {
-            if (currentUser) {
-                document.getElementById('logged-out-view').style.display = 'none'; document.getElementById('logged-in-view').style.display = 'flex'; 
-                if (currentUser.photo_url) { document.getElementById('profile-photo-display').src = currentUser.photo_url; } else { document.getElementById('profile-photo-display').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.fullname)}&background=880e4f&color=fff`; }
-                document.getElementById('profile-fullname').innerHTML = `${currentUser.fullname}`; document.getElementById('profile-details').innerHTML = `Role: ${currentUser.role} | UID: <span style="color: var(--os-green);">${currentUser.uid}</span><br>Phone: ${currentUser.phone || 'N/A'}`;
-                if (currentUser.role === 'Administrator') { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = 'none'); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block'); document.getElementById('orders-view-title').innerText = "Store Operations"; document.getElementById('orders-view-desc').innerText = "Manage customer orders and messages."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Customer Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Cust. Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'flex'; document.getElementById('orders-list').style.display = 'none'; document.getElementById('admin-scan-btn').style.display = 'block'; document.getElementById('past-orders-toggle-btn').style.display = 'none';
-                } else { document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('desk-nav-orders').innerHTML = "<span class='icon'>📦</span><span class='text'>Orders</span><div id='desk-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('mob-nav-orders').innerHTML = "<span>📦</span><span class='nav-text'>Orders</span><div id='mob-badge-orders' class='nav-badge' style='display:none;'>0</div>"; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none'; document.getElementById('past-orders-toggle-btn').style.display = 'block'; }
-            } else {
-                document.getElementById('logged-in-view').style.display = 'none'; document.getElementById('logged-out-view').style.display = 'flex'; document.querySelectorAll('.user-only-nav').forEach(el => el.style.display = ''); document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none'); document.getElementById('orders-view-title').innerText = "Your Order History"; document.getElementById('orders-view-desc').innerText = "Click on any past order below to retrieve its QR Receipt."; document.getElementById('admin-orders-list').style.display = 'none'; document.getElementById('orders-list').style.display = 'flex'; document.getElementById('admin-scan-btn').style.display = 'none'; document.getElementById('past-orders-toggle-btn').style.display = 'block';
-            }
-        }
-
-        function filterProducts() { const query = document.getElementById('product-search').value.toLowerCase(); document.querySelectorAll('#product-grid .menu-card').forEach(product => { if(product.classList.contains('admin-add-card')) return; product.style.display = product.querySelector('h3').innerText.toLowerCase().includes(query) ? "flex" : "none"; }); }
-
-        function handleAdminImageUpload(input) { const file = input.files[0]; if (file) { const r = new FileReader(); r.onload = function(e) { document.getElementById('admin-edit-img-base64').value = e.target.result; document.getElementById('admin-edit-img-preview').src = e.target.result; document.getElementById('admin-edit-img-preview').style.display = 'block'; }; r.readAsDataURL(file); } else { document.getElementById('admin-edit-img-base64').value = ""; document.getElementById('admin-edit-img-preview').style.display = 'none'; } }
-
-        function renderAdminToppingsGrid() { 
-            const grid = document.getElementById('admin-toppings-grid'); 
-            grid.innerHTML = ''; 
-            currentAdminToppings.forEach((t, index) => { 
-                grid.innerHTML += `
-                <div class="canva-topping-content" style="position:relative; background: rgba(0,0,0,0.2); display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; padding: 10px; border-radius: 12px; box-sizing: border-box;">
-                    <button type="button" style="position:absolute; top:-5px; right:-5px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; z-index: 10; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:12px;" onclick="removeAdminTopping(${index})">×</button>
-                    <button type="button" class="topping-edit-btn" onclick="openEditToppingModal(${index})">✏️</button>
-                    <div class="canva-topping-img-box" style="width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden; margin-bottom: 8px; flex-shrink: 0;">
-                        <img src="${t.img}" style="width:100%;height:100%;object-fit:cover;">
-                    </div>
-                    <div class="canva-topping-label" style="font-size: 9px; color: var(--dynamic-text-color); text-align: center; font-weight: 800; line-height: 1.2; display: flex; flex-direction: column; justify-content: flex-end; flex: 1; width: 100%;">
-                        ${t.name.toUpperCase()}<br>
-                        <span style="font-size:8px; opacity:0.8; margin-top:2px;">(₱${parseFloat(t.price || 0).toFixed(2)})</span>
-                    </div>
-                </div>`; 
-            }); 
-        }
-        function removeAdminTopping(index) { currentAdminToppings.splice(index, 1); renderAdminToppingsGrid(); }
-        
-        function openEditToppingModal(index) {
-            const t = currentAdminToppings[index];
-            document.getElementById('edit-topping-index').value = index;
-            document.getElementById('edit-topping-name').value = t.name;
-            document.getElementById('edit-topping-price').value = t.price || 0;
-            document.getElementById('edit-topping-preview').src = t.img;
-            document.getElementById('edit-topping-overlay').classList.add('active');
-        }
-
-        function closeEditToppingModal() {
-            document.getElementById('edit-topping-overlay').classList.remove('active');
-        }
-
-        function previewEditTopping(input) {
-            if (input.files && input.files[0]) {
-                const r = new FileReader();
-                r.onload = function(e) {
-                    document.getElementById('edit-topping-preview').src = e.target.result;
-                };
-                r.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function saveEditedTopping() {
-            const index = document.getElementById('edit-topping-index').value;
-            const name = document.getElementById('edit-topping-name').value;
-            const price = document.getElementById('edit-topping-price').value || 0;
-            const img = document.getElementById('edit-topping-preview').src;
-            
-            if(!name) return alert("Topping name is required.");
-            
-            currentAdminToppings[index] = { name: name, price: price, img: img };
-            renderAdminToppingsGrid();
-            closeEditToppingModal();
-        }
-
-        function previewNewTopping(input) {
-            if (input.files && input.files[0]) {
-                const r = new FileReader();
-                r.onload = function(e) {
-                    document.getElementById('new-topping-preview').src = e.target.result;
-                    document.getElementById('new-topping-preview').style.display = 'block';
-                };
-                r.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function addNewAdminTopping() { const name = document.getElementById('new-topping-name').value; const price = document.getElementById('new-topping-price').value || 0; const fileInput = document.getElementById('new-topping-file'); if(!name || !fileInput.files[0]) return alert("Please provide a name and an image for the new topping."); const r = new FileReader(); r.onload = function(e) { currentAdminToppings.push({ name: name, price: price, img: e.target.result }); document.getElementById('new-topping-name').value = ''; document.getElementById('new-topping-price').value = ''; fileInput.value = ''; document.getElementById('new-topping-preview').src = ''; document.getElementById('new-topping-preview').style.display = 'none'; renderAdminToppingsGrid(); }; r.readAsDataURL(fileInput.files[0]); }
-
-        function openAdminEdit(type, id) {
-            document.getElementById('admin-edit-type').value = type; document.getElementById('admin-edit-id').value = id; const delBtn = document.getElementById('admin-delete-btn');
-            document.getElementById('admin-edit-img-file').value = ""; document.getElementById('admin-edit-img-base64').value = ""; document.getElementById('admin-edit-img-preview').style.display = 'none'; document.getElementById('admin-edit-img-url').value = "";
-            
-            let tpPreview = document.getElementById('new-topping-preview');
-            if(tpPreview) { tpPreview.src = ''; tpPreview.style.display = 'none'; }
-            let tpName = document.getElementById('new-topping-name');
-            if(tpName) tpName.value = '';
-            let tpPrice = document.getElementById('new-topping-price');
-            if(tpPrice) tpPrice.value = '';
-            
-            if (type === 'menu') {
-                document.getElementById('admin-toppings-section').style.display = 'flex';
-                if (id === 'new') { document.getElementById('admin-edit-title-display').innerText = "ADD MENU ITEM"; document.getElementById('admin-edit-name').value = ""; document.getElementById('admin-edit-desc').value = "₱0.00"; document.getElementById('admin-edit-img-url').value = ""; delBtn.style.display = 'none'; currentAdminToppings = []; } else { const item = menuItems.find(m => m.id == id); document.getElementById('admin-edit-title-display').innerText = "EDIT MENU ITEM"; document.getElementById('admin-edit-name').value = item.name; document.getElementById('admin-edit-desc').value = item.price; document.getElementById('admin-edit-img-url').value = item.img; document.getElementById('admin-edit-img-preview').src = item.img; document.getElementById('admin-edit-img-preview').style.display = 'block'; delBtn.style.display = 'block'; try { currentAdminToppings = JSON.parse(item.toppings); } catch(e) { currentAdminToppings = []; } if(!Array.isArray(currentAdminToppings)) currentAdminToppings = []; }
-                renderAdminToppingsGrid();
-            } else if (type === 'home') {
-                document.getElementById('admin-toppings-section').style.display = 'none';
-                if (id === 'new') { document.getElementById('admin-edit-title-display').innerText = "Add Promo"; document.getElementById('admin-edit-name').value = ""; document.getElementById('admin-edit-desc').value = ""; document.getElementById('admin-edit-img-url').value = ""; delBtn.style.display = 'none'; } else { const promo = homePromos.find(p => p.id == id); document.getElementById('admin-edit-title-display').innerText = "Edit Promo"; document.getElementById('admin-edit-name').value = promo.title; document.getElementById('admin-edit-desc').value = promo.desc; document.getElementById('admin-edit-img-url').value = promo.img; document.getElementById('admin-edit-img-preview').src = promo.img; document.getElementById('admin-edit-img-preview').style.display = 'block'; delBtn.style.display = 'block'; }
-            }
-            document.getElementById('admin-edit-overlay').classList.add('active');
-        }
-
-        function closeAdminEdit() { document.getElementById('admin-edit-overlay').classList.remove('active'); }
-        
-        async function saveAdminEdit() {
-            const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value; const name = document.getElementById('admin-edit-name').value; const desc = document.getElementById('admin-edit-desc').value; 
-            let img = document.getElementById('admin-edit-img-url').value; const base64Img = document.getElementById('admin-edit-img-base64').value; if (base64Img) { img = base64Img; }
-            
-            if (type === 'menu') { 
-                const toppingsStr = JSON.stringify(currentAdminToppings); 
-                if (id === 'new') { 
-                    const newItem = { id: Date.now(), name: name, price: desc, img: img, toppings: toppingsStr };
-                    menuItems.push(newItem); renderMenu(); // Optimistic UI
-                    if (_db) { try { await _db.from('menu').insert([newItem]); } catch(e){} }
-                } else { 
-                    const mIdx = menuItems.findIndex(m => m.id == id);
-                    if(mIdx > -1) { menuItems[mIdx] = { ...menuItems[mIdx], name: name, price: desc, img: img, toppings: toppingsStr }; renderMenu(); }
-                    if (_db) { try { await _db.from('menu').update({ name: name, price: desc, img: img, toppings: toppingsStr }).eq('id', id); } catch(e){} }
-                } 
-            } else if (type === 'home') { 
-                if (id === 'new') { 
-                    const newPromo = { id: Date.now(), title: name, desc: desc, img: img };
-                    homePromos.push(newPromo); renderHomePromos(); renderDesktopCarousel(); // Optimistic UI
-                    if (_db) { try { await _db.from('promos').insert([newPromo]); } catch(e){} }
-                } else { 
-                    const pIdx = homePromos.findIndex(p => p.id == id);
-                    if(pIdx > -1) { homePromos[pIdx] = { ...homePromos[pIdx], title: name, desc: desc, img: img }; renderHomePromos(); renderDesktopCarousel(); }
-                    if (_db) { try { await _db.from('promos').update({ title: name, desc: desc, img: img }).eq('id', id); } catch(e){} }
-                } 
-            }
-            closeAdminEdit(); await loadMenuAndPromos(); 
-        }
-
-        async function deleteAdminEdit() { 
-            const type = document.getElementById('admin-edit-type').value; const id = document.getElementById('admin-edit-id').value; if(!confirm("Are you sure you want to delete this item?")) return; 
-            if (type === 'menu') { 
-                menuItems = menuItems.filter(m => m.id != id); renderMenu(); // Optimistic UI
-                if (_db) { try { await _db.from('menu').delete().eq('id', id); } catch(e){} }
-            } else if (type === 'home') { 
-                homePromos = homePromos.filter(p => p.id != id); renderHomePromos(); renderDesktopCarousel(); // Optimistic UI
-                if (_db) { try { await _db.from('promos').delete().eq('id', id); } catch(e){} }
-            } 
-            closeAdminEdit(); await loadMenuAndPromos(); 
-        }
-
-        function applyTheme(type, color, accentHex, baseRgba, textDark, bgLight, btnHover, dynamicText = '#ffffff', save = true) {
-            currentThemeConfig = { type, color, accentHex, baseRgba, textDark, bgLight, btnHover, dynamicText };
-            
-            // Re-apply current glass opacity over the baseRgba
-            let rgb = '255, 255, 255';
-            const match = baseRgba.match(/rgba?\((\d+,\s*\d+,\s*\d+)/);
-            if (match) rgb = match[1];
-
-            let op = document.documentElement.style.getPropertyValue('--glass-opacity');
-            if(!op) op = 1.0; // Default fully opaque as requested by transparency = 0%
-            let finalRgba = `rgba(${rgb}, ${op})`;
-
-            document.body.style.backgroundColor = color; 
-            document.documentElement.style.setProperty('--theme-base', finalRgba); 
-            document.documentElement.style.setProperty('--theme-accent', accentHex); 
-            document.documentElement.style.setProperty('--theme-text-dark', textDark); 
-            document.documentElement.style.setProperty('--theme-bg-light', bgLight); 
-            document.documentElement.style.setProperty('--theme-btn-hover', btnHover); 
-            document.documentElement.style.setProperty('--glass-bg', finalRgba); 
-            document.documentElement.style.setProperty('--dynamic-text-color', dynamicText);
-            
-            if (save) safeStorage.set('la_prinsesa_theme', JSON.stringify({ type, color, accentHex, baseRgba, textDark, bgLight, btnHover, dynamicText }));
-        }
-
-        function showReceipt(o, isScanned = false) {
-            // Populate Details
-            document.getElementById('receipt-id-print').innerText = o.id; 
-            document.getElementById('receipt-datetime-print').innerText = `${o.date} ${o.time}`; 
-            document.getElementById('receipt-item-print').innerText = o.item; 
-            document.getElementById('receipt-price-print').innerText = o.price; 
-            document.getElementById('receipt-total-print').innerText = o.price; 
-            document.getElementById('receipt-toppings-print').innerText = o.toppings && o.toppings.length ? `+ ${o.toppings.join(', ')}` : "";
-            
-            const detailsSection = document.getElementById('receipt-full-details');
-            const qrLabel = document.getElementById('qr-scan-label');
-            
-            // Setup the indicator logic
-            const indicator = document.getElementById('receipt-ready-indicator');
-            if (o.status === 'Prepared') {
-                indicator.style.backgroundColor = '#2ecc71';
-                indicator.style.boxShadow = '0 0 10px #2ecc71';
-            } else {
-                indicator.style.backgroundColor = 'gray';
-                indicator.style.boxShadow = 'none';
-            }
-
-            if (isScanned) {
-                detailsSection.style.display = 'block';
-                qrLabel.innerText = "Scanned Order Verified";
-            } else {
-                detailsSection.style.display = 'none';
-                qrLabel.innerText = "QR Code";
-            }
-            
-            const qrData = o.id; 
-            document.getElementById('receipt-qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`; 
-            
-            document.getElementById('receipt-overlay').classList.add('active');
-        }
-        
-        function closeReceipt() { document.getElementById('receipt-overlay').classList.remove('active'); }
-        
-        function downloadReceipt() {
-            const rId = document.getElementById('receipt-id-print').innerText; 
-            const rDate = document.getElementById('receipt-datetime-print').innerText; 
-            const receiptContent = `LA PRINSESA BAKESHOP\n\nDate: ${rDate}\nRef#: ${rId}\n-----------------------\nPlease scan the QR code in the app to view your full order details.\n-----------------------\nThank you!`;
-            const blob = new Blob([receiptContent], { type: 'text/plain' }); const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.setAttribute('hidden', ''); a.setAttribute('href', url); a.setAttribute('download', `Receipt_${rId}.txt`);
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        }
-        
-        function openAbout() { document.getElementById('about-overlay').classList.add('active'); toggleAboutEdit(false); }
-        function closeAbout() { document.getElementById('about-overlay').classList.remove('active'); }
-        function openSettings() { document.getElementById('settings-overlay').classList.add('active'); }
-        function closeSettings() { document.getElementById('settings-overlay').classList.remove('active'); }
-        function switchSettingsNav(navId) { document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active')); document.getElementById('nav-' + navId).classList.add('active'); document.querySelectorAll('.settings-view').forEach(v => v.classList.remove('active')); document.getElementById('view-' + navId).classList.add('active'); document.querySelector('.settings-content').scrollTo({top: 0, behavior: 'smooth'}); }
-        function switchAuthTab(tabId) { document.querySelectorAll('.auth-pane').forEach(p => p.classList.remove('active')); document.getElementById('auth-pane-' + tabId).classList.add('active'); document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active')); document.getElementById('btn-auth-' + tabId).classList.add('active'); }
-
-        // SCANNER FUNCTIONS
-        function startScanner() {
-            document.getElementById('scanner-overlay').classList.add('active');
-            if (!html5QrCode) {
-                html5QrCode = new Html5Qrcode("reader");
-            }
-            
-            html5QrCode.start(
-                { facingMode: "environment" }, 
-                { fps: 10, qrbox: { width: 250, height: 250 } },
-                (decodedText, decodedResult) => {
-                    console.log("Scanned ID: ", decodedText);
-                    stopScanner(); 
-                    loadOrderToUI(decodedText); 
-                },
-                (errorMessage) => {
-                    // Ignore background scanning errors
-                }
-            ).catch((err) => {
-                alert("Camera access denied or unavailable. Please ensure permissions are granted.");
-                stopScanner();
-            });
-        }
-
-        function stopScanner() {
-            document.getElementById('scanner-overlay').classList.remove('active');
-            if (html5QrCode) {
-                html5QrCode.stop().then(() => {
-                    html5QrCode.clear();
-                    html5QrCode = null;
-                }).catch(err => console.error("Error stopping scanner:", err));
-            }
-        }
-
-        async function loadOrderToUI(scannedOrderId) {
-            if(!_db) return alert("Database offline. Cannot fetch order details.");
-            
-            try {
-                const { data, error } = await _db.from('orders').select('*').eq('order_id', scannedOrderId).limit(1);
-                
-                if (error || !data || data.length === 0) {
-                    return alert("Order not found in database for ID: " + scannedOrderId);
-                }
-                
-                const o = data[0];
-                let tops = []; 
-                try { tops = JSON.parse(o.toppings); } catch(e){}
-                
-                // Mark as completed since it was scanned
-                if (o.status !== 'Completed') {
-                    try { await _db.from('orders').update({ status: 'Completed' }).eq('order_id', scannedOrderId); } catch(e){}
-                    o.status = 'Completed';
-                    refreshData(); // trigger background UI refresh
-                }
-                
-                // PASS TRUE TO SHOW FULL DETAILS FOR ADMIN SCAN
-                showReceipt({ 
-                    id: o.order_id, 
-                    item: o.item_name, 
-                    price: o.price, 
-                    date: o.pickup_date, 
-                    time: o.pickup_time, 
-                    toppings: tops,
-                    status: o.status
-                }, true); 
-                
-            } catch(err) {
-                console.error(err);
-                alert("Error fetching order.");
-            }
-        }
-    </script>
-</body>
-</html>
+                    <div class="desktop-carousel-text" style="color: #fff; display: flex; justify-content: space
